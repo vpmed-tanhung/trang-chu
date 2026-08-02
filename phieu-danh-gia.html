@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phiếu đánh giá hỗ trợ lâm sàng Khoa Dược | VPMED Tân Hưng</title>
+<style>
+:root{--blue:#075985;--brand:#007f7a;--bg:#eef8fc;--line:#cfe3f5;--soft:#f8fbff}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#eef8fc,#f8fcff);font-family:Arial,Helvetica,sans-serif;color:#003b63}
+.wrap{max-width:940px;margin:0 auto;padding:18px}
+.header{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:14px}
+.brand{display:flex;gap:12px;align-items:center}
+.brand img{width:88px;height:auto;background:white;border-radius:8px}
+.brand h1{font-size:18px;margin:0}
+.brand p{margin:4px 0 0;color:#64748b}
+.nav a{font-weight:700;color:#075985;margin-left:12px}
+.card{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;margin:12px 0;box-shadow:0 10px 28px rgba(2,80,120,.08)}
+.hero h2{font-size:28px;margin:0 0 8px;color:#075985}
+.hero p{margin:0;color:#4b6380}
+.note{background:#effcf9;border:1px solid #99f6e4;border-radius:14px;padding:12px;font-weight:700}
+h3{margin:0 0 14px;color:#075985}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{font-weight:700;display:block;margin-bottom:6px}
+input,select,textarea{width:100%;border:1px solid #bfd7ec;border-radius:12px;padding:12px;font:inherit;background:#fff}
+textarea{min-height:88px;resize:vertical}
+small{color:#64748b}
+.rating-row{display:grid;grid-template-columns:1fr auto 44px;gap:12px;align-items:center;border-bottom:1px solid #e2edf8;padding:11px 0}
+.rating-title{font-weight:700;color:#0f2742}
+.stars{display:flex;gap:3px}
+.star{border:0;background:transparent;font-size:26px;color:#cbd5e1;cursor:pointer;padding:0 2px}
+.star.active{color:#f59e0b}
+.score{font-weight:800;color:#075985;text-align:right}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+button{border:0;border-radius:14px;padding:13px 20px;font-weight:800;cursor:pointer}
+.primary{background:#0b79bd;color:white}
+.secondary{background:#eaf6ff;color:#075985;border:1px solid #bfdbfe}
+.status{display:none;margin-top:12px;border-radius:14px;padding:14px;line-height:1.5}
+.status.ok{display:block;background:#ecfdf5;border:1px solid #86efac;color:#166534}
+.status.err{display:block;background:#fff1f2;border:1px solid #fca5a5;color:#991b1b}
+.required{color:#dc2626}
+@media(max-width:720px){.grid,.rating-row{grid-template-columns:1fr}.header{display:block}.nav{margin-top:10px}.stars{justify-content:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="header">
+    <div class="brand">
+      <img src="assets/logo-vpmed.png" alt="Logo VPMED">
+      <div>
+        <h1>Hệ thống hỗ trợ lâm sàng của Khoa Dược</h1>
+        <p>Bộ phận Dược lâm sàng – Bệnh viện VPMED Tân Hưng</p>
+      </div>
+    </div>
+
+  </header>
+
+  <section class="card hero">
+    <h2>Đánh giá hệ thống hỗ trợ lâm sàng của Khoa Dược</h2>
+    <p>Phiếu dùng để lấy ý kiến người dùng nhằm hoàn thiện hệ thống hỗ trợ lâm sàng của Khoa Dược trước khi tổng hợp báo cáo trình Hội đồng Thuốc & Điều trị.</p>
+  </section>
+
+  <div class="note">Mục tiêu: ghi nhận trải nghiệm thực tế, phát hiện lỗi, đánh giá tính hữu ích và các nội dung chuyên môn cần chỉnh sửa trong quá trình sử dụng hệ thống.</div>
+
+  <form id="evalForm">
+    <section class="card">
+      <h3>1. Thông tin người đánh giá</h3>
+      <div class="grid">
+        <div><label>Khoa/Phòng <span class="required">*</span></label><input id="khoaPhong" placeholder="Ví dụ: Nội tổng hợp" required></div>
+        <div><label>Chức danh</label><select id="chucDanh"><option>Bác sĩ điều trị</option><option>Dược sĩ lâm sàng</option><option>Điều dưỡng</option><option>Khác</option></select></div>
+        <div><label>Họ tên <small>(không bắt buộc)</small></label><input id="hoTen" placeholder="Có thể để trống"></div>
+        <div><label>Tần suất sử dụng web/công cụ hỗ trợ</label><select id="tanSuat"><option>Thường xuyên</option><option>Thỉnh thoảng</option><option>Mới dùng thử</option><option>Ít khi</option></select></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>2. Chấm điểm tiêu chí 1–5</h3>
+      <small>1 = Chưa phù hợp · 3 = Chấp nhận được · 5 = Rất tốt</small>
+      <div id="ratingBox"></div>
+    </section>
+
+    <section class="card">
+      <h3>3. Câu hỏi chọn nhanh</h3>
+      <div class="grid">
+        <div><label>Anh/chị có sẵn sàng sử dụng công cụ này không?</label><select id="sanSang"><option>Có</option><option>Có, nhưng cần chỉnh sửa thêm</option><option>Chưa</option></select></div>
+        <div><label>Anh/chị có đề xuất triển khai dùng thử tại khoa/phòng không?</label><select id="deXuat"><option>Có</option><option>Cân nhắc sau khi chỉnh sửa</option><option>Chưa</option></select></div>
+      </div>
+      <div style="margin-top:12px"><label>Chức năng hữu ích nhất của hệ thống</label><select id="huuIch"><option>Tính CrCl/eGFR</option><option>Hiệu chỉnh liều thuốc</option><option>Tra cứu danh mục thuốc</option><option>Kiểm tra tương tác thuốc</option><option>Thông tin an toàn thuốc</option><option>Kháng sinh theo bệnh lý</option><option>Thuốc nguy cơ gây độc gan</option><option>Nguồn tham khảo</option><option>Khác</option></select></div>
+    </section>
+
+    <section class="card">
+      <h3>4. Góp ý hoàn thiện</h3>
+      <label>Góp ý hoặc lỗi gặp phải <small>(không bắt buộc)</small></label>
+      <textarea id="gopY" placeholder="Ví dụ: không tìm thấy thuốc, giao diện khó nhìn, thao tác chậm, lỗi trên điện thoại..."></textarea>
+
+      <label style="margin-top:12px">Nội dung chuyên môn cần rà soát <small>(nếu có)</small></label>
+      <textarea id="chuyenMon" placeholder="Ví dụ: liều dùng, hiệu chỉnh liều theo CrCl, HD/CRRT, pha truyền, tương tác, chống chỉ định, ADR, nguồn tham khảo..."></textarea>
+
+      <label style="margin-top:12px">Đề xuất chức năng cần bổ sung <small>(nếu có)</small></label>
+      <textarea id="chucNang" placeholder="Ví dụ: thêm bệnh lý, thêm nhóm thuốc khác, in phiếu, lưu bệnh nhân, cải thiện giao diện, cảnh báo tự động..."></textarea>
+    </section>
+
+    <section class="card">
+      <div class="actions">
+        <button class="primary" type="submit" id="submitBtn">Gửi đánh giá</button>
+        <button class="secondary" type="button" id="resetBtn">Nhập lại</button>
+      </div>
+      <div id="statusBox" class="status"></div>
+    </section>
+  </form>
+
+  <footer style="text-align:center;color:#64748b;margin:18px 0">© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng · <a href="./" target="_top">Quay lại Trang chủ</a></footer>
+</div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxRQhht_S6L_pZxKaDzf56lQv0cgTrh2R-OU9ya1ABnc1rmul45QHwCRmKJfEdTVPnFcg/exec';
+
+const criteria = [
+  'Giao diện tổng thể dễ hiểu, dễ thao tác',
+  'Tốc độ phản hồi và độ ổn định của web',
+  'Bố cục các chức năng chính hợp lý, dễ tìm kiếm',
+  'Công cụ tính CrCl/eGFR rõ ràng, dễ áp dụng',
+  'Thông tin hiệu chỉnh liều thuốc phù hợp thực hành',
+  'Danh mục thuốc/dữ liệu chuyên môn dễ tra cứu',
+  'Thông tin an toàn thuốc đầy đủ: ADR, chống chỉ định, tương tác, pha truyền, TDM',
+  'Chức năng kiểm tra tương tác thuốc/chống chỉ định phối hợp hữu ích',
+  'Nguồn tham khảo rõ ràng, đáng tin cậy',
+  'Mức độ sẵn sàng sử dụng hệ thống trong thực hành tại bệnh viện'
+];
+
+const ratings = {};
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function val(id){return document.getElementById(id).value.trim()}
+function show(ok,msg){const b=document.getElementById('statusBox'); b.className='status '+(ok?'ok':'err'); b.textContent=msg}
+
+function renderRatings(){
+  const box=document.getElementById('ratingBox');
+  box.innerHTML=criteria.map((c,i)=>{
+    const key='tc'+(i+1);
+    ratings[key]=ratings[key]||0;
+    return `<div class="rating-row"><div class="rating-title">${i+1}. ${esc(c)}</div><div class="stars" data-key="${key}">${[1,2,3,4,5].map(v=>`<button type="button" class="star" data-v="${v}">★</button>`).join('')}</div><div class="score" id="score-${key}">0/5</div></div>`;
+  }).join('');
+  bindStars();
+}
+
+function bindStars(){
+  document.querySelectorAll('.stars').forEach(group=>{
+    group.querySelectorAll('.star').forEach(star=>{
+      star.onclick=()=>{
+        const key=group.dataset.key, v=Number(star.dataset.v);
+        ratings[key]=v;
+        group.querySelectorAll('.star').forEach(s=>s.classList.toggle('active',Number(s.dataset.v)<=v));
+        document.getElementById('score-'+key).textContent=v+'/5';
+      };
+    });
+  });
+}
+
+function resetForm(){
+  document.getElementById('evalForm').reset();
+  Object.keys(ratings).forEach(k=>ratings[k]=0);
+  renderRatings();
+  document.getElementById('statusBox').className='status';
+}
+
+async function submitEval(e){
+  e.preventDefault();
+
+  if(!val('khoaPhong')){
+    show(false,'Vui lòng nhập Khoa/Phòng.');
+    return;
+  }
+
+  const values=Object.values(ratings);
+  if(values.length<10 || values.some(v=>!v)){
+    show(false,'Vui lòng chấm đủ 10 tiêu chí.');
+    return;
+  }
+
+  const payload={
+    action:'submitEvaluation',
+    hoTen:val('hoTen'),
+    khoaPhong:val('khoaPhong'),
+    chucDanh:val('chucDanh'),
+    tanSuatSuDungKhangSinh:val('tanSuat'),
+    ratings:ratings,
+    sanSangSuDung:val('sanSang'),
+    deXuatTrienKhaiThu:val('deXuat'),
+    noiDungHuuIchNhat:val('huuIch'),
+    gopY_LoiGapPhai:val('gopY'),
+    noiDungChuyenMonCanRaSoat:val('chuyenMon'),
+    deXuatChucNangBoSung:val('chucNang'),
+    version:'VPMED Evaluation Ho Tro Lam Sang Khoa Duoc HĐT&ĐT v1'
+  };
+
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;
+  btn.textContent='Đang gửi...';
+
+  try{
+    await fetch(SCRIPT_URL,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(payload)
+    });
+    show(true,'Đã gửi đánh giá. Xin cảm ơn.');
+    resetForm();
+  }catch(err){
+    show(false,'Chưa gửi được phiếu. Vui lòng kiểm tra kết nối hoặc Apps Script.');
+  }finally{
+    btn.disabled=false;
+    btn.textContent='Gửi đánh giá';
+  }
+}
+
+renderRatings();
+document.getElementById('evalForm').addEventListener('submit',submitEval);
+document.getElementById('resetBtn').addEventListener('click',resetForm);
+</script>
+</body>
+</html>

@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Công cụ tính liều 18F-FDG PET/CT - dễ đọc</title>
+<style>
+:root{
+  --bg:#f6f8fb;--card:#fff;--text:#0f172a;--muted:#475569;--line:#d7e0ea;
+  --blue:#0b5cad;--green:#0f766e;--red:#b91c1c;--amber:#b45309;--ok:#166534;
+  --dark:#111827;--dark2:#1f2937;--darkLine:#374151;
+}
+*{box-sizing:border-box}
+::selection{background:#fde68a;color:#111827}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.55}
+.wrap{max-width:1180px;margin:auto;padding:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:0 2px 8px rgba(15,23,42,.05)}
+h1{font-size:22px;margin:0 0 8px;color:var(--blue)}
+h2{font-size:17px;color:var(--blue);margin:0 0 12px}
+h3{font-size:14px;margin:10px 0 5px;color:#334155}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+label{display:block;font-size:13px;font-weight:700;margin:8px 0 5px}
+input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font-size:15px;background:#fff}
+textarea{min-height:72px}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(11,92,173,.17);border-color:var(--blue)}
+.help{font-size:12px;color:var(--muted);margin-top:4px}
+.formulaPanel{background:#ffffff;color:#0f172a;border:1px solid #d7e0ea;border-radius:14px;padding:14px}
+.formulaPanel h2,.formulaPanel h3{color:#0b5cad}
+.step{border:1px solid #cbd5e1;border-radius:12px;padding:12px;margin:10px 0;background:#f8fafc}
+.step b{color:#0b5cad;font-size:15px}
+.eq{font-family:Arial,Helvetica,sans-serif;background:#eaf3ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px;margin:8px 0;color:#0f172a;overflow:auto;font-weight:800}
+.plain{font-size:13px;color:#334155}
+.resultBox{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:12px;background:#f8fafc}
+.kpi b{display:block;color:#334155;font-size:13px;margin-bottom:6px}
+.kpi span{font-size:21px;font-weight:800;color:var(--blue)}
+.warn{border-left:5px solid var(--amber);background:#fff7ed;padding:10px;border-radius:10px;margin:8px 0}
+.err{border-left:5px solid var(--red);background:#fef2f2;padding:10px;border-radius:10px;margin:8px 0}
+.ok{border-left:5px solid var(--ok);background:#f0fdf4;padding:10px;border-radius:10px;margin:8px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+th{background:#f8fafc}
+.darkTable th{background:#182231;color:#e5e7eb;border-bottom:1px solid var(--darkLine)}
+.darkTable td{color:#e5e7eb;border-bottom:1px solid var(--darkLine)}
+button{border:0;border-radius:10px;padding:10px 12px;font-weight:800;cursor:pointer}
+.btn{background:var(--blue);color:#fff}.btn2{background:#e2e8f0;color:#0f172a}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.small{font-size:12px;color:var(--muted)}
+.tip{background:#e0f2fe;border:1px solid #7dd3fc;border-radius:10px;padding:10px;margin-top:10px;font-size:13px;color:#0f172a;font-weight:700}
+.refBox{background:#111827;color:#e5e7eb;border-radius:14px;padding:16px;margin-bottom:14px}
+.refBox h2{color:#fff;font-size:18px}
+.refBox p,.refBox li{color:#e5e7eb}
+.refBox .muted{color:#cbd5e1}
+.refFormula{text-align:left;font-family:Arial,Helvetica,sans-serif;font-size:17px;font-weight:800;margin:12px 0;color:#fff;line-height:1.55}
+.callout{background:#2b303b;border-radius:12px;padding:12px;margin:12px 0;color:#e5e7eb}
+@media(max-width:900px){.grid,.grid3,.resultBox{grid-template-columns:1fr}h1{font-size:20px}}
+@media print{.actions{display:none}body{background:#fff}.wrap{padding:0}.card{box-shadow:none;break-inside:avoid}.resultBox{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<section class="card">
+<h1>Công cụ tính liều y học hạt nhân / PET-CT</h1>
+<div class="small">Dùng để tính liều theo từng bệnh nhân: từ cân nặng → liều cần tiêm → bù phân rã → thể tích cần rút → liều thực tiêm. Mặc định tối ưu cho 18F-FDG, có thể chọn nhanh một số đồng vị khác để tham khảo.</div>
+</section>
+
+<section class="refBox">
+<h2>Bảng tra cứu tiêu chuẩn liều lượng y học hạt nhân</h2>
+<p class="muted">
+Bảng này dùng để chọn nhanh đồng vị, chu kỳ bán rã và khoảng liều tham khảo. Liều cuối cùng vẫn phải theo SOP của đơn vị, chỉ định lâm sàng, protocol máy và bác sĩ Y học hạt nhân.
+</p>
+<table class="darkTable">
+<thead>
+<tr>
+<th>Đồng vị</th>
+<th>Tên thuốc thường dùng</th>
+<th>Chu kỳ bán rã</th>
+<th>Liều khuyến cáo thường dùng</th>
+<th>Ứng dụng lâm sàng chính</th>
+<th>Chọn nhanh</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>F-18</b></td>
+<td>F-18 FDG</td>
+<td>109,8 phút</td>
+<td>3,5–5,0 MBq/kg</td>
+<td>Khảo sát chuyển hóa đường trong ung thư, tim mạch, thần kinh.</td>
+<td><button class="btn2" onclick="chooseTracer('F18')">Chọn F-18 FDG</button></td>
+</tr>
+<tr>
+<td><b>Ga-68</b></td>
+<td>Ga-68 DOTATATE</td>
+<td>68,3 phút</td>
+<td>2,0–2,5 MBq/kg</td>
+<td>Chẩn đoán u thần kinh nội tiết đặc hiệu.</td>
+<td><button class="btn2" onclick="chooseTracer('GA68')">Chọn Ga-68</button></td>
+</tr>
+<tr>
+<td><b>C-11</b></td>
+<td>C-11 Choline</td>
+<td>20,4 phút</td>
+<td>4,0–7,0 MBq/kg</td>
+<td>Khảo sát tái phát sớm ung thư tuyến tiền liệt.</td>
+<td><button class="btn2" onclick="chooseTracer('C11')">Chọn C-11</button></td>
+</tr>
+<tr>
+<td><b>N-13</b></td>
+<td>N-13 Ammonia</td>
+<td>10,0 phút</td>
+<td>10,0–15,0 MBq/kg</td>
+<td>Đánh giá tưới máu cơ tim chuyên sâu.</td>
+<td><button class="btn2" onclick="chooseTracer('N13')">Chọn N-13</button></td>
+</tr>
+</tbody>
+</table>
+<p class="muted"><i>Lưu ý: Bảng này là bảng tra nhanh tham khảo. Với đồng vị có chu kỳ bán rã ngắn như C-11 và N-13, thời gian chờ vài phút cũng ảnh hưởng đáng kể đến liều thực tế.</i></p>
+</section>
+
+<section class="refBox">
+<h2>1. Tính liều 18F-FDG theo cân nặng</h2>
+
+<p>
+Trong PET/CT, “liều” của 18F-FDG được hiểu là <b>hoạt độ phóng xạ</b>.
+Không tính theo mg như thuốc thông thường.
+</p>
+
+<div class="callout">
+<b>Đơn vị cần nhớ:</b><br>
+1 mCi = 37 MBq
+</div>
+
+<h3>Công thức chính</h3>
+<p>
+Chọn hệ số liều theo quy trình của khoa, sau đó nhân với cân nặng bệnh nhân.
+</p>
+
+<div class="refFormula">Liều cần tiêm = Cân nặng × Hệ số liều</div>
+
+<div class="callout">
+<b>Nếu nhập hệ số theo MBq/kg:</b><br>
+Liều cần tiêm (MBq) = Cân nặng (kg) × Hệ số liều (MBq/kg)
+</div>
+
+<div class="callout">
+<b>Nếu nhập hệ số theo mCi/kg:</b><br>
+Liều cần tiêm (mCi) = Cân nặng (kg) × Hệ số liều (mCi/kg)
+</div>
+
+<p>
+Với <b>18F-FDG ở người lớn</b>, hệ số thường do từng đơn vị PET/CT quy định trong SOP.
+Khoảng hay dùng để tham khảo là <b>3,5–5,2 MBq/kg</b>,
+tương đương khoảng <b>0,10–0,14 mCi/kg</b>.
+</p>
+
+<p>
+Trong công cụ này có các nút chọn nhanh theo <b>mCi/kg</b> vì đây là cách nhiều nhân viên thao tác quen dùng trong thực hành.
+Nút <b>4,0 MBq/kg</b> vẫn giữ lại để đối chiếu khi SOP dùng hệ MBq.
+</p>
+
+<div class="callout">
+<b>Ví dụ:</b><br>
+Bệnh nhân nặng 60 kg, chọn hệ số 4,0 MBq/kg.<br>
+Liều cần tiêm = 60 × 4,0 = 240 MBq.<br>
+Đổi sang mCi: 240 / 37 ≈ 6,5 mCi.
+</div>
+</section>
+
+<section class="refBox">
+<h2>2. Công thức dược động học: hiệu chỉnh liều theo thời gian phân rã</h2>
+<p>18F-FDG giảm hoạt độ liên tục sau khi được sản xuất hoặc sau khi được rút ra bơm tiêm. Vì vậy cần tính liều <b>tại đúng thời điểm tiêm</b>, không chỉ tính tại thời điểm chuẩn bị.</p>
+
+<div class="refFormula">A<sub>t</sub> = A<sub>0</sub> × e<sup>-λt</sup></div>
+
+<p>Trong đó:</p>
+<ul>
+<li><b>A<sub>t</sub></b>: hoạt độ còn lại tại thời điểm tiêm.</li>
+<li><b>A<sub>0</sub></b>: hoạt độ ban đầu lúc chuẩn bị hoặc lúc đo.</li>
+<li><b>t</b>: thời gian từ lúc chuẩn bị/đo đến lúc tiêm, tính bằng phút hoặc giờ.</li>
+<li><b>λ</b>: hằng số phân rã, tính bằng công thức: <b>λ = 0,693 / T<sub>1/2</sub></b>.</li>
+<li><b>T<sub>1/2</sub></b>: chu kỳ bán rã của 18F, thường dùng <b>109,8 phút</b> xấp xỉ 110 phút.</li>
+</ul>
+
+<div class="callout">
+<b>Ứng dụng thực hành nhanh:</b><br>
+Cứ sau khoảng <b>110 phút</b>, hoạt độ 18F-FDG giảm còn <b>một nửa</b>. Nếu bệnh nhân phải chờ lâu trước tiêm, cần rút lượng ban đầu cao hơn để đến lúc tiêm vẫn đủ liều MBq/mCi cần dùng.
+</div>
+</section>
+
+<section class="refBox">
+<h2>3. Bảng tra cứu nhanh liều 18F-FDG cho người lớn</h2>
+
+<p class="muted">
+Có 2 cách tra nhanh: theo <b>MBq/kg</b> hoặc theo <b>mCi/kg</b>.
+Hai cách này tương đương nhau, chỉ khác đơn vị nhập. Khi thực hành vẫn phải tính lại theo thời điểm đo, thời điểm tiêm và nồng độ hoạt độ thực tế.
+</p>
+
+<h3>Bảng A. Tra nhanh theo hệ số 4,0 MBq/kg</h3>
+<p class="muted">
+Thể tích ước tính giả định nồng độ hoạt độ là <b>200 MBq/mL</b>.
+</p>
+<table class="darkTable">
+<thead>
+<tr>
+<th>Cân nặng</th>
+<th>Liều theo 4,0 MBq/kg</th>
+<th>Quy đổi sang mCi</th>
+<th>Thể tích ước tính</th>
+</tr>
+</thead>
+<tbody id="quickTableMBq"></tbody>
+</table>
+
+<h3 style="margin-top:18px">Bảng B. Tra nhanh theo hệ số mCi/kg</h3>
+<p class="muted">
+Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối chiếu nhanh giữa các hệ số thường dùng.
+</p>
+<table class="darkTable">
+<thead>
+<tr>
+<th>Cân nặng</th>
+<th>0,10 mCi/kg</th>
+<th>0,12 mCi/kg</th>
+<th>0,14 mCi/kg</th>
+<th>0,15 mCi/kg</th>
+<th>Quy đổi MBq ở 0,15 mCi/kg</th>
+</tr>
+</thead>
+<tbody id="quickTableMci"></tbody>
+</table>
+
+<p class="muted">
+<i>Ghi chú: Bảng chỉ để đối chiếu nhanh. Thể tích mL cuối cùng phải tính bằng nồng độ hoạt độ thực tế tại thời điểm đo/rút và phải bù phân rã nếu có thời gian chờ trước tiêm.</i>
+</p>
+</section>
+
+<section class="card formulaPanel">
+<h2>Nguyên tắc tính — bản dùng trong công cụ</h2>
+
+<div class="step">
+  <b>Bước 1. Tính liều cần có đúng lúc tiêm</b>
+  <div class="eq">Liều cần tiêm = Cân nặng bệnh nhân × Hệ số liều theo quy trình</div>
+  <div class="plain">Kết quả là hoạt độ phóng xạ cần đạt tại thời điểm tiêm, đơn vị là mCi hoặc MBq.</div>
+</div>
+
+<div class="step">
+  <b>Bước 2. Bù phần thuốc bị giảm do phân rã</b>
+  <div class="eq">Hệ số còn lại = e^[-0,693 × Thời gian chờ / 109,8]</div>
+  <div class="eq">Lượng cần rút = Liều cần tiêm / Hệ số còn lại</div>
+  <div class="plain">Rút thuốc càng sớm trước giờ tiêm thì lượng cần rút ban đầu càng phải cao hơn.</div>
+</div>
+
+<div class="step">
+  <b>Bước 3. Quy đổi từ mCi sang mL</b>
+  <div class="eq">Nồng độ hoạt độ = Tổng hoạt độ / Tổng thể tích</div>
+  <div class="eq">Thể tích cần rút = Lượng cần rút / Nồng độ hoạt độ</div>
+  <div class="plain">mCi/MBq là liều phóng xạ; mL chỉ là thể tích dung dịch. Không được dùng mL thay cho liều. Thể tích mL cuối cùng phải tính sau khi đã bù phân rã, trừ khi nồng độ hoạt độ đã được quy đổi sẵn về đúng thời điểm tiêm.</div>
+</div>
+
+<div class="step">
+  <b>Bước 4. Sau tiêm, tính liều thực tiêm</b>
+  <div class="eq">Liều thực tiêm = Hoạt độ bơm trước tiêm - Hoạt độ còn dư sau tiêm</div>
+  <div class="plain">Liều ghi nhận cuối cùng nên là liều thực tiêm, sau khi đã trừ phần còn dư trong bơm/dây truyền.</div>
+</div>
+
+<div class="tip">
+  Tóm tắt thao tác chuẩn: <b>Tính liều mục tiêu mCi/MBq → xác định nồng độ hoạt độ tại thời điểm đo/rút → bù phân rã theo thời gian chờ → tính thể tích mL cần rút cuối cùng → đo lại sau tiêm để biết liều thực tiêm.</b><br>
+<span style="font-weight:400">Lưu ý: Có thể tính thể tích sơ bộ trước, nhưng thể tích cuối cùng vẫn phải được hiệu chỉnh theo phân rã.</span>
+</div>
+</section>
+
+<div class="grid">
+<section class="card">
+<h2>1) Bệnh nhân, đồng vị và hệ số liều</h2>
+<div class="grid3">
+  <div>
+    <label>Đồng vị / dược chất</label>
+    <select id="tracerSelect">
+      <option value="F18">F-18 FDG</option>
+      <option value="GA68">Ga-68 DOTATATE</option>
+      <option value="C11">C-11 Choline</option>
+      <option value="N13">N-13 Ammonia</option>
+      <option value="CUSTOM">Khác / tự nhập</option>
+    </select>
+  </div>
+  <div>
+    <label>Khoảng liều tham khảo</label>
+    <input id="doseRangeText" type="text" value="3,5–5,0 MBq/kg" readonly>
+  </div>
+  <div>
+    <label>Ứng dụng chính</label>
+    <input id="clinicalUseText" type="text" value="Ung thư, tim mạch, thần kinh" readonly>
+  </div>
+</div>
+<div class="grid3">
+  <div>
+    <label>Cân nặng bệnh nhân (kg)</label>
+    <input id="weight" type="number" step="0.1" placeholder="Nhập cân nặng">
+  </div>
+  <div>
+    <label>Hệ số liều theo SOP</label>
+    <input id="k" type="number" step="0.001" placeholder="Ví dụ: 0.10; 0.12; 0.14; 0.15">
+  </div>
+  <div>
+    <label>Đơn vị hệ số</label>
+    <select id="kUnit">
+      <option value="mCiKg" selected>mCi/kg</option>
+      <option value="MBqKg">MBq/kg</option>
+    </select>
+  </div>
+</div>
+<div class="grid3">
+  <div>
+    <label>Chu kỳ bán rã 18F-FDG (phút)</label>
+    <input id="half" type="number" step="0.1" value="109.8">
+  </div>
+  <div>
+    <label>Ngưỡng kiểm tra thấp (mCi)</label>
+    <input id="minCheck" type="number" step="0.1" value="5">
+  </div>
+  <div>
+    <label>Ngưỡng kiểm tra cao (mCi)</label>
+    <input id="maxCheck" type="number" step="0.1" value="20">
+  </div>
+</div>
+<div class="actions">
+  <button class="btn2" onclick="useMci(0.10)">0,10 mCi/kg</button>
+  <button class="btn2" onclick="useMci(0.12)">0,12 mCi/kg</button>
+  <button class="btn2" onclick="useMci(0.14)">0,14 mCi/kg</button>
+  <button class="btn2" onclick="useMci(0.15)">0,15 mCi/kg</button>
+  <button class="btn2" onclick="useFourMBq()">4,0 MBq/kg</button>
+  <button class="btn2" onclick="useTracerMidDose()">Liều trung bình của đồng vị đang chọn</button>
+</div>
+<p class="help">
+  Nếu quen tính theo mCi/kg, dùng các nút 0,10–0,15 mCi/kg. 
+  Nếu chọn đồng vị khác FDG, có thể bấm “Liều trung bình của đồng vị đang chọn” để tự điền hệ số MBq/kg tham khảo.
+</p>
+</section>
+
+<section class="card">
+<h2>2) Thời gian từ lúc đo/rút đến lúc tiêm</h2>
+<div class="grid3">
+  <div>
+    <label>Ngày đo/rút thuốc</label>
+    <input id="drawDate" type="date">
+  </div>
+  <div>
+    <label>Giờ đo/rút thuốc</label>
+    <input id="drawTime" type="time">
+  </div>
+  <div>
+    <label>Ngày tiêm</label>
+    <input id="injectDate" type="date">
+  </div>
+</div>
+<div class="grid3">
+  <div>
+    <label>Giờ dự kiến tiêm</label>
+    <input id="injectTime" type="time">
+  </div>
+  <div>
+    <label>Hoặc nhập trực tiếp số phút chờ</label>
+    <input id="deltaManual" type="number" step="1" placeholder="Ví dụ: 30">
+  </div>
+  <div>
+    <label>Chế độ tính</label>
+    <select id="mode">
+      <option value="targetToDraw">Tính lượng cần rút để đủ liều lúc tiêm</option>
+      <option value="drawToInject">Tính lượng còn lại lúc tiêm từ lượng đã rút</option>
+    </select>
+  </div>
+</div>
+<div>
+  <label>Hoạt độ đã rút tại thời điểm đo/rút (mCi)</label>
+  <input id="drawnMci" type="number" step="0.01" placeholder="Chỉ nhập khi muốn tính lượng còn lại lúc tiêm">
+</div>
+</section>
+
+<section class="card">
+<h2>3) Nồng độ hoạt độ và thể tích cần rút</h2>
+<div class="grid3">
+  <div>
+    <label>Tổng hoạt độ tại thời điểm đo (mCi)</label>
+    <input id="stockA" type="number" step="0.01" placeholder="Tổng mCi trong lọ/bơm">
+  </div>
+  <div>
+    <label>Tổng thể tích tại thời điểm đo (mL)</label>
+    <input id="stockV" type="number" step="0.01" placeholder="Tổng mL">
+  </div>
+  <div>
+    <label>Nồng độ nhập trực tiếp (mCi/mL)</label>
+    <input id="concDirect" type="number" step="0.01" placeholder="Có thể bỏ trống">
+  </div>
+</div>
+<p class="help">Nếu biết sẵn nồng độ mCi/mL tại đúng thời điểm đo thì nhập trực tiếp. Nếu không, nhập tổng hoạt độ và tổng thể tích.</p>
+</section>
+
+<section class="card">
+<h2>4) Tính liều thực tiêm sau tiêm</h2>
+<div class="grid3">
+  <div>
+    <label>Hoạt độ bơm trước tiêm (mCi)</label>
+    <input id="preA" type="number" step="0.01" placeholder="Đo trên dose calibrator">
+  </div>
+  <div>
+    <label>Hoạt độ còn dư sau tiêm (mCi)</label>
+    <input id="resA" type="number" step="0.01" placeholder="Đo phần còn lại sau tiêm">
+  </div>
+  <div>
+    <label>Số phút từ đo trước tiêm đến đo còn dư</label>
+    <input id="resDelta" type="number" step="1" value="0">
+  </div>
+</div>
+</section>
+</div>
+
+<section class="card">
+<h2>Kết quả</h2>
+<div id="alerts"></div>
+<div class="resultBox">
+  <div class="kpi"><b>Liều cần có lúc tiêm</b><span id="target">--</span><div id="targetMbq" class="small"></div></div>
+  <div class="kpi"><b>Thời gian chờ</b><span id="dt">--</span><div id="decay" class="small"></div></div>
+  <div class="kpi"><b>Lượng cần rút ban đầu</b><span id="drawNeed">--</span><div id="drawNeedMbq" class="small"></div></div>
+  <div class="kpi"><b>Thể tích cần rút</b><span id="volNeed">--</span><div id="concShow" class="small"></div></div>
+</div>
+<div class="resultBox" style="margin-top:10px">
+  <div class="kpi"><b>Nếu đã rút: còn lại lúc tiêm</b><span id="remain">--</span><div id="remainMbq" class="small"></div></div>
+  <div class="kpi"><b>Liều thực tiêm</b><span id="actual">--</span><div id="actualMbq" class="small"></div></div>
+  <div class="kpi"><b>Chênh lệch so với mục tiêu</b><span id="diff">--</span><div class="small">Tính khi đã nhập liều thực tiêm</div></div>
+  <div class="kpi"><b>Gợi ý kiểm tra</b><span id="action">--</span><div class="small">Đối chiếu SOP trước khi dùng</div></div>
+</div>
+<div class="actions">
+  <button class="btn" onclick="calc()">Tính lại</button>
+  <button class="btn2" onclick="clearPatient()">Xóa dữ liệu ca</button>
+  <button class="btn2" onclick="window.print()">In / lưu PDF</button>
+</div>
+</section>
+
+<section class="card">
+<h2>Bảng diễn giải</h2>
+<table>
+<thead><tr><th>Bước</th><th>Cách tính</th><th>Kết quả</th></tr></thead>
+<tbody id="table"></tbody>
+</table>
+</section>
+
+<section class="card">
+<h2>Ghi chú ca bệnh</h2>
+<textarea id="note" placeholder="Ghi chỉ định, đường huyết, thời gian nhịn ăn, người thao tác, số lô FDG..."></textarea>
+<p class="small">Công cụ chỉ hỗ trợ tính toán. Liều cuối cùng phải theo SOP đơn vị, bác sĩ Y học hạt nhân, quy định an toàn bức xạ và nguyên tắc ALARA.</p>
+</section>
+
+</main>
+
+<script>
+function num(id){const x=parseFloat(document.getElementById(id).value); return isFinite(x)?x:NaN;}
+function val(id){return document.getElementById(id).value;}
+function fmt(x,d=2){return isFinite(x)?Number(x).toLocaleString('vi-VN',{maximumFractionDigits:d,minimumFractionDigits:d}):'--';}
+function mbq(mci){return mci*37;}
+function mci(mbq){return mbq/37;}
+function expDecay(dt,half){return Math.exp(-Math.log(2)*dt/half);}
+function getDelta(){
+  const manual=num('deltaManual');
+  if(isFinite(manual)) return manual;
+  const dd=val('drawDate'), dt=val('drawTime'), id=val('injectDate'), it=val('injectTime');
+  if(dd && dt && id && it){
+    const a=new Date(dd+'T'+dt), b=new Date(id+'T'+it);
+    return (b-a)/60000;
+  }
+  return NaN;
+}
+function setText(id,t){document.getElementById(id).innerHTML=t;}
+function alertBox(type,text){return `<div class="${type}">${text}</div>`;}
+const tracerData={
+  F18:{name:'F-18 FDG',half:109.8,range:'3,5–5,0 MBq/kg',mid:4.0,use:'Ung thư, tim mạch, thần kinh'},
+  GA68:{name:'Ga-68 DOTATATE',half:68.3,range:'2,0–2,5 MBq/kg',mid:2.25,use:'U thần kinh nội tiết'},
+  C11:{name:'C-11 Choline',half:20.4,range:'4,0–7,0 MBq/kg',mid:5.5,use:'Tái phát ung thư tuyến tiền liệt'},
+  N13:{name:'N-13 Ammonia',half:10.0,range:'10,0–15,0 MBq/kg',mid:12.5,use:'Tưới máu cơ tim'},
+  CUSTOM:{name:'Khác',half:109.8,range:'Tự nhập theo SOP',mid:4.0,use:'Tự nhập'}
+};
+function chooseTracer(key){
+  const d=tracerData[key]||tracerData.F18;
+  const sel=document.getElementById('tracerSelect');
+  if(sel) sel.value=key;
+  document.getElementById('half').value=d.half;
+  const range=document.getElementById('doseRangeText');
+  if(range) range.value=d.range;
+  const use=document.getElementById('clinicalUseText');
+  if(use) use.value=d.use;
+  calc();
+}
+function useTracerMidDose(){
+  const key=document.getElementById('tracerSelect') ? document.getElementById('tracerSelect').value : 'F18';
+  const d=tracerData[key]||tracerData.F18;
+  document.getElementById('k').value=d.mid;
+  document.getElementById('kUnit').value='MBqKg';
+  document.getElementById('half').value=d.half;
+  chooseTracer(key);
+  calc();
+}
+function useMci(value){
+  document.getElementById('k').value=value.toFixed(2);
+  document.getElementById('kUnit').value='mCiKg';
+  calc();
+}
+function useFourMBq(){
+  document.getElementById('k').value='4.0';
+  document.getElementById('kUnit').value='MBqKg';
+  calc();
+}
+function buildQuickTable(){
+  const weights=[40,45,50,55,60,65,70,75,80,85,90];
+
+  const rowsMBq=weights.map(w=>{
+    const doseMBq=w*4.0;
+    const doseMci=doseMBq/37;
+    const volume=doseMBq/200;
+    return `<tr>
+      <td><b>${w} kg</b></td>
+      <td>${Math.round(doseMBq)} MBq</td>
+      <td>${doseMci.toFixed(1)} mCi</td>
+      <td>${volume.toFixed(2)} mL</td>
+    </tr>`;
+  }).join('');
+  const tbMBq=document.getElementById('quickTableMBq');
+  if(tbMBq) tbMBq.innerHTML=rowsMBq;
+
+  const rowsMci=weights.map(w=>{
+    const d010=w*0.10;
+    const d012=w*0.12;
+    const d014=w*0.14;
+    const d015=w*0.15;
+    const mbq015=d015*37;
+    return `<tr>
+      <td><b>${w} kg</b></td>
+      <td>${d010.toFixed(1)} mCi</td>
+      <td>${d012.toFixed(1)} mCi</td>
+      <td>${d014.toFixed(1)} mCi</td>
+      <td>${d015.toFixed(1)} mCi</td>
+      <td>${Math.round(mbq015)} MBq</td>
+    </tr>`;
+  }).join('');
+  const tbMci=document.getElementById('quickTableMci');
+  if(tbMci) tbMci.innerHTML=rowsMci;
+}
+
+function calc(){
+  const W=num('weight'), k=num('k'), unit=val('kUnit'), half=num('half'), dt=getDelta();
+  const minC=num('minCheck'), maxC=num('maxCheck');
+  const mode=val('mode'), drawn=num('drawnMci');
+  const stockA=num('stockA'), stockV=num('stockV'), concD=num('concDirect');
+  const preA=num('preA'), resA=num('resA'), resDt=num('resDelta');
+
+  let targetMci = unit==='mCiKg' ? W*k : mci(W*k);
+  const decay = expDecay(dt,half);
+  const drawNeed = targetMci / decay;
+  const remain = drawn * decay;
+  let conc = isFinite(concD) && concD>0 ? concD : stockA/stockV;
+  let vol = drawNeed/conc;
+
+  let actual=NaN, resAtPre=NaN, diff=NaN;
+  if(isFinite(preA)&&isFinite(resA)&&isFinite(resDt)&&isFinite(half)){
+    resAtPre = resA / expDecay(resDt,half);
+    actual = preA - resAtPre;
+    diff = actual - targetMci;
+  }
+
+  setText('target',`${fmt(targetMci)} mCi`);
+  setText('targetMbq',`${fmt(mbq(targetMci),0)} MBq`);
+  setText('dt',`${fmt(dt,0)} phút`);
+  setText('decay',`Sau thời gian chờ còn ${fmt(decay*100,1)}% hoạt độ`);
+  setText('drawNeed',`${fmt(drawNeed)} mCi`);
+  setText('drawNeedMbq',`${fmt(mbq(drawNeed),0)} MBq`);
+  setText('volNeed',`${fmt(vol)} mL`);
+  setText('concShow',`Nồng độ = ${fmt(conc)} mCi/mL`);
+  setText('remain',`${fmt(remain)} mCi`);
+  setText('remainMbq',`${fmt(mbq(remain),0)} MBq`);
+  setText('actual',`${fmt(actual)} mCi`);
+  setText('actualMbq',`${fmt(mbq(actual),0)} MBq`);
+  setText('diff',`${fmt(diff)} mCi`);
+  setText('action', mode==='targetToDraw' ? 'Dùng lượng cần rút ban đầu' : 'So với liều mục tiêu');
+
+  const alerts=[];
+  if(!isFinite(W)||W<=0) alerts.push(alertBox('err','Cần nhập cân nặng bệnh nhân.'));
+  if(!isFinite(k)||k<=0) alerts.push(alertBox('err','Cần nhập hệ số liều theo SOP của đơn vị.'));
+  if(!isFinite(dt)||dt<0) alerts.push(alertBox('err','Cần nhập thời gian chờ hợp lệ. Nếu dùng ngày/giờ, kiểm tra ngày giờ tiêm phải sau ngày giờ đo/rút.'));
+  if(!isFinite(half)||half<=0) alerts.push(alertBox('err','Cần nhập chu kỳ bán rã hợp lệ. Với 18F-FDG thường dùng 109,8 phút.'));
+  if(isFinite(targetMci)&&isFinite(minC)&&isFinite(maxC)){
+    if(targetMci<minC || targetMci>maxC) alerts.push(alertBox('warn',`Liều cần có lúc tiêm là ${fmt(targetMci)} mCi, nằm ngoài ngưỡng kiểm tra ${fmt(minC,1)}–${fmt(maxC,1)} mCi. Cần đối chiếu SOP/bác sĩ Y học hạt nhân.`));
+    else alerts.push(alertBox('ok',`Liều cần có lúc tiêm là ${fmt(targetMci)} mCi, nằm trong ngưỡng kiểm tra đang đặt.`));
+  }
+  if(!isFinite(conc)||conc<=0) alerts.push(alertBox('warn','Chưa đủ dữ liệu tính nồng độ hoạt độ, nên chưa tính được thể tích cần rút.'));
+  if(isFinite(vol)&&vol<0.1) alerts.push(alertBox('warn','Thể tích cần rút nhỏ hơn 0,1 mL: nguy cơ sai số thao tác cao.'));
+  if(isFinite(actual)&&actual<0) alerts.push(alertBox('err','Liều thực tiêm âm: kiểm tra lại số đo trước tiêm, số đo còn dư và thời điểm đo.'));
+  if(isFinite(diff)&&isFinite(targetMci)&&Math.abs(diff/targetMci)>0.15) alerts.push(alertBox('warn',`Liều thực tiêm lệch ${fmt(diff)} mCi so với mục tiêu, vượt 15%. Cần đánh giá lại trước khi ghi nhận.`));
+  setText('alerts',alerts.join(''));
+
+  const rows=[
+    ['1. Liều cần có lúc tiêm', `Cân nặng × hệ số liều = ${fmt(W,1)} × ${fmt(k,3)} ${unit==='mCiKg'?'mCi/kg':'MBq/kg'}`, `${fmt(targetMci)} mCi = ${fmt(mbq(targetMci),0)} MBq`],
+    ['2. Hệ số còn lại', `e^[-0,693 × ${fmt(dt,0)} / ${fmt(half,1)}]`, `${fmt(decay*100,1)}%`],
+    ['3. Lượng cần rút ban đầu', `Liều cần tiêm / hệ số còn lại = ${fmt(targetMci)} / ${fmt(decay,4)}`, `${fmt(drawNeed)} mCi`],
+    ['4. Nồng độ hoạt độ', isFinite(concD)?'Dùng nồng độ nhập trực tiếp':`Tổng hoạt độ / tổng thể tích = ${fmt(stockA)} / ${fmt(stockV)}`, `${fmt(conc)} mCi/mL`],
+    ['5. Thể tích cần rút', `Lượng cần rút / nồng độ = ${fmt(drawNeed)} / ${fmt(conc)}`, `${fmt(vol)} mL`],
+    ['6. Nếu đã rút sẵn', `Hoạt độ đã rút × hệ số còn lại = ${fmt(drawn)} × ${fmt(decay,4)}`, `${fmt(remain)} mCi lúc tiêm`],
+    ['7. Liều thực tiêm', `Hoạt độ trước tiêm - hoạt độ còn dư đã quy đổi = ${fmt(preA)} - ${fmt(resAtPre)}`, `${fmt(actual)} mCi`]
+  ];
+  setText('table',rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td><b>${r[2]}</b></td></tr>`).join(''));
+}
+
+function clearPatient(){
+  ['weight','k','drawDate','drawTime','injectDate','injectTime','deltaManual','drawnMci','stockA','stockV','concDirect','preA','resA','note'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('half').value='109.8';
+  document.getElementById('minCheck').value='5';
+  document.getElementById('maxCheck').value='20';
+  document.getElementById('resDelta').value='0';
+  calc();
+}
+document.querySelectorAll('input,select,textarea').forEach(x=>x.addEventListener('input',calc));
+const tracerSel=document.getElementById('tracerSelect');
+if(tracerSel){tracerSel.addEventListener('change',()=>chooseTracer(tracerSel.value));}
+buildQuickTable();
+chooseTracer('F18');
+calc();
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "version": "2026.07.23.7",
+  "updatedAt": "2026-07-23T12:35:00+07:00",
+  "note": "Chuyển chữ trong bảng hiệu chỉnh liều CrCl về kiểu thường; giữ nguyên dữ liệu và các phần khác.",
+  "buildId": "renal-only-v7-20260723"
+}

@@ -1,0 +1,169 @@
+/* VPMED - màn hình khởi động hệ thống. Chỉ tác động lên #systemLoader. */
+html.system-loading,
+html.system-loading body {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+#systemLoader.system-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000000;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 50% 4%, rgba(83, 180, 235, .24), transparent 33%),
+    linear-gradient(160deg, #f7fbff 0%, #eaf5fc 52%, #f8fbfd 100%);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .42s ease, visibility .42s ease;
+}
+
+#systemLoader.system-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#systemLoader .system-loader-card {
+  width: min(440px, 100%);
+  padding: 34px 30px 28px;
+  text-align: center;
+  background: rgba(255, 255, 255, .97);
+  border: 1px solid rgba(7, 103, 168, .14);
+  border-radius: 24px;
+  box-shadow: 0 26px 70px rgba(20, 65, 99, .16);
+}
+
+#systemLoader .system-loader-logo-wrap {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 18px;
+  display: grid;
+  place-items: center;
+}
+
+#systemLoader .system-loader-logo-wrap::before,
+#systemLoader .system-loader-logo-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+#systemLoader .system-loader-logo-wrap::before {
+  border: 2px solid rgba(7, 103, 168, .12);
+}
+
+#systemLoader .system-loader-logo-wrap::after {
+  border: 3px solid transparent;
+  border-top-color: #0875b8;
+  border-right-color: #18a0c6;
+  animation: vpmedLoaderSpin 1.15s linear infinite;
+}
+
+#systemLoader .system-loader-logo {
+  width: 76px;
+  height: 58px;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+}
+
+#systemLoader .system-loader-kicker {
+  margin-bottom: 7px;
+  color: #0870ad;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+#systemLoader .system-loader-title {
+  margin: 0;
+  color: #063b67;
+  font-size: clamp(20px, 4vw, 25px);
+  font-weight: 900;
+  line-height: 1.28;
+}
+
+#systemLoader .system-loader-subtitle {
+  margin: 7px 0 0;
+  color: #5a7285;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#systemLoader .system-loader-progress {
+  height: 8px;
+  margin-top: 25px;
+  overflow: hidden;
+  background: #e4edf3;
+  border-radius: 999px;
+}
+
+#systemLoader .system-loader-progress-bar {
+  position: relative;
+  width: 7%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #0870b1, #13a1c8);
+  transition: width .34s ease;
+}
+
+#systemLoader .system-loader-progress-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 38%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .72), transparent);
+  transform: translateX(-130%);
+  animation: vpmedLoaderShimmer 1.05s ease-in-out infinite;
+}
+
+#systemLoader .system-loader-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 21px;
+  margin-top: 12px;
+  color: #5d7485;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+#systemLoader .system-loader-status { text-align: left; }
+#systemLoader .system-loader-percent {
+  flex: 0 0 auto;
+  color: #075f9f;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+#systemLoader .system-loader-note {
+  margin: 18px 0 0;
+  color: #7a8d9b;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+@keyframes vpmedLoaderSpin { to { transform: rotate(360deg); } }
+@keyframes vpmedLoaderShimmer { to { transform: translateX(360%); } }
+
+@media (max-width: 560px) {
+  #systemLoader.system-loader { padding: 18px; }
+  #systemLoader .system-loader-card { padding: 29px 21px 24px; border-radius: 21px; }
+  #systemLoader .system-loader-logo-wrap { width: 88px; height: 88px; }
+  #systemLoader .system-loader-logo { width: 69px; height: 52px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #systemLoader .system-loader-logo-wrap::after,
+  #systemLoader .system-loader-progress-bar::after { animation: none; }
+}

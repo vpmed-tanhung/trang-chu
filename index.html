@@ -1,0 +1,1314 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#075f9f">
+  <title>Hệ thống Hỗ trợ Dược lâm sàng | VPMED Tân Hưng</title>
+  <link rel="stylesheet" href="assets/style.css?v=20260802-formula-only">
+  <link rel="stylesheet" href="assets/hepatotoxicity.css">
+  <link rel="stylesheet" href="assets/pregnancy_lactation.css">
+  <link rel="stylesheet" href="assets/responsive-polish.css?v=20260712-balanced">
+  <link rel="stylesheet" href="assets/antibiotic-result-layout.css?v=20260716-38-drugs">
+  <link rel="stylesheet" href="assets/system-loader.css?v=20260712-restore-ui">
+  <script>document.documentElement.classList.add('system-loading');</script>
+  <noscript><style>#systemLoader{display:none!important}</style></noscript>
+</head>
+<body>
+<div class="system-loader" id="systemLoader" role="status" aria-live="polite" aria-label="Đang tải Hệ thống Hỗ trợ Dược lâm sàng">
+  <div class="system-loader-card">
+    <div class="system-loader-logo-wrap" aria-hidden="true"><img class="system-loader-logo" src="assets/logo-vpmed.png" alt=""></div>
+    <div class="system-loader-kicker">Khoa Dược · Dược lâm sàng</div>
+    <h1 class="system-loader-title">Hệ thống Hỗ trợ lâm sàng</h1>
+    <p class="system-loader-subtitle">Bệnh viện VPMED Tân Hưng</p>
+    <div class="system-loader-progress" aria-hidden="true"><div class="system-loader-progress-bar" id="systemLoaderBar"></div></div>
+    <div class="system-loader-meta"><span class="system-loader-status" id="systemLoaderStatus">Đang khởi tạo hệ thống…</span><span class="system-loader-percent" id="systemLoaderPercent">7%</span></div>
+    <p class="system-loader-note">Vui lòng chờ trong giây lát</p>
+  </div>
+</div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#home" data-go="home">
+      <img class="brand-logo" src="assets/logo-vpmed.png" alt="Logo Bệnh viện VPMED Tân Hưng">
+      <div><strong>Hệ thống Hỗ trợ – Dược lâm sàng</strong><span>Bệnh viện VPMED Tân Hưng</span></div>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Mở menu">☰</button>
+    <nav class="main-nav" id="mainNav">
+      <button data-view="home" class="active">Trang chủ</button>
+      <a class="nav-evaluation" href="https://vpmed-tanhung.github.io/phieu-danh-gia-khang-sinh/" target="_blank" rel="noopener">Đánh giá</a>
+      <a class="facebook-text-link" href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a>
+    
+      <button data-view="sources">Nguồn</button>
+    </nav>
+  </div>
+</header>
+
+<main class="app-shell">
+  <section class="view active" id="view-home">
+    <div class="hero-grid hero-grid-single">
+      <div class="hero-panel">
+        <div class="eyebrow">Khoa Dược · Dược lâm sàng · Tra cứu, tính liều và hỗ trợ chuyên môn</div>
+        <h1>Hệ thống hỗ trợ lâm sàng</h1>
+        <div class="hero-intro">
+          <p>Hệ thống hỗ trợ nhân viên y tế tra cứu thông tin thuốc, tính liều và tham khảo dữ liệu chuyên môn trong thực hành lâm sàng và y học hạt nhân.</p>
+          <p>Các chức năng chính hiện có gồm:</p>
+          <ul id="heroFeatureList" aria-live="polite">
+            <li><strong>Tính liều kháng sinh &amp; CrCl/eGFR:</strong> Tính Cockcroft–Gault, eGFR CKD-EPI 2021 và gợi ý liều theo chức năng thận.</li>
+            <li><strong>Tính liều PET/CT – Y học hạt nhân:</strong> Lập kế hoạch liều cho nhiều bệnh nhân, bù phân rã và tính thể tích cần rút.</li>
+            <li><strong>Danh mục kháng sinh nội trú:</strong> Tra cứu biệt dược, hoạt chất, liều, pha truyền, ADR và TDM.</li>
+            <li><strong>Kháng sinh theo bệnh lý:</strong> Tra cứu phác đồ kinh nghiệm cho các hội chứng nhiễm khuẩn thường gặp.</li>
+            <li><strong>Kiểm tra tương tác thuốc:</strong> Kiểm tra nhanh các cặp thuốc trong danh mục tương tác.</li>
+          </ul>
+          <p>Chọn chức năng phù hợp tại mục <strong>“Ứng dụng chính”</strong> bên dưới để sử dụng trực tiếp.</p>
+        </div>
+      </div>
+    </div>
+
+    <section class="section-card">
+      <div class="section-heading"><div><span class="kicker">Ứng dụng chính</span><h2>Chọn công cụ cần sử dụng</h2></div></div>
+      <div class="feature-grid">
+        <button class="feature-card" data-open="dose"><span class="feature-icon">🧮</span><b>Tính liều kháng sinh & CrCl/eGFR</b><small>Tính Cockcroft–Gault, eGFR CKD-EPI 2021, gợi ý theo thận và lưu lịch sử.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="petct-dose"><span class="feature-icon">☢️</span><b>Tính liều PET/CT – Y học hạt nhân</b><small>Lập kế hoạch liều cho nhiều bệnh nhân PET/CT trong ngày, bù phân rã theo giờ tiêm; vẫn có phần tính đơn khi cần.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="antibiotics"><span class="feature-icon">💊</span><b>Danh mục kháng sinh nội trú</b><small>Tra cứu từng biệt dược, hoạt chất, liều, pha truyền, ADR và TDM.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="diseases"><span class="feature-icon">🩺</span><b>Kháng sinh theo bệnh lý</b><small>Tra cứu phác đồ kinh nghiệm cho các hội chứng nhiễm khuẩn thường gặp, liên kết liều theo chức năng thận.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="interactions"><span class="feature-icon">⚠️</span><b>Kiểm tra tương tác thuốc</b><small>Kiểm tra nhanh hai thuốc hoặc tìm trong toàn bộ danh mục tương tác.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card hepatotoxic-feature" data-open="hepatotoxicity"><span class="feature-icon">🫀</span><b>Thuốc có nguy cơ gây độc gan</b><small>Tra cứu thuốc trong kho nội trú, mức cảnh báo, nguy cơ chính và khuyến nghị theo dõi chức năng gan.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card pregnancy-feature" data-open="pregnancy-lactation"><span class="feature-icon">🤰</span><b>Thuốc dùng khi có thai & cho con bú</b><small>Tra cứu 151 hoạt chất/nhóm theo tài liệu nội bộ, kèm phân loại FDA/TGA và liên kết đối chiếu hiện hành.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="pediatric-dose"><span class="feature-icon">🍼</span><b>Tính liều kháng sinh Nhi</b><small>60 kháng sinh · Sơ sinh và Nhi khoa theo tuổi/cân nặng.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="clinical-nutrition"><span class="feature-icon">🍽️</span><b>Dinh dưỡng lâm sàng</b><small>TPN · EN · Năng lượng Harris–Benedict/Mifflin · Đạm · Lipid.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="injectable-guide"><span class="feature-icon">💉</span><b>Pha &amp; Bảo quản Thuốc Tiêm</b><small>428 thuốc · Dung môi · Nồng độ · Thời gian ổn định · Tương kỵ.</small><em>Đang hoạt động</em></button>
+
+        <button type="button" class="feature-card icd10-feature" data-open="icd10-bhyt" disabled aria-disabled="true" title="Chức năng đang cập nhật"><span class="feature-icon">🧾</span><b>ICD-10 & BHYT theo thuốc nội trú</b><small>Chức năng đang được rà soát và cập nhật dữ liệu.</small><em>Đang cập nhật</em></button>
+        <button class="feature-card" data-open="sources" data-intro-exclude="true"><span class="feature-icon">📚</span><b>Nguồn dữ liệu hệ thống</b><small>Mở các tệp nội bộ và xem nguyên tắc ưu tiên nguồn chuyên môn.</small><em>Đang hoạt động</em></button>
+      </div>
+    </section>
+  </section>
+
+  <section class="view" id="view-dose">
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <div class="page-title"><div><span class="kicker">Công cụ lâm sàng</span><h1>Tính liều kháng sinh cho bệnh nhân suy thận</h1><p>Tính đồng thời CrCl Cockcroft–Gault và eGFR CKD-EPI 2021 để hỗ trợ đánh giá chức năng thận và lựa chọn ngưỡng liều phù hợp.</p></div></div>
+    <div class="dose-layout">
+      <aside class="form-card">
+        <h3>Thông tin bệnh nhân</h3>
+        <label>Mã bệnh nhân trên HIS <small class="optional-note">chỉ nhập mã HIS, không nhập họ tên người bệnh</small><input id="patientCode" type="text" maxlength="30" autocomplete="off" spellcheck="false" placeholder="Nhập mã bệnh nhân" required></label>
+        <div class="form-row"><label>Tuổi<input id="age" type="number" min="18" placeholder="65"></label><label>Cân nặng (kg)<input id="wt" type="number" min="1" step="0.1" placeholder="60"></label></div>
+        <label>Chiều cao (cm) <small class="optional-note">không bắt buộc – dùng để quy đổi eGFR về mL/phút khi cần đánh giá liều</small><input id="ht" type="number" min="80" max="250" step="0.1" placeholder="165"></label>
+        <div class="form-row"><label>Giới tính<select id="sex"><option value="m">Nam</option><option value="f">Nữ</option></select></label><label>Creatinine (µmol/L)<input id="scr" type="number" min="1" step="0.1" placeholder="90"></label></div>
+        <label>Kháng sinh<select id="drug"></select></label>
+        <label class="checkline"><input id="dialysis" type="checkbox"> Bệnh nhân đang lọc máu (HD/CRRT)</label>
+        <button class="btn btn-primary full" id="calc">Tính CrCl, eGFR và gợi ý liều</button>
+      </aside>
+      <div class="dose-main">
+        <div id="output" class="empty-state"><div>🧪</div><b>Chưa có kết quả</b><span>Nhập tuổi, cân nặng, creatinine và chọn kháng sinh để bắt đầu.</span></div>
+        <section class="section-card history-card">
+          <div class="section-heading"><div><span class="kicker">Lịch sử tra cứu</span><h2>Lịch sử dùng chung toàn bệnh viện</h2><small id="sharedHistoryStatus">Đang đồng bộ dữ liệu chung…</small></div><div class="heading-actions"><button class="btn btn-soft" id="exportHist">Xuất CSV</button><button class="btn btn-soft" id="clear">Làm mới lịch sử</button></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Thời gian</th><th>Mã bệnh nhân</th><th>CrCl</th><th>eGFR</th><th>Thuốc</th><th>Gợi ý</th></tr></thead><tbody id="hist"></tbody></table></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="view-antibiotics">
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <div class="page-title"><div><span class="kicker">Tra cứu nhanh</span><h1>Danh mục kháng sinh điều trị nội trú</h1><p>Mỗi biệt dược là một hồ sơ riêng, đồng bộ từ danh mục Khoa Dược cung cấp.</p></div></div>
+    <section class="section-card compact">
+      <div class="filter-grid"><label>Tìm kháng sinh<input id="q" placeholder="Nhập biệt dược, hoạt chất, nhóm hoặc hàm lượng..."></label><label>Lọc theo nhóm<select id="group"><option value="">Tất cả nhóm</option></select></label></div>
+      <div class="directory"><div class="drug-list" id="drugList"></div><div class="profile" id="profile"></div></div>
+    </section>
+  </section>
+
+
+  <section class="view" id="view-diseases">
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <div class="page-title"><div><span class="kicker">Hỗ trợ lựa chọn kháng sinh</span><h1>Kháng sinh theo bệnh lý</h1><p>Tra cứu phác đồ kinh nghiệm cho người lớn theo hội chứng nhiễm khuẩn thường gặp. Cần lấy bệnh phẩm trước kháng sinh khi có thể, đánh giá mức độ nặng, nguy cơ vi khuẩn đa kháng, dị ứng và chức năng thận.</p></div></div>
+    <section class="section-card disease-warning"><b>Phạm vi sử dụng:</b> Nội dung là khung tham khảo để xây dựng hướng dẫn tại bệnh viện, ưu tiên tài liệu Bộ Y tế và danh mục thuốc nội trú. Phác đồ chính thức cần được Hội đồng Thuốc & Điều trị phê duyệt và cập nhật theo kháng sinh đồ của bệnh viện.</section>
+    <section class="section-card compact">
+      <div class="disease-filters"><label>Tìm bệnh lý hoặc hội chứng<input id="diseaseQ" placeholder="Ví dụ: viêm phổi, tiết niệu, da mô mềm..."></label><label>Nhóm bệnh<select id="diseaseGroup"><option value="">Tất cả nhóm</option></select></label></div>
+      <div class="disease-layout"><div class="disease-list" id="diseaseList"></div><div class="disease-profile" id="diseaseProfile"></div></div>
+    </section>
+  </section>
+
+  <section class="view" id="view-interactions">
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <div class="page-title stats-title"><div><span class="kicker">633 cặp tương tác chống chỉ định</span><h1>Kiểm tra tương tác thuốc</h1><p>Tra cứu 633 cặp tương tác thuốc chống chỉ định theo từng hoạt chất trong Quyết định 5948/QĐ-BYT. Có thể nhập biệt dược hoặc hoạt chất; hệ thống tự quy đổi khi có dữ liệu tương ứng.</p></div><div class="mini-stats"><article><strong id="icount">0</strong><span>cặp tương tác</span></article><article><strong id="mcount">0</strong><span>thuốc/hoạt chất</span></article></div></div>
+    <section class="section-card">
+      <div class="section-heading"><div><span class="kicker">Kiểm tra nhanh</span><h2>Nhập hai thuốc cần kiểm tra</h2></div></div>
+      <div class="pair"><label>Thuốc thứ nhất<input id="a" list="meds" placeholder="Ví dụ: Ceftriaxon"></label><button class="swap" id="swap" title="Đổi vị trí">⇄</button><label>Thuốc thứ hai<input id="b" list="meds" placeholder="Ví dụ: Calci clorid"></label><button class="btn btn-primary" id="check">Kiểm tra</button></div>
+      <datalist id="meds"></datalist>
+      <div class="result" id="result">Nhập hai thuốc rồi bấm <b>Kiểm tra</b>.</div>
+    </section>
+    <section class="section-card">
+      <div class="section-heading"><div><span class="kicker">Danh mục đầy đủ</span><h2>Tra cứu tất cả tương tác</h2></div></div>
+      <label class="search-wide">Tìm theo tên thuốc, hậu quả, cơ chế hoặc cách xử trí<input id="iq" placeholder="Nhập từ khóa..."></label>
+      <div class="int-list" id="ilist"></div>
+    </section>
+  </section>
+
+
+  <section class="view" id="view-hepatotoxicity">
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <div class="page-title"><div><span class="kicker">An toàn sử dụng thuốc</span><h1>Thuốc có nguy cơ gây độc gan</h1><p>Danh sách được sàng lọc từ kho thuốc nội trú để hỗ trợ rà soát y lệnh, nhận diện nguy cơ và theo dõi chức năng gan.</p></div></div>
+    <section class="section-card liver-warning">
+      <b>Lưu ý chuyên môn:</b> “Có nguy cơ gây độc gan” không đồng nghĩa với chống chỉ định tuyệt đối. Đây là công cụ hỗ trợ rà soát nguy cơ tổn thương gan do thuốc (DILI) theo từng chế phẩm/hoạt chất trong danh mục nội trú.
+      <br><br>
+      Khi sử dụng, cần đánh giá đồng thời: bệnh gan nền, uống rượu, tuổi cao, suy dinh dưỡng, nhiễm trùng nặng, suy thận, liều dùng, thời gian dùng, thuốc phối hợp, thuốc không kê đơn, thuốc y học cổ truyền/thực phẩm bảo vệ sức khỏe và diễn biến AST, ALT, ALP/GGT, bilirubin, INR.
+      <br><br>
+      Cần báo bác sĩ điều trị và cân nhắc ngừng/đổi thuốc nghi ngờ khi ALT/AST tăng rõ hoặc tăng kèm triệu chứng; đặc biệt khi ALT/AST &gt; 3 lần giới hạn trên bình thường kèm bilirubin tăng, vàng da, INR tăng, phát ban/sốt/nghi DRESS, rối loạn ý thức hoặc dấu hiệu suy gan.
+      <br><br>
+      Nguồn đối chiếu ưu tiên: tờ hướng dẫn sử dụng thuốc đã được Cục Quản lý Dược – Bộ Y tế phê duyệt, Dược thư Quốc gia Việt Nam, Quyết định 29/QĐ-BYT về giám sát ADR, Trung tâm Quốc gia về Thông tin thuốc và Theo dõi ADR, LiverTox NIH, AASLD/EASL DILI và FDA DILIrank 2.0.
+    </section>
+    <div class="liver-summary">
+      <article><strong id="liverTotal">0</strong><span>thuốc/chế phẩm</span></article>
+      <article><strong id="liverHigh">0</strong><span>cảnh báo cao</span></article>
+      <article><strong id="liverFollow">0</strong><span>cần theo dõi</span></article>
+    </div>
+    <section class="section-card compact">
+      <div class="liver-filters">
+        <label>Tìm thuốc hoặc hoạt chất<input id="liverQ" placeholder="Ví dụ: paracetamol, Dalekine, diclofenac..."></label>
+        <label>Mức cảnh báo<select id="liverLevel"><option value="">Tất cả mức</option><option value="Cao">Cao</option><option value="Trung bình–cao">Trung bình–cao</option><option value="Theo dõi">Theo dõi</option><option value="Hiếm">Hiếm</option><option value="Hóa trị">Hóa trị – theo dõi</option></select></label>
+      </div>
+      <div class="liver-toolbar"><span id="liverResultCount">0 kết quả</span><button type="button" class="btn btn-soft" id="liverExpandAll">Mở tất cả</button></div>
+      <div class="liver-list" id="liverList"></div>
+    </section>
+  </section>
+
+  <section class="view" id="view-pregnancy-lactation">
+    <div class="back-home-wrap"><button type="button" class="back-home-btn" data-go="home"><span aria-hidden="true">←</span> Quay lại Trang chủ</button></div>
+    <div class="page-title"><div><span class="kicker">Dược lâm sàng cho đối tượng đặc biệt</span><h1>Sử dụng thuốc cho phụ nữ có thai và phụ nữ cho con bú</h1></div></div>
+    <section class="section-card pl-alert"><b>Chuẩn đánh giá hiện hành:</b> sử dụng FDA PLLR để trình bày nguy cơ trong thai kỳ và thời kỳ cho con bú. Phân loại FDA A/B/C/D/X chỉ được giữ ở mức tham khảo lịch sử; TGA A, B1, B2, B3, C, D và X là hệ thống phân loại bổ trợ.</section>
+    <section class="section-card pl-warning"><b>Cảnh báo:</b> Không coi toàn bộ nội dung PDF là dữ liệu mới nhất. Trước khi ra quyết định, phải đối chiếu tờ hướng dẫn sử dụng được phê duyệt của đúng chế phẩm và nguồn hiện hành được liên kết tại từng dòng.</section>
+    <div class="pl-summary"><article><strong id="plTotal">0</strong><span>hoạt chất/nhóm tra cứu</span></article><article><strong id="plPregAvoid">0</strong><span>mục tránh/chống chỉ định khi có thai</span></article><article><strong id="plLactAvoid">0</strong><span>mục tránh/chống chỉ định khi cho bú</span></article></div>
+    <section class="section-card compact">
+      <div class="pl-filters">
+        <label>Tìm hoạt chất/biệt dược<input id="plQ" placeholder="Ví dụ: paracetamol, ceftriaxon..."></label>
+        <label>Nhóm thuốc<select id="plCategory"><option value="">Tất cả nhóm</option></select></label>
+        <label>Đối tượng<select id="plPopulation"><option value="all">Cả hai</option><option value="pregnancy">Có thai</option><option value="lactation">Cho con bú</option></select></label>
+        <label>FDA/TGA<select id="plClass"><option value="">Tất cả</option><option>A</option><option>B</option><option>B1</option><option>B2</option><option>B3</option><option>C</option><option>D</option><option>X</option><option>NA</option><option>Không nêu</option></select></label>
+        <label>Mức khuyến cáo<select id="plRisk"><option value="">Tất cả</option><option value="avoid">Tránh/Chống chỉ định</option><option value="caution">Thận trọng/Cân nhắc</option><option value="ok">Có thể sử dụng</option><option value="unknown">Thiếu dữ liệu</option></select></label>
+      </div>
+      <div class="pl-toolbar"><span id="plCount">0 kết quả</span></div>
+      <div class="pl-table-wrap"><table class="pl-table"><thead><tr><th>Hoạt chất / Tên thuốc</th><th>Đánh giá hiện hành và phân loại tham khảo</th><th>Phụ nữ có thai</th><th>Phụ nữ cho con bú</th></tr></thead><tbody id="plBody"></tbody></table></div>
+    </section>
+    <section class="section-card"><div class="section-heading"><div><span class="kicker">Nguồn đang hoạt động</span><h2>Nguồn đối chiếu đã kiểm tra</h2></div></div>
+      <div class="pl-source-grid">
+        <article class="pl-source-card"><h3>Tài liệu PDF nội bộ</h3><p>Nguyên bản tài liệu anh cung cấp.</p><a target="_blank" href="sources/thuoc-thai-ky-cho-con-bu-noi-bo.pdf">Mở PDF</a></article>
+        <article class="pl-source-card"><h3>Cục Quản lý Dược – Bộ Y tế</h3><p>Tra cứu số đăng ký và tờ hướng dẫn sử dụng của đúng chế phẩm.</p><a target="_blank" rel="noopener" href="https://dichvucong.dav.gov.vn/congbothuoc/index">Mở nguồn</a></article>
+        <article class="pl-source-card"><h3>TGA Pregnancy Database</h3><p>Cơ sở dữ liệu phân loại thai kỳ chính thức của Úc.</p><a target="_blank" rel="noopener" href="https://www.tga.gov.au/resources/health-professional-information-and-resources/australian-categorisation-system-prescribing-medicines-pregnancy/prescribing-medicines-pregnancy-database">Mở nguồn</a></article>
+        <article class="pl-source-card"><h3>FDA PLLR – chuẩn hiện hành</h3><p>Đánh giá theo Risk Summary, Clinical Considerations và Data; không dùng A/B/C/D/X làm kết luận chính.</p><a target="_blank" rel="noopener" href="https://www.fda.gov/drugs/labeling-information-drug-products/pregnancy-and-lactation-labeling-resources">Mở nguồn</a></article>
+        <article class="pl-source-card"><h3>DailyMed</h3><p>Nhãn thuốc do NLM cung cấp từ dữ liệu nộp FDA.</p><a target="_blank" rel="noopener" href="https://dailymed.nlm.nih.gov/dailymed/">Mở nguồn</a></article>
+      </div>
+    </section>
+  </section>
+  <section class="view petct-wide-view" id="view-petct-dose">
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <div class="page-title">
+      <div>
+        <span class="kicker">Công cụ y học hạt nhân</span>
+        <h1>Tính liều PET/CT – Y học hạt nhân</h1>
+        <p>Lập kế hoạch hoạt độ cho tối đa 12 ca theo giờ tiêm thực tế và kiểm tra nguồn thuốc tại thời điểm nhận ở bệnh viện.</p>
+      </div>
+    </div>
+    <div class="petct-inline">
+<main class="wrap">
+<section class="card">
+<h2>Kế hoạch hoạt độ nhiều ca</h2>
+<p class="help">Nhập tổng hoạt độ nhận tại viện, cân nặng, đường huyết và giờ tiêm của từng ca. Các cột kết quả được tính tự động.</p>
+<div class="grid3">
+  <div><label>Xạ đặt (mCi)</label><input id="batchOrderedActivity" type="number" step="0.1" min="0" placeholder="Ví dụ: 60"></div>
+  <div><label>Giờ nhận tại viện</label><input id="batchHospitalReceive" type="text" inputmode="numeric" placeholder="HH:mm"></div>
+  <div><label>Hệ số liều mặc định</label><input id="batchFactor" type="number" step="0.001" value="0.15"></div>
+</div>
+<div class="grid3">
+  <div><label>Đơn vị hệ số</label><select id="batchUnit"><option value="mCiKg" selected>mCi/kg</option><option value="MBqKg">MBq/kg</option></select></div>
+  <div><label>Thời gian từ tiêm đến chụp</label><input id="batchUptake" type="number" step="1" min="0" value="45"><span class="field-unit">phút</span></div>
+  <div><label>Chu kỳ bán rã F-18 (phút)</label><input id="batchHalf" type="number" step="0.1" value="110"></div>
+</div>
+
+<div class="actions">
+  <button class="btn" onclick="calcBatchDose()">Cập nhật kế hoạch</button>
+  <button class="btn2" onclick="addBatchRows(1)">Thêm ca</button>
+  <button class="btn2" onclick="addBatchRows(5)">Thêm 5 ca</button>
+  <button class="btn2 btn2-muted" onclick="clearBatchRows()">Xóa toàn bộ</button>
+</div>
+
+<div id="batchAlerts"></div>
+<div class="batch-status" id="batchSufficiency" role="status">Chưa đủ dữ liệu</div>
+<div class="batch-table-panel">
+  <div class="batch-auto-summary" aria-label="Các chỉ số tự động">
+    <div><span>Liều TB</span><strong id="batchAverageSurplus">--</strong><small>mCi/ca</small></div>
+    <div><span>Số BN</span><strong id="batchCount">0</strong><small>Tối đa 12</small></div>
+    <div><span>Tổng cần</span><strong id="batchTotalTarget">--</strong><small>mCi</small></div>
+  </div>
+  <div class="table-wrap batch-table-wrap">
+    <table>
+      <thead><tr><th>Liều nhập<br><span>mCi</span></th><th>Cân nặng<br><span>kg</span></th><th>Tiểu đường<br><span>+1 mCi</span></th><th>Đường huyết<br><span>mmol/L</span></th><th>Liều dùng<br><span>mCi</span></th><th>Dự kiến tiêm</th><th>Dự kiến chụp</th><th>Liều cần<br><span>mCi</span></th><th>Còn<br><span>mCi</span></th><th></th></tr></thead>
+      <tbody class="batch-receive-body"><tr class="batch-receive-row"><td><span>Mốc nhận</span></td><td>--</td><td>--</td><td>--</td><td>--</td><td id="batchReceiveTimeDisplay">--</td><td>--</td><td id="batchReceiveActivityStart">--</td><td id="batchReceiveActivityRemain">--</td><td></td></tr></tbody>
+      <tbody id="batchTableBody"></tbody>
+      <tfoot><tr><td><span>Tổng liều nhập</span><strong id="batchAllocatedTotal">--</strong></td><td colspan="9"></td></tr></tfoot>
+    </table>
+  </div>
+</div>
+<details class="batch-formula-details">
+  <summary>Công thức sử dụng</summary>
+  <div>
+    <p><b>Liều dùng</b> = Cân nặng × Hệ số liều; cộng 1 mCi khi đánh dấu bệnh nhân tiểu đường.</p>
+    <p><b>Liều TB</b> = (Tổng hoạt độ nhận − Tổng liều dùng) / Số bệnh nhân.</p>
+    <p><b>Liều nhập</b>: ca 2 trở đi làm tròn lên 0,1 mCi; ca 1 nhận phần chênh lệch để tổng cột khớp tổng hoạt độ nhận.</p>
+    <p><b>Liều cần</b> được tính ngược từ ca cuối: Liều cần ca hiện tại = Liều dùng ca hiện tại + Liều cần ca sau ÷ Hệ số còn lại giữa hai giờ tiêm.</p>
+    <p><b>Còn</b> = Liều cần − Liều dùng. Liều cần tại mốc nhận được quy đổi ngược từ giờ tiêm ca đầu về giờ nhận thuốc.</p>
+  </div>
+</details>
+</section>
+
+<div class="grid">
+<section class="card">
+<h2>Tính cho một bệnh nhân</h2>
+
+<div class="grid3 petct-condition-grid">
+  <div>
+    <label>Tình trạng / chỉ định chính</label>
+    <select id="singleCondition">
+      <option value="oncology" selected>Ung thư</option>
+      <option value="diabetes">Đái tháo đường</option>
+      <option value="hypertension">Bệnh tăng huyết áp</option>
+      <option value="cardiac">Bệnh tim mạch</option>
+      <option value="neuro">Bệnh thần kinh</option>
+      <option value="other">Khác / theo chỉ định riêng</option>
+    </select>
+  </div>
+  <div>
+    <label>Đường huyết trước tiêm (mmol/L)</label>
+    <input id="singleGlucose" type="number" step="0.1" placeholder="Nhập nếu có">
+  </div>
+  <div>
+    <label>Huyết áp trước chụp (mmHg)</label>
+    <input id="singleBloodPressure" type="text" inputmode="numeric" placeholder="VD: 130/80">
+  </div>
+  <div>
+    <label>Ghi chú tình trạng</label>
+    <input id="singleClinicalNote" type="text" placeholder="Ghi chú lâm sàng">
+  </div>
+</div>
+
+<div class="grid3">
+  <div>
+    <label>Đồng vị / dược chất</label>
+    <select id="tracerSelect">
+      <option value="F18">F-18 FDG</option>
+      <option value="GA68">Ga-68 DOTATATE</option>
+      <option value="C11">C-11 Choline</option>
+      <option value="N13">N-13 Ammonia</option>
+      <option value="CUSTOM">Khác / tự nhập</option>
+    </select>
+  </div>
+  <div>
+    <label>Khoảng liều tham khảo</label>
+    <input id="doseRangeText" type="text" value="3,5–5,0 MBq/kg" readonly>
+  </div>
+  <div>
+    <label>Ứng dụng chính</label>
+    <input id="clinicalUseText" type="text" value="Ung thư, tim mạch, thần kinh" readonly>
+  </div>
+</div>
+<div class="grid3">
+  <div>
+    <label>Cân nặng bệnh nhân (kg)</label>
+    <input id="weight" type="number" step="0.1" placeholder="Nhập cân nặng">
+  </div>
+  <div>
+    <label>Hệ số liều theo SOP</label>
+    <input id="k" type="number" step="0.001" placeholder="Ví dụ: 0.10; 0.12; 0.14; 0.15">
+  </div>
+  <div>
+    <label>Đơn vị hệ số</label>
+    <select id="kUnit">
+      <option value="mCiKg" selected>mCi/kg</option>
+      <option value="MBqKg">MBq/kg</option>
+    </select>
+  </div>
+</div>
+<div class="grid3">
+  <div>
+    <label>Chu kỳ bán rã 18F-FDG (phút)</label>
+    <input id="half" type="number" step="0.1" value="109.8">
+  </div>
+  <div>
+    <label>Ngưỡng kiểm tra thấp (mCi)</label>
+    <input id="minCheck" type="number" step="0.1" value="5">
+  </div>
+  <div>
+    <label>Ngưỡng kiểm tra cao (mCi)</label>
+    <input id="maxCheck" type="number" step="0.1" value="20">
+  </div>
+</div>
+<div class="actions">
+  <button class="btn2" onclick="useMci(0.10)">0,10 mCi/kg</button>
+  <button class="btn2" onclick="useMci(0.12)">0,12 mCi/kg</button>
+  <button class="btn2" onclick="useMci(0.14)">0,14 mCi/kg</button>
+  <button class="btn2" onclick="useMci(0.15)">0,15 mCi/kg</button>
+  <button class="btn2" onclick="useFourMBq()">4,0 MBq/kg</button>
+  <button class="btn2" onclick="useTracerMidDose()">Liều trung bình của đồng vị đang chọn</button>
+</div>
+<p class="help">
+  Nếu quen tính theo mCi/kg, dùng các nút 0,10–0,15 mCi/kg. 
+  Nếu chọn đồng vị khác FDG, có thể bấm “Liều trung bình của đồng vị đang chọn” để tự điền hệ số MBq/kg tham khảo.
+</p>
+</section>
+
+<section class="card">
+<h2>2.1) Thời gian từ lúc đo/rút đến lúc tiêm</h2>
+<div class="grid3">
+  <div>
+    <label>Ngày đo/rút thuốc</label>
+    <input id="drawDate" type="date">
+  </div>
+  <div>
+    <label>Giờ đo/rút thuốc</label>
+    <input id="drawTime"  type="text" inputmode="numeric" placeholder="HH:mm">
+  </div>
+  <div>
+    <label>Ngày tiêm</label>
+    <input id="injectDate" type="date">
+  </div>
+</div>
+<div class="grid3">
+  <div>
+    <label>Giờ dự kiến tiêm</label>
+    <input id="injectTime"  type="text" inputmode="numeric" placeholder="HH:mm">
+  </div>
+  <div>
+    <label>Hoặc nhập trực tiếp số phút chờ</label>
+    <input id="deltaManual" type="number" step="1" placeholder="Ví dụ: 30">
+  </div>
+  <div>
+    <label>Chế độ tính</label>
+    <select id="mode">
+      <option value="targetToDraw">Tính lượng cần rút để đủ liều lúc tiêm</option>
+      <option value="drawToInject">Tính lượng còn lại lúc tiêm từ lượng đã rút</option>
+    </select>
+  </div>
+</div>
+<div>
+  <label>Hoạt độ đã rút tại thời điểm đo/rút (mCi)</label>
+  <input id="drawnMci" type="number" step="0.01" placeholder="Chỉ nhập khi muốn tính lượng còn lại lúc tiêm">
+</div>
+</section>
+
+<section class="card">
+<h2>2.2) Nồng độ hoạt độ và thể tích cần rút</h2>
+<div class="grid3">
+  <div>
+    <label>Tổng hoạt độ tại thời điểm đo (mCi)</label>
+    <input id="stockA" type="number" step="0.01" placeholder="Tổng mCi trong lọ/bơm">
+  </div>
+  <div>
+    <label>Tổng thể tích tại thời điểm đo (mL)</label>
+    <input id="stockV" type="number" step="0.01" placeholder="Tổng mL">
+  </div>
+  <div>
+    <label>Nồng độ nhập trực tiếp (mCi/mL)</label>
+    <input id="concDirect" type="number" step="0.01" placeholder="Có thể bỏ trống">
+  </div>
+</div>
+<p class="help">Nếu biết sẵn nồng độ mCi/mL tại đúng thời điểm đo thì nhập trực tiếp. Nếu không, nhập tổng hoạt độ và tổng thể tích.</p>
+</section>
+
+<section class="card">
+<h2>2.3) Tính liều thực tiêm sau tiêm</h2>
+<div class="grid3">
+  <div>
+    <label>Hoạt độ bơm trước tiêm (mCi)</label>
+    <input id="preA" type="number" step="0.01" placeholder="Đo trên dose calibrator">
+  </div>
+  <div>
+    <label>Hoạt độ còn dư sau tiêm (mCi)</label>
+    <input id="resA" type="number" step="0.01" placeholder="Đo phần còn lại sau tiêm">
+  </div>
+  <div>
+    <label>Số phút từ đo trước tiêm đến đo còn dư</label>
+    <input id="resDelta" type="number" step="1" value="0">
+  </div>
+</div>
+</section>
+</div>
+
+<section class="card">
+<h2>Kết quả tính đơn bệnh nhân</h2>
+<div id="alerts"></div>
+<div class="resultBox">
+  <div class="kpi"><b>Liều cần có lúc tiêm</b><span id="target">--</span><div id="targetMbq" class="small"></div></div>
+  <div class="kpi"><b>Thời gian chờ</b><span id="dt">--</span><div id="decay" class="small"></div></div>
+  <div class="kpi"><b>Lượng cần rút ban đầu</b><span id="drawNeed">--</span><div id="drawNeedMbq" class="small"></div></div>
+  <div class="kpi"><b>Thể tích cần rút</b><span id="volNeed">--</span><div id="concShow" class="small"></div></div>
+</div>
+<div class="resultBox" style="margin-top:10px">
+  <div class="kpi"><b>Nếu đã rút: còn lại lúc tiêm</b><span id="remain">--</span><div id="remainMbq" class="small"></div></div>
+  <div class="kpi"><b>Liều thực tiêm</b><span id="actual">--</span><div id="actualMbq" class="small"></div></div>
+  <div class="kpi"><b>Chênh lệch so với mục tiêu</b><span id="diff">--</span><div class="small">Tính khi đã nhập liều thực tiêm</div></div>
+  <div class="kpi"><b>Gợi ý kiểm tra</b><span id="action">--</span><div class="small">Đối chiếu SOP trước khi dùng</div></div>
+</div>
+<div class="actions">
+  <button class="btn" onclick="calc()">Tính lại</button>
+  <button class="btn2" onclick="clearPatient()">Xóa dữ liệu ca</button>
+  <button class="btn2" onclick="window.print()">In / lưu PDF</button>
+</div>
+</section>
+
+<section class="card">
+<h2>Bảng diễn giải tính đơn bệnh nhân</h2>
+<table>
+<thead><tr><th>Bước</th><th>Cách tính</th><th>Kết quả</th></tr></thead>
+<tbody id="table"></tbody>
+</table>
+</section>
+
+
+
+
+<section class="card">
+<h2>Ghi chú ca bệnh</h2>
+<textarea id="note" placeholder="Ghi chỉ định, đường huyết, thời gian nhịn ăn, người thao tác, số lô FDG..."></textarea>
+<p class="small">Công cụ chỉ hỗ trợ tính toán. Liều cuối cùng phải theo SOP đơn vị, bác sĩ Y học hạt nhân, quy định an toàn bức xạ và nguyên tắc ALARA.</p>
+</section>
+
+</main>
+
+<details class="petct-refs-bottom">
+  <summary>Tài liệu tham khảo, bảng tra nhanh và nguyên tắc tính</summary>
+  <div class="petct-refs-bottom-body">
+<section class="refBox">
+<h2>Bảng tra cứu tiêu chuẩn liều lượng y học hạt nhân</h2>
+<p class="muted">
+Bảng này dùng để chọn nhanh đồng vị, chu kỳ bán rã và khoảng liều tham khảo. Liều cuối cùng vẫn phải theo SOP của đơn vị, chỉ định lâm sàng, protocol máy và bác sĩ Y học hạt nhân.
+</p>
+<table class="darkTable">
+<thead>
+<tr>
+<th>Đồng vị</th>
+<th>Tên thuốc thường dùng</th>
+<th>Chu kỳ bán rã</th>
+<th>Liều khuyến cáo thường dùng</th>
+<th>Ứng dụng lâm sàng chính</th>
+<th>Chọn nhanh</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>F-18</b></td>
+<td>F-18 FDG</td>
+<td>109,8 phút</td>
+<td>3,5–5,0 MBq/kg</td>
+<td>Khảo sát chuyển hóa đường trong ung thư, tim mạch, thần kinh.</td>
+<td><button class="btn2" onclick="chooseTracer('F18')">Chọn F-18 FDG</button></td>
+</tr>
+<tr>
+<td><b>Ga-68</b></td>
+<td>Ga-68 DOTATATE</td>
+<td>68,3 phút</td>
+<td>2,0–2,5 MBq/kg</td>
+<td>Chẩn đoán u thần kinh nội tiết đặc hiệu.</td>
+<td><button class="btn2" onclick="chooseTracer('GA68')">Chọn Ga-68</button></td>
+</tr>
+<tr>
+<td><b>C-11</b></td>
+<td>C-11 Choline</td>
+<td>20,4 phút</td>
+<td>4,0–7,0 MBq/kg</td>
+<td>Khảo sát tái phát sớm ung thư tuyến tiền liệt.</td>
+<td><button class="btn2" onclick="chooseTracer('C11')">Chọn C-11</button></td>
+</tr>
+<tr>
+<td><b>N-13</b></td>
+<td>N-13 Ammonia</td>
+<td>10,0 phút</td>
+<td>10,0–15,0 MBq/kg</td>
+<td>Đánh giá tưới máu cơ tim chuyên sâu.</td>
+<td><button class="btn2" onclick="chooseTracer('N13')">Chọn N-13</button></td>
+</tr>
+</tbody>
+</table>
+<p class="muted"><i>Lưu ý: Bảng này là bảng tra nhanh tham khảo. Với đồng vị có chu kỳ bán rã ngắn như C-11 và N-13, thời gian chờ vài phút cũng ảnh hưởng đáng kể đến liều thực tế.</i></p>
+</section>
+
+<section class="refBox">
+<h2>1. Tính liều 18F-FDG theo cân nặng</h2>
+
+<p>
+Trong PET/CT, “liều” của 18F-FDG được hiểu là <b>hoạt độ phóng xạ</b>.
+Không tính theo mg như thuốc thông thường.
+</p>
+
+<div class="callout">
+<b>Đơn vị cần nhớ:</b><br>
+1 mCi = 37 MBq
+</div>
+
+<h3>Công thức chính</h3>
+<p>
+Chọn hệ số liều theo quy trình của khoa, sau đó nhân với cân nặng bệnh nhân.
+</p>
+
+<div class="refFormula">Liều cần tiêm = Cân nặng × Hệ số liều</div>
+
+<div class="callout">
+<b>Nếu nhập hệ số theo MBq/kg:</b><br>
+Liều cần tiêm (MBq) = Cân nặng (kg) × Hệ số liều (MBq/kg)
+</div>
+
+<div class="callout">
+<b>Nếu nhập hệ số theo mCi/kg:</b><br>
+Liều cần tiêm (mCi) = Cân nặng (kg) × Hệ số liều (mCi/kg)
+</div>
+
+<p>
+Với <b>18F-FDG ở người lớn</b>, hệ số thường do từng đơn vị PET/CT quy định trong SOP.
+Khoảng hay dùng để tham khảo là <b>3,5–5,2 MBq/kg</b>,
+tương đương khoảng <b>0,10–0,14 mCi/kg</b>.
+</p>
+
+<p>
+Trong công cụ này có các nút chọn nhanh theo <b>mCi/kg</b> vì đây là cách nhiều nhân viên thao tác quen dùng trong thực hành.
+Nút <b>4,0 MBq/kg</b> vẫn giữ lại để đối chiếu khi SOP dùng hệ MBq.
+</p>
+
+<div class="callout">
+<b>Ví dụ:</b><br>
+Bệnh nhân nặng 60 kg, chọn hệ số 4,0 MBq/kg.<br>
+Liều cần tiêm = 60 × 4,0 = 240 MBq.<br>
+Đổi sang mCi: 240 / 37 ≈ 6,5 mCi.
+</div>
+</section>
+
+<section class="refBox">
+<h2>2. Công thức dược động học: hiệu chỉnh liều theo thời gian phân rã</h2>
+<p>18F-FDG giảm hoạt độ liên tục sau khi được sản xuất hoặc sau khi được rút ra bơm tiêm. Vì vậy cần tính liều <b>tại đúng thời điểm tiêm</b>, không chỉ tính tại thời điểm chuẩn bị.</p>
+
+<div class="refFormula">A<sub>t</sub> = A<sub>0</sub> × e<sup>-λt</sup></div>
+
+<p>Trong đó:</p>
+<ul>
+<li><b>A<sub>t</sub></b>: hoạt độ còn lại tại thời điểm tiêm.</li>
+<li><b>A<sub>0</sub></b>: hoạt độ ban đầu lúc chuẩn bị hoặc lúc đo.</li>
+<li><b>t</b>: thời gian từ lúc chuẩn bị/đo đến lúc tiêm, tính bằng phút hoặc giờ.</li>
+<li><b>λ</b>: hằng số phân rã, tính bằng công thức: <b>λ = 0,693 / T<sub>1/2</sub></b>.</li>
+<li><b>T<sub>1/2</sub></b>: chu kỳ bán rã của 18F, thường dùng <b>109,8 phút</b> xấp xỉ 110 phút.</li>
+</ul>
+
+<div class="callout">
+<b>Ứng dụng thực hành nhanh:</b><br>
+Cứ sau khoảng <b>110 phút</b>, hoạt độ 18F-FDG giảm còn <b>một nửa</b>. Nếu bệnh nhân phải chờ lâu trước tiêm, cần rút lượng ban đầu cao hơn để đến lúc tiêm vẫn đủ liều MBq/mCi cần dùng.
+</div>
+</section>
+
+<section class="refBox">
+<h2>3. Bảng tra cứu nhanh liều 18F-FDG cho người lớn</h2>
+
+<p class="muted">
+Có 2 cách tra nhanh: theo <b>MBq/kg</b> hoặc theo <b>mCi/kg</b>.
+Hai cách này tương đương nhau, chỉ khác đơn vị nhập. Khi thực hành vẫn phải tính lại theo thời điểm đo, thời điểm tiêm và nồng độ hoạt độ thực tế.
+</p>
+
+<h3>Bảng A. Tra nhanh theo hệ số 4,0 MBq/kg</h3>
+<p class="muted">
+Thể tích ước tính giả định nồng độ hoạt độ là <b>200 MBq/mL</b>.
+</p>
+<table class="darkTable">
+<thead>
+<tr>
+<th>Cân nặng</th>
+<th>Liều theo 4,0 MBq/kg</th>
+<th>Quy đổi sang mCi</th>
+<th>Thể tích ước tính</th>
+</tr>
+</thead>
+<tbody id="quickTableMBq"></tbody>
+</table>
+
+<h3 style="margin-top:18px">Bảng B. Tra nhanh theo hệ số mCi/kg</h3>
+<p class="muted">
+Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối chiếu nhanh giữa các hệ số thường dùng.
+</p>
+<table class="darkTable">
+<thead>
+<tr>
+<th>Cân nặng</th>
+<th>0,10 mCi/kg</th>
+<th>0,12 mCi/kg</th>
+<th>0,14 mCi/kg</th>
+<th>0,15 mCi/kg</th>
+<th>Quy đổi MBq ở 0,15 mCi/kg</th>
+</tr>
+</thead>
+<tbody id="quickTableMci"></tbody>
+</table>
+
+<p class="muted">
+<i>Ghi chú: Bảng chỉ để đối chiếu nhanh. Thể tích mL cuối cùng phải tính bằng nồng độ hoạt độ thực tế tại thời điểm đo/rút và phải bù phân rã nếu có thời gian chờ trước tiêm.</i>
+</p>
+</section>
+
+<section class="card formulaPanel">
+<h2>Nguyên tắc tính — bản dùng trong công cụ</h2>
+
+<div class="step">
+  <b>Bước 1. Tính liều cần có đúng lúc tiêm</b>
+  <div class="eq">Liều cần tiêm = Cân nặng bệnh nhân × Hệ số liều theo quy trình</div>
+  <div class="plain">Kết quả là hoạt độ phóng xạ cần đạt tại thời điểm tiêm, đơn vị là mCi hoặc MBq.</div>
+</div>
+
+<div class="step">
+  <b>Bước 2. Bù phần thuốc bị giảm do phân rã</b>
+  <div class="eq">Hệ số còn lại = e^[-0,693 × Thời gian chờ / 109,8]</div>
+  <div class="eq">Lượng cần rút = Liều cần tiêm / Hệ số còn lại</div>
+  <div class="plain">Rút thuốc càng sớm trước giờ tiêm thì lượng cần rút ban đầu càng phải cao hơn.</div>
+</div>
+
+<div class="step">
+  <b>Bước 3. Quy đổi từ mCi sang mL</b>
+  <div class="eq">Nồng độ hoạt độ = Tổng hoạt độ / Tổng thể tích</div>
+  <div class="eq">Thể tích cần rút = Lượng cần rút / Nồng độ hoạt độ</div>
+  <div class="plain">mCi/MBq là liều phóng xạ; mL chỉ là thể tích dung dịch. Không được dùng mL thay cho liều. Thể tích mL cuối cùng phải tính sau khi đã bù phân rã, trừ khi nồng độ hoạt độ đã được quy đổi sẵn về đúng thời điểm tiêm.</div>
+</div>
+
+<div class="step">
+  <b>Bước 4. Sau tiêm, tính liều thực tiêm</b>
+  <div class="eq">Liều thực tiêm = Hoạt độ bơm trước tiêm - Hoạt độ còn dư sau tiêm</div>
+  <div class="plain">Liều ghi nhận cuối cùng nên là liều thực tiêm, sau khi đã trừ phần còn dư trong bơm/dây truyền.</div>
+</div>
+
+<div class="tip">
+  Tóm tắt thao tác chuẩn: <b>Tính liều mục tiêu mCi/MBq → xác định nồng độ hoạt độ tại thời điểm đo/rút → bù phân rã theo thời gian chờ → tính thể tích mL cần rút cuối cùng → đo lại sau tiêm để biết liều thực tiêm.</b><br>
+<span style="font-weight:400">Lưu ý: Có thể tính thể tích sơ bộ trước, nhưng thể tích cuối cùng vẫn phải được hiệu chỉnh theo phân rã.</span>
+</div>
+</section>
+  </div>
+</details>
+
+<script src="assets/petct_batch_calculator.js?v=20260802-formula-only"></script>
+<script>
+
+function num(id){const x=parseFloat(document.getElementById(id).value); return isFinite(x)?x:NaN;}
+function val(id){return document.getElementById(id).value;}
+function fmt(x,d=2){return isFinite(x)?Number(x).toLocaleString('vi-VN',{maximumFractionDigits:d,minimumFractionDigits:d}):'--';}
+function mbq(mci){return mci*37;}
+function mci(mbq){return mbq/37;}
+function expDecay(dt,half){return Math.exp(-Math.log(2)*dt/half);}
+function getDelta(){
+  const manual=num('deltaManual');
+  if(isFinite(manual)) return manual;
+  const dd=val('drawDate'), dt=val('drawTime'), id=val('injectDate'), it=val('injectTime');
+  if(dd && dt && id && it){
+    const a=new Date(dd+'T'+dt), b=new Date(id+'T'+it);
+    return (b-a)/60000;
+  }
+  return NaN;
+}
+function setText(id,t){document.getElementById(id).innerHTML=t;}
+function alertBox(type,text){return `<div class="${type}">${text}</div>`;}
+const tracerData={
+  F18:{name:'F-18 FDG',half:109.8,range:'3,5–5,0 MBq/kg',mid:4.0,use:'Ung thư, tim mạch, thần kinh'},
+  GA68:{name:'Ga-68 DOTATATE',half:68.3,range:'2,0–2,5 MBq/kg',mid:2.25,use:'U thần kinh nội tiết'},
+  C11:{name:'C-11 Choline',half:20.4,range:'4,0–7,0 MBq/kg',mid:5.5,use:'Tái phát ung thư tuyến tiền liệt'},
+  N13:{name:'N-13 Ammonia',half:10.0,range:'10,0–15,0 MBq/kg',mid:12.5,use:'Tưới máu cơ tim'},
+  CUSTOM:{name:'Khác',half:109.8,range:'Tự nhập theo SOP',mid:4.0,use:'Tự nhập'}
+};
+function chooseTracer(key){
+  const d=tracerData[key]||tracerData.F18;
+  const sel=document.getElementById('tracerSelect');
+  if(sel) sel.value=key;
+  document.getElementById('half').value=d.half;
+  const range=document.getElementById('doseRangeText');
+  if(range) range.value=d.range;
+  const use=document.getElementById('clinicalUseText');
+  if(use) use.value=d.use;
+  calc();
+}
+function useTracerMidDose(){
+  const key=document.getElementById('tracerSelect') ? document.getElementById('tracerSelect').value : 'F18';
+  const d=tracerData[key]||tracerData.F18;
+  document.getElementById('k').value=d.mid;
+  document.getElementById('kUnit').value='MBqKg';
+  document.getElementById('half').value=d.half;
+  chooseTracer(key);
+  calc();
+}
+function useMci(value){
+  document.getElementById('k').value=value.toFixed(2);
+  document.getElementById('kUnit').value='mCiKg';
+  calc();
+}
+function useFourMBq(){
+  document.getElementById('k').value='4.0';
+  document.getElementById('kUnit').value='MBqKg';
+  calc();
+}
+function buildQuickTable(){
+  const weights=[40,45,50,55,60,65,70,75,80,85,90];
+
+  const rowsMBq=weights.map(w=>{
+    const doseMBq=w*4.0;
+    const doseMci=doseMBq/37;
+    const volume=doseMBq/200;
+    return `<tr>
+      <td><b>${w} kg</b></td>
+      <td>${Math.round(doseMBq)} MBq</td>
+      <td>${doseMci.toFixed(1)} mCi</td>
+      <td>${volume.toFixed(2)} mL</td>
+    </tr>`;
+  }).join('');
+  const tbMBq=document.getElementById('quickTableMBq');
+  if(tbMBq) tbMBq.innerHTML=rowsMBq;
+
+  const rowsMci=weights.map(w=>{
+    const d010=w*0.10;
+    const d012=w*0.12;
+    const d014=w*0.14;
+    const d015=w*0.15;
+    const mbq015=d015*37;
+    return `<tr>
+      <td><b>${w} kg</b></td>
+      <td>${d010.toFixed(1)} mCi</td>
+      <td>${d012.toFixed(1)} mCi</td>
+      <td>${d014.toFixed(1)} mCi</td>
+      <td>${d015.toFixed(1)} mCi</td>
+      <td>${Math.round(mbq015)} MBq</td>
+    </tr>`;
+  }).join('');
+  const tbMci=document.getElementById('quickTableMci');
+  if(tbMci) tbMci.innerHTML=rowsMci;
+}
+
+function calc(){
+  const W=num('weight'), k=num('k'), unit=val('kUnit'), half=num('half'), dt=getDelta();
+  const minC=num('minCheck'), maxC=num('maxCheck');
+  const mode=val('mode'), drawn=num('drawnMci');
+  const stockA=num('stockA'), stockV=num('stockV'), concD=num('concDirect');
+  const preA=num('preA'), resA=num('resA'), resDt=num('resDelta');
+
+  let targetMci = unit==='mCiKg' ? W*k : mci(W*k);
+  const decay = expDecay(dt,half);
+  const drawNeed = targetMci / decay;
+  const remain = drawn * decay;
+  let conc = isFinite(concD) && concD>0 ? concD : stockA/stockV;
+  let vol = drawNeed/conc;
+
+  let actual=NaN, resAtPre=NaN, diff=NaN;
+  if(isFinite(preA)&&isFinite(resA)&&isFinite(resDt)&&isFinite(half)){
+    resAtPre = resA / expDecay(resDt,half);
+    actual = preA - resAtPre;
+    diff = actual - targetMci;
+  }
+
+  setText('target',`${fmt(targetMci)} mCi`);
+  setText('targetMbq',`${fmt(mbq(targetMci),0)} MBq`);
+  setText('dt',`${fmt(dt,0)} phút`);
+  setText('decay',`Sau thời gian chờ còn ${fmt(decay*100,1)}% hoạt độ`);
+  setText('drawNeed',`${fmt(drawNeed)} mCi`);
+  setText('drawNeedMbq',`${fmt(mbq(drawNeed),0)} MBq`);
+  setText('volNeed',`${fmt(vol)} mL`);
+  setText('concShow',`Nồng độ = ${fmt(conc)} mCi/mL`);
+  setText('remain',`${fmt(remain)} mCi`);
+  setText('remainMbq',`${fmt(mbq(remain),0)} MBq`);
+  setText('actual',`${fmt(actual)} mCi`);
+  setText('actualMbq',`${fmt(mbq(actual),0)} MBq`);
+  setText('diff',`${fmt(diff)} mCi`);
+  setText('action', mode==='targetToDraw' ? 'Dùng lượng cần rút ban đầu' : 'So với liều mục tiêu');
+
+  const alerts=[];
+  const singleCond=document.getElementById('singleCondition')?.value;
+  const singleGlu=parseFloat(document.getElementById('singleGlucose')?.value);
+  const singleBp=petctParseBloodPressure(document.getElementById('singleBloodPressure')?.value);
+  if(singleCond==='diabetes'){
+    if(isFinite(singleGlu) && singleGlu>=11.1) alerts.push(alertBox('warn','Đái tháo đường: đường huyết ≥ 11,1 mmol/L, cần báo bác sĩ/YHHN và xử trí theo SOP trước tiêm FDG.'));
+    else if(!isFinite(singleGlu)) alerts.push(alertBox('warn','Tiểu đường: cần nhập/kiểm tra đường huyết trước tiêm.'));
+  }
+  else if(singleCond==='hypertension') alerts.push(alertBox('warn','Bệnh tăng huyết áp: cần nhập/kiểm tra chỉ số huyết áp, thuốc đang dùng và triệu chứng kèm theo.'));
+  else if(singleCond==='cardiac') alerts.push(alertBox('warn','Chỉ định tim mạch: kiểm tra protocol tim mạch riêng của đơn vị.'));
+  else if(singleCond==='neuro') alerts.push(alertBox('warn','Chỉ định thần kinh/não: cần nghỉ yên, hạn chế kích thích theo SOP.'));
+  if(singleBp && (singleBp.sys>=180 || singleBp.dia>=110)) alerts.push(alertBox('err','Huyết áp rất cao: cần báo bác sĩ/YHHN trước khi tiếp tục.'));
+  else if(singleBp && (singleBp.sys>=140 || singleBp.dia>=90)) alerts.push(alertBox('warn','Chỉ số huyết áp tăng: ghi nhận và theo dõi theo SOP.'));
+  const hasSingleInput = (isFinite(W)&&W>0) || (isFinite(k)&&k>0) || isFinite(dt) || (isFinite(conc)&&conc>0) || (isFinite(preA)&&preA>0) || (isFinite(resA)&&resA>0);
+  if(hasSingleInput){
+    if(!isFinite(W)||W<=0) alerts.push(alertBox('err','Cần nhập cân nặng bệnh nhân.'));
+    if(!isFinite(k)||k<=0) alerts.push(alertBox('err','Cần nhập hệ số liều theo SOP của đơn vị.'));
+    if(!isFinite(dt)||dt<0) alerts.push(alertBox('err','Cần nhập thời gian chờ hợp lệ. Nếu dùng ngày/giờ, kiểm tra ngày giờ tiêm phải sau ngày giờ đo/rút.'));
+    if(!isFinite(half)||half<=0) alerts.push(alertBox('err','Cần nhập chu kỳ bán rã hợp lệ. Với 18F-FDG thường dùng 109,8 phút.'));
+    if(isFinite(targetMci)&&isFinite(minC)&&isFinite(maxC)){
+      if(targetMci<minC || targetMci>maxC) alerts.push(alertBox('warn',`Liều cần có lúc tiêm là ${fmt(targetMci)} mCi, nằm ngoài ngưỡng kiểm tra ${fmt(minC,1)}–${fmt(maxC,1)} mCi. Cần đối chiếu SOP/bác sĩ Y học hạt nhân.`));
+      else alerts.push(alertBox('ok',`Liều cần có lúc tiêm là ${fmt(targetMci)} mCi, nằm trong ngưỡng kiểm tra đang đặt.`));
+    }
+    if(!isFinite(conc)||conc<=0) alerts.push(alertBox('warn','Chưa đủ dữ liệu tính nồng độ hoạt độ, nên chưa tính được thể tích cần rút.'));
+  }
+  if(isFinite(vol)&&vol<0.1) alerts.push(alertBox('warn','Thể tích cần rút nhỏ hơn 0,1 mL: nguy cơ sai số thao tác cao.'));
+  if(isFinite(actual)&&actual<0) alerts.push(alertBox('err','Liều thực tiêm âm: kiểm tra lại số đo trước tiêm, số đo còn dư và thời điểm đo.'));
+  if(isFinite(diff)&&isFinite(targetMci)&&Math.abs(diff/targetMci)>0.15) alerts.push(alertBox('warn',`Liều thực tiêm lệch ${fmt(diff)} mCi so với mục tiêu, vượt 15%. Cần đánh giá lại trước khi ghi nhận.`));
+  setText('alerts',alerts.join(''));
+
+  const rows=[
+    ['1. Liều cần có lúc tiêm', `Cân nặng × hệ số liều = ${fmt(W,1)} × ${fmt(k,3)} ${unit==='mCiKg'?'mCi/kg':'MBq/kg'}`, `${fmt(targetMci)} mCi = ${fmt(mbq(targetMci),0)} MBq`],
+    ['2. Hệ số còn lại', `e^[-0,693 × ${fmt(dt,0)} / ${fmt(half,1)}]`, `${fmt(decay*100,1)}%`],
+    ['3. Lượng cần rút ban đầu', `Liều cần tiêm / hệ số còn lại = ${fmt(targetMci)} / ${fmt(decay,4)}`, `${fmt(drawNeed)} mCi`],
+    ['4. Nồng độ hoạt độ', isFinite(concD)?'Dùng nồng độ nhập trực tiếp':`Tổng hoạt độ / tổng thể tích = ${fmt(stockA)} / ${fmt(stockV)}`, `${fmt(conc)} mCi/mL`],
+    ['5. Thể tích cần rút', `Lượng cần rút / nồng độ = ${fmt(drawNeed)} / ${fmt(conc)}`, `${fmt(vol)} mL`],
+    ['6. Nếu đã rút sẵn', `Hoạt độ đã rút × hệ số còn lại = ${fmt(drawn)} × ${fmt(decay,4)}`, `${fmt(remain)} mCi lúc tiêm`],
+    ['7. Liều thực tiêm', `Hoạt độ trước tiêm - hoạt độ còn dư đã quy đổi = ${fmt(preA)} - ${fmt(resAtPre)}`, `${fmt(actual)} mCi`]
+  ];
+  setText('table',rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td><b>${r[2]}</b></td></tr>`).join(''));
+}
+
+
+function roundUpTo(value, step){ if(!isFinite(value)||!isFinite(step)||step<=0) return NaN; return Math.ceil(value/step)*step; }
+function timeToMinutes(t){ if(!t||!t.includes(':')) return NaN; const p=t.split(':').map(Number); return p[0]*60+p[1]; }
+function minutesToTime(mins){ if(!isFinite(mins)) return '--'; mins=((Math.round(mins)%1440)+1440)%1440; const h=Math.floor(mins/60), m=mins%60; return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0'); }
+function addBatchRows(n=5){
+  const body=document.getElementById('batchTableBody'); if(!body) return;
+  const maxPatients=window.PetctBatchCalculator?.MAX_PATIENTS||12;
+  const available=Math.max(0,maxPatients-body.children.length);
+  const requested=Math.max(0,Math.floor(Number(n)||0));
+  const rowsToAdd=Math.min(requested,available);
+  if(rowsToAdd===0){
+    setText('batchAlerts',alertBox('warn',`Danh sách đã đủ ${maxPatients} ca, không thể thêm tiếp.`));
+    return;
+  }
+  const start=body.children.length+1;
+  let out='';
+  for(let i=0;i<rowsToAdd;i++){
+    const idx=start+i;
+    out+=`<tr class="batch-row">
+      <td class="batchAllocated">--</td>
+      <td><input class="batchWeight" type="number" step="0.1" min="0" placeholder="0,0"></td>
+      <td class="batchDiabetesCell"><label class="batch-check"><input class="batchDiabetes" type="checkbox" aria-label="Bệnh nhân tiểu đường, cộng 1 mCi"><span>Có</span></label></td>
+      <td><input class="batchGlucose" type="number" step="0.1" min="0" placeholder="0,0" aria-label="Đường huyết mmol/L"></td>
+      <td class="batchTarget">--</td>
+      <td><input class="batchInjTime" type="text" inputmode="numeric" placeholder="HH:mm"></td>
+      <td class="batchScan">--</td>
+      <td class="batchStockBefore">--</td>
+      <td class="batchStockAfter">--</td>
+      <td><button type="button" class="batchRemove" onclick="removeBatchRow(this)" aria-label="Xóa ca ${idx}">×</button></td>
+    </tr>`;
+  }
+  body.insertAdjacentHTML('beforeend',out);
+  Array.from(body.children).slice(start-1).forEach(tr=>{
+    tr.querySelectorAll('input,select').forEach(x=>x.addEventListener('input',calcBatchDose));
+    const timeInput=tr.querySelector('.batchInjTime');
+    if(timeInput) timeInput.addEventListener('blur',()=>{normalizePetctTimeInput(timeInput); calcBatchDose();});
+  });
+  calcBatchDose();
+  if(requested>available) setText('batchAlerts',alertBox('warn',`Chỉ thêm đến giới hạn ${maxPatients} ca.`));
+}
+function removeBatchRow(button){
+  const row=button?.closest('tr.batch-row');
+  if(row) row.remove();
+  calcBatchDose();
+}
+function clearBatchRows(){
+  const body=document.getElementById('batchTableBody'); if(!body) return;
+  body.innerHTML='';
+  calcBatchDose();
+}
+
+function normalizePetctTimeInput(el){
+  if(!el) return;
+  let v=String(el.value||'').trim();
+  if(!v) return;
+  v=v.replace(/[^\d:]/g,'');
+  if(/^\d{3,4}$/.test(v)){
+    v=v.padStart(4,'0');
+    v=v.slice(0,2)+':'+v.slice(2);
+  }
+  const m=v.match(/^(\d{1,2}):(\d{1,2})$/);
+  if(m){
+    let h=Math.min(23,Math.max(0,parseInt(m[1],10)));
+    let mn=Math.min(59,Math.max(0,parseInt(m[2],10)));
+    el.value=String(h).padStart(2,'0')+':'+String(mn).padStart(2,'0');
+  }
+}
+
+
+function petctParseBloodPressure(v){
+  const txt=String(v||'').trim();
+  if(!txt) return {text:'', sys:NaN, dia:NaN};
+  const m=txt.match(/(\d{2,3})\s*[\/\-]\s*(\d{2,3})/);
+  if(!m) return {text:txt, sys:NaN, dia:NaN};
+  return {text:txt, sys:parseFloat(m[1]), dia:parseFloat(m[2])};
+}
+
+function calcBatchDose(){
+  const body=document.getElementById('batchTableBody'); if(!body) return;
+  const calculator=window.PetctBatchCalculator;
+  const status=document.getElementById('batchSufficiency');
+  const rows=Array.from(body.querySelectorAll('tr.batch-row'));
+  const globalFactor=parseFloat(document.getElementById('batchFactor')?.value);
+  const unit=document.getElementById('batchUnit')?.value||'mCiKg';
+  const orderedActivity=parseFloat(document.getElementById('batchOrderedActivity')?.value);
+  const hospitalMin=calculator?.parseTime(document.getElementById('batchHospitalReceive')?.value||'');
+  const uptake=parseFloat(document.getElementById('batchUptake')?.value);
+  const half=parseFloat(document.getElementById('batchHalf')?.value);
+  const data=[];
+  const alerts=[];
+  let previousScanMinute=NaN;
+
+  const updateStatus=(state,title,detail='')=>{
+    if(!status) return;
+    status.className=`batch-status${state?` is-${state}`:''}`;
+    status.innerHTML=`<b>${title}</b>${detail?`<span>${detail}</span>`:''}`;
+  };
+
+  if(!calculator){
+    updateStatus('error','Không thể khởi tạo công cụ','Vui lòng tải lại trang.');
+    setText('batchAlerts',alertBox('err','Không tải được bộ tính kế hoạch PET/CT. Vui lòng tải lại trang.'));
+    return;
+  }
+
+  setText('batchReceiveTimeDisplay',isFinite(hospitalMin)?calculator.formatTime(hospitalMin):'--');
+  setText('batchReceiveActivityStart','--');
+  setText('batchReceiveActivityRemain','--');
+
+  rows.forEach((tr,idx)=>{
+    const w=parseFloat(tr.querySelector('.batchWeight')?.value);
+    const diabetes=Boolean(tr.querySelector('.batchDiabetes')?.checked);
+    const injectionMinute=calculator.parseTime(tr.querySelector('.batchInjTime')?.value||'');
+    const earliestScan=isFinite(injectionMinute)&&isFinite(uptake)?injectionMinute+uptake:NaN;
+    const scan=isFinite(earliestScan)&&isFinite(previousScanMinute)?Math.max(earliestScan,previousScanMinute+15):earliestScan;
+    if(isFinite(scan)) previousScanMinute=scan;
+
+    ['batchAllocated','batchScan','batchTarget','batchStockBefore','batchStockAfter'].forEach(cls=>{
+      const el=tr.querySelector('.'+cls); if(el) el.textContent='--';
+    });
+    tr.querySelector('.batchAllocated')?.classList.remove('is-negative');
+    tr.querySelector('.batchStockBefore')?.classList.remove('is-negative');
+    tr.querySelector('.batchStockAfter')?.classList.remove('is-negative');
+    tr.querySelector('.batchScan').textContent=calculator.formatTime(scan);
+
+    if(isFinite(w)&&w>0&&isFinite(globalFactor)&&globalFactor>0){
+      const doseAtInjection=calculator.calculateTargetDose({weight:w,factor:globalFactor,unit,diabetes});
+      data.push({tr,idx,w,doseAtInjection,injectionMinute,diabetes});
+      tr.querySelector('.batchTarget').innerHTML=diabetes
+        ? `${fmt(doseAtInjection,2)}<span class="batch-dose-adjustment">Đã cộng 1 mCi</span>`
+        : fmt(doseAtInjection,2);
+    }
+  });
+
+  const totalTarget=data.reduce((sum,d)=>sum+d.doseAtInjection,0);
+  setText('batchCount',String(data.length));
+  setText('batchTotalTarget',data.length?fmt(totalTarget,2):'--');
+  setText('batchAverageSurplus','--');
+  setText('batchAllocatedTotal','--');
+
+  if(data.length&&isFinite(orderedActivity)&&orderedActivity>0){
+    const allocationPreview=calculator.excelStyleAllocation(data.map(d=>d.doseAtInjection),orderedActivity,0.1);
+    setText('batchAverageSurplus',fmt(allocationPreview.averageSurplus,2));
+    setText('batchAllocatedTotal',fmt(allocationPreview.allocations.reduce((sum,value)=>sum+value,0),2));
+    allocationPreview.allocations.forEach((value,index)=>{
+      const cell=data[index].tr.querySelector('.batchAllocated');
+      if(cell){
+        cell.textContent=fmt(value,2);
+        cell.classList.toggle('is-negative',value<0);
+      }
+    });
+  }
+
+  if(data.length===0){
+    const hasWeight=rows.some(tr=>parseFloat(tr.querySelector('.batchWeight')?.value)>0);
+    if(hasWeight&&(!isFinite(globalFactor)||globalFactor<=0)){
+      updateStatus('error','Thiếu hệ số liều','Nhập hệ số liều mặc định lớn hơn 0.');
+      setText('batchAlerts',alertBox('err','Hệ số liều mặc định phải lớn hơn 0.'));
+    }else{
+      updateStatus('','Chưa đủ dữ liệu','Nhập cân nặng và giờ tiêm để lập kế hoạch.');
+      setText('batchAlerts','');
+    }
+    return;
+  }
+
+  let plan=null;
+  const missingTime=data.find(d=>!isFinite(d.injectionMinute));
+  if(!isFinite(orderedActivity)||orderedActivity<=0){
+    alerts.push(alertBox('err','Nhập tổng hoạt độ tại thời điểm nhận ở bệnh viện.'));
+  }else if(!isFinite(hospitalMin)){
+    alerts.push(alertBox('err','Nhập giờ nhận tại viện theo định dạng HH:mm.'));
+  }else if(!isFinite(half)||half<=0){
+    alerts.push(alertBox('err','Chu kỳ bán rã phải lớn hơn 0.'));
+  }else if(missingTime){
+    alerts.push(alertBox('err',`Nhập giờ tiêm cho ca ${missingTime.idx+1}.`));
+  }else{
+    try{
+      plan=calculator.computePlan({
+        orderedActivity,
+        hospitalReceiveMinute:hospitalMin,
+        halfLife:half,
+        roundingStep:0.1,
+        patients:data.map(d=>({targetDose:d.doseAtInjection,injectionMinute:d.injectionMinute}))
+      });
+    }catch(error){
+      const code=String(error?.message||'');
+      const position=parseInt(code.split(':')[1],10);
+      if(code.startsWith('INJECTION_BEFORE_RECEIPT')) alerts.push(alertBox('err',`Giờ tiêm ca ${position+1} sớm hơn giờ nhận tại viện.`));
+      else if(code.startsWith('NON_CHRONOLOGICAL')) alerts.push(alertBox('err',`Giờ tiêm ca ${position+1} phải sau hoặc bằng ca trước.`));
+      else alerts.push(alertBox('err','Không thể tính kế hoạch. Vui lòng kiểm tra các dữ liệu đã nhập.'));
+    }
+  }
+
+  if(plan){
+    plan.rows.forEach((result,index)=>{
+      const d=data[index];
+      const allocated=d.tr.querySelector('.batchAllocated');
+      if(allocated){
+        allocated.textContent=fmt(result.allocatedAtHospital,2);
+        allocated.classList.toggle('is-negative',result.allocatedAtHospital<0);
+      }
+      const before=d.tr.querySelector('.batchStockBefore');
+      const after=d.tr.querySelector('.batchStockAfter');
+      if(before){
+        before.textContent=fmt(result.requiredBeforeInjection,2);
+        before.classList.toggle('is-negative',result.requiredBeforeInjection<0);
+      }
+      if(after){
+        after.textContent=fmt(result.requiredAfterInjection,2);
+        after.classList.toggle('is-negative',result.requiredAfterInjection<0);
+      }
+    });
+
+    setText('batchAverageSurplus',fmt(plan.averageSurplus,2));
+    setText('batchAllocatedTotal',fmt(plan.allocationsSum,2));
+    setText('batchReceiveActivityStart',fmt(plan.totalMinimumAtHospital,2));
+    setText('batchReceiveActivityRemain',fmt(plan.totalMinimumAtHospital,2));
+    if(plan.totalSufficient){
+      updateStatus('ok','Đủ hoạt độ',`Dư ${fmt(plan.marginAtHospital,2)} mCi tại thời điểm nhận.`);
+    }else{
+      updateStatus('error','Thiếu hoạt độ',`Cần bổ sung tối thiểu ${fmt(Math.abs(plan.marginAtHospital),2)} mCi tại thời điểm nhận.`);
+    }
+  }else{
+    updateStatus('','Chưa thể tính','Hoàn tất các trường bắt buộc để kiểm tra nguồn thuốc.');
+  }
+  setText('batchAlerts',alerts.join(''));
+}
+
+function clearPatient(){
+  ['weight','k','drawDate','drawTime','injectDate','injectTime','deltaManual','drawnMci','stockA','stockV','concDirect','preA','resA','note'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('half').value='109.8';
+  document.getElementById('minCheck').value='5';
+  document.getElementById('maxCheck').value='20';
+  document.getElementById('resDelta').value='0';
+  calc();
+}
+document.querySelectorAll('#view-petct-dose .petct-inline input,#view-petct-dose .petct-inline select,#view-petct-dose .petct-inline textarea').forEach(x=>x.addEventListener('input',calc));
+const tracerSel=document.getElementById('tracerSelect');
+if(tracerSel){tracerSel.addEventListener('change',()=>chooseTracer(tracerSel.value));}
+buildQuickTable();
+chooseTracer('F18');
+['batchOrderedActivity','batchHospitalReceive','batchFactor','batchUnit','batchUptake','batchHalf'].forEach(id=>{const el=document.getElementById(id); if(el) el.addEventListener('input',calcBatchDose);});
+
+document.querySelectorAll('#view-petct-dose input[placeholder="HH:mm"]').forEach(el=>{
+  el.addEventListener('blur',()=>{ normalizePetctTimeInput(el); if(typeof calcBatchDose==='function') calcBatchDose(); if(typeof calc==='function') calc(); });
+});
+
+calcBatchDose();
+calc();
+
+</script>
+</div>
+  </section>
+
+
+
+  <section class="view" id="view-icd10-bhyt">
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <div class="page-title"><div><span class="kicker">BHYT · ICD-10 · Kho nội trú</span><h1>ICD-10 theo thuốc nội trú</h1><p>Tìm thuốc trong kho nội trú, rà soát liều dùng, cách dùng, chỉ định, chống chỉ định, tốc độ truyền, tương tác và gợi ý ICD-10 phù hợp để đối chiếu hồ sơ bệnh án.</p></div></div>
+    <section class="section-card compact icd10-card">
+      <div class="section-heading"><div><span class="kicker">Danh sách thuốc ngày 07/07</span><h2>Tìm thuốc trong kho nội trú</h2></div><span id="icdMedCount" class="result-chip">0 thuốc</span></div>
+      <div class="icd-filter-grid">
+        <label>Tìm tên thuốc / hoạt chất / SĐK<input id="icdMedQ" placeholder="Ví dụ: Meronem, Ceftriaxone, Vancomycin, Insulin..."></label>
+        <label>Nhóm thuốc<select id="icdMedCat"><option value="">Tất cả nhóm</option></select></label>
+        <label>Đường dùng<select id="icdMedRoute"><option value="">Tất cả đường dùng</option></select></label>
+      </div>
+      <div class="icd-layout">
+        <aside class="icd-med-column">
+          <div class="icd-med-list" id="icdMedList"></div>
+          <div class="icd-clinical-warning icd-clinical-warning-sidebar" role="note" aria-label="Lưu ý khi sử dụng mã ICD-10">
+            <b>Lưu ý:</b> Mã ICD-10 được hiển thị nhằm hỗ trợ tra cứu, không phải khuyến cáo để áp dụng trực tiếp. Bác sĩ lựa chọn mã và quyết định áp dụng dựa trên chẩn đoán, hồ sơ bệnh án và tình trạng thực tế của người bệnh.
+          </div>
+        </aside>
+        <div class="icd-profile" id="icdMedProfile"></div>
+      </div>
+    </section>
+    <section class="section-card compact icd10-card">
+      <div class="section-heading"><div><span class="kicker">Tra cứu ICD-10 trực tiếp</span><h2>Tìm theo chẩn đoán thực tế</h2></div></div>
+      <label class="icd-direct-label">Nhập mã ICD, tên bệnh hoặc từ khóa chẩn đoán<input id="icdDirectQ" placeholder="Ví dụ: viêm phổi, viêm bàng quang, nhiễm khuẩn huyết, K83.0..."></label>
+      <div id="icdDirectResults" class="icd-direct-results"></div>
+    </section>
+  </section>
+
+  <section class="view clinical-tool-view" id="view-pediatric-dose">
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <div class="page-title"><div><span class="kicker">Dược lâm sàng Nhi khoa</span><h1>Tính liều kháng sinh Nhi</h1><p>Tính liều theo tuổi, cân nặng và nhóm tuổi sơ sinh/Nhi khoa.</p></div></div>
+    <div class="clinical-source-strip" aria-label="Nguồn chuyên môn Bộ Y tế">
+      <strong>Nguồn Bộ Y tế:</strong>
+      <a href="https://thuvienphapluat.vn/van-ban/The-thao-Y-te/Quyet-dinh-2323-QD-BYT-2025-tai-lieu-chuyen-mon-Huong-dan-quoc-gia-cham-soc-dieu-tri-tre-so-sinh-665133.aspx" target="_blank" rel="noopener noreferrer">QĐ 2323/QĐ-BYT – Hướng dẫn quốc gia chăm sóc và điều trị trẻ sơ sinh ↗</a>
+      <a href="https://thuvienphapluat.vn/van-ban/The-thao-Y-te/Quyet-dinh-3445-QD-BYT-2022-Duoc-thu-quoc-gia-Viet-Nam-lan-xuat-ban-thu-ba-560334.aspx" target="_blank" rel="noopener noreferrer">QĐ 3445/QĐ-BYT – Dược thư Quốc gia Việt Nam, lần III ↗</a>
+    </div>
+    <iframe class="clinical-tool-frame" src="cong-cu-duoc-lam-sang.html?embed=1#nelson" title="Tính liều kháng sinh Nhi"></iframe>
+  </section>
+
+  <section class="view clinical-tool-view" id="view-clinical-nutrition">
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <div class="page-title"><div><span class="kicker">Hỗ trợ dinh dưỡng</span><h1>Dinh dưỡng lâm sàng</h1><p>Tính nhu cầu năng lượng, đạm, lipid và hỗ trợ lập kế hoạch TPN/EN.</p></div></div>
+    <div class="clinical-source-strip" aria-label="Nguồn chuyên môn Bộ Y tế">
+      <strong>Nguồn Bộ Y tế:</strong>
+      <a href="https://thuvienphapluat.vn/van-ban/The-thao-Y-te/Quyet-dinh-2598-QD-BYT-2025-tai-lieu-chuyen-mon-quy-trinh-ky-thuat-Dinh-duong-lam-sang-669627.aspx" target="_blank" rel="noopener noreferrer">QĐ 2598/QĐ-BYT – Hướng dẫn quy trình kỹ thuật về Dinh dưỡng lâm sàng ↗</a>
+    </div>
+    <iframe class="clinical-tool-frame" src="cong-cu-duoc-lam-sang.html?embed=1#nutrition" title="Dinh dưỡng lâm sàng"></iframe>
+  </section>
+
+  <section class="view clinical-tool-view" id="view-injectable-guide">
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <div class="page-title"><div><span class="kicker">Tra cứu thuốc tiêm</span><h1>Pha &amp; Bảo quản Thuốc Tiêm</h1><p>Tra cứu dung môi, nồng độ, thời gian ổn định và tương kỵ của 428 thuốc.</p></div></div>
+    <div class="clinical-source-strip" aria-label="Nguồn chuyên môn Bộ Y tế">
+      <strong>Nguồn Bộ Y tế:</strong>
+      <a href="https://thuvienphapluat.vn/van-ban/The-thao-Y-te/Quyet-dinh-3445-QD-BYT-2022-Duoc-thu-quoc-gia-Viet-Nam-lan-xuat-ban-thu-ba-560334.aspx" target="_blank" rel="noopener noreferrer">QĐ 3445/QĐ-BYT – Dược thư Quốc gia Việt Nam, lần III ↗</a>
+    </div>
+    <iframe class="clinical-tool-frame" src="cong-cu-duoc-lam-sang.html?embed=1#inject" title="Pha và Bảo quản Thuốc Tiêm"></iframe>
+  </section>
+
+  <section class="view" id="view-sources">
+    <style>
+      #view-sources .source-title-link{display:inline-flex;align-items:flex-start;gap:6px;color:#075d98;text-decoration:none}
+      #view-sources .source-title-link:hover,#view-sources .source-title-link:focus{text-decoration:underline;text-underline-offset:3px}
+      #view-sources .source-title-link .source-link-icon{font-size:.78em;line-height:1.45}
+      #view-sources .source-subtitle{margin-top:18px}
+      #view-sources .source-subtitle h2{margin-bottom:4px}
+      #view-sources .source-subtitle p{margin:0;color:var(--muted);font-size:13px}
+      #view-sources .source-grid{margin-top:12px}
+      #view-sources .source-card{min-height:auto;padding:14px;gap:8px}
+      #view-sources .source-card > div{font-size:22px;line-height:1}
+      #view-sources .source-card h3{margin:0;font-size:15px;line-height:1.45}
+      #view-sources .source-card p{margin:0;font-size:12px;line-height:1.45;flex:none}
+    </style>
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <div class="page-title"><div><span class="kicker">Nguồn dữ liệu chuyên môn</span><h1>Nguồn chính thức và nguyên tắc sử dụng</h1><p>Các nội dung trong hệ thống được ưu tiên đối chiếu từ văn bản, hướng dẫn chuyên môn và cơ sở dữ liệu do Bộ Y tế hoặc đơn vị trực thuộc Bộ Y tế công bố.</p></div></div>
+    <section class="section-card">
+      <div class="alert"><b>Thứ tự ưu tiên khi sử dụng:</b> (1) tờ hướng dẫn sử dụng đã được phê duyệt của đúng thuốc, hàm lượng và dạng bào chế; (2) hướng dẫn chẩn đoán, điều trị và hướng dẫn chuyên môn còn hiệu lực của Bộ Y tế; (3) Dược thư Quốc gia Việt Nam; (4) quy trình chuyên môn được Hội đồng Thuốc và Điều trị của bệnh viện phê duyệt. Thông tin trên website là công cụ hỗ trợ và cần được đối chiếu với tình trạng lâm sàng thực tế.</div>
+      <div class="source-subtitle">
+        <h2>Văn bản Bộ Y tế mới cập nhật</h2>
+      </div>
+      <div class="source-grid latest-documents-grid">
+        <article class="source-card"><div>🫁</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="sources/QD-2147-QD-BYT-Huong-dan-viem-phoi-cong-dong-2026.pdf">Quyết định 2147/QĐ-BYT – Hướng dẫn chẩn đoán và điều trị viêm phổi mắc phải cộng đồng ở người lớn <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> kể từ ngày ký 15/07/2026; thay thế Quyết định 4815/QĐ-BYT ngày 20/11/2020.</p></article>
+        <article class="source-card"><div>💊</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/7/28-byt.signed.pdf">Thông tư 28/2026/TT-BYT – Danh mục thuốc, vắc xin, sinh phẩm và nguyên liệu làm thuốc theo mức độ rủi ro <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/07/2026.</p></article>
+        <article class="source-card"><div>🌿</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/7/26-byt.signed.pdf">Thông tư 26/2026/TT-BYT – Danh mục dược liệu, thuốc cổ truyền có mức độ rủi ro trung bình <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/07/2026.</p></article>
+        <article class="source-card"><div>🧪</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/7/25-byt.signed.pdf">Thông tư 25/2026/TT-BYT – Sửa đổi quy định về chất lượng xét nghiệm và hoạt động khám chữa bệnh <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 15/08/2026; riêng Điều 2 và Điều 3 có hiệu lực từ ngày 01/07/2026.</p></article>
+        <article class="source-card"><div>🩻</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/7/24-byt.signed.pdf">Thông tư 24/2026/TT-BYT – Quản lý rủi ro sản phẩm, hàng hóa là thiết bị y tế <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/07/2026.</p></article>
+        <article class="source-card"><div>🎁</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/5/16-byt.pdf">Thông tư 16/2026/TT-BYT – Chương trình hỗ trợ thuốc miễn phí cho cơ sở khám chữa bệnh <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 10/07/2026.</p></article>
+        <article class="source-card"><div>🔎</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/4/06-byt.pdf">Thông tư 06/2026/TT-BYT – Mã hóa bệnh tật, nguyên nhân tử vong theo ICD-10 <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/07/2026; các nội dung tại khoản 2 và khoản 3 Điều 5 có hiệu lực từ ngày 01/06/2026.</p></article>
+        <article class="source-card"><div>🌿</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/01/55-byt.pdf">Thông tư 55/2025/TT-BYT – Kê đơn thuốc cổ truyền, dược liệu và phối hợp thuốc hóa dược <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/03/2026; Thông tư 44/2018/TT-BYT hết hiệu lực từ cùng ngày.</p></article>
+        <article class="source-card"><div>🧪</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2025/7/30-byt.pdf">Thông tư 30/2025/TT-BYT – Chất lượng, kiểm nghiệm và thu hồi thuốc <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/07/2025.</p></article>
+        <article class="source-card"><div>✍️</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2025/7/26-byt.pdf">Thông tư 26/2025/TT-BYT – Đơn thuốc và kê đơn thuốc hóa dược, sinh phẩm <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/07/2025.</p></article>
+        <article class="source-card"><div>🧾</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2025/5/12-byt.pdf">Thông tư 12/2025/TT-BYT – Đăng ký lưu hành thuốc và nguyên liệu làm thuốc <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/07/2025.</p></article>
+        <article class="source-card"><div>🏥</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2025/01/01-byt.pdf">Thông tư 01/2025/TT-BYT – Hướng dẫn thi hành một số điều của Luật Bảo hiểm y tế <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/01/2025.</p></article>
+        <article class="source-card"><div>📅</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://kcb.vn/upload/2005611/20260702/uploadiframe_openFile_do_98755.pdf">Quyết định 1986/QĐ-BYT – Sửa thời điểm áp dụng một số hướng dẫn quy trình kỹ thuật <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> kể từ ngày ký 01/07/2026; thời điểm áp dụng từng hướng dẫn được thực hiện theo nội dung Quyết định.</p></article>
+        <article class="source-card"><div>🥗</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://kcb.vn/upload/2005611/20260620/uploadiframe_openFile_do_9cb35.pdf">Quyết định 1768/QĐ-BYT – Hướng dẫn chẩn đoán và điều trị dinh dưỡng cho người bệnh ung thư <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> áp dụng kể từ ngày ký 18/06/2026.</p></article>
+        <article class="source-card"><div>🦠</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://kcb.vn/upload/2005611/20260617/BYT__QD_ban_hanh_HDCDT_viem_gan_vi_rut_B_-_final_2_signed_8c1b5.pdf">Quyết định 1740/QĐ-BYT – Hướng dẫn chẩn đoán, điều trị viêm gan vi rút B <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> kể từ ngày ký 16/06/2026; thay thế Quyết định 3310/QĐ-BYT ngày 29/07/2019.</p></article>
+      </div>
+
+      <div class="source-subtitle">
+        <h2>Hướng dẫn chuyên môn và cơ sở dữ liệu đang sử dụng</h2>
+      </div>
+      <div class="source-grid">
+        <article class="source-card"><div>💊</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://dichvucong.dav.gov.vn/congbothuoc/index">Cơ sở dữ liệu thuốc được cấp giấy đăng ký lưu hành – Cục Quản lý Dược <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Đối chiếu SĐK, hoạt chất, hàm lượng và dạng bào chế.</p></article>
+        <article class="source-card"><div>📘</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://drive.google.com/file/d/1eteDcwhNagDUnWF3k6W3Do__SjKPt5Rk/view?usp=sharing">Công văn 192/VKNTTW-KHTH: phát hành Dược thư Quốc gia Việt Nam III – sách điện tử <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Nguồn tham khảo dược lâm sàng trọng tâm.</p></article>
+        <article class="source-card"><div>💉</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://kcb.vn/upload/2005611/20210723/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-s%E1%BB%AD-d%E1%BB%A5ng-kh%C3%A1ng-sinh-C%E1%BA%ADp-nh%E1%BA%ADt-l%E1%BA%A7n-cu%E1%BB%91i-khi-in-09.01.2015.pdf">Quyết định 708/QĐ-BYT – Hướng dẫn sử dụng kháng sinh <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Nguyên tắc sử dụng kháng sinh trong thực hành.</p></article>
+        <article class="source-card"><div>🧭</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://benhvienhatrung.vn/wp-content/uploads/2023/05/Qd2115.pdf">Quyết định 2115/QĐ-BYT – Sổ tay quản lý sử dụng kháng sinh cho bệnh viện tuyến huyện <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Tài liệu quản lý sử dụng kháng sinh.</p></article>
+        <article class="source-card"><div>🧫</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://canhgiacduoc.org.vn/SiteData/3/UserFiles/VanBanPhapQuy/QD%20so%205631QLKS%20trong%20BV.pdf">Quyết định 5631/QĐ-BYT – Quản lý sử dụng kháng sinh trong bệnh viện <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Khung triển khai chương trình quản lý kháng sinh.</p></article>
+        <article class="source-card"><div>⚠️</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://bvdksadec.vn/Uploads/files/HD_DUOC-202112_%20Q%C4%90%20s%E1%BB%91%205948-Q%C4%90-BYT%20DANH%20MUC%20CAC%20CAP%20TUONG%20TAC%20THUOC%282%29.pdf">Quyết định 5948/QĐ-BYT – Danh mục tương tác thuốc chống chỉ định <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Danh mục tương tác chống chỉ định cần ưu tiên rà soát.</p></article>
+        <article class="source-card"><div>🛡️</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://benhvientamthansonla.vn/SiteFolders/bvtamthan/Quy%C3%AA%CC%81t%20%C4%91i%CC%A3nh%2029.Q%C4%90-BYT.pdf">Quyết định 29/QĐ-BYT – Hướng dẫn giám sát phản ứng có hại của thuốc <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Hướng dẫn giám sát ADR tại cơ sở khám chữa bệnh.</p></article>
+        <article class="source-card"><div>🩺</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://kcb.vn/upload/2005611/20240826/QD_ban_hanh_HD_chan_doan__dieu_tri_benh_than_man_va_mot_so_benh_ly_than__2024_08_12_f0584.pdf">Quyết định 2388/QĐ-BYT năm 2024 – Hướng dẫn bệnh thận mạn và một số bệnh lý thận <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Phân loại chức năng thận, eGFR và theo dõi người bệnh.</p></article>
+        <article class="source-card"><div>📋</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2013/08/tt-21_01.pdf">Thông tư 21/2013/TT-BYT – Tổ chức và hoạt động của Hội đồng Thuốc và Điều trị <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Căn cứ tổ chức và hoạt động của HĐT&ĐT.</p></article>
+      </div>
+
+      <div class="source-subtitle">
+        <h2>Nguồn tham khảo cho PET/CT – Y học hạt nhân</h2>
+      </div>
+      <div class="source-grid petct-source-grid">
+        <article class="source-card"><div>🧬</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://link.springer.com/content/pdf/10.1007/s00259-014-2961-x.pdf">EANM procedure guideline for tumour imaging with 18F-FDG PET/CT – version 2.0 <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Hướng dẫn trực tiếp về chuẩn bị, ghi hình, định lượng, kiểm soát chất lượng và báo cáo FDG PET/CT trong ung thư.</p></article>
+
+        <article class="source-card"><div>🧾</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://gravitas.acr.org/PPTS/DownloadPreviewDocument?DocId=173&amp;ReleaseId=2">ACR–ACNM–SNMMI–SPR Practice Parameter for FDG PET/CT in Oncology <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Thông số thực hành hiện hành về nhân sự, chuẩn bị người bệnh, thu nhận hình ảnh, báo cáo, an toàn bức xạ và kiểm soát chất lượng.</p></article>
+
+        <article class="source-card"><div>🧠</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://snmmi.org/common/Uploaded%20files/Web/Clinical%20Practice/Procedure%20Standards/2024/SNMMI_EANM%20Brain%20F18%20FDG%20PET%20Imaging%202.0%20JNM.pdf">SNMMI/EANM Procedure Standard for Brain 18F-FDG PET Imaging – version 2.0 (2024) <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Hướng dẫn trực tiếp về chuẩn bị, thu nhận, xử lý và diễn giải PET FDG não.</p></article>
+
+        <article class="source-card"><div>🦠</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://snmmi.org/common/Uploaded%20files/Web/Clinical%20Practice/Procedure%20Standards/2024/EANM%20SNMMI%20Guideline%20FDG%20Infection%20and%20Inflammation_SNMMI%20BOD%20FINAL.pdf">EANM/SNMMI Guideline for 18F-FDG PET/CT in Infection and Inflammation (2024) <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Hướng dẫn trực tiếp về chỉ định, chuẩn bị, thu nhận và diễn giải FDG PET/CT trong nhiễm trùng và viêm.</p></article>
+
+        <article class="source-card"><div>📚</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://www-pub.iaea.org/MTCD/Publications/PDF/PUB1993_web.pdf">IAEA Human Health Series No. 45 – PET-CT for the Management of Cancer Patients (2023) <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Tổng hợp bằng chứng và khuyến cáo cập nhật của IAEA về PET-CT trong quản lý người bệnh ung thư.</p></article>
+
+        <article class="source-card"><div>☢️</div><h3><a class="source-title-link" target="_blank" rel="noopener" href="https://www-pub.iaea.org/MTCD/Publications/PDF/PUB1775_web.pdf">IAEA Safety Standards SSG-46 – Radiation Protection and Safety in Medical Uses of Ionizing Radiation <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Tiêu chuẩn an toàn bức xạ cho người bệnh, nhân viên và cộng đồng trong sử dụng bức xạ ion hóa trong y tế.</p></article>
+      </div>
+
+      <div class="alert source-note"><b>Cập nhật nguồn:</b> 22/07/2026. Nhấp vào tên tài liệu để mở xem trực tiếp. Bác sĩ sử dụng nguồn để tra cứu, đối chiếu và cân nhắc theo tình trạng thực tế của người bệnh.</div>
+    </section>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng</div>
+  <div><a href="https://vpmed-tanhung.github.io/phieu-danh-gia-khang-sinh/" target="_blank" rel="noopener">Phiếu đánh giá phần mềm</a> · <a href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a> · Công cụ hỗ trợ, không thay thế đánh giá lâm sàng.</div>
+</footer>
+<script src="assets/data.js"></script>
+<script src="assets/contra_adr_hdsd_duocthu_20260717.js?v=20260717-final"></script>
+<script src="assets/clinical_updates.js"></script>
+<script src="assets/clinical_details.js"></script>
+<script src="assets/clinical_details_v2.js"></script>
+<script src="assets/clinical_details_v3.js"></script>
+<script src="assets/infusion_guide_update_20260709.js"></script>
+<script src="assets/clinical_dosing.js"></script>
+<script src="assets/antibiotic_38_complete.js?v=20260716-38-drugs"></script>
+<script src="assets/renal_database_20260723.js?v=20260723-renal-only-v4"></script>
+<script src="assets/diseases.js"></script>
+<script src="assets/unified.js?v=20260723-renal-only-v7"></script>
+<script src="assets/antibiotic_consultation.js?v=20260716-inpatient-first"></script>
+<script src="assets/dose_24h_summary.js?v=20260711-safe"></script>
+<script src="assets/vancomycin_renal_v2.js?v=20260723-renal-only-v6"></script>
+<script src="assets/home_feature_sync.js"></script>
+<script src="assets/inpatient_medicines_20260707.js"></script>
+<script src="assets/icd10_byt2026_data.js"></script>
+<script src="assets/icd10_verified_profiles_20260710.js"></script>
+<script src="assets/drug_profiles_305_vpmed_20260710.js"></script>
+<script src="assets/icd10_bhyt_lookup.js"></script>
+<script src="vpmed-interaction-compact.js"></script>
+<script src="vpmed-dose-reset.js"></script>
+<script src="vpmed-remove-quick-two-drug.js"></script>
+<script src="vpmed-history-sync.js"></script>
+<script src="assets/disease_updates_2026.js"></script>
+<script src="assets/hepatotoxicity.js"></script>
+<script src="assets/pregnancy_lactation.js"></script>
+<script src="evaluation-embed.js"></script>
+<script src="clinical-update-module.js?v=20260715-pharmacy-staff"></script>
+<script src="vpmed-approved-data-bridge.js"></script>
+
+  <script src="assets/pharmacovigilance_alerts_data.js?v=20260711"></script>
+  <script src="assets/pharmacovigilance_auto_data.js?v=20260802065920"></script>
+  <script src="assets/pharmacovigilance_auto_editor.js?v=20260728-structured"></script>
+  <script src="assets/pharmacovigilance_integration.js?v=20260728-source-link"></script>
+  <script src="assets/system-loader.js?v=20260712-restore-ui"></script>
+  <script src="assets/professional_icons.js?v=20260715-clinical-cute"></script>
+  <script src="assets/petct_step_form.js?v=20260713"></script>
+</body>
+</html>

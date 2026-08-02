@@ -1,0 +1,13 @@
+﻿STT,Tên biệt dược,SĐK,Vấn đề phát hiện,Hiệu chỉnh/kiểm soát
+62,Coveram 5mg/5mg,VN-18635-15,"Bảng gốc gán Coveram như amlodipin đơn chất, làm sai hoạt chất, liều và chỉ định.",Đã tách đúng phối hợp perindopril arginin + amlodipin và giới hạn chỉ định thay thế theo đúng chế phẩm.
+189,Natrixam 1.5mg/5mg,300110029823,Bảng gốc gán Natrixam như amlodipin đơn chất.,Đã sửa đúng phối hợp indapamid giải phóng kéo dài + amlodipin và chỉ định điều trị thay thế.
+267,TRIPLIXAM 5mg/1.25mg/5mg,VN3-11-17,Bảng gốc gán Triplixam như amlodipin đơn chất.,Đã sửa đúng phối hợp perindopril + indapamid + amlodipin và chỉ định điều trị thay thế.
+69,Daphazyl,893115264223,Bảng gốc gán phối hợp spiramycin–metronidazol thành metronidazol đơn chất.,"Đã sửa hoạt chất, liều và chỉ định chuyên biệt răng–miệng; loại bỏ chỉ định metronidazol toàn thân không phù hợp."
+70,Daphazyl,VD-28787-18,Bảng gốc gán phối hợp spiramycin–metronidazol thành metronidazol đơn chất.,"Đã sửa hoạt chất, liều và chỉ định chuyên biệt răng–miệng; loại bỏ chỉ định metronidazol toàn thân không phù hợp."
+152,Lignospan standard,VN-16049-12,"Bảng gốc gán Lignospan thành epinephrin cấp cứu, dẫn đến liều phản vệ/ngừng tim sai hoàn toàn.","Đã sửa thành thuốc tê nha khoa lidocain + epinephrin, không tự gán ICD bệnh vì đây là thuốc dùng cho thủ thuật."
+199,Noradrenalin 1 mg/ml,893110750024,"Bảng gốc gán noradrenalin thành adrenalin, kéo theo liều phản vệ/ngừng tim sai.","Đã sửa hoạt chất, chỉ định sốc và cách truyền liên tục; loại bỏ liều tiêm bắp phản vệ."
+146,Lactated Ringer's TTKN -25,893110118323,Bảng gốc gán Ringer lactat thành calci clorid và dùng liều calci cấp cứu.,"Đã sửa đúng dung dịch tinh thể cân bằng, chỉ định bù dịch và cảnh báo tương hợp chứa calci."
+182,Mydrin-P 10ml,VN-21339-18,Bảng gốc gán Mydrin-P thành phenylephrin tiêm tĩnh mạch.,Đã sửa đúng phối hợp tropicamid + phenylephrin nhỏ mắt và mục đích giãn đồng tử chẩn đoán.
+213,Oresol new,VD-23143-15,Bảng gốc gán Oresol như dung dịch glucose truyền tĩnh mạch.,"Đã sửa thành dung dịch bù nước đường uống, kèm thể tích pha đúng chế phẩm và cảnh báo không chia gói."
+262,Theresol,VD-20942-14,Bảng gốc gán Theresol như glucose truyền; nguồn công khai còn bất nhất về thể tích pha.,"Đã sửa thành ORS đường uống và khóa con số thể tích pha cho đến khi đối chiếu tờ HDSD đúng SĐK/lô, tránh bịa dữ liệu."
+281,Vincain,893114470724,Bảng 305 thuốc ghi đường dùng “Uống” dù là procain dạng ống tiêm và chính phần chống chỉ định nói không dùng đường uống.,Đã sửa đường dùng thành Tiêm và mô tả gây tê tại chỗ/phong bế; không tự gán ICD thủ thuật.

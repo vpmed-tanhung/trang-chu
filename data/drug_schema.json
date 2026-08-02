@@ -1,0 +1,37 @@
+{
+  "version": "2026.07.04-clinical-practice",
+  "fields": {
+    "localId": "Mã nội bộ / mã thuốc HIS nếu có",
+    "brandName": "Tên biệt dược/tên trong kho",
+    "activeIngredient": "Hoạt chất",
+    "strength": "Hàm lượng",
+    "dosageForm": "Dạng bào chế",
+    "route": "Đường dùng",
+    "clinicalGroup": "Nhóm thuốc / nhóm kháng sinh",
+    "adultDose": "Liều người lớn thông thường",
+    "renalDose": {
+      "crcl_ge_50": "Liều khi CrCl ≥ 50 mL/phút",
+      "crcl_30_49": "Liều khi CrCl 30–49 mL/phút",
+      "crcl_15_29": "Liều khi CrCl 15–29 mL/phút",
+      "crcl_lt_15": "Liều khi CrCl < 15 mL/phút",
+      "hd": "Liều khi lọc máu chu kỳ HD",
+      "crrt": "Liều khi lọc máu liên tục CRRT"
+    },
+    "preparation": "Pha truyền, dung môi, nồng độ, tốc độ truyền",
+    "tdm": "Có cần TDM hay không, mục tiêu nồng độ nếu có",
+    "contraindications": "Chống chỉ định chính",
+    "majorInteractions": "Tương tác chống chỉ định/cần tránh",
+    "importantAdr": "ADR quan trọng",
+    "hepaticRisk": "Nguy cơ độc gan và ngưỡng cần theo dõi/ngừng thuốc nếu có",
+    "renalRisk": "Nguy cơ độc thận",
+    "clinicalNotes": "Lưu ý thực hành theo bệnh nhân cụ thể",
+    "sources": "Nguồn tham khảo theo từng nội dung",
+    "review": {
+      "status": "draft | reviewed | approved | outdated | reference",
+      "updatedBy": "Người cập nhật",
+      "reviewedBy": "Người rà soát",
+      "lastUpdated": "YYYY-MM-DD",
+      "approvedDate": "YYYY-MM-DD nếu có"
+    }
+  }
+}

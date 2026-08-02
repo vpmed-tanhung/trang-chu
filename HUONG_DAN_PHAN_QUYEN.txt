@@ -1,0 +1,26 @@
+HUONG DAN TAO MUC RIENG VA PHAN QUYEN
+
+1. Copy de file sau vao thu muc trang-chu-khoa-duoc:
+   - clinical-update-module.js
+   - cap-nhat-du-lieu.html
+   - data/
+
+2. Trong index.html, chi can co dong nay truoc </body>:
+   <script src="clinical-update-module.js"></script>
+
+3. Sau khi cap nhat, trang chu se chi hien 1 muc rieng:
+   "Cap nhat du lieu chuyen mon"
+   Khi nhap vao se mo trang rieng:
+   cap-nhat-du-lieu.html
+
+4. Ma truy cap mac dinh:
+   - Quan tri: vpmed-admin-2026
+   - Duoc si cap nhat du lieu: vpmed-dsls-2026
+   - Nguoi ra soat: vpmed-review-2026
+
+5. Doi ma truy cap:
+   Mo file clinical-update-module.js, tim ADMIN_USERS va doi cac gia tri code.
+
+6. Luu y bao mat:
+   GitHub Pages la web tinh, nen day chi la khoa giao dien de tranh nguoi khong phan su truy cap nham.
+   Neu can phan quyen that su theo tai khoan/mat khau va luu du lieu truc tiep, can dung Google Apps Script hoac backend rieng.

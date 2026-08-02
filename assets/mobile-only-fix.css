@@ -1,0 +1,499 @@
+/*
+  VPMED MOBILE-ONLY FIX — 13/07/2026
+  Tất cả quy tắc trong tệp này chỉ chạy khi màn hình rộng tối đa 767px.
+  Không có quy tắc dành cho máy tính.
+*/
+
+@media screen and (max-width: 767px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  *,
+  *::before,
+  *::after {
+    min-width: 0;
+  }
+
+  img,
+  svg,
+  video,
+  canvas,
+  iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .topbar,
+  .topbar-inner,
+  .app-shell,
+  .view,
+  .view.active,
+  .view.active > * {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .topbar-inner {
+    min-height: 64px;
+    padding: 0 10px;
+    gap: 8px;
+  }
+
+  .brand {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: calc(100% - 52px);
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .brand-logo {
+    width: 54px;
+    height: 36px;
+    flex: 0 0 auto;
+  }
+
+  .brand > div {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .brand strong,
+  .brand span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .brand strong {
+    font-size: 12.5px;
+  }
+
+  .brand span {
+    font-size: 10.5px;
+  }
+
+  .menu-btn {
+    display: block;
+    flex: 0 0 44px;
+    width: 44px;
+    min-height: 44px;
+    padding: 8px;
+  }
+
+  .main-nav {
+    position: absolute;
+    top: 64px;
+    left: 9px;
+    right: 9px;
+    width: auto;
+    min-width: 0;
+    max-height: calc(100vh - 76px);
+    overflow-y: auto;
+    border-radius: 14px;
+  }
+
+  .main-nav button,
+  .main-nav a,
+  .main-nav .nav-evaluation,
+  .main-nav .facebook-text-link {
+    width: 100%;
+    min-height: 44px;
+    justify-content: flex-start;
+    white-space: normal;
+  }
+
+  .app-shell {
+    margin: 0;
+    padding: 12px 9px 30px;
+  }
+
+  .view.active {
+    display: block;
+    min-width: 0;
+  }
+
+  .view.active > *,
+  .section-card,
+  .section-card.compact,
+  .form-card,
+  .result-card,
+  .profile,
+  .disease-profile,
+  .icd-profile,
+  .petct-inline,
+  .petct-inline > main.wrap {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .hero-grid,
+  .hero-grid-single,
+  .feature-grid,
+  .source-grid,
+  .dose-layout,
+  .form-row,
+  .result-grid,
+  .profile-grid,
+  .filter-grid,
+  .directory,
+  .disease-filters,
+  .disease-layout,
+  .disease-grid,
+  .pair,
+  .int-list,
+  .liver-summary,
+  .liver-filters,
+  .liver-detail,
+  .pl-summary,
+  .pl-filters,
+  .pl-source-grid,
+  .icd-filter-grid,
+  .icd-layout,
+  .icd-clinical-grid,
+  .icd-code-grid,
+  .infusion-readable,
+  #view-petct-dose .petct-inline .grid,
+  #view-petct-dose .petct-inline .grid2,
+  #view-petct-dose .petct-inline .grid3,
+  #view-petct-dose .petct-inline .resultBox,
+  #view-petct-dose .petct-condition-grid,
+  .petct-workspace,
+  .petct-refs-bottom-body {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  #view-home,
+  #view-home > .hero-grid,
+  #view-home > .section-card,
+  #view-home .feature-grid,
+  #view-home .feature-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  #view-home .feature-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px;
+  }
+
+  #view-home .feature-card {
+    min-height: 0;
+    padding: 14px;
+  }
+
+  #view-home .feature-card:hover {
+    transform: none;
+  }
+
+  .hero-panel {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .hero-panel h1 {
+    margin: 9px 0 12px;
+    font-size: clamp(27px, 8vw, 32px);
+    line-height: 1.12;
+  }
+
+  .hero-panel p,
+  #heroFeatureList li {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  #heroFeatureList {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 7px;
+    padding-left: 18px;
+  }
+
+  .section-card,
+  .section-card.compact {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 15px;
+  }
+
+  .page-title,
+  .section-heading,
+  .stats-title,
+  .main-head,
+  .icd-suggest-head,
+  .icd-suggest-title {
+    display: block;
+  }
+
+  .page-title h1 {
+    font-size: 24px;
+    line-height: 1.2;
+  }
+
+  .section-heading h2 {
+    font-size: 21px;
+    line-height: 1.25;
+  }
+
+  .page-title p,
+  .view.active p,
+  .view.active li,
+  .view.active label,
+  .view.active small,
+  .view.active b,
+  .view.active strong,
+  .view.active a,
+  .view.active td,
+  .view.active th {
+    overflow-wrap: anywhere;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    max-width: 100%;
+  }
+
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .btn,
+  .back-home-btn {
+    min-height: 44px;
+  }
+
+  .back-home-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-card,
+  .petct-side-refs,
+  .icd-med-column,
+  .icd-clinical-warning-sidebar {
+    position: static !important;
+    top: auto !important;
+    bottom: auto !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  .form-card,
+  .result-card,
+  .profile,
+  .disease-profile,
+  .icd-profile {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .empty-state {
+    min-height: 230px;
+    padding: 18px;
+  }
+
+  .heading-actions,
+  .hero-actions,
+  #view-petct-dose .actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .heading-actions .btn,
+  .hero-actions .btn,
+  #view-petct-dose .actions button,
+  .pair > button,
+  .pair > .btn {
+    width: 100%;
+  }
+
+  .pair .swap {
+    display: none;
+  }
+
+  .mini-stats {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .mini-stats article {
+    min-width: 0;
+  }
+
+  .drug-list,
+  .disease-list,
+  .icd-med-list {
+    width: 100%;
+    max-width: 100%;
+    height: min(300px, 40vh);
+    min-height: 220px;
+    overflow: auto;
+  }
+
+  .profile,
+  .disease-profile,
+  .icd-profile {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .profile h2,
+  .disease-profile h2,
+  .icd-profile h2,
+  .icd-profile-head h2 {
+    font-size: 23px;
+    line-height: 1.2;
+  }
+
+  .meta,
+  .icd-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .pill,
+  .icd-meta span {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .tabs,
+  .side .category-list {
+    display: flex;
+    flex-wrap: nowrap !important;
+    max-width: 100%;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  .tab,
+  .side .category-list button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .liver-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .liver-toolbar .btn {
+    width: 100%;
+  }
+
+  .liver-item summary {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .liver-badge {
+    margin-left: 0;
+  }
+
+  .pl-table-wrap,
+  .table-wrap,
+  #view-petct-dose .table-wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto !important;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  .pl-table {
+    min-width: 1050px;
+  }
+
+  .table-wrap table {
+    min-width: 700px;
+  }
+
+  #view-petct-dose .petct-inline,
+  #view-petct-dose .petct-inline > main.wrap,
+  #view-petct-dose main.wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #view-petct-dose .petct-inline .card {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  #view-petct-dose .resultBox {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  #view-petct-dose .petct-refs-bottom > summary,
+  #view-petct-dose .petct-single-details > summary {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .icd-code-card > div {
+    flex-wrap: wrap;
+  }
+
+  .icd-compact-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .icd-compact-row small {
+    grid-column: auto;
+  }
+
+  .icd-term-code {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .source-card,
+  .pl-source-card {
+    min-height: 0;
+  }
+
+  footer {
+    padding: 18px 10px;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .brand span {
+    display: none;
+  }
+
+  .brand-logo {
+    width: 50px;
+  }
+}
