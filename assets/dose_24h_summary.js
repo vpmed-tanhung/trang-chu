@@ -35,13 +35,13 @@
     const style=document.createElement('style');
     style.id='vpmed-dose24-style';
     style.textContent=`
-      .dose24-card{margin:14px 0 18px;padding:17px;border:1px solid #86c8a8;background:linear-gradient(180deg,#f3fff9,#fff);border-radius:16px;box-shadow:0 8px 20px rgba(20,107,75,.08)}
-      .dose24-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:13px}.dose24-head h3{margin:4px 0 0;color:#075d4a;font-size:20px}.dose24-head label{min-width:250px;color:#1d5c49}.dose24-head select{width:100%;margin-top:5px;background:#fff;border:1px solid #9bd2b9;border-radius:10px;padding:9px}
-      .dose24-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.dose24-metric{display:flex;flex-direction:column;gap:5px;min-height:112px;padding:13px;border:1px solid #cfe9dc;background:#fff;border-radius:13px}.dose24-metric span{font-size:12px;font-weight:800;color:#4c6f62}.dose24-metric strong{font-size:16px;line-height:1.42;color:#123d31;overflow-wrap:anywhere}.dose24-metric small{color:#587367;line-height:1.4}.dose24-metric.total{background:#e9fff3;border-color:#84d2aa}.dose24-metric.total strong{font-size:22px;color:#006c45}
+      .dose24-card{margin:0;padding:15px;border:1px solid #86d0aa;background:#f0fbf5;border-radius:13px;box-shadow:none}
+      .dose24-summary{display:flex;justify-content:space-between;align-items:flex-end;gap:18px}.dose24-total span{display:block;color:#305c53;font-size:11px;font-weight:850}.dose24-total strong{display:block;margin-top:7px;color:#006c45;font-size:21px;line-height:1.25}.dose24-total small{display:block;margin-top:3px;color:#547368;font-size:11px}.dose24-summary label{min-width:240px;color:#305c53;font-size:11px;font-weight:850}.dose24-summary select{width:100%;margin-top:5px;background:#fff;border:1px solid #bad8c9;border-radius:9px;padding:8px 10px}
+      .dose24-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.dose24-metric{display:flex;flex-direction:column;gap:4px;min-height:92px;padding:11px;border:1px solid #d9e6df;background:#fafcfb;border-radius:10px}.dose24-metric span{font-size:11px;font-weight:800;color:#4c6f62}.dose24-metric strong{font-size:15px;line-height:1.35;color:#123d31;overflow-wrap:anywhere}.dose24-metric small{color:#587367;line-height:1.35}.dose24-metric.total{background:#edf9f3;border-color:#b9dfcd}.dose24-metric.total strong{font-size:19px;color:#006c45}
       .dose24-components{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}.dose24-component{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 13px;border:1px solid #d9e9e1;background:#f9fffc;border-radius:11px}.dose24-component span{font-size:13px;color:#355f50}.dose24-component strong{color:#075d4a;white-space:nowrap}
-      .dose24-loading,.dose24-note,.dose24-disclaimer{margin-top:10px;padding:11px 13px;border-radius:11px;line-height:1.5}.dose24-loading{background:#fff8e8;border:1px solid #efd08a;color:#6c5318}.dose24-note{background:#eef7ff;border:1px solid #c6def2;color:#315d79}.dose24-disclaimer{background:#f7faf8;border:1px dashed #b6d2c4;color:#49675b;font-size:12px}
+      .dose24-loading,.dose24-note{margin-top:9px;padding:10px 12px;border-radius:9px;line-height:1.45}.dose24-loading{background:#fff8e8;border:1px solid #efd08a;color:#6c5318}.dose24-note{background:#f3f7f9;border:1px solid #dce7ec;color:#315d79}.dose24-detail{margin-top:10px;border-top:1px solid rgba(31,113,83,.18)}.dose24-detail summary{padding-top:9px;color:#17638a;font-size:12px;font-weight:800;cursor:pointer}.dose24-detail-body{margin-top:9px}.dose24-disclaimer{margin:8px 0 0;color:#63776d;font-size:11px;line-height:1.4}
       @media(max-width:1000px){.dose24-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-      @media(max-width:720px){.dose24-head{display:block}.dose24-head label{min-width:0;margin-top:10px}.dose24-grid,.dose24-components{grid-template-columns:1fr}.dose24-metric{min-height:auto}.dose24-component{align-items:flex-start;flex-direction:column;gap:4px}.dose24-component strong{white-space:normal}}
+      @media(max-width:720px){.dose24-card{padding:14px}.dose24-summary{align-items:stretch;flex-direction:column;gap:10px}.dose24-summary label{min-width:0}.dose24-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dose24-components{grid-template-columns:1fr}.dose24-metric{min-height:auto}.dose24-component{align-items:flex-start;flex-direction:column;gap:4px}.dose24-component strong{white-space:normal}}
     `;
     document.head.appendChild(style);
   }
@@ -229,6 +229,11 @@
     </div>${componentRows?`<div class="dose24-components">${componentRows}</div>`:''}${s.loading?`<div class="dose24-loading"><b>Liều nạp/khởi đầu:</b> ${esc(s.loading)}</div>`:''}${s.note?`<div class="dose24-note">${esc(s.note)}</div>`:''}`;
   }
 
+  function scenarioTotal(s){
+    if(s.status==='unavailable')return {value:s.totalOverride||'Chưa xác định',note:s.note||s.label||''};
+    return {value:range(s.totalMinMg/1000,s.totalMaxMg/1000,'g'),note:range(s.totalMinMg,s.totalMaxMg,'mg')};
+  }
+
   function render(){
     const output=document.querySelector('#output');
     if(!output||!output.classList.contains('result-card'))return;
@@ -243,10 +248,16 @@
     const host=document.createElement('section');
     host.id='vpmedDose24Summary';host.className='dose24-card';
     const options=scenarios.map((s,i)=>`<option value="${i}">${esc(s.label)}</option>`).join('');
-    host.innerHTML=`<div class="dose24-head"><div><span class="kicker">Bước 4</span><h3>4 · Liều/24 giờ</h3></div>${scenarios.length>1?`<label>Phác đồ đang tính<select id="vpmedDose24Scenario">${options}</select></label>`:''}</div><div id="vpmedDose24Body">${scenarioHtml(scenarios[0])}</div><div class="dose24-disclaimer"><b>Lưu ý:</b> Khối này chỉ quy đổi từ phác đồ đang hiển thị. Trường hợp TDM, HD, CRRT, lịch dùng cách ngày hoặc dữ liệu chưa đủ sẽ không tự suy diễn tổng liều.</div>`;
+    const initialTotal=scenarioTotal(scenarios[0]);
+    host.innerHTML=`<div class="dose24-summary"><div class="dose24-total"><span>Tổng liều trong 24 giờ</span><strong id="vpmedDose24Total">${esc(initialTotal.value)}</strong><small id="vpmedDose24TotalNote">${esc(initialTotal.note)}</small></div><label>Phác đồ<select id="vpmedDose24Scenario">${options}</select></label></div><details class="dose24-detail"><summary>Xem cách quy đổi</summary><div class="dose24-detail-body" id="vpmedDose24Body">${scenarioHtml(scenarios[0])}</div></details><p class="dose24-disclaimer">Không tự suy diễn tổng liều khi cần TDM, HD/CRRT, lịch dùng cách ngày hoặc dữ liệu chưa đủ.</p>`;
     const anchor=output.querySelector('#dose24Anchor');
     if(anchor)anchor.replaceWith(host);else output.append(host);
-    host.querySelector('#vpmedDose24Scenario')?.addEventListener('change',e=>{host.querySelector('#vpmedDose24Body').innerHTML=scenarioHtml(scenarios[+e.target.value]);});
+    host.querySelector('#vpmedDose24Scenario')?.addEventListener('change',e=>{
+      const scenario=scenarios[+e.target.value],total=scenarioTotal(scenario);
+      host.querySelector('#vpmedDose24Total').textContent=total.value;
+      host.querySelector('#vpmedDose24TotalNote').textContent=total.note;
+      host.querySelector('#vpmedDose24Body').innerHTML=scenarioHtml(scenario);
+    });
   }
 
   function init(){
