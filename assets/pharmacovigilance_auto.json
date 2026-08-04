@@ -1,12 +1,49 @@
 {
-  "generated_at": "2026-08-03T06:58:15+07:00",
+  "generated_at": "2026-08-04T07:08:37+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
-  "newly_fetched_count": 0,
+  "newly_fetched_count": 1,
   "retained_history_count": 0,
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
+    {
+      "id": "auto-b8db165901be9a",
+      "level": "red",
+      "year": "2026",
+      "date": "03/08/2026",
+      "category": "Cảnh báo an toàn thuốc",
+      "system": "Thần kinh",
+      "interaction": false,
+      "title": "EMA: Cảnh báo nguy cơ u màng não sử dụng kéo dài các biện pháp tránh thai chứa desogestrel và etonogestrel",
+      "drugs": "kéo dài các biện pháp tránh thai chứa desogestrel và etonogestrel",
+      "summary": "Mới đây, Ủy ban Đánh giá Nguy cơ Cảnh giác Dược (PRAC) đã thống nhất ban hành Thư gửi nhân viên y tế (DHPC) nhằm cảnh báo về nguy cơ mắc u màng não liên quan đến việc sử dụng các thuốc tránh thai chứa desogestrel hoặc etonogestrel kéo dài (trên 1 năm). Mặc dù ghi nhận có sự gia tăng của nguy cơ mắc u màng nào ở phụ nữ đang sử dụng các thuốc tránh thai này, tuy nhiên nguy cơ gia tăng nhìn chung rất thấp. Ước tính khoảng 67.300 phụ nữ có sử dụng desogestrel hoặc etonogestrel thì sẽ ghi nhận được thêm 1 trường hợp u màng não. Theo dõi các dấu hiệu hoặc biến cố bất thường được mô tả trong bài nguồn. Vì vậy, PRAC khuyến cáo nhân viên y tế cần xem xét tiền sử sử dụng các thuốc progestogen trước khi khởi trị bằng desogestrel hoặc etonogestrel. Đối với phụ nữ đang sử dụng desogestrel hoặc etonogestrel, cần ngừng sử dụng thuốc ngay khi được chẩn đoán mắc u màng não. Phụ nữ đang sử dụng các thuốc này cần được theo dõi về các dấu hiệu và triệu chứng nghi ngờ u màng não, bao gồm thay đổi thị lực, giảm thính lực hoặc ù tai, mất khứu giác, đau đầu tiến triển, suy giảm trí nhớ, co giật hoặc yếu chi.",
+      "quick": "Vì vậy, PRAC khuyến cáo nhân viên y tế cần xem xét tiền sử sử dụng các thuốc progestogen trước khi khởi trị bằng desogestrel hoặc etonogestrel.",
+      "risk": [
+        "Mới đây, Ủy ban Đánh giá Nguy cơ Cảnh giác Dược (PRAC) đã thống nhất ban hành Thư gửi nhân viên y tế (DHPC) nhằm cảnh báo về nguy cơ mắc u màng não liên quan đến việc sử dụng các thuốc tránh thai chứa desogestrel hoặc etonogestrel kéo dài (trên 1 năm).",
+        "Mặc dù ghi nhận có sự gia tăng của nguy cơ mắc u màng nào ở phụ nữ đang sử dụng các thuốc tránh thai này, tuy nhiên nguy cơ gia tăng nhìn chung rất thấp.",
+        "Theo kết quả nghiên cứu, phụ nữ sử dụng desogestrel từ 1 năm trở lên sẽ tăng nguy cơ mắc u màng não nội sọ, nguy cơ càng tăng khi thời gian sử dụng càng kéo dài.",
+        "Nguy cơ này có thể cao hơn ở những phụ nữ đã từng sử dụng các progestogen vốn đã được xác định là có liên quan đến u màng não (như cyproteron, nomegestrol, medroxyprogesteron và chlormadinon)."
+      ],
+      "signs": [
+        "Theo dõi các dấu hiệu hoặc biến cố bất thường được mô tả trong bài nguồn."
+      ],
+      "action": [
+        "Vì vậy, PRAC khuyến cáo nhân viên y tế cần xem xét tiền sử sử dụng các thuốc progestogen trước khi khởi trị bằng desogestrel hoặc etonogestrel.",
+        "Đối với phụ nữ đang sử dụng desogestrel hoặc etonogestrel, cần ngừng sử dụng thuốc ngay khi được chẩn đoán mắc u màng não."
+      ],
+      "monitor": [
+        "Phụ nữ đang sử dụng các thuốc này cần được theo dõi về các dấu hiệu và triệu chứng nghi ngờ u màng não, bao gồm thay đổi thị lực, giảm thính lực hoặc ù tai, mất khứu giác, đau đầu tiến triển, suy giảm trí nhớ, co giật hoặc yếu chi."
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5851/ema-nguy-co-u-mang-nao-khi-su-dung-keo-dai-cac-thuoc-tranh-thai.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5851/ema-nguy-co-u-mang-nao-khi-su-dung-keo-dai-cac-thuoc-tranh-thai.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-structured"
+    },
     {
       "id": "auto-891f81d5f8212e",
       "level": "red",
