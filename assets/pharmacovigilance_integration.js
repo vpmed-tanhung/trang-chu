@@ -4,6 +4,14 @@
   const VIEW_NAME = 'pharmacovigilance';
   const STATIC_DATA_URL = 'assets/pharmacovigilance_alerts.json';
   const AUTO_DATA_URL = 'assets/pharmacovigilance_auto.json';
+  const BULLETIN_76_SOURCE_URL = 'https://magazine.canhgiacduoc.org.vn/';
+  const BULLETIN_76_ALERT_IDS = new Set([
+    'nirpid-10-batch-5k240425',
+    'xylometazoline-oxymetazoline-overuse',
+    'cefazolin-kounis-syndrome',
+    'carbidopa-levodopa-vitamin-b6-seizures',
+    'diosmin-hesperidin-bleeding'
+  ]);
   const LEVEL_NAMES = {
     red: 'Khẩn cấp',
     orange: 'Quan trọng',
@@ -33,7 +41,7 @@
     .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.card{background:#fff;border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:0 5px 18px rgba(10,57,86,.05);display:flex;flex-direction:column;min-height:282px}.card-top{height:5px}.card-top.red{background:var(--red)}.card-top.orange{background:#d76b00}.card-top.yellow{background:#c89b00}.card-top.green{background:var(--green)}
     .card-body{padding:15px;display:flex;flex-direction:column;height:100%}.meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px}.pill{border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900}.pill.red{background:var(--redbg);color:var(--red)}.pill.orange{background:var(--orangebg);color:var(--orange)}.pill.yellow{background:var(--yellowbg);color:var(--yellow)}.pill.green{background:var(--greenbg);color:var(--green)}.pill.gray{background:#eef3f6;color:#566671}.pill.auto{background:#e8f3ff;color:#075f9f;border:1px solid #bddcf0}
     .card h3{margin:0 0 7px;font-size:18px;line-height:1.3;color:#102f45}.drug{font-size:13px;color:var(--blue);font-weight:800;margin-bottom:8px}.summary{font-size:14px;color:#364650;margin:0 0 11px}.quick{background:#f7fafc;border-radius:11px;padding:9px 10px;font-size:13px;margin-bottom:12px}.quick b{color:var(--navy)}
-    .card-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:9px;border-top:1px solid #e5ecef;padding-top:10px}.date{font-size:12px;color:var(--muted)}.detail-btn{border:0;background:var(--cyan);color:var(--blue);font-weight:900;border-radius:10px;padding:8px 10px;cursor:pointer}.empty{background:#fff;border:1px dashed #adc1cc;border-radius:16px;padding:35px;text-align:center;color:var(--muted);grid-column:1/-1}
+    .card-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:9px;border-top:1px solid #e5ecef;padding-top:10px}.date{font-size:12px;color:var(--muted)}.detail-btn{border:0;background:var(--cyan);color:var(--blue);font-weight:900;border-radius:10px;padding:8px 10px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.empty{background:#fff;border:1px dashed #adc1cc;border-radius:16px;padding:35px;text-align:center;color:var(--muted);grid-column:1/-1}
     .modal{position:fixed;inset:0;background:rgba(7,28,42,.58);z-index:100;display:none;align-items:center;justify-content:center;padding:18px}.modal.open{display:flex}.modal-panel{background:#fff;border-radius:20px;max-width:980px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 24px 70px rgba(0,0,0,.28)}
     .modal-head{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:15px 18px;display:flex;justify-content:space-between;gap:15px;align-items:flex-start;z-index:2}.modal-head h2{margin:4px 0 0;font-size:23px;line-height:1.25;color:var(--navy)}.close{width:38px;height:38px;border-radius:50%;border:0;background:#edf3f6;cursor:pointer;font-size:20px}
     .modal-body{padding:18px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.box{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff}.box h4{margin:0 0 8px;color:var(--navy)}.box p{margin:6px 0}.box ul{margin:0;padding-left:20px}.box li{margin:5px 0}.box.full{grid-column:1/-1}.alert-box{border-left:5px solid var(--red);background:var(--redbg)}.auto-box{border-left-color:var(--blue);background:#f1f8fd}.source-box{background:#f6fafc}.source-link{word-break:break-word}.source-link a{font-weight:800}
@@ -84,7 +92,7 @@
             <div class="legend"><span class="dot green"></span><span><b>Thông tin:</b> lưu ý thực hành</span></div>
           </aside>
           <section>
-            <div class="main-head"><div><h2>Các cảnh báo đang hiển thị</h2><p>Nhấn “Xem chi tiết” để mở nội dung và nguồn gốc.</p></div><div id="resultCount" class="result-count"></div></div>
+            <div class="main-head"><div><h2>Các cảnh báo đang hiển thị</h2><p>Nhấn “Nguồn” để mở trực tiếp bài nguồn trong tab mới.</p></div><div id="resultCount" class="result-count"></div></div>
             <div id="cards" class="cards"><div class="empty">Đang tải dữ liệu…</div></div>
           </section>
         </section>
@@ -145,6 +153,9 @@
     item.action = Array.isArray(item.action) ? item.action : [];
     item.monitor = Array.isArray(item.monitor) ? item.monitor : [];
     item.auto = Boolean(forceAuto || item.auto || item.reviewed === false);
+    if (BULLETIN_76_ALERT_IDS.has(String(item.id || '').trim())) {
+      item.source_url = BULLETIN_76_SOURCE_URL;
+    }
     return item;
   }
 
@@ -232,10 +243,12 @@
         ]);
         const fetchedStaticAlerts = unwrapAlerts(staticPayload);
         const embeddedStaticAlerts = unwrapAlerts(window.VPMED_PHARMACOVIGILANCE_STATIC_DATA);
+        const bulletin76Alerts = unwrapAlerts(window.VPMED_PHARMACOVIGILANCE_BULLETIN_76_DATA);
         // Không cho bản tải từ mạng làm giảm số cảnh báo đã biên tập do cache hoặc đồng bộ lỗi.
-        const staticAlerts = embeddedStaticAlerts.length > fetchedStaticAlerts.length
+        const staticBaseAlerts = embeddedStaticAlerts.length > fetchedStaticAlerts.length
           ? embeddedStaticAlerts
           : fetchedStaticAlerts;
+        const staticAlerts = [...staticBaseAlerts, ...bulletin76Alerts];
         const autoEditor = window.VPMED_PHARMACOVIGILANCE_AUTO_EDIT;
         const autoAlerts = unwrapAlerts(autoPayload).map(item=>typeof autoEditor==='function'?autoEditor(item):item);
         this.alerts = mergeAlerts(staticAlerts, autoAlerts);
@@ -312,9 +325,8 @@
           <div class="meta"><span class="pill ${escapeHtml(item.level)}">${escapeHtml(LEVEL_NAMES[item.level] || item.level)}</span><span class="pill gray">${escapeHtml(item.category)}</span>${item.interaction ? '<span class="pill gray">Tương tác</span>' : ''}</div>
           <h3>${escapeHtml(item.title)}</h3><div class="drug">${escapeHtml(item.drugs || 'Xem nguồn gốc để xác định thuốc/nhóm thuốc')}</div><p class="summary">${escapeHtml(item.summary || '')}</p>
           <div class="quick"><b>Điểm cần nhớ:</b> ${escapeHtml(item.quick || '')}</div>
-          <div class="card-foot"><span class="date">${escapeHtml(item.date || 'Chưa rõ ngày')} · ${escapeHtml(item.source || '')}</span><button class="detail-btn" data-id="${escapeHtml(item.id)}" type="button">Xem chi tiết</button></div>
+          <div class="card-foot"><span class="date">${escapeHtml(item.date || 'Chưa rõ ngày')} · ${escapeHtml(item.source || '')}</span>${(item.source_url || item.url) ? `<a class="detail-btn" href="${escapeHtml(item.source_url || item.url)}" target="_blank" rel="noopener noreferrer" aria-label="Mở nguồn trong tab mới">Nguồn</a>` : '<span class="detail-btn" aria-disabled="true">Chưa có nguồn</span>'}</div>
         </div></article>`).join('') : '<div class="empty"><b>Không tìm thấy cảnh báo phù hợp.</b><br>Hãy đổi từ khóa hoặc đặt lại bộ lọc.</div>';
-      this.$$('.detail-btn').forEach((button) => button.addEventListener('click', () => this.openDetail(button.dataset.id)));
     }
 
     listHtml(items, emptyText) {
