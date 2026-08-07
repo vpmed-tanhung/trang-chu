@@ -633,7 +633,7 @@ def existing_check_is_fresh(now: datetime) -> bool:
 def write_payload(payload: dict[str, Any], version: str) -> None:
     index_text = INDEX_PATH.read_text(encoding="utf-8")
     index_text, replacements = re.subn(
-        r'(<script\s+src=["\']assets/pharmacovigilance_auto_data\.js)(?:\?v=[^"\']*)?(["\'])',
+        r'(<script\b[^>]*\bsrc=["\']assets/pharmacovigilance_auto_data\.js)(?:\?v=[^"\']*)?(["\'])',
         rf"\g<1>?v={version}\g<2>",
         index_text,
         count=1,
