@@ -94,4 +94,18 @@ jobs:
             exit 0
           fi
           git commit -m "chore: cập nhật cảnh báo dược tự động"
-          git push
+
+          for i in 1 2 3 4 5; do
+            if git push; then
+              echo "Push thành công."
+              exit 0
+            fi
+            if [ "$i" -eq 5 ]; then
+              echo "::error::Push thất bại sau 5 lần thử."
+              exit 1
+            fi
+            echo "Push bị từ chối (lần $i), đang pull --rebase rồi thử lại..."
+            git fetch origin main
+            git rebase origin/main
+            sleep $((RANDOM % 5 + 1))
+          done
