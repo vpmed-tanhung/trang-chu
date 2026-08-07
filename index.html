@@ -1271,59 +1271,45 @@ calc();
   <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng</div>
   <div><a href="https://vpmed-tanhung.github.io/phieu-danh-gia-khang-sinh/" target="_blank" rel="noopener">Phiếu đánh giá phần mềm</a> · <a href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a> · Công cụ hỗ trợ, không thay thế đánh giá lâm sàng.</div>
 </footer>
-<script defer src="assets/data.js"></script>
-<script defer src="assets/contra_adr_hdsd_duocthu_20260717.js?v=20260717-final"></script>
-<script defer src="assets/clinical_updates.js"></script>
-<script defer src="assets/clinical_details.js"></script>
-<script defer src="assets/clinical_details_v2.js"></script>
-<script defer src="assets/clinical_details_v3.js"></script>
-<script defer src="assets/infusion_guide_update_20260709.js"></script>
-<script defer src="assets/clinical_dosing.js"></script>
-<script defer src="assets/antibiotic_38_complete.js?v=20260716-38-drugs"></script>
-<script defer src="assets/renal_database_20260723.js?v=20260723-renal-only-v4"></script>
-<script defer src="assets/diseases.js"></script>
-<script defer src="assets/unified.js?v=20260802-structure-only"></script>
-<script defer src="assets/antibiotic_consultation.js?v=20260716-inpatient-first"></script>
-<script defer src="assets/dose_24h_summary.js?v=20260802-structure-only"></script>
-<script defer src="assets/vancomycin_renal_v2.js?v=20260723-renal-only-v6"></script>
-<script defer src="assets/home_feature_sync.js"></script>
-<!--
-  TỐI ƯU 07/08/2026: Tạm ẩn 5 file dữ liệu/logic của tính năng "ICD-10 & BHYT theo thuốc nội trú"
-  vì tính năng này đang bị khóa (disabled, "Đang cập nhật") trong index.html — người dùng
-  KHÔNG thể mở view này (showView() luôn chuyển 'icd10-bhyt' về 'home').
-  5 file dưới đây tổng ~7,8MB, chiếm ~78% tổng dung lượng JS của trang chủ, và đã xác minh
-  KHÔNG có tính năng nào khác dùng dữ liệu này (window.VPMED_ICD10_BYT2026,
-  VPMED_VERIFIED_DRUG_PROFILES, VPMED_FULL_DRUG_PROFILES_305, VPMED_INPATIENT_MEDICINES_20260707
-  chỉ được đọc trong icd10_bhyt_lookup.js).
-  => KHI MỞ LẠI tính năng ICD-10 & BHYT (bỏ thuộc tính disabled ở nút "ICD-10 & BHYT theo thuốc
-  nội trú" và bỏ dòng `if(name==='icd10-bhyt')name='home';` trong assets/unified.js),
-  hãy bỏ comment khối script bên dưới để tính năng hoạt động trở lại.
+<script src="assets/data.js"></script>
+<script src="assets/contra_adr_hdsd_duocthu_20260717.js?v=20260717-final"></script>
+<script src="assets/clinical_updates.js"></script>
+<script src="assets/clinical_details.js"></script>
+<script src="assets/clinical_details_v2.js"></script>
+<script src="assets/clinical_details_v3.js"></script>
+<script src="assets/infusion_guide_update_20260709.js"></script>
+<script src="assets/clinical_dosing.js"></script>
+<script src="assets/antibiotic_38_complete.js?v=20260716-38-drugs"></script>
+<script src="assets/renal_database_20260723.js?v=20260723-renal-only-v4"></script>
+<script src="assets/diseases.js"></script>
+<script src="assets/unified.js?v=20260802-structure-only"></script>
+<script src="assets/antibiotic_consultation.js?v=20260716-inpatient-first"></script>
+<script src="assets/dose_24h_summary.js?v=20260802-structure-only"></script>
+<script src="assets/vancomycin_renal_v2.js?v=20260723-renal-only-v6"></script>
+<script src="assets/home_feature_sync.js"></script>
+<script src="assets/inpatient_medicines_20260707.js"></script>
+<script src="assets/icd10_byt2026_data.js"></script>
+<script src="assets/icd10_verified_profiles_20260710.js"></script>
+<script src="assets/drug_profiles_305_vpmed_20260710.js"></script>
+<script src="assets/icd10_bhyt_lookup.js"></script>
+<script src="vpmed-interaction-compact.js"></script>
+<script src="vpmed-dose-reset.js"></script>
+<script src="vpmed-remove-quick-two-drug.js"></script>
+<script src="vpmed-history-sync.js"></script>
+<script src="assets/disease_updates_2026.js"></script>
+<script src="assets/hepatotoxicity.js"></script>
+<script src="assets/pregnancy_lactation.js"></script>
+<script src="evaluation-embed.js"></script>
+<script src="clinical-update-module.js?v=20260715-pharmacy-staff"></script>
+<script src="vpmed-approved-data-bridge.js"></script>
 
-<script defer src="assets/inpatient_medicines_20260707.js"></script>
-<script defer src="assets/icd10_byt2026_data.js"></script>
-<script defer src="assets/icd10_verified_profiles_20260710.js"></script>
-<script defer src="assets/drug_profiles_305_vpmed_20260710.js"></script>
-<script defer src="assets/icd10_bhyt_lookup.js"></script>
--->
-
-<script defer src="vpmed-interaction-compact.js"></script>
-<script defer src="vpmed-dose-reset.js"></script>
-<script defer src="vpmed-remove-quick-two-drug.js"></script>
-<script defer src="vpmed-history-sync.js"></script>
-<script defer src="assets/disease_updates_2026.js"></script>
-<script defer src="assets/hepatotoxicity.js"></script>
-<script defer src="assets/pregnancy_lactation.js"></script>
-<script defer src="evaluation-embed.js"></script>
-<script defer src="clinical-update-module.js?v=20260715-pharmacy-staff"></script>
-<script defer src="vpmed-approved-data-bridge.js"></script>
-
-  <script defer src="assets/pharmacovigilance_alerts_data.js?v=20260711"></script>
-  <script defer src="assets/pharmacovigilance_auto_data.js?v=20260806065954"></script>
-  <script defer src="assets/pharmacovigilance_bulletin_76_data.js?v=20260804"></script>
-  <script defer src="assets/pharmacovigilance_auto_editor.js?v=20260728-structured"></script>
-  <script defer src="assets/pharmacovigilance_integration.js?v=20260805-all-source-buttons"></script>
-  <script defer src="assets/system-loader.js?v=20260712-restore-ui"></script>
-  <script defer src="assets/professional_icons.js?v=20260715-clinical-cute"></script>
-  <script defer src="assets/petct_step_form.js?v=20260713"></script>
+  <script src="assets/pharmacovigilance_alerts_data.js?v=20260711"></script>
+  <script src="assets/pharmacovigilance_auto_data.js?v=20260805070218"></script>
+  <script src="assets/pharmacovigilance_bulletin_76_data.js?v=20260804"></script>
+  <script src="assets/pharmacovigilance_auto_editor.js?v=20260728-structured"></script>
+  <script src="assets/pharmacovigilance_integration.js?v=20260805-all-source-buttons"></script>
+  <script src="assets/system-loader.js?v=20260712-restore-ui"></script>
+  <script src="assets/professional_icons.js?v=20260715-clinical-cute"></script>
+  <script src="assets/petct_step_form.js?v=20260713"></script>
 </body>
 </html>
