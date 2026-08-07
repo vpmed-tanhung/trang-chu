@@ -6,6 +6,7 @@ on:
     - cron: "0 23 * * *"
     # Lượt dự phòng 06:30 chỉ chạy lại khi lượt 06:00 chưa cập nhật thành công.
     - cron: "30 23 * * *"
+  workflow_dispatch: {}
 
 permissions:
   contents: write
