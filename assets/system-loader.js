@@ -3,6 +3,7 @@
   'use strict';
 
   var root = document.documentElement;
+  var body = document.body;
   var loader = document.getElementById('systemLoader');
   var bar = document.getElementById('systemLoaderBar');
   var status = document.getElementById('systemLoaderStatus');
@@ -11,6 +12,28 @@
   if (!loader) {
     root.classList.remove('system-loading');
     return;
+  }
+
+  /* Khóa cuộn trang thật trên iOS Safari: overflow:hidden không đủ để chặn
+     cuộn nảy đàn hồi (rubber-band), khiến overlay bị kéo lệch và lộ giao diện
+     bên dưới. Cố định luôn <body> tại đúng vị trí cuộn hiện tại. */
+  var lockScrollY = window.scrollY || window.pageYOffset || 0;
+  if (body) {
+    body.style.position = 'fixed';
+    body.style.top = (-lockScrollY) + 'px';
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
+  }
+
+  function unlockScroll() {
+    if (!body) return;
+    body.style.position = '';
+    body.style.top = '';
+    body.style.left = '';
+    body.style.right = '';
+    body.style.width = '';
+    window.scrollTo(0, lockScrollY);
   }
 
   var startedAt = Date.now();
@@ -40,6 +63,7 @@
         closed = true;
         loader.classList.add('is-hidden');
         root.classList.remove('system-loading');
+        unlockScroll();
 
         window.setTimeout(function () {
           if (loader.parentNode) loader.parentNode.removeChild(loader);

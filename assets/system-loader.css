@@ -3,22 +3,35 @@ html.system-loading,
 html.system-loading body {
   overflow: hidden !important;
   overscroll-behavior: none;
+  height: 100%;
 }
 
 #systemLoader.system-loader {
   position: fixed;
   inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 1000000;
   display: grid;
   place-items: center;
-  min-height: 100vh;
-  min-height: 100dvh;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  height: -webkit-fill-available;
   padding: 20px;
-  background:
+  /* Nền đặc trước, gradient trang trí phủ lên trên - đảm bảo không có khe hở
+     lộ giao diện thật kể cả khi trình duyệt vẽ gradient chậm hơn 1 khung hình. */
+  background-color: #eaf5fc;
+  background-image:
     radial-gradient(circle at 50% 4%, rgba(83, 180, 235, .24), transparent 33%),
     linear-gradient(160deg, #f7fbff 0%, #eaf5fc 52%, #f8fbfd 100%);
   opacity: 1;
   visibility: visible;
+  isolation: isolate;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
   transition: opacity .42s ease, visibility .42s ease;
 }
 
