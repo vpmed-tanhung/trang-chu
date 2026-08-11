@@ -9,6 +9,8 @@
   window.__VPMED_EVALUATION_EMBED_FINAL__ = true;
 
   const EVAL_PATH = 'phieu-danh-gia.html';
+  let activeTrigger = null;
+  let previousBodyOverflow = '';
 
   function getEvalUrl() {
     const url = new URL(EVAL_PATH, window.location.href);
@@ -27,17 +29,19 @@
         position:fixed;
         inset:0;
         z-index:999999;
-        background:rgba(15,23,42,.60);
+        background:rgba(8,29,47,.68);
         display:flex;
         align-items:center;
         justify-content:center;
-        padding:16px;
+        padding:14px;
+        backdrop-filter:blur(5px);
       }
       .vpmed-eval-modal{
-        width:min(980px,96vw);
-        height:min(900px,92vh);
+        position:relative;
+        width:min(1120px,97vw);
+        height:min(940px,95vh);
         background:#ffffff;
-        border-radius:18px;
+        border-radius:20px;
         overflow:hidden;
         box-shadow:0 28px 80px rgba(15,23,42,.34);
         border:1px solid #dbeafe;
@@ -50,11 +54,24 @@
         align-items:center;
         justify-content:space-between;
         gap:12px;
-        padding:14px 18px;
+        padding:13px 16px;
         border-bottom:1px solid #dbeafe;
-        background:#ffffff;
+        background:linear-gradient(90deg,#f7fbfe,#eff9f8);
         color:#075985;
+      }
+      .vpmed-eval-title{
+        min-width:0;
+      }
+      .vpmed-eval-title strong{
+        display:block;
+        font-size:15px;
         font-weight:900;
+      }
+      .vpmed-eval-title span{
+        display:block;
+        margin-top:2px;
+        color:#5b7285;
+        font-size:11px;
       }
       .vpmed-eval-close{
         border:0;
@@ -65,6 +82,10 @@
         color:#075985;
         cursor:pointer;
       }
+      .vpmed-eval-close:focus-visible{
+        outline:3px solid #ffbf47;
+        outline-offset:2px;
+      }
       .vpmed-eval-frame{
         flex:1 1 auto;
         width:100%;
@@ -72,6 +93,18 @@
         border:0;
         background:#eef8fc;
       }
+      .vpmed-eval-loading{
+        position:absolute;
+        inset:58px 0 0;
+        z-index:2;
+        display:grid;
+        place-items:center;
+        color:#075985;
+        background:#eef8fc;
+        font-size:13px;
+        font-weight:800;
+      }
+      .vpmed-eval-loading.is-hidden{display:none}
       @media(max-width:720px){
         .vpmed-eval-backdrop{padding:0}
         .vpmed-eval-modal{width:100vw;height:100vh;border-radius:0}
@@ -81,26 +114,36 @@
   }
 
   function closeEvaluationModal() {
-    document
-      .querySelectorAll('.vpmed-eval-backdrop,[data-vpmed-eval-modal="1"]')
-      .forEach((el) => el.remove());
+    const openModals = document.querySelectorAll(
+      '.vpmed-eval-backdrop,[data-vpmed-eval-modal="1"]'
+    );
+    const hadOpenModal = openModals.length > 0;
 
-    document.body.style.overflow = '';
+    openModals.forEach((el) => el.remove());
+
+    if (hadOpenModal) document.body.style.overflow = previousBodyOverflow;
+    if (hadOpenModal && activeTrigger && typeof activeTrigger.focus === 'function') {
+      activeTrigger.focus();
+    }
+    if (hadOpenModal) activeTrigger = null;
   }
 
-  function openEvaluationModal() {
+  function openEvaluationModal(trigger) {
     ensureStyle();
     closeEvaluationModal();
+    activeTrigger = trigger || document.activeElement;
+    previousBodyOverflow = document.body.style.overflow;
 
     const backdrop = document.createElement('div');
     backdrop.className = 'vpmed-eval-backdrop';
     backdrop.setAttribute('data-vpmed-eval-modal', '1');
     backdrop.innerHTML = `
-      <div class="vpmed-eval-modal" role="dialog" aria-modal="true" aria-label="Phiếu đánh giá">
+      <div class="vpmed-eval-modal" role="dialog" aria-modal="true" aria-labelledby="vpmedEvalTitle" aria-describedby="vpmedEvalDescription">
         <div class="vpmed-eval-head">
-          <div>Phiếu đánh giá hệ thống hỗ trợ lâm sàng của Khoa Dược</div>
-          <button type="button" class="vpmed-eval-close">Đóng</button>
+          <div class="vpmed-eval-title"><strong id="vpmedEvalTitle">Khảo sát trải nghiệm hệ thống</strong><span id="vpmedEvalDescription">Khoảng 4 phút · Không cung cấp thông tin người bệnh</span></div>
+          <button type="button" class="vpmed-eval-close" aria-label="Đóng phiếu đánh giá">Đóng</button>
         </div>
+        <div class="vpmed-eval-loading" aria-live="polite">Đang mở phiếu đánh giá…</div>
         <iframe class="vpmed-eval-frame" src="${getEvalUrl()}" title="Phiếu đánh giá"></iframe>
       </div>
     `;
@@ -108,13 +151,14 @@
     document.body.appendChild(backdrop);
     document.body.style.overflow = 'hidden';
 
-    backdrop
-      .querySelector('.vpmed-eval-close')
-      .addEventListener('click', closeEvaluationModal);
-
-    backdrop.addEventListener('click', function (event) {
-      if (event.target === backdrop) closeEvaluationModal();
+    const closeButton = backdrop.querySelector('.vpmed-eval-close');
+    const frame = backdrop.querySelector('.vpmed-eval-frame');
+    const loading = backdrop.querySelector('.vpmed-eval-loading');
+    closeButton.addEventListener('click', closeEvaluationModal);
+    frame.addEventListener('load', function () {
+      loading.classList.add('is-hidden');
     });
+    closeButton.focus();
   }
 
   function isEvaluationLinkOrButton(element) {
@@ -159,7 +203,7 @@
 
       event.preventDefault();
       event.stopPropagation();
-      openEvaluationModal();
+      openEvaluationModal(trigger);
     },
     true
   );
@@ -167,6 +211,10 @@
   window.addEventListener('message', function (event) {
     if (event?.data?.type === 'close-evaluation-modal') {
       closeEvaluationModal();
+    }
+    if (event?.data?.type === 'evaluation-submitted') {
+      const title = document.querySelector('.vpmed-eval-title strong');
+      if (title) title.textContent = 'Đã hoàn tất khảo sát';
     }
   });
 
