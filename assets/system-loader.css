@@ -6,6 +6,12 @@ html.system-loading body {
   height: 100%;
 }
 
+/* Giữ giao diện chính ẩn hoàn toàn cho đến khi loader kết thúc. Dùng
+   visibility thay vì display để các mô-đun vẫn có thể khởi tạo bình thường. */
+html.system-loading body > :not(#systemLoader):not(script):not(style) {
+  visibility: hidden !important;
+}
+
 #systemLoader.system-loader {
   position: fixed;
   inset: 0;
@@ -76,6 +82,10 @@ html.system-loading body {
   border: 3px solid transparent;
   border-top-color: #0875b8;
   border-right-color: #18a0c6;
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  -webkit-animation: vpmedLoaderSpin 1.15s linear infinite;
   animation: vpmedLoaderSpin 1.15s linear infinite;
 }
 
@@ -166,7 +176,14 @@ html.system-loading body {
   line-height: 1.45;
 }
 
-@keyframes vpmedLoaderSpin { to { transform: rotate(360deg); } }
+@-webkit-keyframes vpmedLoaderSpin {
+  from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@keyframes vpmedLoaderSpin {
+  from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
 @keyframes vpmedLoaderShimmer { to { transform: translateX(360%); } }
 
 @media (max-width: 560px) {
@@ -177,6 +194,14 @@ html.system-loading body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #systemLoader .system-loader-logo-wrap::after,
-  #systemLoader .system-loader-progress-bar::after { animation: none; }
+  /* Vẫn giữ chỉ báo đang tải trên máy tính, nhưng quay chậm hơn và bỏ shimmer
+     để tôn trọng tùy chọn giảm chuyển động của hệ điều hành. */
+  #systemLoader .system-loader-logo-wrap::after {
+    -webkit-animation: vpmedLoaderSpin 2.4s linear infinite;
+    animation: vpmedLoaderSpin 2.4s linear infinite;
+  }
+  #systemLoader .system-loader-progress-bar::after {
+    -webkit-animation: none;
+    animation: none;
+  }
 }

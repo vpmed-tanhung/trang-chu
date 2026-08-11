@@ -62,11 +62,13 @@
       window.setTimeout(function () {
         closed = true;
         loader.classList.add('is-hidden');
-        root.classList.remove('system-loading');
-        unlockScroll();
 
+        /* Chỉ hiện giao diện chính sau khi loader đã mờ hết. Nếu mở khóa ngay
+           tại đây, nội dung phía dưới sẽ lộ ra trong lúc loader còn tồn tại. */
         window.setTimeout(function () {
           if (loader.parentNode) loader.parentNode.removeChild(loader);
+          root.classList.remove('system-loading');
+          unlockScroll();
         }, 480);
       }, 350);
     }, wait);
