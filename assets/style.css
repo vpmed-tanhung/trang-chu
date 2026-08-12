@@ -169,17 +169,43 @@
 .main-nav .nav-evaluation{position:relative}
 .main-nav .nav-evaluation::before{content:"★";font-size:11px;margin-right:7px;color:#1d9b63}
 .main-nav .facebook-text-link::before{content:"f";display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#1877f2;color:#fff;font-size:12px;font-weight:900;margin-right:7px;font-family:Arial,sans-serif}
+.home-user-account{position:relative;flex:0 0 auto;max-width:245px}
+.home-user-account[hidden]{display:none!important}
+.home-user-trigger{width:100%;min-width:190px;max-width:245px;display:flex;align-items:center;gap:9px;padding:7px 10px 7px 8px;border:1px solid #d6e5ef;border-radius:14px;background:#fff;color:#102d45;box-shadow:0 5px 15px rgba(16,45,69,.08);text-align:left}
+.home-user-trigger:hover{border-color:#9bc9e4;background:#f8fcff}
+.home-user-trigger:focus-visible{outline:3px solid rgba(11,125,195,.2);outline-offset:2px}
+.home-user-avatar{width:36px;height:36px;flex:0 0 36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1370b5,#074691);color:#fff;border:2px solid #d9edf9;font-size:12px;font-weight:900;letter-spacing:.03em}
+.home-user-copy{min-width:0;display:grid;gap:2px;line-height:1.2}
+.home-user-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;color:#063b67}
+.home-user-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9.5px;color:#667d90}
+.home-user-chevron{margin-left:auto;color:#62809d;font-size:11px}
+.home-user-menu{position:absolute;top:calc(100% + 9px);right:0;z-index:120;width:260px;padding:14px;background:#fff;border:1px solid #d5e3ed;border-radius:14px;box-shadow:0 18px 40px rgba(16,45,69,.2)}
+.home-user-menu[hidden]{display:none!important}
+.home-user-menu-name{font-weight:900;color:#063b67;font-size:14px}
+.home-user-menu-detail{margin-top:4px;color:#667d90;font-size:11px;line-height:1.45}
+.home-user-status{display:inline-flex;margin-top:10px;padding:5px 9px;border-radius:999px;background:#fff7dc;border:1px solid #efd47d;color:#7a5600;font-size:10.5px;font-weight:850}
+.home-user-status.approved{background:#eaf9f1;border-color:#a9dfc2;color:#087b54}
+.home-user-status.rejected{background:#fff0f0;border-color:#efcaca;color:#b64242}
+.home-user-menu button{width:100%;margin-top:12px;padding:9px 12px;border:1px solid #efcaca;border-radius:9px;background:#fff5f5;color:#a62e2e;font-size:12px;font-weight:850}
+.home-user-menu button:hover{background:#ffeaea}
 @media(max-width:1100px){
   .topbar-inner{min-height:76px}
   .main-nav{position:absolute;top:76px;right:16px;left:auto;background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px;box-shadow:var(--shadow);display:none;flex-direction:column;min-width:250px;gap:6px}
   .main-nav.open{display:flex}
   .main-nav button,.main-nav a,.main-nav .nav-evaluation,.main-nav .facebook-text-link{width:100%;justify-content:flex-start;padding:12px 14px!important;border-radius:12px!important}
   .main-nav button.active{transform:none}
+  .home-user-account{margin-left:auto;max-width:220px}
+  .home-user-trigger{min-width:175px;max-width:220px}
 }
 @media(max-width:720px){
   .brand{gap:10px}
   .brand strong{font-size:14px}
   .brand span{font-size:11px}
+  .home-user-account{max-width:48px}
+  .home-user-trigger{min-width:44px;width:44px;padding:4px;border:0;background:transparent;box-shadow:none}
+  .home-user-avatar{width:38px;height:38px;flex-basis:38px}
+  .home-user-copy,.home-user-chevron{display:none}
+  .home-user-menu{right:-42px;width:min(280px,calc(100vw - 24px))}
 }
 
 

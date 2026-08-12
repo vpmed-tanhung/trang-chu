@@ -5,13 +5,46 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#075f9f">
   <title>Hệ thống Hỗ trợ Dược lâm sàng | VPMED Tân Hưng</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260812-user-account-v1">
+  <link rel="stylesheet" href="assets/style.css?v=20260812-user-account-v2">
   <link rel="stylesheet" href="assets/hepatotoxicity.css">
   <link rel="stylesheet" href="assets/pregnancy_lactation.css">
   <link rel="stylesheet" href="assets/responsive-polish.css?v=20260712-balanced">
   <link rel="stylesheet" href="assets/antibiotic-result-layout.css?v=20260802-structure-only">
   <link rel="stylesheet" href="assets/system-loader.css?v=20260811-desktop-spin-fix">
-  <script>document.documentElement.classList.add('system-loading');</script>
+  <style id="home-user-account-inline-style">
+    html.auth-checking .topbar,
+    html.auth-checking .app-shell,
+    html.auth-checking .site-footer{visibility:hidden!important}
+    .home-user-account{position:relative;flex:0 0 auto;max-width:245px}
+    .home-user-account[hidden]{display:none!important}
+    .home-user-trigger{width:100%;min-width:190px;max-width:245px;display:flex;align-items:center;gap:9px;padding:7px 10px 7px 8px;border:1px solid #d6e5ef;border-radius:14px;background:#fff;color:#102d45;box-shadow:0 5px 15px rgba(16,45,69,.08);text-align:left;cursor:pointer}
+    .home-user-trigger:hover{border-color:#9bc9e4;background:#f8fcff}
+    .home-user-trigger:focus-visible{outline:3px solid rgba(11,125,195,.2);outline-offset:2px}
+    .home-user-avatar{width:36px;height:36px;flex:0 0 36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1370b5,#074691);color:#fff;border:2px solid #d9edf9;font-size:12px;font-weight:900;letter-spacing:.03em}
+    .home-user-copy{min-width:0;display:grid;gap:2px;line-height:1.2}
+    .home-user-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;color:#063b67}
+    .home-user-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9.5px;color:#667d90}
+    .home-user-chevron{margin-left:auto;color:#62809d;font-size:11px}
+    .home-user-menu{position:absolute;top:calc(100% + 9px);right:0;z-index:120;width:260px;padding:14px;background:#fff;border:1px solid #d5e3ed;border-radius:14px;box-shadow:0 18px 40px rgba(16,45,69,.2)}
+    .home-user-menu[hidden]{display:none!important}
+    .home-user-menu-name{font-weight:900;color:#063b67;font-size:14px}
+    .home-user-menu-detail{margin-top:4px;color:#667d90;font-size:11px;line-height:1.45}
+    .home-user-status{display:inline-flex;margin-top:10px;padding:5px 9px;border-radius:999px;background:#eaf9f1;border:1px solid #a9dfc2;color:#087b54;font-size:10.5px;font-weight:850}
+    .home-user-menu button{width:100%;margin-top:12px;padding:9px 12px;border:1px solid #efcaca;border-radius:9px;background:#fff5f5;color:#a62e2e;font-size:12px;font-weight:850;cursor:pointer}
+    .home-user-menu button:hover{background:#ffeaea}
+    @media(max-width:1100px){
+      .home-user-account{margin-left:auto;max-width:220px}
+      .home-user-trigger{min-width:175px;max-width:220px}
+    }
+    @media(max-width:720px){
+      .home-user-account{max-width:48px}
+      .home-user-trigger{min-width:44px;width:44px;padding:4px;border:0;background:transparent;box-shadow:none}
+      .home-user-avatar{width:38px;height:38px;flex-basis:38px}
+      .home-user-copy,.home-user-chevron{display:none}
+      .home-user-menu{right:-42px;width:min(280px,calc(100vw - 24px))}
+    }
+  </style>
+  <script>document.documentElement.classList.add('system-loading','auth-checking');</script>
   <noscript><style>#systemLoader{display:none!important}</style></noscript>
 </head>
 <body>
@@ -41,20 +74,20 @@
     
       <button data-view="sources">Nguồn</button>
     </nav>
-    <div class="home-user-account" id="homeUserAccount">
+    <div class="home-user-account" id="homeUserAccount" hidden>
       <button class="home-user-trigger" id="homeUserTrigger" type="button" aria-haspopup="true" aria-expanded="false">
-        <span class="home-user-avatar" id="homeUserAvatar" aria-hidden="true">ĐN</span>
+        <span class="home-user-avatar" id="homeUserAvatar" aria-hidden="true">NV</span>
         <span class="home-user-copy">
-          <strong id="homeUserName">Đăng nhập</strong>
-          <small id="homeUserMeta">Tài khoản nhân viên</small>
+          <strong id="homeUserName">Người dùng</strong>
+          <small id="homeUserMeta">Nhân viên bệnh viện</small>
         </span>
         <span class="home-user-chevron" aria-hidden="true">▾</span>
       </button>
       <div class="home-user-menu" id="homeUserMenu" hidden>
-        <div class="home-user-menu-name" id="homeUserMenuName">Chưa đăng nhập</div>
-        <div class="home-user-menu-detail" id="homeUserMenuDetail">Đăng nhập để hiển thị họ tên và đơn vị.</div>
-        <div class="home-user-status" id="homeUserStatus">Chưa có phiên đăng nhập</div>
-        <button type="button" id="homeUserLogout" data-action="login">Đi đến đăng nhập</button>
+        <div class="home-user-menu-name" id="homeUserMenuName">Người dùng</div>
+        <div class="home-user-menu-detail" id="homeUserMenuDetail">Nhân viên bệnh viện</div>
+        <div class="home-user-status" id="homeUserStatus">Tài khoản đã kích hoạt</div>
+        <button type="button" id="homeUserLogout">Đăng xuất</button>
       </div>
     </div>
   </div>
@@ -1293,7 +1326,10 @@ calc();
 (function(){
   'use strict';
   var account = document.getElementById('homeUserAccount');
-  if(!account || !window.supabase) return;
+  if(!account || !window.supabase){
+    window.location.replace('cong-cu-duoc-lam-sang.html');
+    return;
+  }
 
   var client = window.supabase.createClient(
     'https://jaswtdcgrfbygmdxvumu.supabase.co',
@@ -1326,19 +1362,8 @@ calc();
     trigger.setAttribute('aria-expanded', 'false');
   }
 
-  function showSignedOut(){
-    avatar.textContent = 'ĐN';
-    nameEl.textContent = 'Đăng nhập';
-    metaEl.textContent = 'Tài khoản nhân viên';
-    menuName.textContent = 'Chưa đăng nhập';
-    menuDetail.textContent = 'Đăng nhập để hiển thị họ tên và đơn vị.';
-    statusEl.textContent = 'Chưa có phiên đăng nhập';
-    statusEl.className = 'home-user-status';
-    logout.textContent = 'Đi đến đăng nhập';
-    logout.dataset.action = 'login';
-    logout.disabled = false;
-    account.hidden = false;
-    closeMenu();
+  function redirectToAuth(){
+    window.location.replace('cong-cu-duoc-lam-sang.html');
   }
 
   function clearAuthFragment(){
@@ -1354,7 +1379,11 @@ calc();
       .eq('id', user.id)
       .maybeSingle()
       .then(function(result){
-        var profile = result.data || {};
+        var profile = result.data;
+        if(result.error || !profile || profile.status !== 'approved'){
+          redirectToAuth();
+          return;
+        }
         var fullName = profile.full_name || data.full_name || user.email || 'Người dùng';
         var jobTitle = profile.job_title || data.job_title || 'Nhân viên bệnh viện';
         var workplace = profile.workplace || data.department || data.workplace || '';
@@ -1366,17 +1395,18 @@ calc();
         menuName.textContent = fullName;
         menuDetail.textContent = detail || user.email || '';
         statusEl.textContent = statusText(profile.status);
-        statusEl.className = 'home-user-status ' + (profile.status || 'pending');
+        statusEl.className = 'home-user-status approved';
         logout.textContent = 'Đăng xuất';
-        logout.dataset.action = 'logout';
         logout.disabled = false;
         account.hidden = false;
-      });
+        document.documentElement.classList.remove('auth-checking');
+      })
+      .catch(redirectToAuth);
   }
 
   function applySession(session){
     if(session && session.user) showUser(session.user);
-    else showSignedOut();
+    else redirectToAuth();
     clearAuthFragment();
   }
 
@@ -1389,10 +1419,6 @@ calc();
     if(!account.contains(event.target)) closeMenu();
   });
   logout.addEventListener('click', function(){
-    if(logout.dataset.action === 'login'){
-      window.location.href = 'cong-cu-duoc-lam-sang.html';
-      return;
-    }
     logout.disabled = true;
     client.auth.signOut().finally(function(){
       window.location.href = 'cong-cu-duoc-lam-sang.html';
