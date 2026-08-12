@@ -6,45 +6,13 @@
   <meta name="theme-color" content="#075f9f">
   <title>Hệ thống Hỗ trợ Dược lâm sàng | VPMED Tân Hưng</title>
   <link rel="stylesheet" href="assets/style.css?v=20260812-user-account-v2">
+  <link rel="stylesheet" href="assets/vpmed-access.css?v=20260812-new-system-v1">
   <link rel="stylesheet" href="assets/hepatotoxicity.css">
   <link rel="stylesheet" href="assets/pregnancy_lactation.css">
   <link rel="stylesheet" href="assets/responsive-polish.css?v=20260712-balanced">
   <link rel="stylesheet" href="assets/antibiotic-result-layout.css?v=20260802-structure-only">
   <link rel="stylesheet" href="assets/system-loader.css?v=20260811-desktop-spin-fix">
-  <style id="home-user-account-inline-style">
-    html.auth-checking .topbar,
-    html.auth-checking .app-shell,
-    html.auth-checking .site-footer{visibility:hidden!important}
-    .home-user-account{position:relative;flex:0 0 auto;max-width:245px}
-    .home-user-account[hidden]{display:none!important}
-    .home-user-trigger{width:100%;min-width:190px;max-width:245px;display:flex;align-items:center;gap:9px;padding:7px 10px 7px 8px;border:1px solid #d6e5ef;border-radius:14px;background:#fff;color:#102d45;box-shadow:0 5px 15px rgba(16,45,69,.08);text-align:left;cursor:pointer}
-    .home-user-trigger:hover{border-color:#9bc9e4;background:#f8fcff}
-    .home-user-trigger:focus-visible{outline:3px solid rgba(11,125,195,.2);outline-offset:2px}
-    .home-user-avatar{width:36px;height:36px;flex:0 0 36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1370b5,#074691);color:#fff;border:2px solid #d9edf9;font-size:12px;font-weight:900;letter-spacing:.03em}
-    .home-user-copy{min-width:0;display:grid;gap:2px;line-height:1.2}
-    .home-user-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;color:#063b67}
-    .home-user-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9.5px;color:#667d90}
-    .home-user-chevron{margin-left:auto;color:#62809d;font-size:11px}
-    .home-user-menu{position:absolute;top:calc(100% + 9px);right:0;z-index:120;width:260px;padding:14px;background:#fff;border:1px solid #d5e3ed;border-radius:14px;box-shadow:0 18px 40px rgba(16,45,69,.2)}
-    .home-user-menu[hidden]{display:none!important}
-    .home-user-menu-name{font-weight:900;color:#063b67;font-size:14px}
-    .home-user-menu-detail{margin-top:4px;color:#667d90;font-size:11px;line-height:1.45}
-    .home-user-status{display:inline-flex;margin-top:10px;padding:5px 9px;border-radius:999px;background:#eaf9f1;border:1px solid #a9dfc2;color:#087b54;font-size:10.5px;font-weight:850}
-    .home-user-menu button{width:100%;margin-top:12px;padding:9px 12px;border:1px solid #efcaca;border-radius:9px;background:#fff5f5;color:#a62e2e;font-size:12px;font-weight:850;cursor:pointer}
-    .home-user-menu button:hover{background:#ffeaea}
-    @media(max-width:1100px){
-      .home-user-account{margin-left:auto;max-width:220px}
-      .home-user-trigger{min-width:175px;max-width:220px}
-    }
-    @media(max-width:720px){
-      .home-user-account{max-width:48px}
-      .home-user-trigger{min-width:44px;width:44px;padding:4px;border:0;background:transparent;box-shadow:none}
-      .home-user-avatar{width:38px;height:38px;flex-basis:38px}
-      .home-user-copy,.home-user-chevron{display:none}
-      .home-user-menu{right:-42px;width:min(280px,calc(100vw - 24px))}
-    }
-  </style>
-  <script>document.documentElement.classList.add('system-loading','auth-checking');</script>
+  <script>document.documentElement.classList.add('system-loading','vpmed-auth-checking');</script>
   <noscript><style>#systemLoader{display:none!important}</style></noscript>
 </head>
 <body>
@@ -87,6 +55,7 @@
         <div class="home-user-menu-name" id="homeUserMenuName">Người dùng</div>
         <div class="home-user-menu-detail" id="homeUserMenuDetail">Nhân viên bệnh viện</div>
         <div class="home-user-status" id="homeUserStatus">Tài khoản đã kích hoạt</div>
+        <a class="home-admin-link" id="homeAdminLink" href="tai-khoan.html#admin" hidden>Quản trị tài khoản</a>
         <button type="button" id="homeUserLogout">Đăng xuất</button>
       </div>
     </div>
@@ -153,7 +122,7 @@
       <div class="dose-main">
         <div id="output" class="empty-state"><div>🧪</div><b>Chưa có kết quả</b><span>Nhập tuổi, cân nặng, creatinine và chọn kháng sinh để bắt đầu.</span></div>
         <section class="section-card history-card">
-          <div class="section-heading"><div><span class="kicker">Lịch sử tra cứu</span><h2>Lịch sử dùng chung toàn bệnh viện</h2><small id="sharedHistoryStatus">Đang đồng bộ dữ liệu chung…</small></div><div class="heading-actions"><button class="btn btn-soft" id="exportHist">Xuất CSV</button><button class="btn btn-soft" id="clear">Làm mới lịch sử</button></div></div>
+          <div class="section-heading"><div><span class="kicker">Lịch sử tra cứu</span><h2>Lịch sử trên thiết bị này</h2><small id="renalAuditStatus">Nhật ký người thực hiện được lưu riêng, không kèm mã hoặc tên bệnh nhân.</small></div><div class="heading-actions"><button class="btn btn-soft" id="exportHist">Xuất CSV</button><button class="btn btn-soft" id="clear">Làm mới lịch sử</button></div></div>
           <div class="table-wrap"><table><thead><tr><th>Thời gian</th><th>Mã bệnh nhân</th><th>CrCl</th><th>eGFR</th><th>Thuốc</th><th>Gợi ý</th></tr></thead><tbody id="hist"></tbody></table></div>
         </section>
       </div>
@@ -1322,117 +1291,7 @@ calc();
   <div><a class="nav-evaluation" href="phieu-danh-gia.html" target="_blank" rel="noopener">Phiếu đánh giá phần mềm</a> · <a href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a> · Công cụ hỗ trợ, không thay thế đánh giá lâm sàng.</div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  'use strict';
-  var account = document.getElementById('homeUserAccount');
-  if(!account || !window.supabase){
-    window.location.replace('cong-cu-duoc-lam-sang.html');
-    return;
-  }
-
-  var client = window.supabase.createClient(
-    'https://jaswtdcgrfbygmdxvumu.supabase.co',
-    'sb_publishable_O6LzzHIKE9nWoSxhLQNlsw_shxEqdLC'
-  );
-  var trigger = document.getElementById('homeUserTrigger');
-  var menu = document.getElementById('homeUserMenu');
-  var avatar = document.getElementById('homeUserAvatar');
-  var nameEl = document.getElementById('homeUserName');
-  var metaEl = document.getElementById('homeUserMeta');
-  var menuName = document.getElementById('homeUserMenuName');
-  var menuDetail = document.getElementById('homeUserMenuDetail');
-  var statusEl = document.getElementById('homeUserStatus');
-  var logout = document.getElementById('homeUserLogout');
-
-  function initials(value){
-    var parts = String(value || '').trim().split(/\s+/).filter(Boolean);
-    if(!parts.length) return 'NV';
-    return ((parts[0][0] || '') + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
-  }
-
-  function statusText(status){
-    if(status === 'approved') return 'Tài khoản đã kích hoạt';
-    if(status === 'rejected') return 'Tài khoản không được duyệt';
-    return 'Tài khoản đang chờ duyệt';
-  }
-
-  function closeMenu(){
-    menu.hidden = true;
-    trigger.setAttribute('aria-expanded', 'false');
-  }
-
-  function redirectToAuth(){
-    window.location.replace('cong-cu-duoc-lam-sang.html');
-  }
-
-  function clearAuthFragment(){
-    if(/(?:access_token|refresh_token|error_description|type)=/i.test(window.location.hash || '')){
-      window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
-    }
-  }
-
-  function showUser(user){
-    var data = user.user_metadata || {};
-    client.from('profiles')
-      .select('full_name, job_title, workplace, status')
-      .eq('id', user.id)
-      .maybeSingle()
-      .then(function(result){
-        var profile = result.data;
-        if(result.error || !profile || profile.status !== 'approved'){
-          redirectToAuth();
-          return;
-        }
-        var fullName = profile.full_name || data.full_name || user.email || 'Người dùng';
-        var jobTitle = profile.job_title || data.job_title || 'Nhân viên bệnh viện';
-        var workplace = profile.workplace || data.department || data.workplace || '';
-        var detail = [jobTitle, workplace].filter(Boolean).join(' · ');
-
-        avatar.textContent = initials(fullName);
-        nameEl.textContent = fullName;
-        metaEl.textContent = detail || 'Nhân viên bệnh viện';
-        menuName.textContent = fullName;
-        menuDetail.textContent = detail || user.email || '';
-        statusEl.textContent = statusText(profile.status);
-        statusEl.className = 'home-user-status approved';
-        logout.textContent = 'Đăng xuất';
-        logout.disabled = false;
-        account.hidden = false;
-        document.documentElement.classList.remove('auth-checking');
-      })
-      .catch(redirectToAuth);
-  }
-
-  function applySession(session){
-    if(session && session.user) showUser(session.user);
-    else redirectToAuth();
-    clearAuthFragment();
-  }
-
-  trigger.addEventListener('click', function(){
-    var willOpen = menu.hidden;
-    menu.hidden = !willOpen;
-    trigger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-  });
-  document.addEventListener('click', function(event){
-    if(!account.contains(event.target)) closeMenu();
-  });
-  logout.addEventListener('click', function(){
-    logout.disabled = true;
-    client.auth.signOut().finally(function(){
-      window.location.href = 'cong-cu-duoc-lam-sang.html';
-    });
-  });
-
-  client.auth.getSession().then(function(result){
-    applySession(result.data && result.data.session);
-  });
-  client.auth.onAuthStateChange(function(event, session){
-    window.setTimeout(function(){ applySession(session); }, 0);
-  });
-})();
-</script>
+<script defer src="assets/vpmed-access.js?v=20260812-new-system-v1"></script>
 <script defer src="assets/data.js"></script>
 <script defer src="assets/contra_adr_hdsd_duocthu_20260717.js?v=20260717-final"></script>
 <script defer src="assets/clinical_updates.js"></script>
@@ -1445,6 +1304,7 @@ calc();
 <script defer src="assets/renal_database_20260723.js?v=20260723-renal-only-v4"></script>
 <script defer src="assets/diseases.js"></script>
 <script defer src="assets/unified.js?v=20260802-structure-only"></script>
+<script defer src="assets/vpmed-renal-audit.js?v=20260812-new-system-v1"></script>
 <script defer src="assets/antibiotic_consultation.js?v=20260716-inpatient-first"></script>
 <script defer src="assets/dose_24h_summary.js?v=20260802-structure-only"></script>
 <script defer src="assets/vancomycin_renal_v2.js?v=20260723-renal-only-v6"></script>
@@ -1471,7 +1331,6 @@ calc();
 <script defer src="vpmed-interaction-compact.js"></script>
 <script defer src="vpmed-dose-reset.js"></script>
 <script defer src="vpmed-remove-quick-two-drug.js"></script>
-<script defer src="vpmed-history-sync.js"></script>
 <script defer src="assets/disease_updates_2026.js"></script>
 <script defer src="assets/hepatotoxicity.js"></script>
 <script defer src="assets/pregnancy_lactation.js"></script>

@@ -11,6 +11,14 @@
 <meta name="apple-mobile-web-app-title" content="Hệ thống Hỗ trợ Dược lâm sàng">
 <meta name="format-detection" content="telephone=no">
 <title>Công cụ Dược lâm sàng | VPMED Tân Hưng</title>
+<script>
+(function(){
+  var modules={nelson:true,nutrition:true,interaction:true,inject:true};
+  var embedded=new URLSearchParams(window.location.search).get('embed')==='1';
+  var moduleName=window.location.hash.slice(1).toLowerCase();
+  if(!embedded||!modules[moduleName])window.location.replace('index.html');
+})();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ===== RESET & BASE ===== */
@@ -5128,8 +5136,7 @@ body.authed #AUTH-SCREEN{display:none!important}
 
 
 
-<!-- ========== AUTH + ADMIN DASHBOARD LOGIC ========== -->
-<script src="assets/cong-cu-modules/auth-supabase.js"></script>
+<!-- Trang này chỉ còn cung cấp các mô-đun nhúng cho index.html; hệ thống tài khoản mới nằm ở tai-khoan.html. -->
 <style>
 body.vpmed-embedded #AUTH-SCREEN,
 body.vpmed-embedded #SB,

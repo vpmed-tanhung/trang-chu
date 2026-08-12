@@ -1,62 +1,80 @@
-# Đăng nhập nhân viên bệnh viện và nhật ký tra cứu liều thận
+# Hệ thống tài khoản nhân viên VPMED
 
-Phiên bản này chỉ cho phép đăng ký bằng email bệnh viện thuộc miền **`@vpmed.vn`**. Khi đăng ký, người dùng bắt buộc nhập:
+Phiên bản này có một hệ thống tài khoản **mới và độc lập** tại `tai-khoan.html`. Trang tài khoản không chuyển người dùng đến `cong-cu-duoc-lam-sang.html` và không dùng giao diện quản trị của trang đó.
 
-- Họ và tên.
-- Chức danh/vị trí công tác.
-- Khoa/phòng/bộ phận công tác.
-- Email và mật khẩu.
+## Quy trình hoạt động
 
-Tài khoản mới vẫn ở trạng thái **chờ duyệt**. Quản trị viên duyệt tài khoản trong mục **Quản trị hệ thống**.
+1. Nhân viên đăng ký tại `https://hotrolamsang.io.vn/tai-khoan.html`.
+2. Người đăng ký phải nhập họ tên, chức danh/vị trí công tác, khoa/phòng/đơn vị, email và mật khẩu.
+3. Chỉ email kết thúc chính xác bằng `@vpmed.vn` được chấp nhận.
+4. Sau khi xác nhận email, tài khoản vẫn ở trạng thái **chờ duyệt** và chưa thể vào trang chủ.
+5. Admin đăng nhập, mở menu tên người dùng ở góc phải → **Quản trị tài khoản** → chọn **Duyệt** hoặc **Từ chối**.
+6. Chỉ tài khoản có trạng thái `approved` mới được truy cập `index.html`.
 
-## 1. Tạo bảng nhật ký trên Supabase
+## 1. Cài đặt Supabase mới
 
-1. Đăng nhập Supabase và mở dự án `vpmed-clinpharm` (`jaswtdcgrfbygmdxvumu`).
-2. Mở **SQL Editor** → **New query**.
-3. Sao chép toàn bộ nội dung file `supabase/renal_lookup_audit.sql`, dán vào SQL Editor và bấm **Run**.
-4. Kết quả phải báo chạy thành công, không có lỗi màu đỏ.
+Trong Supabase, mở **SQL Editor → New query**, dán toàn bộ nội dung `supabase/renal_lookup_audit.sql` rồi bấm **Run**. File này tạo:
 
-File cài đặt tạo bảng `profiles`, trigger tự sinh hồ sơ khi nhân viên đăng ký, quyền duyệt tài khoản và bảng nhật ký. Đây là file cài đặt một lần dành cho dự án Supabase mới.
+- Hồ sơ nhân viên và giới hạn email `@vpmed.vn` ở phía cơ sở dữ liệu.
+- Trạng thái `pending`, `approved`, `rejected`.
+- Quyền admin duyệt hoặc thu hồi tài khoản.
+- Nhật ký người thực hiện tra cứu liều thận.
+- RLS để người chưa được duyệt không thể tự cấp quyền hoặc đọc danh sách nhân viên.
 
-Nếu đã chạy file cài đặt trước khi bổ sung trường chức danh, chạy thêm một lần file `supabase/bo_sung_chuc_danh.sql`.
+Nếu dự án đã chạy bản SQL cũ có cột `doctor_name` / `doctor_email`, chạy thêm một lần `supabase/chuyen_danh_tinh_nhan_vien.sql`. Nếu đã dùng bản cài mới thì bỏ qua bước này.
 
-## 2. Cấu hình email đăng ký
+## 2. Cấu hình email và địa chỉ chuyển hướng
 
-Trong Supabase, mở **Authentication → Providers → Email**:
+Trong **Authentication → Sign In / Providers → Email**:
 
 - Bật đăng ký bằng email.
-- Nên bật xác nhận email trước khi đăng nhập.
-- Trong **URL Configuration**, thêm địa chỉ website GitHub Pages vào danh sách Redirect URLs để chức năng quên mật khẩu hoạt động.
+- Bật xác nhận email.
 
-Mã nguồn kiểm tra chính xác đuôi `@vpmed.vn` ở cả giao diện và cơ sở dữ liệu. Ví dụ hợp lệ: `ten@vpmed.vn`. Các miền gần giống như `@example-vpmed.vn` hoặc `@vpmed.vn.example.com` đều bị từ chối.
+Trong **Authentication → URL Configuration**:
 
-## 3. Chọn tài khoản quản trị đầu tiên
+- Site URL: `https://hotrolamsang.io.vn`
+- Redirect URL: `https://hotrolamsang.io.vn/**`
 
-Sau khi đăng ký một tài khoản, chạy câu lệnh sau trong SQL Editor và thay email mẫu bằng email thật:
+## 3. Tạo admin đầu tiên
+
+Đăng ký tài khoản của bạn trước, sau đó chạy câu lệnh dưới đây và thay đúng email admin:
 
 ```sql
 update public.profiles
-set status = 'approved', role = 'admin', approved_at = now()
+set status = 'approved',
+    role = 'admin',
+    approved_at = now(),
+    updated_at = now()
 where email = 'email-quan-tri@vpmed.vn';
 ```
 
-Đăng xuất rồi đăng nhập lại. Menu sẽ có thêm:
+Đăng xuất và đăng nhập lại. Ở góc phải trang chủ sẽ có tên admin. Bấm vào tên → **Quản trị tài khoản**.
 
-- **Quản trị hệ thống**: duyệt/từ chối tài khoản.
-- **Nhật ký tra cứu liều**: xem người tra cứu, chức danh, khoa/phòng/bộ phận, email, thời gian, thuốc/module, CrCl/eGFR và kết quả liên quan.
+## 4. Duyệt nhân viên
 
-## 4. Phạm vi dữ liệu được lưu
+Trong trang quản trị:
 
-Nhật ký ghi nhận ba loại thao tác:
+- **Duyệt**: cho phép tài khoản truy cập trang chủ.
+- **Từ chối**: chặn tài khoản đăng nhập vào hệ thống.
+- **Thu hồi**: đưa tài khoản đã duyệt về trạng thái chờ duyệt.
+- Tab **Nhật ký tra cứu liều thận**: xem nhân viên nào đã thực hiện tra cứu, thời gian, chức danh, đơn vị, thuốc và kết quả CrCl/eGFR.
 
-- Đánh giá chức năng thận CrCl/eGFR.
-- Hiệu chỉnh liều kháng sinh theo CrCl.
-- Tính liều Colistin ở các chế độ chức năng thận/lọc máu.
+Admin không nên duyệt tài khoản nếu chưa đối chiếu người đăng ký là nhân viên bệnh viện.
 
-Hệ thống **không lưu** họ tên bệnh nhân, mã bệnh án, ngày sinh, cân nặng, chiều cao hoặc creatinine thô. Danh tính người tra cứu được chụp từ hồ sơ đã duyệt ở phía Supabase, nên trình duyệt không thể tự nhận là người khác.
+## 5. Dữ liệu nhật ký
 
-## 5. Đưa website lên GitHub Pages
+Nhật ký Supabase chỉ ghi danh tính **nhân viên thực hiện tra cứu** từ hồ sơ đã được duyệt. Nhật ký không gửi họ tên bệnh nhân, mã bệnh nhân, ngày sinh, cân nặng, chiều cao hoặc creatinine thô.
 
-Sau khi chạy SQL thành công, tải toàn bộ cấu trúc thư mục này lên nhánh đang dùng cho GitHub Pages. Không đổi đường dẫn các file trong `assets/cong-cu-modules/`.
+Lịch sử có mã bệnh nhân hiển thị trong công cụ chỉ nằm trên thiết bị đang sử dụng và có thể xóa tại chỗ.
 
-Nếu bảng nhật ký chưa được tạo hoặc policy Supabase bị lỗi, công cụ vẫn hiển thị kết quả tính toán nhưng sẽ hiện cảnh báo đỏ rằng lượt tra cứu chưa được ghi nhận.
+## 6. Các file mới cần tải đủ lên GitHub
+
+- `tai-khoan.html`
+- `assets/vpmed-auth.css`
+- `assets/vpmed-auth-page.js`
+- `assets/vpmed-access.css`
+- `assets/vpmed-access.js`
+- `assets/vpmed-renal-audit.js`
+- `index.html` đã cập nhật
+
+Phải tải đúng cả cấu trúc thư mục. Nếu chỉ thay `index.html` mà thiếu các file trong `assets/`, giao diện tài khoản sẽ không hoạt động đúng.

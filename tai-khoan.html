@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0867a8">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Tài khoản nhân viên | VPMED Tân Hưng</title>
+  <link rel="stylesheet" href="assets/vpmed-auth.css?v=20260812-new-system-v1">
+  <script>document.documentElement.classList.add('auth-loading');</script>
+</head>
+<body>
+  <div class="auth-background" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <main class="auth-shell">
+    <section class="auth-card" id="authCard" aria-live="polite">
+      <header class="auth-brand">
+        <img src="assets/logo-vpmed.png" alt="Bệnh viện VPMED Tân Hưng">
+        <div>
+          <strong>Hệ thống Hỗ trợ Dược lâm sàng</strong>
+          <span>Bệnh viện VPMED Tân Hưng</span>
+        </div>
+      </header>
+
+      <div class="auth-loader" id="authLoader">
+        <div class="auth-spinner" aria-hidden="true"></div>
+        <strong>Đang kiểm tra tài khoản…</strong>
+        <span>Vui lòng chờ trong giây lát.</span>
+      </div>
+
+      <section class="auth-view" id="viewLogin" hidden>
+        <div class="auth-heading">
+          <span class="auth-kicker">Cổng nhân viên bệnh viện</span>
+          <h1>Đăng nhập</h1>
+          <p>Dùng email công vụ <b>@vpmed.vn</b> để truy cập hệ thống.</p>
+        </div>
+        <form id="loginForm" novalidate>
+          <label>Địa chỉ email
+            <input id="loginEmail" name="email" type="email" inputmode="email" autocomplete="username" placeholder="ten.nhanvien@vpmed.vn" required>
+          </label>
+          <label>Mật khẩu
+            <span class="password-field"><input id="loginPassword" name="password" type="password" autocomplete="current-password" minlength="8" required><button type="button" class="password-toggle" data-toggle-password="loginPassword" aria-label="Hiện mật khẩu">Hiện</button></span>
+          </label>
+          <p class="form-message" id="loginMessage" role="alert"></p>
+          <button class="primary-button" type="submit">Đăng nhập</button>
+        </form>
+        <button class="text-button" type="button" data-view="forgot">Quên mật khẩu?</button>
+        <div class="auth-switch">Chưa có tài khoản? <button type="button" data-view="register">Đăng ký nhân viên</button></div>
+      </section>
+
+      <section class="auth-view" id="viewRegister" hidden>
+        <div class="auth-heading">
+          <span class="auth-kicker">Đăng ký tài khoản mới</span>
+          <h1>Thông tin nhân viên</h1>
+          <p>Tài khoản chỉ được sử dụng sau khi quản trị viên xác minh và phê duyệt.</p>
+        </div>
+        <form id="registerForm" novalidate>
+          <div class="field-grid">
+            <label class="field-wide">Họ và tên
+              <input id="registerName" type="text" autocomplete="name" maxlength="100" placeholder="Nguyễn Văn An" required>
+            </label>
+            <label>Chức danh / vị trí công tác
+              <select id="registerJob" required>
+                <option value="">Chọn chức danh</option>
+                <option>Bác sĩ</option><option>Dược sĩ</option><option>Điều dưỡng</option>
+                <option>Kỹ thuật viên</option><option>Nữ hộ sinh</option><option>Hộ lý</option>
+                <option>Nhân viên hành chính</option><option>Nhân viên công nghệ thông tin</option>
+                <option>Nhân viên khác</option>
+              </select>
+            </label>
+            <label>Khoa / phòng / đơn vị
+              <input id="registerDepartment" type="text" maxlength="120" placeholder="Ví dụ: Khoa Dược" required>
+            </label>
+            <label class="field-wide">Email bệnh viện
+              <input id="registerEmail" type="email" inputmode="email" autocomplete="email" placeholder="ten.nhanvien@vpmed.vn" required>
+            </label>
+            <label>Mật khẩu
+              <span class="password-field"><input id="registerPassword" type="password" autocomplete="new-password" minlength="8" required><button type="button" class="password-toggle" data-toggle-password="registerPassword">Hiện</button></span>
+            </label>
+            <label>Nhập lại mật khẩu
+              <span class="password-field"><input id="registerPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required><button type="button" class="password-toggle" data-toggle-password="registerPasswordConfirm">Hiện</button></span>
+            </label>
+          </div>
+          <p class="privacy-note">Thông tin này dùng để xác minh nhân viên và ghi nhận người thực hiện tra cứu chuyên môn.</p>
+          <p class="form-message" id="registerMessage" role="alert"></p>
+          <button class="primary-button" type="submit">Gửi đăng ký</button>
+        </form>
+        <div class="auth-switch">Đã có tài khoản? <button type="button" data-view="login">Đăng nhập</button></div>
+      </section>
+
+      <section class="auth-view" id="viewForgot" hidden>
+        <div class="status-icon neutral" aria-hidden="true">✉</div>
+        <div class="auth-heading centered"><h1>Khôi phục mật khẩu</h1><p>Nhập email bệnh viện để nhận liên kết đặt lại mật khẩu.</p></div>
+        <form id="forgotForm" novalidate>
+          <label>Địa chỉ email<input id="forgotEmail" type="email" autocomplete="email" placeholder="ten.nhanvien@vpmed.vn" required></label>
+          <p class="form-message" id="forgotMessage" role="alert"></p>
+          <button class="primary-button" type="submit">Gửi liên kết</button>
+        </form>
+        <button class="secondary-button" type="button" data-view="login">Quay lại đăng nhập</button>
+      </section>
+
+      <section class="auth-view" id="viewReset" hidden>
+        <div class="status-icon neutral" aria-hidden="true">🔐</div>
+        <div class="auth-heading centered"><h1>Đặt mật khẩu mới</h1><p>Mật khẩu cần có ít nhất 8 ký tự.</p></div>
+        <form id="resetForm" novalidate>
+          <label>Mật khẩu mới<span class="password-field"><input id="resetPassword" type="password" autocomplete="new-password" minlength="8" required><button type="button" class="password-toggle" data-toggle-password="resetPassword">Hiện</button></span></label>
+          <label>Nhập lại mật khẩu<span class="password-field"><input id="resetPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required><button type="button" class="password-toggle" data-toggle-password="resetPasswordConfirm">Hiện</button></span></label>
+          <p class="form-message" id="resetMessage" role="alert"></p>
+          <button class="primary-button" type="submit">Cập nhật mật khẩu</button>
+        </form>
+      </section>
+
+      <section class="auth-view status-view" id="viewRegistered" hidden>
+        <div class="status-icon success" aria-hidden="true">✓</div>
+        <h1>Đăng ký thành công</h1>
+        <p>Vui lòng mở email để xác nhận địa chỉ đăng ký. Sau đó tài khoản sẽ chuyển sang trạng thái chờ quản trị viên phê duyệt.</p>
+        <button class="primary-button" type="button" data-view="login">Về trang đăng nhập</button>
+      </section>
+
+      <section class="auth-view status-view" id="viewPending" hidden>
+        <div class="status-icon pending" aria-hidden="true">⌛</div>
+        <h1>Tài khoản đang chờ duyệt</h1>
+        <p>Tài khoản đã được xác nhận nhưng chưa được phép truy cập. Quản trị viên cần kiểm tra họ tên, chức danh và đơn vị trước khi kích hoạt.</p>
+        <div class="profile-summary" id="pendingProfile"></div>
+        <button class="primary-button" type="button" id="pendingRefresh">Kiểm tra lại trạng thái</button>
+        <button class="secondary-button" type="button" data-sign-out>Đăng xuất</button>
+      </section>
+
+      <section class="auth-view status-view" id="viewRejected" hidden>
+        <div class="status-icon rejected" aria-hidden="true">!</div>
+        <h1>Tài khoản chưa được chấp thuận</h1>
+        <p>Vui lòng liên hệ quản trị viên bệnh viện để kiểm tra lại thông tin đăng ký.</p>
+        <div class="profile-summary" id="rejectedProfile"></div>
+        <button class="secondary-button" type="button" data-sign-out>Đăng xuất</button>
+      </section>
+    </section>
+
+    <section class="admin-shell" id="adminShell" hidden>
+      <header class="admin-header">
+        <a class="admin-brand" href="index.html"><img src="assets/logo-vpmed.png" alt="VPMED"><span><b>Quản trị tài khoản</b><small>Hệ thống Hỗ trợ Dược lâm sàng</small></span></a>
+        <div class="admin-user"><span id="adminIdentity"></span><a href="index.html" class="secondary-button compact">Về trang chủ</a><button type="button" class="secondary-button compact" data-sign-out>Đăng xuất</button></div>
+      </header>
+      <div class="admin-content">
+        <div class="admin-title"><div><span class="auth-kicker">Quyền quản trị viên</span><h1>Nhân viên và nhật ký tra cứu</h1><p>Duyệt đúng người dùng trước khi cho phép truy cập dữ liệu chuyên môn.</p></div><button type="button" class="secondary-button compact" id="adminReload">Làm mới</button></div>
+        <div class="stat-grid">
+          <article><span>Chờ duyệt</span><strong id="statPending">0</strong></article>
+          <article><span>Đã duyệt</span><strong id="statApproved">0</strong></article>
+          <article><span>Từ chối</span><strong id="statRejected">0</strong></article>
+          <article><span>Tổng tài khoản</span><strong id="statTotal">0</strong></article>
+        </div>
+        <div class="admin-tabs" role="tablist"><button type="button" class="active" data-admin-tab="users">Tài khoản nhân viên</button><button type="button" data-admin-tab="audit">Nhật ký tra cứu liều thận</button></div>
+        <section class="admin-panel active" id="adminUsers">
+          <div class="admin-filters"><input id="userSearch" type="search" placeholder="Tìm họ tên, email, khoa/phòng…"><select id="userStatus"><option value="">Tất cả trạng thái</option><option value="pending">Chờ duyệt</option><option value="approved">Đã duyệt</option><option value="rejected">Từ chối</option></select></div>
+          <p class="form-message" id="adminMessage" role="alert"></p>
+          <div class="admin-list" id="userList"></div>
+        </section>
+        <section class="admin-panel" id="adminAudit">
+          <div class="admin-filters"><input id="auditSearch" type="search" placeholder="Tìm nhân viên, thuốc, khoa/phòng…"><button type="button" class="secondary-button compact" id="auditReload">Tải nhật ký</button></div>
+          <p class="audit-note">Nhật ký không lưu họ tên hoặc mã bệnh nhân. Danh tính hiển thị là nhân viên thực hiện tra cứu.</p>
+          <div class="table-scroll"><table class="audit-table"><thead><tr><th>Thời gian</th><th>Nhân viên</th><th>Đơn vị</th><th>Thuốc</th><th>CrCl / eGFR</th><th>Kết quả</th></tr></thead><tbody id="auditRows"><tr><td colspan="6">Chọn “Tải nhật ký” để xem dữ liệu.</td></tr></tbody></table></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="auth-footer">© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng</footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/vpmed-auth-page.js?v=20260812-new-system-v1"></script>
+</body>
+</html>
