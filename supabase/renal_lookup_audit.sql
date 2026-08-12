@@ -277,8 +277,20 @@ using (
 );
 
 revoke all on public.renal_lookup_logs from anon, authenticated;
-grant insert, select on public.renal_lookup_logs to authenticated;
+grant insert, select, delete on public.renal_lookup_logs to authenticated;
 grant usage, select on sequence public.renal_lookup_logs_id_seq to authenticated;
+
+create policy "admins delete shared renal lookup history"
+on public.renal_lookup_logs for delete to authenticated
+using (
+  exists (
+    select 1 from public.profiles p
+    where p.id = auth.uid()
+      and p.role = 'admin'
+      and p.status = 'approved'
+      and lower(p.email) ~ '^[^@[:space:]]+@vpmed\.vn$'
+  )
+);
 
 create or replace function public.admin_delete_renal_lookup_log(target_log_id bigint)
 returns void
@@ -315,5 +327,7 @@ grant execute on function public.admin_clear_renal_lookup_logs() to authenticate
 
 comment on table public.renal_lookup_logs is
   'Lịch sử dùng chung về tra cứu chức năng thận và liều thuốc; chỉ lưu mã HIS, không lưu họ tên bệnh nhân.';
+
+notify pgrst, 'reload schema';
 
 commit;

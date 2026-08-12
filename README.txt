@@ -6,6 +6,7 @@ BẢN CẬP NHẬT HỆ THỐNG TÀI KHOẢN NHÂN VIÊN VPMED
 - Admin xem được người thực hiện tra cứu liều thận; lịch sử chỉ lưu mã HIS, không lưu họ tên bệnh nhân.
 - Lịch sử tính liều suy thận được dùng chung qua Supabase: mọi tài khoản đã duyệt được xem, chỉ admin được xóa và xuất báo cáo CSV.
 - Với dự án đã cài đặt, chạy thêm supabase/lich_su_tra_cuu_dung_chung.sql một lần.
+- Nếu admin đã duyệt vẫn không xóa được, chạy supabase/sua_quyen_xoa_admin.sql và tải bản mã mới.
 - Xem HUONG_DAN_DANG_NHAP_VA_NHAT_KY.md trước khi triển khai.
 
 BẢN CẬP NHẬT HIỆU CHỈNH LIỀU THEO CrCl

@@ -125,9 +125,10 @@
     if(!isAdmin())return;
     if(!window.confirm('Xóa lượt tra cứu này khỏi lịch sử dùng chung?'))return;
     button.disabled=true;
-    var result=await auth.client.rpc('admin_delete_renal_lookup_log',{target_log_id:Number(id)});
+    var result=await auth.client.from('renal_lookup_logs').delete().eq('id',Number(id)).select('id');
     button.disabled=false;
-    if(result.error){setStatus('Không xóa được lịch sử. Chỉ admin mới có quyền xóa.','error');return;}
+    if(result.error){setStatus('Không xóa được lịch sử: '+String(result.error.message||result.error.code||'Lỗi Supabase')+'.','error');return;}
+    if(!result.data||!result.data.length){setStatus('Supabase chưa cho phép xóa dòng này. Hãy chạy file sua_quyen_xoa_admin.sql và đăng nhập lại.','error');return;}
     await refreshSharedHistory();
   }
 
@@ -138,9 +139,10 @@
     if(typed!=='XOA LICH SU')return;
     var button=document.getElementById('clear');
     button.disabled=true;
-    var result=await auth.client.rpc('admin_clear_renal_lookup_logs');
+    var result=await auth.client.from('renal_lookup_logs').delete().gte('id',0).select('id');
     button.disabled=false;
-    if(result.error){setStatus('Không xóa được lịch sử. Chỉ admin mới có quyền xóa.','error');return;}
+    if(result.error){setStatus('Không xóa được lịch sử: '+String(result.error.message||result.error.code||'Lỗi Supabase')+'.','error');return;}
+    if(sharedRows.length&&(!result.data||!result.data.length)){setStatus('Supabase chưa cho phép xóa. Hãy chạy file sua_quyen_xoa_admin.sql và đăng nhập lại.','error');return;}
     await refreshSharedHistory();
   }
 

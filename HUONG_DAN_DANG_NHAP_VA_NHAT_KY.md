@@ -77,6 +77,8 @@ Sau khi chạy:
 - Admin có thêm nút **Xuất CSV**, **Xóa** từng dòng và **Xóa toàn bộ**.
 - Khi xóa toàn bộ, admin phải nhập đúng cụm `XOA LICH SU` để xác nhận.
 
+Nếu tài khoản đã có `role = admin`, `status = approved` nhưng thao tác xóa vẫn báo lỗi, chạy một lần `supabase/sua_quyen_xoa_admin.sql`, sau đó tải phiên bản website mới và nhấn `Ctrl + F5`. File này cấp quyền `DELETE` ở cấp bảng nhưng RLS chỉ cho hồ sơ admin đã duyệt thực sự xóa; người dùng thường vẫn bị Supabase chặn.
+
 Supabase là nguồn lịch sử chung duy nhất. File Apps Script cũ không cần triển khai và không được nạp trong `index.html`, tránh hai nguồn dữ liệu bị trùng hoặc lệch.
 
 ## 6. Các file mới cần tải đủ lên GitHub
@@ -88,6 +90,7 @@ Supabase là nguồn lịch sử chung duy nhất. File Apps Script cũ không c
 - `assets/vpmed-access.js`
 - `assets/vpmed-renal-audit.js`
 - `supabase/lich_su_tra_cuu_dung_chung.sql`
+- `supabase/sua_quyen_xoa_admin.sql` (chỉ dùng khi cần sửa quyền xóa)
 - `index.html` đã cập nhật
 
 Phải tải đúng cả cấu trúc thư mục. Nếu chỉ thay `index.html` mà thiếu các file trong `assets/`, giao diện tài khoản sẽ không hoạt động đúng.
