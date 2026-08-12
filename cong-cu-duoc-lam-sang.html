@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#003F6B">
+<meta name="theme-color" content="#074691">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -30,12 +30,12 @@ button,.ni,.mod-card,.bp,.bs,.btn-ico,#MB-btn{-webkit-tap-highlight-color:transp
 
 /* ===== CSS VARIABLES ===== */
 :root{
-  --P:#005B8E;--PD:#003F6B;--PL:#0078BA;
-  --G:#2EA84F;--W:#D97706;--R:#DC2626;--T:#0891B2;
-  --ACC:#E8B84B;--ACCL:#F5D080;
-  --BG:#F0F5FA;--CARD:#fff;
-  --TXT:#1A2B3C;--T2:#4A6280;--TM:#8097B0;
-  --BOR:#C8DAEA;
+  --P:#1370B5;--PD:#074691;--PL:#0077CC;
+  --G:#2EA84F;--W:#D97706;--R:#DC2626;--T:#00AFA5;
+  --ACC:#E6234C;--ACCL:#FFB6C4;
+  --BG:#F4F6F8;--CARD:#fff;
+  --TXT:#1A2B3C;--T2:#334862;--TM:#62809D;
+  --BOR:#D7E7F3;
   --SW:268px;--RAD:12px;
   --SH:0 4px 24px rgba(0,91,142,.10);--SHs:0 2px 8px rgba(0,91,142,.08)
 }
@@ -43,7 +43,7 @@ button,.ni,.mod-card,.bp,.bs,.btn-ico,#MB-btn{-webkit-tap-highlight-color:transp
 /* ===== SIDEBAR ===== */
 #SB{
   width:var(--SW);min-width:var(--SW);
-  background:linear-gradient(170deg,var(--PD) 0%,var(--P) 60%,#006FA8 100%);
+  background:linear-gradient(165deg,var(--PD) 0%,var(--P) 58%,#00AFA5 100%);
   height:100vh;height:100dvh;position:fixed;top:0;left:0;z-index:200;
   display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
@@ -56,7 +56,7 @@ button,.ni,.mod-card,.bp,.bs,.btn-ico,#MB-btn{-webkit-tap-highlight-color:transp
 .logo-ico{width:42px;height:42px;border-radius:10px;background:var(--ACC);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .logo-title{color:#fff;font-size:13px;font-weight:700;line-height:1.3}
 .logo-sub{color:rgba(255,255,255,.55);font-size:10px;margin-top:2px}
-.ver-badge{margin-top:8px;background:rgba(232,184,75,.2);border:1px solid rgba(232,184,75,.4);border-radius:6px;padding:3px 10px;font-size:10px;color:var(--ACCL);text-align:center}
+.ver-badge{margin-top:8px;background:rgba(230,35,76,.16);border:1px solid rgba(255,182,196,.42);border-radius:6px;padding:3px 10px;font-size:10px;color:var(--ACCL);text-align:center}
 #SB nav{flex:1;padding:10px 0}
 .nav-lbl{padding:14px 16px 5px;margin-top:4px;font-size:10px;font-weight:800;letter-spacing:1.3px;color:var(--ACCL);text-transform:uppercase;border-top:1px solid rgba(255,255,255,.08)}
 .nav-lbl:first-child{margin-top:0;border-top:none;padding-top:9px}
@@ -1585,16 +1585,19 @@ body:not(.authed) #SB,body:not(.authed) #MAIN{display:none!important}
 body.authed #AUTH-SCREEN{display:none!important}
 #AUTH-SCREEN{
   min-height:100vh;min-height:100dvh;width:100%;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(170deg,var(--PD) 0%,var(--P) 55%,#006FA8 100%);
+  background:
+    radial-gradient(circle at 14% 18%,rgba(255,255,255,.16),transparent 26%),
+    linear-gradient(135deg,#074691 0%,#1370B5 52%,#00AFA5 100%);
   padding:24px 16px;padding-top:calc(24px + env(safe-area-inset-top));padding-bottom:calc(24px + env(safe-area-inset-bottom));
 }
 .auth-card{
-  width:100%;max-width:420px;background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,20,40,.35);
-  padding:30px 26px 26px;
+  position:relative;overflow:hidden;width:100%;max-width:440px;background:#fff;border:1px solid rgba(215,231,243,.95);
+  border-radius:18px;box-shadow:0 20px 60px rgba(7,70,145,.28);padding:30px 26px 26px;
 }
-.auth-logo{display:flex;align-items:center;gap:12px;margin-bottom:6px}
-.auth-logo-ico{width:46px;height:46px;border-radius:12px;background:var(--ACC);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.auth-logo-title{font-size:16px;font-weight:800;color:var(--PD)}
+.auth-card::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#074691,#1370B5 58%,#00AFA5 82%,#E6234C)}
+.auth-logo{display:flex;align-items:center;gap:13px;margin-bottom:6px;padding-top:3px}
+.auth-logo-image{width:122px;height:auto;display:block;flex-shrink:0}
+.auth-logo-title{font-size:14px;font-weight:800;color:var(--PD);line-height:1.4;padding-left:13px;border-left:1px solid var(--BOR)}
 .auth-logo-sub{font-size:11px;color:var(--T2)}
 .auth-heading{font-size:19px;font-weight:800;color:var(--TXT);margin:20px 0 4px}
 .auth-sub{font-size:12.5px;color:var(--T2);margin-bottom:18px;line-height:1.5}
@@ -1604,7 +1607,7 @@ body.authed #AUTH-SCREEN{display:none!important}
   width:100%;padding:12px 14px;border:1.5px solid var(--BOR);border-radius:10px;font-size:15px;
   background:#fff;color:var(--TXT);transition:border-color .15s;-webkit-appearance:none
 }
-.auth-input:focus{outline:none;border-color:var(--P)}
+.auth-input:focus{outline:none;border-color:var(--P);box-shadow:0 0 0 3px rgba(19,112,181,.12)}
 .auth-pw-wrap{position:relative}
 .auth-pw-wrap .auth-input{padding-right:46px}
 .auth-pw-toggle{
@@ -1614,7 +1617,7 @@ body.authed #AUTH-SCREEN{display:none!important}
 }
 .auth-pw-toggle:active{background:var(--BG)}
 .auth-btn{
-  width:100%;padding:13px;border:none;border-radius:10px;background:var(--P);color:#fff;font-size:15px;font-weight:700;
+  width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(90deg,var(--PD),var(--P));color:#fff;font-size:15px;font-weight:700;
   cursor:pointer;margin-top:6px;transition:background .15s;-webkit-tap-highlight-color:transparent
 }
 .auth-btn:active{background:var(--PD)}
@@ -1631,6 +1634,8 @@ body.authed #AUTH-SCREEN{display:none!important}
 .auth-pending-ico{font-size:44px;text-align:center;margin-bottom:10px}
 .auth-pending-title{font-size:17px;font-weight:800;text-align:center;color:var(--TXT);margin-bottom:8px}
 .auth-pending-txt{font-size:13px;color:var(--T2);text-align:center;line-height:1.6;margin-bottom:18px}
+@media(max-width:480px){.auth-logo{align-items:flex-start}.auth-logo-image{width:108px}.auth-logo-title{font-size:12.5px}}
+@media(max-height:760px){#AUTH-SCREEN{align-items:flex-start}}
 /* ===== ADMIN DASHBOARD ===== */
 .adm-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
 @media(max-width:768px){.adm-stats{grid-template-columns:repeat(2,1fr)}}
@@ -1675,7 +1680,7 @@ body.authed #AUTH-SCREEN{display:none!important}
 <div id="AUTH-SCREEN">
   <div class="auth-card">
     <div class="auth-logo">
-      <div class="auth-logo-ico">💊</div>
+      <img class="auth-logo-image" src="assets/logo-vpmed.png" alt="Bệnh viện VPMED Tân Hưng">
       <div>
         <div class="auth-logo-title">Hệ thống Hỗ trợ Dược lâm sàng</div>
         <div class="auth-logo-sub" style="display:none">Bệnh viện VPMED Tân Hưng</div>
@@ -1690,7 +1695,7 @@ body.authed #AUTH-SCREEN{display:none!important}
       <form id="LOGIN-FORM" autocomplete="on">
         <div class="auth-field">
           <label class="auth-label">Địa chỉ email</label>
-          <input class="auth-input" type="email" id="LOGIN-EMAIL" autocomplete="username" required placeholder="bacsi@vpmed.vn">
+          <input class="auth-input" type="email" id="LOGIN-EMAIL" autocomplete="username" required placeholder="ten@vpmed.vn">
         </div>
         <div class="auth-field">
           <label class="auth-label">Mật khẩu</label>
@@ -1712,16 +1717,20 @@ body.authed #AUTH-SCREEN{display:none!important}
       <div class="auth-msg" id="REGISTER-MSG"></div>
       <form id="REGISTER-FORM" autocomplete="on">
         <div class="auth-field">
-          <label class="auth-label">Họ và tên bác sĩ</label>
-          <input class="auth-input" type="text" id="REG-NAME" autocomplete="name" required minlength="2" maxlength="120" placeholder="BS. Nguyễn Văn A">
+          <label class="auth-label">Họ và tên</label>
+          <input class="auth-input" type="text" id="REG-NAME" autocomplete="name" required minlength="2" maxlength="120" placeholder="Nguyễn Văn A">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Chức danh/vị trí công tác</label>
+          <input class="auth-input" type="text" id="REG-JOB-TITLE" autocomplete="organization-title" required minlength="2" maxlength="120" placeholder="Ví dụ: Bác sĩ, Dược sĩ, Điều dưỡng, Kỹ thuật viên…">
         </div>
         <div class="auth-field">
           <label class="auth-label">Địa chỉ email</label>
-          <input class="auth-input" type="email" id="REG-EMAIL" autocomplete="username" required pattern="^[^@\s]+@vpmed\.vn$" title="Vui lòng dùng email bệnh viện @vpmed.vn" placeholder="bacsi@vpmed.vn">
+          <input class="auth-input" type="email" id="REG-EMAIL" autocomplete="username" required pattern="^[^@\s]+@vpmed\.vn$" title="Vui lòng dùng email bệnh viện @vpmed.vn" placeholder="ten@vpmed.vn">
         </div>
         <div class="auth-field">
-          <label class="auth-label">Khoa/phòng</label>
-          <input class="auth-input" type="text" id="REG-DEPARTMENT" autocomplete="organization-title" required minlength="2" maxlength="120" placeholder="Khoa Nội thận – Tiết niệu">
+          <label class="auth-label">Khoa/phòng/bộ phận công tác</label>
+          <input class="auth-input" type="text" id="REG-DEPARTMENT" autocomplete="organization" required minlength="2" maxlength="160" placeholder="Ví dụ: Khoa Dược, Phòng KHTH, Khoa Xét nghiệm…">
         </div>
         <div class="auth-field">
           <label class="auth-label">Mật khẩu</label>
@@ -1760,7 +1769,7 @@ body.authed #AUTH-SCREEN{display:none!important}
       <form id="FORGOT-FORM" autocomplete="on">
         <div class="auth-field">
           <label class="auth-label">Địa chỉ email</label>
-          <input class="auth-input" type="email" id="FORGOT-EMAIL" autocomplete="username" required placeholder="bacsi@vpmed.vn">
+          <input class="auth-input" type="email" id="FORGOT-EMAIL" autocomplete="username" required placeholder="ten@vpmed.vn">
         </div>
         <button type="submit" class="auth-btn" id="FORGOT-BTN">Gửi liên kết đặt lại</button>
       </form>
@@ -2099,7 +2108,7 @@ body.authed #AUTH-SCREEN{display:none!important}
 
   <div class="disc" style="margin-top:22px">
     <div class="disc-t">⚠️ Tuyên bố trách nhiệm</div>
-    <div class="disc-x">Công cụ này được thiết kế để <strong style="color:var(--ACC);font-size:13.5px;">HỖ TRỢ</strong> quyết định lâm sàng, không thay thế đánh giá lâm sàng trực tiếp. Mọi kết quả cần được xem xét trong bối cảnh lâm sàng cụ thể bởi bác sĩ/dược sĩ có chuyên môn. Người thiết kế không chịu trách nhiệm về hậu quả khi áp dụng kết quả mà không có đánh giá chuyên môn đầy đủ.<br><strong style="color:var(--R);font-size:13.5px;">⚕ Chỉ dành cho Nhân viên Y tế có chứng chỉ hành nghề.</strong></div>
+    <div class="disc-x">Công cụ này được thiết kế để <strong style="color:var(--ACC);font-size:13.5px;">HỖ TRỢ</strong> quyết định lâm sàng, không thay thế đánh giá lâm sàng trực tiếp. Mọi kết quả cần được xem xét trong bối cảnh lâm sàng cụ thể bởi bác sĩ/dược sĩ có chuyên môn. Người thiết kế không chịu trách nhiệm về hậu quả khi áp dụng kết quả mà không có đánh giá chuyên môn đầy đủ.<br><strong style="color:var(--R);font-size:13.5px;">⚕ Chỉ dành cho nhân viên bệnh viện đã được phân quyền.</strong></div>
   </div>
 </div>
 
@@ -5057,12 +5066,12 @@ body.authed #AUTH-SCREEN{display:none!important}
     <table class="adm-table">
       <thead>
         <tr>
-          <th>Họ và tên bác sĩ</th><th>Email</th><th>Khoa/phòng</th><th>Trạng thái</th>
+          <th>Họ và tên</th><th>Chức danh/vị trí</th><th>Email</th><th>Khoa/phòng/bộ phận</th><th>Trạng thái</th>
           <th>Ngày đăng ký</th><th>Đăng nhập gần nhất</th><th>Thao tác</th>
         </tr>
       </thead>
       <tbody id="ADM-TBODY">
-        <tr><td colspan="7" class="adm-empty">Đang tải dữ liệu người dùng…</td></tr>
+        <tr><td colspan="8" class="adm-empty">Đang tải dữ liệu người dùng…</td></tr>
       </tbody>
     </table>
   </div>
@@ -5085,19 +5094,19 @@ body.authed #AUTH-SCREEN{display:none!important}
           <option value="antibiotic_renal_dose">Hiệu chỉnh liều kháng sinh</option>
           <option value="colistin_renal_dose">Tính liều Colistin</option>
         </select>
-        <input type="text" id="AUDIT-SEARCH" placeholder="Tìm bác sĩ, khoa/phòng, email hoặc thuốc...">
+        <input type="text" id="AUDIT-SEARCH" placeholder="Tìm người tra cứu, chức danh, bộ phận, email hoặc thuốc...">
         <button class="bs" id="AUDIT-REFRESH">🔄 Làm mới</button>
       </div>
       <div class="adm-table-wrap">
         <table class="adm-table audit-table">
           <thead>
             <tr>
-              <th>Thời gian</th><th>Bác sĩ</th><th>Khoa/phòng</th><th>Email</th>
+              <th>Thời gian</th><th>Người tra cứu</th><th>Chức danh/vị trí</th><th>Khoa/phòng/bộ phận</th><th>Email</th>
               <th>Tra cứu</th><th>CrCl / eGFR</th><th>Kết quả liên quan</th>
             </tr>
           </thead>
           <tbody id="AUDIT-TBODY">
-            <tr><td colspan="7" class="adm-empty">Đang tải nhật ký tra cứu…</td></tr>
+            <tr><td colspan="8" class="adm-empty">Đang tải nhật ký tra cứu…</td></tr>
           </tbody>
         </table>
       </div>
