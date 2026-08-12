@@ -41,20 +41,20 @@
     
       <button data-view="sources">Nguồn</button>
     </nav>
-    <div class="home-user-account" id="homeUserAccount" hidden>
+    <div class="home-user-account" id="homeUserAccount">
       <button class="home-user-trigger" id="homeUserTrigger" type="button" aria-haspopup="true" aria-expanded="false">
-        <span class="home-user-avatar" id="homeUserAvatar" aria-hidden="true">NV</span>
+        <span class="home-user-avatar" id="homeUserAvatar" aria-hidden="true">ĐN</span>
         <span class="home-user-copy">
-          <strong id="homeUserName">Người dùng</strong>
-          <small id="homeUserMeta">Nhân viên bệnh viện</small>
+          <strong id="homeUserName">Đăng nhập</strong>
+          <small id="homeUserMeta">Tài khoản nhân viên</small>
         </span>
         <span class="home-user-chevron" aria-hidden="true">▾</span>
       </button>
       <div class="home-user-menu" id="homeUserMenu" hidden>
-        <div class="home-user-menu-name" id="homeUserMenuName">Người dùng</div>
-        <div class="home-user-menu-detail" id="homeUserMenuDetail">Nhân viên bệnh viện</div>
-        <div class="home-user-status" id="homeUserStatus">Đang chờ duyệt</div>
-        <button type="button" id="homeUserLogout">Đăng xuất</button>
+        <div class="home-user-menu-name" id="homeUserMenuName">Chưa đăng nhập</div>
+        <div class="home-user-menu-detail" id="homeUserMenuDetail">Đăng nhập để hiển thị họ tên và đơn vị.</div>
+        <div class="home-user-status" id="homeUserStatus">Chưa có phiên đăng nhập</div>
+        <button type="button" id="homeUserLogout" data-action="login">Đi đến đăng nhập</button>
       </div>
     </div>
   </div>
@@ -1326,6 +1326,21 @@ calc();
     trigger.setAttribute('aria-expanded', 'false');
   }
 
+  function showSignedOut(){
+    avatar.textContent = 'ĐN';
+    nameEl.textContent = 'Đăng nhập';
+    metaEl.textContent = 'Tài khoản nhân viên';
+    menuName.textContent = 'Chưa đăng nhập';
+    menuDetail.textContent = 'Đăng nhập để hiển thị họ tên và đơn vị.';
+    statusEl.textContent = 'Chưa có phiên đăng nhập';
+    statusEl.className = 'home-user-status';
+    logout.textContent = 'Đi đến đăng nhập';
+    logout.dataset.action = 'login';
+    logout.disabled = false;
+    account.hidden = false;
+    closeMenu();
+  }
+
   function clearAuthFragment(){
     if(/(?:access_token|refresh_token|error_description|type)=/i.test(window.location.hash || '')){
       window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
@@ -1352,13 +1367,16 @@ calc();
         menuDetail.textContent = detail || user.email || '';
         statusEl.textContent = statusText(profile.status);
         statusEl.className = 'home-user-status ' + (profile.status || 'pending');
+        logout.textContent = 'Đăng xuất';
+        logout.dataset.action = 'logout';
+        logout.disabled = false;
         account.hidden = false;
       });
   }
 
   function applySession(session){
     if(session && session.user) showUser(session.user);
-    else { account.hidden = true; closeMenu(); }
+    else showSignedOut();
     clearAuthFragment();
   }
 
@@ -1371,6 +1389,10 @@ calc();
     if(!account.contains(event.target)) closeMenu();
   });
   logout.addEventListener('click', function(){
+    if(logout.dataset.action === 'login'){
+      window.location.href = 'cong-cu-duoc-lam-sang.html';
+      return;
+    }
     logout.disabled = true;
     client.auth.signOut().finally(function(){
       window.location.href = 'cong-cu-duoc-lam-sang.html';
