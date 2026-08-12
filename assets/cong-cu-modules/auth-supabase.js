@@ -2,13 +2,14 @@
 (function(){
   'use strict';
 
-  var SUPABASE_URL = 'https://qgjfuogfvbmdqxxoefrd.supabase.co';
-  var SUPABASE_ANON_KEY = 'sb_publishable_cnibuIpIWuTlrLpR51A5_w_gzKEddAK';
-  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  var SUPABASE_URL = 'https://jaswtdcgrfbygmdxvumu.supabase.co';
+  var SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_O6LzzHIKE9nWoSxhLQNlsw_shxEqdLC';
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
   var CURRENT_USER = null;
   var IN_RECOVERY_FLOW = false;
   var CURRENT_PROFILE = null;
+  var ALLOWED_EMAIL_DOMAIN = 'vpmed.vn';
 
   function $(id){ return document.getElementById(id); }
 
@@ -40,6 +41,10 @@
     return msg;
   }
 
+  function isAllowedHospitalEmail(email){
+    return /^[^@\s]+@vpmed\.vn$/i.test(String(email || '').trim());
+  }
+
   /* ---------- Password show/hide toggles ---------- */
   document.querySelectorAll('.auth-pw-toggle').forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -69,19 +74,32 @@
       showAuthPane('PENDING');
       return;
     }
+    if(!isAllowedHospitalEmail(profile.email)){
+      document.body.classList.remove('authed');
+      $('PENDING-ICO').textContent = '⛔';
+      $('PENDING-TITLE').textContent = 'Email không thuộc bệnh viện';
+      $('PENDING-TXT').textContent = 'Hệ thống chỉ chấp nhận tài khoản sử dụng email @' + ALLOWED_EMAIL_DOMAIN + '.';
+      showAuthPane('PENDING');
+      return;
+    }
     if(profile.status === 'approved'){
       document.body.classList.add('authed');
       var tbu = $('TB-USER');
-      if(tbu){ tbu.style.display=''; tbu.textContent = (profile.full_name || profile.email) + (profile.role==='admin' ? ' · Admin' : ''); }
+      if(tbu){
+        tbu.style.display='';
+        tbu.textContent = (profile.full_name || profile.email) + (profile.workplace ? ' · ' + profile.workplace : '') + (profile.role==='admin' ? ' · Admin' : '');
+      }
       if(profile.role === 'admin'){
         $('NAV-ADMIN').style.display = '';
         $('NAV-ADMIN-LBL').style.display = '';
+        $('NAV-AUDIT').style.display = '';
       } else {
         $('NAV-ADMIN').style.display = 'none';
         $('NAV-ADMIN-LBL').style.display = 'none';
+        $('NAV-AUDIT').style.display = 'none';
       }
       // Update last login timestamp (best-effort)
-      sb.from('profiles').update({ last_login_at: new Date().toISOString() }).eq('id', profile.id).then(function(){});
+      sb.rpc('touch_my_last_login').then(function(){});
       // Chỉ tải nội dung từ clinical_content SAU KHI đã xác nhận phiên đăng nhập hợp lệ (tránh lỗi RLS do gọi quá sớm)
       if(typeof refreshAbbreviationsFromServer === 'function') refreshAbbreviationsFromServer();
     } else if(profile.status === 'rejected'){
@@ -125,6 +143,10 @@
     clearMsg('LOGIN-MSG');
     var email = $('LOGIN-EMAIL').value.trim();
     var pw = $('LOGIN-PW').value;
+    if(!isAllowedHospitalEmail(email)){
+      setMsg('LOGIN-MSG','err','Vui lòng đăng nhập bằng email bệnh viện @' + ALLOWED_EMAIL_DOMAIN + '.');
+      return;
+    }
     var btn = $('LOGIN-BTN');
     btn.disabled = true; btn.textContent = 'Đang đăng nhập…';
     sb.auth.signInWithPassword({ email: email, password: pw }).then(function(res){
@@ -143,16 +165,23 @@
     clearMsg('REGISTER-MSG');
     var name = $('REG-NAME').value.trim();
     var email = $('REG-EMAIL').value.trim();
-    var workplace = $('REG-WORKPLACE').value.trim();
+    var department = $('REG-DEPARTMENT').value.trim();
     var pw = $('REG-PW').value;
     var pw2 = $('REG-PW2').value;
+    if(name.length < 2){ setMsg('REGISTER-MSG','err','Vui lòng nhập đầy đủ họ tên bác sĩ.'); return; }
+    if(department.length < 2){ setMsg('REGISTER-MSG','err','Vui lòng nhập khoa/phòng công tác.'); return; }
+    if(!isAllowedHospitalEmail(email)){
+      setMsg('REGISTER-MSG','err','Chỉ chấp nhận email bệnh viện @' + ALLOWED_EMAIL_DOMAIN + '.');
+      return;
+    }
     if(pw !== pw2){ setMsg('REGISTER-MSG','err','Mật khẩu xác nhận không khớp.'); return; }
     if(pw.length < 6){ setMsg('REGISTER-MSG','err','Mật khẩu tối thiểu 6 ký tự.'); return; }
     var btn = $('REGISTER-BTN');
     btn.disabled = true; btn.textContent = 'Đang đăng ký…';
     sb.auth.signUp({
       email: email, password: pw,
-      options: { data: { full_name: name, workplace: workplace } }
+      // Giữ cả hai khóa để tương thích với trigger profiles hiện có.
+      options: { data: { full_name: name, department: department, workplace: department } }
     }).then(function(res){
       btn.disabled = false; btn.textContent = 'Đăng ký';
       if(res.error){ setMsg('REGISTER-MSG','err', friendlyAuthError(res.error.message)); return; }
@@ -161,9 +190,9 @@
         // Signed in immediately (email confirmation disabled) -> gate by profile status
         loadProfileAndGate(res.data.user);
       } else {
-        $('PENDING-ICO').textContent = '⏳';
+        $('PENDING-ICO').textContent = '✉️';
         $('PENDING-TITLE').textContent = 'Đăng ký thành công!';
-        $('PENDING-TXT').textContent = 'Tài khoản của bạn đang chờ quản trị viên kích hoạt. Vui lòng đăng nhập lại sau khi được duyệt.';
+        $('PENDING-TXT').textContent = 'Vui lòng kiểm tra email để xác nhận địa chỉ đăng ký. Sau khi xác nhận, tài khoản sẽ chờ quản trị viên kích hoạt.';
         showAuthPane('PENDING');
       }
     }).catch(function(err){
@@ -177,6 +206,10 @@
     e.preventDefault();
     clearMsg('FORGOT-MSG');
     var email = $('FORGOT-EMAIL').value.trim();
+    if(!isAllowedHospitalEmail(email)){
+      setMsg('FORGOT-MSG','err','Vui lòng dùng email bệnh viện @' + ALLOWED_EMAIL_DOMAIN + '.');
+      return;
+    }
     var btn = $('FORGOT-BTN');
     btn.disabled = true; btn.textContent = 'Đang gửi…';
     sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.href }).then(function(res){
@@ -316,7 +349,7 @@
       return '<tr>' +
         '<td>'+esc(u.full_name)+'</td>' +
         '<td>'+esc(u.email)+'</td>' +
-        '<td>'+esc(u.workplace)+'</td>' +
+        '<td>'+esc(u.workplace || '—')+'</td>' +
         '<td>'+statusBadge(u)+'</td>' +
         '<td>'+fmtDate(u.created_at)+'</td>' +
         '<td>'+fmtDate(u.last_login_at)+'</td>' +
@@ -340,9 +373,7 @@
   }
 
   function updateUserStatus(id, status){
-    var payload = { status: status, approved_at: new Date().toISOString() };
-    if(CURRENT_USER) payload.approved_by = CURRENT_USER.id;
-    sb.from('profiles').update(payload).eq('id', id).then(function(res){
+    sb.rpc('admin_set_profile_status', { target_user_id:id, new_status:status }).then(function(res){
       if(res.error){ alert('Lỗi: ' + res.error.message); return; }
       loadAdminStats();
       loadAdminUsers();
@@ -384,6 +415,181 @@
       ADM_PAGE = 0;
       loadAdminStats();
       loadAdminUsers();
+    }
+  });
+
+  /* ================= RENAL LOOKUP AUDIT ================= */
+  var AUDIT_PAGE = 0;
+  var AUDIT_PAGE_SIZE = 25;
+  var AUDIT_TOTAL_ROWS = 0;
+  var AUDIT_TYPE = 'all';
+  var AUDIT_SEARCH_TERM = '';
+  var AUDIT_SEARCH_DEBOUNCE = null;
+  var AUDIT_LAST_FINGERPRINT = '';
+  var AUDIT_LAST_AT = 0;
+  var AUDIT_ERROR_SHOWN = false;
+  var AUDIT_ALLOWED_TYPES = {
+    renal_function: true,
+    antibiotic_renal_dose: true,
+    colistin_renal_dose: true
+  };
+
+  function auditText(value, maxLength){
+    if(value == null) return null;
+    var textValue = String(value).replace(/\s+/g, ' ').trim();
+    if(!textValue) return null;
+    return textValue.slice(0, maxLength || 500);
+  }
+
+  function auditNumber(value){
+    var numberValue = Number(value);
+    if(!Number.isFinite(numberValue)) return null;
+    return Math.round(numberValue * 10) / 10;
+  }
+
+  function showAuditWriteWarning(){
+    if(AUDIT_ERROR_SHOWN) return;
+    AUDIT_ERROR_SHOWN = true;
+    var warning = document.createElement('div');
+    warning.id = 'AUDIT-WRITE-WARNING';
+    warning.setAttribute('role', 'alert');
+    warning.style.cssText = 'position:fixed;right:16px;bottom:16px;z-index:99999;max-width:360px;padding:12px 14px;border-radius:10px;background:#7f1d1d;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.24);font:600 12.5px/1.45 system-ui,sans-serif';
+    warning.textContent = 'Kết quả đã hiển thị nhưng chưa ghi được nhật ký tra cứu. Vui lòng báo quản trị viên kiểm tra cấu hình Supabase.';
+    document.body.appendChild(warning);
+  }
+
+  function logLookup(payload){
+    if(!CURRENT_USER || !CURRENT_PROFILE || CURRENT_PROFILE.status !== 'approved') return Promise.resolve(false);
+    payload = payload || {};
+    if(!AUDIT_ALLOWED_TYPES[payload.lookup_type]) return Promise.resolve(false);
+    var row = {
+      user_id: CURRENT_USER.id,
+      lookup_type: payload.lookup_type,
+      module_name: auditText(payload.module_name, 160),
+      drug_name: auditText(payload.drug_name, 180),
+      crcl_ml_min: auditNumber(payload.crcl_ml_min),
+      egfr_ml_min_1_73m2: auditNumber(payload.egfr_ml_min_1_73m2),
+      renal_band: auditText(payload.renal_band, 160),
+      result_summary: auditText(payload.result_summary, 1000)
+    };
+    var fingerprint = JSON.stringify(row);
+    var now = Date.now();
+    if(fingerprint === AUDIT_LAST_FINGERPRINT && now - AUDIT_LAST_AT < 4000) return Promise.resolve(true);
+    AUDIT_LAST_FINGERPRINT = fingerprint;
+    AUDIT_LAST_AT = now;
+    return sb.from('renal_lookup_logs').insert(row).then(function(res){
+      if(res.error){
+        console.error('[renal_lookup_logs]', res.error);
+        showAuditWriteWarning();
+        return false;
+      }
+      return true;
+    }).catch(function(err){
+      console.error('[renal_lookup_logs]', err);
+      showAuditWriteWarning();
+      return false;
+    });
+  }
+
+  window.ClinpharmAudit = {
+    logLookup: logLookup,
+    getCurrentProfile: function(){ return CURRENT_PROFILE; }
+  };
+
+  function auditTypeLabel(type){
+    if(type === 'renal_function') return 'Đánh giá chức năng thận';
+    if(type === 'antibiotic_renal_dose') return 'Hiệu chỉnh liều kháng sinh';
+    if(type === 'colistin_renal_dose') return 'Tính liều Colistin';
+    return type || 'Tra cứu';
+  }
+
+  function renderAuditTable(list){
+    var tbody = $('AUDIT-TBODY');
+    if(!tbody) return;
+    if(!list || list.length === 0){
+      tbody.innerHTML = '<tr><td colspan="7" class="adm-empty">Chưa có lượt tra cứu phù hợp.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = list.map(function(item){
+      var metrics = [];
+      if(item.crcl_ml_min != null) metrics.push('CrCl ' + esc(Number(item.crcl_ml_min).toFixed(1)) + ' mL/phút');
+      if(item.egfr_ml_min_1_73m2 != null) metrics.push('eGFR ' + esc(Number(item.egfr_ml_min_1_73m2).toFixed(1)));
+      var lookupName = auditTypeLabel(item.lookup_type);
+      if(item.drug_name) lookupName += '<br><strong>' + esc(item.drug_name) + '</strong>';
+      var detail = [item.renal_band, item.result_summary].filter(Boolean).map(esc).join('<br>');
+      return '<tr>' +
+        '<td>'+fmtDate(item.created_at)+'</td>' +
+        '<td><strong>'+esc(item.doctor_name || '—')+'</strong></td>' +
+        '<td>'+esc(item.department || '—')+'</td>' +
+        '<td>'+esc(item.doctor_email || '—')+'</td>' +
+        '<td>'+lookupName+'</td>' +
+        '<td class="audit-metric">'+(metrics.length ? metrics.join('<br>') : '—')+'</td>' +
+        '<td class="audit-detail">'+(detail || '—')+'</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  function renderAuditPagination(){
+    var el = $('AUDIT-PAGINATION');
+    if(!el) return;
+    var totalPages = Math.max(1, Math.ceil(AUDIT_TOTAL_ROWS / AUDIT_PAGE_SIZE));
+    var currentPage = AUDIT_PAGE + 1;
+    el.innerHTML =
+      '<button class="bs" id="AUDIT-PREV" '+(AUDIT_PAGE<=0?'disabled':'')+'>‹ Trước</button>' +
+      '<span style="font-size:12.5px;color:var(--T2);margin:0 10px">Trang '+currentPage+' / '+totalPages+' · '+AUDIT_TOTAL_ROWS+' lượt tra cứu</span>' +
+      '<button class="bs" id="AUDIT-NEXT" '+(currentPage>=totalPages?'disabled':'')+'>Sau ›</button>';
+    var prev = $('AUDIT-PREV'), next = $('AUDIT-NEXT');
+    if(prev) prev.addEventListener('click', function(){ if(AUDIT_PAGE>0){ AUDIT_PAGE--; loadAuditLogs(); } });
+    if(next) next.addEventListener('click', function(){ if(currentPage<totalPages){ AUDIT_PAGE++; loadAuditLogs(); } });
+  }
+
+  function loadAuditLogs(){
+    if(!CURRENT_PROFILE || CURRENT_PROFILE.role !== 'admin') return;
+    var tbody = $('AUDIT-TBODY');
+    if(!tbody) return;
+    tbody.innerHTML = '<tr><td colspan="7" class="adm-empty">Đang tải nhật ký tra cứu…</td></tr>';
+    var from = AUDIT_PAGE * AUDIT_PAGE_SIZE;
+    var to = from + AUDIT_PAGE_SIZE - 1;
+    var query = sb.from('renal_lookup_logs').select('*', { count:'exact' }).order('created_at', { ascending:false }).range(from, to);
+    if(AUDIT_TYPE !== 'all') query = query.eq('lookup_type', AUDIT_TYPE);
+    if(AUDIT_SEARCH_TERM){
+      var cleaned = AUDIT_SEARCH_TERM.replace(/[%(),.]/g, ' ').replace(/\s+/g, ' ').trim();
+      if(cleaned){
+        var term = '%' + cleaned + '%';
+        query = query.or('doctor_name.ilike.'+term+',doctor_email.ilike.'+term+',department.ilike.'+term+',drug_name.ilike.'+term+',module_name.ilike.'+term);
+      }
+    }
+    query.then(function(res){
+      if(res.error){
+        tbody.innerHTML = '<tr><td colspan="7" class="adm-empty">Không thể tải nhật ký. Vui lòng kiểm tra cấu hình Supabase.</td></tr>';
+        console.error('[renal_lookup_logs]', res.error);
+        return;
+      }
+      AUDIT_TOTAL_ROWS = res.count || 0;
+      renderAuditTable(res.data || []);
+      renderAuditPagination();
+    });
+  }
+
+  if($('AUDIT-TYPE')) $('AUDIT-TYPE').addEventListener('change', function(){
+    AUDIT_TYPE = this.value;
+    AUDIT_PAGE = 0;
+    loadAuditLogs();
+  });
+  if($('AUDIT-SEARCH')) $('AUDIT-SEARCH').addEventListener('input', function(){
+    var value = this.value;
+    clearTimeout(AUDIT_SEARCH_DEBOUNCE);
+    AUDIT_SEARCH_DEBOUNCE = setTimeout(function(){
+      AUDIT_SEARCH_TERM = value.trim();
+      AUDIT_PAGE = 0;
+      loadAuditLogs();
+    }, 350);
+  });
+  if($('AUDIT-REFRESH')) $('AUDIT-REFRESH').addEventListener('click', loadAuditLogs);
+  if($('NAV-AUDIT')) $('NAV-AUDIT').addEventListener('click', function(){
+    if(CURRENT_PROFILE && CURRENT_PROFILE.role === 'admin'){
+      AUDIT_PAGE = 0;
+      loadAuditLogs();
     }
   });
 

@@ -25,7 +25,8 @@ function showPg(id) {
     guide:'Hướng dẫn & Từ viết tắt',references:'Tài liệu Tham khảo',ai:'Trợ lý AI',
     inject:'Pha & Bảo quản Tiêm — 428 thuốc',
     nelson:'Tính liều KS Nhi',
-    admin:'Quản trị hệ thống — Người dùng'
+    admin:'Quản trị hệ thống — Người dùng',
+    audit:'Nhật ký tra cứu liều thận'
   };
   var t = document.getElementById('TB-title');
   if(t) t.textContent = titles[id] || 'Hệ thống Hỗ trợ Dược lâm sàng';
@@ -252,6 +253,16 @@ function calcRenal() {
   setIB('rn',worseColor,'Diễn giải lâm sàng tổng hợp — CrCl · eGFR · IBW/ABW',interp,
     'Cockcroft DW, Gault MH. Nephron. 1976;16:31-41. · Inker LA et al. N Engl J Med. 2021;385:1737-1749. · Devine BJ. Drug Intell Clin Pharm. 1974. · Winter ME. Basic Clinical Pharmacokinetics. 5th Ed.');
   showRes('rn');
+  if(window.ClinpharmAudit){
+    window.ClinpharmAudit.logLookup({
+      lookup_type:'renal_function',
+      module_name:'Chức năng thận CrCl/eGFR',
+      crcl_ml_min:crcl,
+      egfr_ml_min_1_73m2:egfr,
+      renal_band:cgStage,
+      result_summary:'CrCl '+crcl.toFixed(1)+' mL/phút; eGFR '+egfr.toFixed(1)+' mL/phút/1,73m²; '+cgStage
+    });
+  }
 }
 
 // ============================================================
@@ -2734,7 +2745,7 @@ function abxAbbrFootnote(d){
 }
 
 // ─── STATE ───
-var abxUnit="mg",abxCrCl=null,abxFI=-1,abxDI=[],abxDBT;
+var abxUnit="mg",abxCrCl=null,abxEgfr=null,abxSelectedDrug=null,abxFI=-1,abxDI=[],abxDBT;
 
 // ─── UNIT TOGGLE ───
 window.abxSetUnit=function(u){
@@ -2768,6 +2779,7 @@ window.abxCalcCrCl=function(){
   var m = window.computeRenalCore(age, sex, ht, wt, scr_mgdl);
   var crcl = Math.round(m.crcl*10)/10;
   abxCrCl=crcl;
+  abxEgfr=Math.round(m.egfr*10)/10;
   var resEl=document.getElementById("abx-crcl-result");
   var valEl=document.getElementById("abx-crcl-val");
   var zoneEl=document.getElementById("abx-crcl-zone");
@@ -2806,6 +2818,7 @@ window.abxCalcCrCl=function(){
     extraEl.style.display="grid";
   }
   abxHighlightRow();
+  abxLogCurrentLookup();
 };
 
 window.abxResetCrCl=function(){
@@ -2814,6 +2827,7 @@ window.abxResetCrCl=function(){
   var err=document.getElementById("abx-err");if(err)err.style.display="none";
   var extra=document.getElementById("abx-extra-metrics");if(extra)extra.style.display="none";
   abxCrCl=null;
+  abxEgfr=null;
   abxHighlightRow();
 };
 
@@ -2840,6 +2854,21 @@ function abxHighlightRow(){
     }
     setTimeout(function(){row.scrollIntoView({behavior:"smooth",block:"nearest"});},100);
   }
+}
+
+function abxLogCurrentLookup(){
+  if(!abxSelectedDrug||abxCrCl===null||!window.ClinpharmAudit) return;
+  var key=abxCrCl>50?"crcl_gt50":abxCrCl>=10?"crcl_10_50":"crcl_lt10";
+  var labels={crcl_gt50:'CrCl >50 mL/phút',crcl_10_50:'CrCl 10–50 mL/phút',crcl_lt10:'CrCl <10 mL/phút'};
+  window.ClinpharmAudit.logLookup({
+    lookup_type:'antibiotic_renal_dose',
+    module_name:'Hiệu chỉnh liều kháng sinh theo CrCl',
+    drug_name:abxSelectedDrug.name,
+    crcl_ml_min:abxCrCl,
+    egfr_ml_min_1_73m2:abxEgfr,
+    renal_band:labels[key],
+    result_summary:abxSelectedDrug.doses&&abxSelectedDrug.doses[key]?abxSelectedDrug.doses[key]:''
+  });
 }
 
 // ─── RENDER DRUG TABLE ───
@@ -2943,13 +2972,14 @@ function abxRunSearch(q){
 }
 function abxSelectDrug(id){
   var d=ABX_DRUGS.find(function(x){return x.id===id;});if(!d)return;
+  abxSelectedDrug=d;
   abxSI.value=d.name;abxSC.classList.add("on");abxCloseDd();
   document.getElementById("abx-result-inner").innerHTML=abxRenderDrug(d);
   abxRPanel.classList.add("show");
   abxHighlightRow();
+  abxLogCurrentLookup();
   setTimeout(function(){abxRPanel.scrollIntoView({behavior:"smooth",block:"start"});},80);
 }
 
 document.addEventListener("DOMContentLoaded",abxInit);
 })(); // end IIFE ABX DOSING MODULE
-

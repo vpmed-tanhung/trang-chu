@@ -101,6 +101,15 @@
     return { mgCBA, mgCMS, miu };
   }
 
+  function auditColistin(payload) {
+    if (!window.ClinpharmAudit) return;
+    window.ClinpharmAudit.logLookup(Object.assign({
+      lookup_type: 'colistin_renal_dose',
+      module_name: 'Tính liều Colistin (CMS)',
+      drug_name: 'Colistin (CMS)'
+    }, payload));
+  }
+
   /* ============================= UI LOGIC ============================= */
 
   const VCL = {
@@ -227,6 +236,11 @@
         </tbody></table>
       `;
       this.renderMethodNote();
+      auditColistin({
+        crcl_ml_min: crclResult.crcl,
+        renal_band: maint.crclLabel,
+        result_summary: `${maint.dosePerAdmin} mg CBA mỗi 12 giờ (${maint.dailyDose} mg CBA/ngày); liều nạp ${LOADING_DOSE_CBA} mg CBA`
+      });
     },
 
     calculateIHD() {
@@ -258,6 +272,10 @@
       ]);
       document.getElementById('vcl-calc-detail').innerHTML = `<table class="vcl-table"><tbody><tr><td>Thời gian lọc máu</td><td>${hours} giờ</td></tr></tbody></table>`;
       this.renderMethodNote();
+      auditColistin({
+        renal_band: 'IHD — Lọc máu ngắt quãng',
+        result_summary: `Ngày không lọc: ${ihd.baselineDailyDose} mg CBA/ngày; bổ sung ${this.fmt(ihd.supplementDose,0)} mg CBA sau lọc (${hours} giờ)`
+      });
     },
 
     calculateSLED() {
@@ -288,6 +306,10 @@
       ]);
       document.getElementById('vcl-calc-detail').innerHTML = `<table class="vcl-table"><tbody><tr><td>Thời gian SLED/ngày</td><td>${hours} giờ</td></tr></tbody></table>`;
       this.renderMethodNote();
+      auditColistin({
+        renal_band: 'SLED — Lọc máu kéo dài',
+        result_summary: `${this.fmt(sled.totalDailyDose,0)} mg CBA/ngày khi SLED ${hours} giờ`
+      });
     },
 
     calculateCRRT() {
@@ -318,6 +340,10 @@
       ]);
       document.getElementById('vcl-calc-detail').innerHTML = `<table class="vcl-table"><tbody><tr><td>Phương thức</td><td>CRRT (liên tục)</td></tr></tbody></table>`;
       this.renderMethodNote();
+      auditColistin({
+        renal_band: 'CRRT — Lọc máu liên tục',
+        result_summary: `${crrt.dosePerAdmin} mg CBA mỗi 12 giờ (${crrt.dailyDose} mg CBA/ngày); liều nạp ${LOADING_DOSE_CBA} mg CBA`
+      });
     },
 
     renderConvertTable(items) {
@@ -2513,6 +2539,5 @@
     init();
   }
 })();
-
 
 
