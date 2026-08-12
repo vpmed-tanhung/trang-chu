@@ -1721,24 +1721,16 @@ body.authed #AUTH-SCREEN{display:none!important}
     <!-- ===== REGISTER PANE ===== -->
     <div class="auth-pane" id="AUTH-PANE-REGISTER">
       <div class="auth-heading">Đăng ký tài khoản</div>
-      <div class="auth-sub">Chỉ chấp nhận email bệnh viện <strong>@vpmed.vn</strong>. Tài khoản sẽ được kích hoạt sau khi quản trị viên duyệt.</div>
+      <div class="auth-sub">Mỗi khoa/phòng đăng ký một tài khoản dùng chung bằng email bệnh viện <strong>@vpmed.vn</strong>. Tài khoản sẽ được kích hoạt sau khi quản trị viên duyệt.</div>
       <div class="auth-msg" id="REGISTER-MSG"></div>
       <form id="REGISTER-FORM" autocomplete="on">
         <div class="auth-field">
-          <label class="auth-label">Họ và tên</label>
-          <input class="auth-input" type="text" id="REG-NAME" autocomplete="name" required minlength="2" maxlength="120" placeholder="Nguyễn Văn A">
-        </div>
-        <div class="auth-field">
-          <label class="auth-label">Chức danh/vị trí công tác</label>
-          <input class="auth-input" type="text" id="REG-JOB-TITLE" autocomplete="organization-title" required minlength="2" maxlength="120" placeholder="Ví dụ: Bác sĩ, Dược sĩ, Điều dưỡng, Kỹ thuật viên…">
+          <label class="auth-label">Khoa/phòng/đơn vị sử dụng</label>
+          <input class="auth-input" type="text" id="REG-DEPARTMENT" autocomplete="organization" required minlength="2" maxlength="160" placeholder="Ví dụ: Khoa Dược">
         </div>
         <div class="auth-field">
           <label class="auth-label">Địa chỉ email</label>
-          <input class="auth-input" type="email" id="REG-EMAIL" autocomplete="username" required pattern="^[^@\s]+@vpmed\.vn$" title="Vui lòng dùng email bệnh viện @vpmed.vn" placeholder="ten@vpmed.vn">
-        </div>
-        <div class="auth-field">
-          <label class="auth-label">Khoa/phòng/bộ phận công tác</label>
-          <input class="auth-input" type="text" id="REG-DEPARTMENT" autocomplete="organization" required minlength="2" maxlength="160" placeholder="Ví dụ: Khoa Dược, Phòng KHTH, Khoa Xét nghiệm…">
+          <input class="auth-input" type="email" id="REG-EMAIL" autocomplete="username" required pattern="^[^@\s]+@vpmed\.vn$" title="Vui lòng dùng email bệnh viện @vpmed.vn" placeholder="khoaduoc@vpmed.vn">
         </div>
         <div class="auth-field">
           <label class="auth-label">Mật khẩu</label>
@@ -5053,7 +5045,7 @@ body.authed #AUTH-SCREEN{display:none!important}
 <!-- ====================== ADMIN DASHBOARD ====================== -->
 <div id="pg-admin" class="pg">
   <div class="adm-stats">
-    <div class="adm-stat-card"><div class="adm-stat-num" id="ADM-N-TOTAL">–</div><div class="adm-stat-lbl">Tổng người dùng</div></div>
+    <div class="adm-stat-card"><div class="adm-stat-num" id="ADM-N-TOTAL">–</div><div class="adm-stat-lbl">Tổng tài khoản</div></div>
     <div class="adm-stat-card"><div class="adm-stat-num" id="ADM-N-PENDING">–</div><div class="adm-stat-lbl">Chờ duyệt</div></div>
     <div class="adm-stat-card"><div class="adm-stat-num" id="ADM-N-APPROVED">–</div><div class="adm-stat-lbl">Đã kích hoạt</div></div>
     <div class="adm-stat-card"><div class="adm-stat-num" id="ADM-N-REJECTED">–</div><div class="adm-stat-lbl">Bị từ chối</div></div>
@@ -5066,7 +5058,7 @@ body.authed #AUTH-SCREEN{display:none!important}
       <div class="adm-tab" data-filter="approved">Đã duyệt</div>
       <div class="adm-tab" data-filter="rejected">Từ chối</div>
     </div>
-    <input type="text" id="ADM-SEARCH" placeholder="Tìm theo tên, email, khoa/phòng...">
+    <input type="text" id="ADM-SEARCH" placeholder="Tìm theo email hoặc khoa/phòng...">
     <button class="bs" id="ADM-REFRESH">🔄 Làm mới</button>
   </div>
 
@@ -5074,12 +5066,12 @@ body.authed #AUTH-SCREEN{display:none!important}
     <table class="adm-table">
       <thead>
         <tr>
-          <th>Họ và tên</th><th>Chức danh/vị trí</th><th>Email</th><th>Khoa/phòng/bộ phận</th><th>Trạng thái</th>
+          <th>Khoa/phòng/đơn vị</th><th>Loại tài khoản</th><th>Email</th><th>Trạng thái</th>
           <th>Ngày đăng ký</th><th>Đăng nhập gần nhất</th><th>Thao tác</th>
         </tr>
       </thead>
       <tbody id="ADM-TBODY">
-        <tr><td colspan="8" class="adm-empty">Đang tải dữ liệu người dùng…</td></tr>
+        <tr><td colspan="7" class="adm-empty">Đang tải dữ liệu tài khoản…</td></tr>
       </tbody>
     </table>
   </div>
@@ -5102,19 +5094,18 @@ body.authed #AUTH-SCREEN{display:none!important}
           <option value="antibiotic_renal_dose">Hiệu chỉnh liều kháng sinh</option>
           <option value="colistin_renal_dose">Tính liều Colistin</option>
         </select>
-        <input type="text" id="AUDIT-SEARCH" placeholder="Tìm người tra cứu, chức danh, bộ phận, email hoặc thuốc...">
+        <input type="text" id="AUDIT-SEARCH" placeholder="Tìm khoa/phòng hoặc thuốc...">
         <button class="bs" id="AUDIT-REFRESH">🔄 Làm mới</button>
       </div>
       <div class="adm-table-wrap">
         <table class="adm-table audit-table">
           <thead>
             <tr>
-              <th>Thời gian</th><th>Người tra cứu</th><th>Chức danh/vị trí</th><th>Khoa/phòng/bộ phận</th><th>Email</th>
-              <th>Tra cứu</th><th>CrCl / eGFR</th><th>Kết quả liên quan</th>
+              <th>Thời gian</th><th>Khoa/phòng sử dụng</th><th>Tra cứu</th><th>CrCl / eGFR</th><th>Kết quả liên quan</th>
             </tr>
           </thead>
           <tbody id="AUDIT-TBODY">
-            <tr><td colspan="8" class="adm-empty">Đang tải nhật ký tra cứu…</td></tr>
+            <tr><td colspan="5" class="adm-empty">Đang tải nhật ký tra cứu…</td></tr>
           </tbody>
         </table>
       </div>

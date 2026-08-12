@@ -37,8 +37,6 @@
     el.dataset.tone=tone||'';
   }
   function isAdmin(){return !!(auth&&auth.profile&&auth.profile.role==='admin');}
-  function staffName(item){return item.staff_name||item.doctor_name||'Nhân viên bệnh viện';}
-  function staffEmail(item){return item.staff_email||item.doctor_email||'';}
   function colspan(){return isAdmin()?8:7;}
 
   function renderSharedHistory(){
@@ -50,11 +48,10 @@
     }
     body.innerHTML=sharedRows.map(function(item){
       var manage=isAdmin()?'<td><button type="button" class="history-delete-row" data-delete-history="'+escapeHtml(item.id)+'">Xóa</button></td>':'';
-      var userDetail=[item.job_title,item.department].filter(Boolean).join(' · ');
       return '<tr>'+
         '<td>'+escapeHtml(formatDate(item.created_at))+'</td>'+
         '<td><b>'+escapeHtml(item.patient_code||'—')+'</b></td>'+
-        '<td class="history-user-cell"><b>'+escapeHtml(staffName(item))+'</b><small>'+escapeHtml(userDetail||staffEmail(item))+'</small></td>'+
+        '<td class="history-user-cell"><b>'+escapeHtml(item.department||'Chưa cập nhật')+'</b><small>Tài khoản khoa/phòng</small></td>'+
         '<td>'+escapeHtml(item.crcl_ml_min==null?'—':item.crcl_ml_min)+' mL/ph</td>'+
         '<td>'+escapeHtml(item.egfr_ml_min_1_73m2==null?'—':item.egfr_ml_min_1_73m2)+'</td>'+
         '<td>'+escapeHtml(item.drug_name||'—')+'</td>'+
@@ -81,7 +78,7 @@
     }
     sharedRows=result.data||[];
     renderSharedHistory();
-    setStatus('Đã đồng bộ '+sharedRows.length+' lượt tra cứu gần nhất. Mọi tài khoản đã duyệt cùng xem dữ liệu này.','success');
+    setStatus('Đã đồng bộ '+sharedRows.length+' lượt tra cứu gần nhất. Mọi khoa/phòng có tài khoản đã duyệt cùng xem dữ liệu này.','success');
   }
 
   async function logLookup(){
@@ -149,8 +146,8 @@
   function csvCell(value){return '"'+String(value==null?'':value).replace(/"/g,'""')+'"';}
   function exportCsv(){
     if(!isAdmin()||!sharedRows.length){window.alert('Chưa có lịch sử để xuất.');return;}
-    var rows=[['Thời gian','Mã bệnh nhân','Người tra cứu','Email','Chức danh','Khoa/phòng','CrCl','eGFR','Thuốc','Gợi ý']];
-    sharedRows.forEach(function(item){rows.push([formatDate(item.created_at),item.patient_code||'',staffName(item),staffEmail(item),item.job_title||'',item.department||'',item.crcl_ml_min==null?'':item.crcl_ml_min,item.egfr_ml_min_1_73m2==null?'':item.egfr_ml_min_1_73m2,item.drug_name||'',item.result_summary||item.renal_band||'']);});
+    var rows=[['Thời gian','Mã bệnh nhân','Khoa/phòng sử dụng','CrCl','eGFR','Thuốc','Gợi ý']];
+    sharedRows.forEach(function(item){rows.push([formatDate(item.created_at),item.patient_code||'',item.department||'',item.crcl_ml_min==null?'':item.crcl_ml_min,item.egfr_ml_min_1_73m2==null?'':item.egfr_ml_min_1_73m2,item.drug_name||'',item.result_summary||item.renal_band||'']);});
     var csv='\ufeff'+rows.map(function(row){return row.map(csvCell).join(',');}).join('\n');
     var anchor=document.createElement('a');
     anchor.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));

@@ -87,7 +87,7 @@
       var tbu = $('TB-USER');
       if(tbu){
         tbu.style.display='';
-        tbu.textContent = (profile.full_name || profile.email) + (profile.job_title ? ' · ' + profile.job_title : '') + (profile.workplace ? ' · ' + profile.workplace : '') + (profile.role==='admin' ? ' · Admin' : '');
+        tbu.textContent = (profile.workplace || profile.full_name || profile.email) + (profile.role==='admin' ? ' · Admin' : ' · Tài khoản khoa/phòng');
       }
       if(profile.role === 'admin'){
         $('NAV-ADMIN').style.display = '';
@@ -163,14 +163,10 @@
   $('REGISTER-FORM').addEventListener('submit', function(e){
     e.preventDefault();
     clearMsg('REGISTER-MSG');
-    var name = $('REG-NAME').value.trim();
-    var jobTitle = $('REG-JOB-TITLE').value.trim();
     var email = $('REG-EMAIL').value.trim();
     var department = $('REG-DEPARTMENT').value.trim();
     var pw = $('REG-PW').value;
     var pw2 = $('REG-PW2').value;
-    if(name.length < 2){ setMsg('REGISTER-MSG','err','Vui lòng nhập đầy đủ họ và tên.'); return; }
-    if(jobTitle.length < 2){ setMsg('REGISTER-MSG','err','Vui lòng nhập chức danh hoặc vị trí công tác.'); return; }
     if(department.length < 2){ setMsg('REGISTER-MSG','err','Vui lòng nhập khoa/phòng/bộ phận công tác.'); return; }
     if(!isAllowedHospitalEmail(email)){
       setMsg('REGISTER-MSG','err','Chỉ chấp nhận email bệnh viện @' + ALLOWED_EMAIL_DOMAIN + '.');
@@ -183,7 +179,7 @@
     sb.auth.signUp({
       email: email, password: pw,
       // Giữ cả hai khóa để tương thích với trigger profiles hiện có.
-      options: { data: { full_name: name, job_title: jobTitle, department: department, workplace: department } }
+      options: { data: { account_type:'department', full_name:department, job_title:'Tài khoản khoa/phòng', department:department, workplace:department } }
     }).then(function(res){
       btn.disabled = false; btn.textContent = 'Đăng ký';
       if(res.error){ setMsg('REGISTER-MSG','err', friendlyAuthError(res.error.message)); return; }
@@ -312,18 +308,18 @@
 
   function loadAdminUsers(){
     var tbody = $('ADM-TBODY');
-    tbody.innerHTML = '<tr><td colspan="8" class="adm-empty">Đang tải dữ liệu người dùng…</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="adm-empty">Đang tải dữ liệu tài khoản…</td></tr>';
     var from = ADM_PAGE * ADM_PAGE_SIZE;
     var to = from + ADM_PAGE_SIZE - 1;
     var q = sb.from('profiles').select('*', { count: 'exact' }).order('created_at', { ascending: false }).range(from, to);
     if(ADM_FILTER !== 'all') q = q.eq('status', ADM_FILTER);
     if(ADM_SEARCH_TERM){
       var term = '%' + ADM_SEARCH_TERM.replace(/%/g,'') + '%';
-      q = q.or('full_name.ilike.' + term + ',job_title.ilike.' + term + ',email.ilike.' + term + ',workplace.ilike.' + term);
+      q = q.or('email.ilike.' + term + ',workplace.ilike.' + term);
     }
     q.then(function(res){
       if(res.error){
-        tbody.innerHTML = '<tr><td colspan="8" class="adm-empty">Không thể tải dữ liệu: ' + esc(res.error.message) + '</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="adm-empty">Không thể tải dữ liệu: ' + esc(res.error.message) + '</td></tr>';
         return;
       }
       ADM_TOTAL_ROWS = res.count || 0;
@@ -335,7 +331,7 @@
   function renderAdminTable(list){
     var tbody = $('ADM-TBODY');
     if(!list || list.length === 0){
-      tbody.innerHTML = '<tr><td colspan="8" class="adm-empty">Không có người dùng phù hợp.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" class="adm-empty">Không có tài khoản phù hợp.</td></tr>';
       return;
     }
     tbody.innerHTML = list.map(function(u){
@@ -349,10 +345,9 @@
         acts += '<button class="adm-act-btn ok" data-act="approve" data-id="'+u.id+'">Duyệt lại</button>';
       }
       return '<tr>' +
-        '<td>'+esc(u.full_name)+'</td>' +
-        '<td>'+esc(u.job_title || '—')+'</td>' +
+        '<td>'+esc(u.workplace || u.full_name || '—')+'</td>' +
+        '<td>'+esc(u.role==='admin' ? 'Quản trị viên' : 'Tài khoản khoa/phòng')+'</td>' +
         '<td>'+esc(u.email)+'</td>' +
-        '<td>'+esc(u.workplace || '—')+'</td>' +
         '<td>'+statusBadge(u)+'</td>' +
         '<td>'+fmtDate(u.created_at)+'</td>' +
         '<td>'+fmtDate(u.last_login_at)+'</td>' +
@@ -368,7 +363,7 @@
     var curPage = ADM_PAGE + 1;
     el.innerHTML =
       '<button class="bs" id="ADM-PREV" '+(ADM_PAGE<=0?'disabled':'')+'>‹ Trước</button>' +
-      '<span style="font-size:12.5px;color:var(--T2);margin:0 10px">Trang '+curPage+' / '+totalPages+' · '+ADM_TOTAL_ROWS+' người dùng</span>' +
+      '<span style="font-size:12.5px;color:var(--T2);margin:0 10px">Trang '+curPage+' / '+totalPages+' · '+ADM_TOTAL_ROWS+' tài khoản</span>' +
       '<button class="bs" id="ADM-NEXT" '+(curPage>=totalPages?'disabled':'')+'>Sau ›</button>';
     var prevBtn = $('ADM-PREV'), nextBtn = $('ADM-NEXT');
     if(prevBtn) prevBtn.addEventListener('click', function(){ if(ADM_PAGE>0){ ADM_PAGE--; loadAdminUsers(); } });
@@ -510,7 +505,7 @@
     var tbody = $('AUDIT-TBODY');
     if(!tbody) return;
     if(!list || list.length === 0){
-      tbody.innerHTML = '<tr><td colspan="8" class="adm-empty">Chưa có lượt tra cứu phù hợp.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" class="adm-empty">Chưa có lượt tra cứu phù hợp.</td></tr>';
       return;
     }
     tbody.innerHTML = list.map(function(item){
@@ -522,10 +517,7 @@
       var detail = [item.renal_band, item.result_summary].filter(Boolean).map(esc).join('<br>');
       return '<tr>' +
         '<td>'+fmtDate(item.created_at)+'</td>' +
-        '<td><strong>'+esc(item.doctor_name || '—')+'</strong></td>' +
-        '<td>'+esc(item.job_title || '—')+'</td>' +
-        '<td>'+esc(item.department || '—')+'</td>' +
-        '<td>'+esc(item.doctor_email || '—')+'</td>' +
+        '<td><strong>'+esc(item.department || '—')+'</strong></td>' +
         '<td>'+lookupName+'</td>' +
         '<td class="audit-metric">'+(metrics.length ? metrics.join('<br>') : '—')+'</td>' +
         '<td class="audit-detail">'+(detail || '—')+'</td>' +
@@ -551,7 +543,7 @@
     if(!CURRENT_PROFILE || CURRENT_PROFILE.role !== 'admin') return;
     var tbody = $('AUDIT-TBODY');
     if(!tbody) return;
-    tbody.innerHTML = '<tr><td colspan="8" class="adm-empty">Đang tải nhật ký tra cứu…</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" class="adm-empty">Đang tải nhật ký tra cứu…</td></tr>';
     var from = AUDIT_PAGE * AUDIT_PAGE_SIZE;
     var to = from + AUDIT_PAGE_SIZE - 1;
     var query = sb.from('renal_lookup_logs').select('*', { count:'exact' }).order('created_at', { ascending:false }).range(from, to);
@@ -560,12 +552,12 @@
       var cleaned = AUDIT_SEARCH_TERM.replace(/[%(),.]/g, ' ').replace(/\s+/g, ' ').trim();
       if(cleaned){
         var term = '%' + cleaned + '%';
-        query = query.or('doctor_name.ilike.'+term+',job_title.ilike.'+term+',doctor_email.ilike.'+term+',department.ilike.'+term+',drug_name.ilike.'+term+',module_name.ilike.'+term);
+        query = query.or('department.ilike.'+term+',drug_name.ilike.'+term+',module_name.ilike.'+term);
       }
     }
     query.then(function(res){
       if(res.error){
-        tbody.innerHTML = '<tr><td colspan="8" class="adm-empty">Không thể tải nhật ký. Vui lòng kiểm tra cấu hình Supabase.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="adm-empty">Không thể tải nhật ký. Vui lòng kiểm tra cấu hình Supabase.</td></tr>';
         console.error('[renal_lookup_logs]', res.error);
         return;
       }

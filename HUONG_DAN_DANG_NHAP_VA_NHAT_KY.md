@@ -1,11 +1,11 @@
-# Hệ thống tài khoản nhân viên VPMED
+# Hệ thống tài khoản khoa/phòng VPMED
 
 Phiên bản này có một hệ thống tài khoản **mới và độc lập** tại `tai-khoan.html`. Trang tài khoản không chuyển người dùng đến `cong-cu-duoc-lam-sang.html` và không dùng giao diện quản trị của trang đó.
 
 ## Quy trình hoạt động
 
-1. Nhân viên đăng ký tại `https://hotrolamsang.io.vn/tai-khoan.html`.
-2. Người đăng ký phải nhập họ tên, chức danh/vị trí công tác, khoa/phòng/đơn vị, email và mật khẩu.
+1. Đại diện khoa/phòng đăng ký tại `https://hotrolamsang.io.vn/tai-khoan.html`.
+2. Người đăng ký chỉ nhập tên khoa/phòng/đơn vị, email dùng chung của đơn vị và mật khẩu; không nhập họ tên hoặc chức danh cá nhân.
 3. Chỉ email kết thúc chính xác bằng `@vpmed.vn` được chấp nhận.
 4. Sau khi xác nhận email, tài khoản vẫn ở trạng thái **chờ duyệt** và chưa thể vào trang chủ.
 5. Admin đăng nhập, mở menu tên người dùng ở góc phải → **Quản trị tài khoản** → chọn **Duyệt** hoặc **Từ chối**.
@@ -15,13 +15,15 @@ Phiên bản này có một hệ thống tài khoản **mới và độc lập**
 
 Trong Supabase, mở **SQL Editor → New query**, dán toàn bộ nội dung `supabase/renal_lookup_audit.sql` rồi bấm **Run**. File này tạo:
 
-- Hồ sơ nhân viên và giới hạn email `@vpmed.vn` ở phía cơ sở dữ liệu.
+- Hồ sơ tài khoản khoa/phòng và giới hạn email `@vpmed.vn` ở phía cơ sở dữ liệu.
 - Trạng thái `pending`, `approved`, `rejected`.
 - Quyền admin duyệt hoặc thu hồi tài khoản.
-- Nhật ký người thực hiện tra cứu liều thận.
-- RLS để người chưa được duyệt không thể tự cấp quyền hoặc đọc danh sách nhân viên.
+- Nhật ký khoa/phòng thực hiện tra cứu liều thận.
+- RLS để tài khoản chưa được duyệt không thể tự cấp quyền hoặc đọc danh sách tài khoản.
 
 Nếu dự án đã chạy bản SQL cũ có cột `doctor_name` / `doctor_email`, chạy thêm một lần `supabase/chuyen_danh_tinh_nhan_vien.sql`. Nếu đã dùng bản cài mới thì bỏ qua bước này.
+
+Nếu dự án đang hoạt động như hiện tại, chạy thêm một lần `supabase/chuyen_tai_khoan_theo_khoa_phong.sql` **trước khi tải mã website mới**. File này giữ nguyên admin, tài khoản và lịch sử đang có; chỉ bổ sung loại tài khoản khoa/phòng và cách ghi nhận đơn vị.
 
 ## 2. Cấu hình email và địa chỉ chuyển hướng
 
@@ -50,20 +52,20 @@ where email = 'email-quan-tri@vpmed.vn';
 
 Đăng xuất và đăng nhập lại. Ở góc phải trang chủ sẽ có tên admin. Bấm vào tên → **Quản trị tài khoản**.
 
-## 4. Duyệt nhân viên
+## 4. Duyệt tài khoản khoa/phòng
 
 Trong trang quản trị:
 
 - **Duyệt**: cho phép tài khoản truy cập trang chủ.
 - **Từ chối**: chặn tài khoản đăng nhập vào hệ thống.
 - **Thu hồi**: đưa tài khoản đã duyệt về trạng thái chờ duyệt.
-- Tab **Nhật ký tra cứu liều thận**: xem nhân viên nào đã thực hiện tra cứu, thời gian, chức danh, đơn vị, thuốc và kết quả CrCl/eGFR.
+- Tab **Nhật ký tra cứu liều thận**: xem khoa/phòng nào đã thực hiện tra cứu, thời gian, thuốc và kết quả CrCl/eGFR.
 
-Admin không nên duyệt tài khoản nếu chưa đối chiếu người đăng ký là nhân viên bệnh viện.
+Admin không nên duyệt nếu chưa đối chiếu email và khoa/phòng đăng ký. Mỗi khoa/phòng chỉ có một tài khoản dùng chung.
 
 ## 5. Dữ liệu nhật ký
 
-Nhật ký Supabase ghi danh tính **nhân viên thực hiện tra cứu** từ hồ sơ đã được duyệt, mã người bệnh trên HIS, thời gian, thuốc, CrCl/eGFR và gợi ý liều. Không nhập hoặc lưu họ tên người bệnh, ngày sinh, cân nặng, chiều cao hay creatinine thô trong lịch sử dùng chung.
+Nhật ký Supabase hiển thị **khoa/phòng sử dụng**, mã người bệnh trên HIS, thời gian, thuốc, CrCl/eGFR và gợi ý liều. Không hiển thị tên cá nhân trong báo cáo dùng chung. Không nhập hoặc lưu họ tên người bệnh, ngày sinh, cân nặng, chiều cao hay creatinine thô trong lịch sử dùng chung.
 
 Để bật lịch sử dùng chung trên dự án đã cài đặt trước đó, chạy thêm một lần file:
 
@@ -91,6 +93,7 @@ Supabase là nguồn lịch sử chung duy nhất. File Apps Script cũ không c
 - `assets/vpmed-renal-audit.js`
 - `supabase/lich_su_tra_cuu_dung_chung.sql`
 - `supabase/sua_quyen_xoa_admin.sql` (chỉ dùng khi cần sửa quyền xóa)
+- `supabase/chuyen_tai_khoan_theo_khoa_phong.sql` (bắt buộc với dự án hiện tại)
 - `index.html` đã cập nhật
 
 Phải tải đúng cả cấu trúc thư mục. Nếu chỉ thay `index.html` mà thiếu các file trong `assets/`, giao diện tài khoản sẽ không hoạt động đúng.

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0867a8">
   <meta name="robots" content="noindex,nofollow">
-  <title>Tài khoản nhân viên | VPMED Tân Hưng</title>
+  <title>Tài khoản khoa/phòng | VPMED Tân Hưng</title>
   <link rel="stylesheet" href="assets/vpmed-auth.css?v=20260812-new-system-v1">
   <script>document.documentElement.classList.add('auth-loading');</script>
 </head>
@@ -30,7 +30,7 @@
 
       <section class="auth-view" id="viewLogin" hidden>
         <div class="auth-heading">
-          <span class="auth-kicker">Cổng nhân viên bệnh viện</span>
+          <span class="auth-kicker">Cổng nội bộ bệnh viện</span>
           <h1>Đăng nhập</h1>
           <p>Dùng email công vụ <b>@vpmed.vn</b> để truy cập hệ thống.</p>
         </div>
@@ -45,34 +45,31 @@
           <button class="primary-button" type="submit">Đăng nhập</button>
         </form>
         <button class="text-button" type="button" data-view="forgot">Quên mật khẩu?</button>
-        <div class="auth-switch">Chưa có tài khoản? <button type="button" data-view="register">Đăng ký nhân viên</button></div>
+        <div class="auth-switch">Khoa/phòng chưa có tài khoản? <button type="button" data-view="register">Đăng ký tài khoản</button></div>
       </section>
 
       <section class="auth-view" id="viewRegister" hidden>
         <div class="auth-heading">
           <span class="auth-kicker">Đăng ký tài khoản mới</span>
-          <h1>Thông tin nhân viên</h1>
-          <p>Tài khoản chỉ được sử dụng sau khi quản trị viên xác minh và phê duyệt.</p>
+          <h1>Tài khoản khoa/phòng</h1>
+          <p>Mỗi khoa/phòng sử dụng một tài khoản chung sau khi được quản trị viên xác minh và phê duyệt.</p>
         </div>
         <form id="registerForm" novalidate>
           <div class="field-grid">
-            <label class="field-wide">Họ và tên
-              <input id="registerName" type="text" autocomplete="name" maxlength="100" placeholder="Nguyễn Văn An" required>
+            <label class="field-wide">Khoa / phòng / đơn vị sử dụng
+              <input id="registerDepartment" type="text" autocomplete="organization" maxlength="120" list="hospitalDepartments" placeholder="Ví dụ: Khoa Dược" required>
+              <datalist id="hospitalDepartments">
+                <option value="Ban Giám đốc"><option value="Khoa Dược"><option value="Khoa Khám bệnh">
+                <option value="Khoa Cấp cứu"><option value="Khoa Hồi sức cấp cứu"><option value="Khoa Nội">
+                <option value="Khoa Ngoại"><option value="Khoa Sản"><option value="Khoa Nhi">
+                <option value="Khoa Gây mê hồi sức"><option value="Khoa Xét nghiệm"><option value="Khoa Chẩn đoán hình ảnh">
+                <option value="Khoa Y học hạt nhân"><option value="Khoa Kiểm soát nhiễm khuẩn"><option value="Khoa Dinh dưỡng">
+                <option value="Khoa Phục hồi chức năng"><option value="Phòng Kế hoạch tổng hợp"><option value="Phòng Điều dưỡng">
+                <option value="Phòng Tổ chức hành chính"><option value="Phòng Tài chính kế toán"><option value="Phòng Công nghệ thông tin">
+              </datalist>
             </label>
-            <label>Chức danh / vị trí công tác
-              <select id="registerJob" required>
-                <option value="">Chọn chức danh</option>
-                <option>Bác sĩ</option><option>Dược sĩ</option><option>Điều dưỡng</option>
-                <option>Kỹ thuật viên</option><option>Nữ hộ sinh</option><option>Hộ lý</option>
-                <option>Nhân viên hành chính</option><option>Nhân viên công nghệ thông tin</option>
-                <option>Nhân viên khác</option>
-              </select>
-            </label>
-            <label>Khoa / phòng / đơn vị
-              <input id="registerDepartment" type="text" maxlength="120" placeholder="Ví dụ: Khoa Dược" required>
-            </label>
-            <label class="field-wide">Email bệnh viện
-              <input id="registerEmail" type="email" inputmode="email" autocomplete="email" placeholder="ten.nhanvien@vpmed.vn" required>
+            <label class="field-wide">Email dùng chung của khoa/phòng
+              <input id="registerEmail" type="email" inputmode="email" autocomplete="email" placeholder="khoaduoc@vpmed.vn" required>
             </label>
             <label>Mật khẩu
               <span class="password-field"><input id="registerPassword" type="password" autocomplete="new-password" minlength="8" required><button type="button" class="password-toggle" data-toggle-password="registerPassword">Hiện</button></span>
@@ -81,9 +78,9 @@
               <span class="password-field"><input id="registerPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required><button type="button" class="password-toggle" data-toggle-password="registerPasswordConfirm">Hiện</button></span>
             </label>
           </div>
-          <p class="privacy-note">Thông tin này dùng để xác minh nhân viên và ghi nhận người thực hiện tra cứu chuyên môn.</p>
+          <p class="privacy-note">Lịch sử chỉ hiển thị khoa/phòng sử dụng. Không dùng tên riêng của nhân viên trong tài khoản dùng chung.</p>
           <p class="form-message" id="registerMessage" role="alert"></p>
-          <button class="primary-button" type="submit">Gửi đăng ký</button>
+          <button class="primary-button" type="submit">Gửi đăng ký tài khoản khoa/phòng</button>
         </form>
         <div class="auth-switch">Đã có tài khoản? <button type="button" data-view="login">Đăng nhập</button></div>
       </section>
@@ -120,7 +117,7 @@
       <section class="auth-view status-view" id="viewPending" hidden>
         <div class="status-icon pending" aria-hidden="true">⌛</div>
         <h1>Tài khoản đang chờ duyệt</h1>
-        <p>Tài khoản đã được xác nhận nhưng chưa được phép truy cập. Quản trị viên cần kiểm tra họ tên, chức danh và đơn vị trước khi kích hoạt.</p>
+        <p>Tài khoản đã được xác nhận nhưng chưa được phép truy cập. Quản trị viên cần kiểm tra khoa/phòng và email dùng chung trước khi kích hoạt.</p>
         <div class="profile-summary" id="pendingProfile"></div>
         <button class="primary-button" type="button" id="pendingRefresh">Kiểm tra lại trạng thái</button>
         <button class="secondary-button" type="button" data-sign-out>Đăng xuất</button>
@@ -141,23 +138,23 @@
         <div class="admin-user"><span id="adminIdentity"></span><a href="index.html" class="secondary-button compact">Về trang chủ</a><button type="button" class="secondary-button compact" data-sign-out>Đăng xuất</button></div>
       </header>
       <div class="admin-content">
-        <div class="admin-title"><div><span class="auth-kicker">Quyền quản trị viên</span><h1>Nhân viên và nhật ký tra cứu</h1><p>Duyệt đúng người dùng trước khi cho phép truy cập dữ liệu chuyên môn.</p></div><button type="button" class="secondary-button compact" id="adminReload">Làm mới</button></div>
+        <div class="admin-title"><div><span class="auth-kicker">Quyền quản trị viên</span><h1>Tài khoản khoa/phòng và nhật ký tra cứu</h1><p>Duyệt đúng đơn vị trước khi cho phép sử dụng dữ liệu chuyên môn.</p></div><button type="button" class="secondary-button compact" id="adminReload">Làm mới</button></div>
         <div class="stat-grid">
           <article><span>Chờ duyệt</span><strong id="statPending">0</strong></article>
           <article><span>Đã duyệt</span><strong id="statApproved">0</strong></article>
           <article><span>Từ chối</span><strong id="statRejected">0</strong></article>
           <article><span>Tổng tài khoản</span><strong id="statTotal">0</strong></article>
         </div>
-        <div class="admin-tabs" role="tablist"><button type="button" class="active" data-admin-tab="users">Tài khoản nhân viên</button><button type="button" data-admin-tab="audit">Nhật ký tra cứu liều thận</button></div>
+        <div class="admin-tabs" role="tablist"><button type="button" class="active" data-admin-tab="users">Tài khoản khoa/phòng</button><button type="button" data-admin-tab="audit">Nhật ký tra cứu liều thận</button></div>
         <section class="admin-panel active" id="adminUsers">
-          <div class="admin-filters"><input id="userSearch" type="search" placeholder="Tìm họ tên, email, khoa/phòng…"><select id="userStatus"><option value="">Tất cả trạng thái</option><option value="pending">Chờ duyệt</option><option value="approved">Đã duyệt</option><option value="rejected">Từ chối</option></select></div>
+          <div class="admin-filters"><input id="userSearch" type="search" placeholder="Tìm email hoặc khoa/phòng…"><select id="userStatus"><option value="">Tất cả trạng thái</option><option value="pending">Chờ duyệt</option><option value="approved">Đã duyệt</option><option value="rejected">Từ chối</option></select></div>
           <p class="form-message" id="adminMessage" role="alert"></p>
           <div class="admin-list" id="userList"></div>
         </section>
         <section class="admin-panel" id="adminAudit">
-          <div class="admin-filters"><input id="auditSearch" type="search" placeholder="Tìm nhân viên, thuốc, khoa/phòng…"><button type="button" class="secondary-button compact" id="auditReload">Tải nhật ký</button></div>
-          <p class="audit-note">Nhật ký chỉ lưu mã người bệnh trên HIS, không lưu họ tên người bệnh. Danh tính hiển thị là nhân viên thực hiện tra cứu.</p>
-          <div class="table-scroll"><table class="audit-table"><thead><tr><th>Thời gian</th><th>Mã bệnh nhân</th><th>Nhân viên</th><th>Đơn vị</th><th>Thuốc</th><th>CrCl / eGFR</th><th>Kết quả</th></tr></thead><tbody id="auditRows"><tr><td colspan="7">Chọn “Tải nhật ký” để xem dữ liệu.</td></tr></tbody></table></div>
+          <div class="admin-filters"><input id="auditSearch" type="search" placeholder="Tìm khoa/phòng hoặc thuốc…"><button type="button" class="secondary-button compact" id="auditReload">Tải nhật ký</button></div>
+          <p class="audit-note">Nhật ký chỉ lưu mã người bệnh trên HIS, không lưu họ tên người bệnh. Giao diện báo cáo chỉ hiển thị khoa/phòng sử dụng.</p>
+          <div class="table-scroll"><table class="audit-table"><thead><tr><th>Thời gian</th><th>Mã bệnh nhân</th><th>Khoa/phòng sử dụng</th><th>Thuốc</th><th>CrCl / eGFR</th><th>Kết quả</th></tr></thead><tbody id="auditRows"><tr><td colspan="6">Chọn “Tải nhật ký” để xem dữ liệu.</td></tr></tbody></table></div>
         </section>
       </div>
     </section>
@@ -165,6 +162,6 @@
 
   <footer class="auth-footer">© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng</footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="assets/vpmed-auth-page.js?v=20260812-shared-history-v2"></script>
+  <script src="assets/vpmed-auth-page.js?v=20260812-department-accounts-v1"></script>
 </body>
 </html>

@@ -31,7 +31,7 @@
   function isHospitalEmail(value){return EMAIL_PATTERN.test(normalizeEmail(value));}
   function initials(value){
     var parts=String(value||'').trim().split(/\s+/).filter(Boolean);
-    if(!parts.length)return 'NV';
+    if(!parts.length)return 'KP';
     return ((parts[0][0]||'')+(parts.length>1?(parts[parts.length-1][0]||''):'')).toUpperCase();
   }
   function setMessage(id,message,type){var el=document.getElementById(id);if(!el)return;el.textContent=message||'';el.className='form-message'+(type==='success'?' success':'');}
@@ -59,10 +59,11 @@
   }
   function goToMain(){window.location.replace(safeNext());}
   function profileSummary(profile){
-    return '<b>'+escapeHtml(profile.full_name||'Nhân viên bệnh viện')+'</b><br>'+escapeHtml(profile.job_title||'Chưa cập nhật')+' · '+escapeHtml(profile.workplace||'Chưa cập nhật')+'<br>'+escapeHtml(profile.email||'');
+    var department=profile.workplace||profile.full_name||'Khoa/phòng chưa cập nhật';
+    return '<b>'+escapeHtml(department)+'</b><br>Tài khoản khoa/phòng<br>'+escapeHtml(profile.email||'');
   }
   async function fetchProfile(userId,attempt){
-    var result=await client.from('profiles').select('id,email,full_name,job_title,workplace,role,status,created_at,updated_at,last_login_at').eq('id',userId).maybeSingle();
+    var result=await client.from('profiles').select('id,email,full_name,job_title,workplace,account_type,role,status,created_at,updated_at,last_login_at').eq('id',userId).maybeSingle();
     if(!result.error&&result.data)return result.data;
     if((attempt||0)<2){await new Promise(function(resolve){setTimeout(resolve,500);});return fetchProfile(userId,(attempt||0)+1);}
     throw result.error||new Error('Không tìm thấy hồ sơ nhân viên.');
@@ -104,14 +105,11 @@
 
   document.getElementById('registerForm').addEventListener('submit',async function(event){
     event.preventDefault();var form=event.currentTarget;setMessage('registerMessage','');
-    var fullName=document.getElementById('registerName').value.trim();
-    var jobTitle=document.getElementById('registerJob').value.trim();
     var department=document.getElementById('registerDepartment').value.trim();
     var email=normalizeEmail(document.getElementById('registerEmail').value);
     var password=document.getElementById('registerPassword').value;
     var confirmPassword=document.getElementById('registerPasswordConfirm').value;
-    if(fullName.length<3){setMessage('registerMessage','Vui lòng nhập đầy đủ họ và tên.');return;}
-    if(!jobTitle||!department){setMessage('registerMessage','Vui lòng chọn chức danh và nhập khoa/phòng/đơn vị.');return;}
+    if(department.length<3){setMessage('registerMessage','Vui lòng nhập đầy đủ tên khoa/phòng/đơn vị.');return;}
     if(!isHospitalEmail(email)){setMessage('registerMessage','Chỉ chấp nhận email bệnh viện @vpmed.vn.');return;}
     if(password.length<8){setMessage('registerMessage','Mật khẩu cần có ít nhất 8 ký tự.');return;}
     if(password!==confirmPassword){setMessage('registerMessage','Hai mật khẩu chưa khớp nhau.');return;}
@@ -119,7 +117,7 @@
     var redirectUrl=window.location.origin+window.location.pathname;
     var result=await client.auth.signUp({
       email:email,password:password,
-      options:{emailRedirectTo:redirectUrl,data:{full_name:fullName,job_title:jobTitle,department:department,workplace:department}}
+      options:{emailRedirectTo:redirectUrl,data:{account_type:'department',full_name:department,job_title:'Tài khoản khoa/phòng',department:department,workplace:department}}
     });
     setBusy(form,false);
     if(result.error){setMessage('registerMessage',errorText(result.error,'Không thể tạo tài khoản. Vui lòng thử lại.'));return;}
@@ -155,14 +153,16 @@
   }
   function renderUsers(){
     var query=String(document.getElementById('userSearch').value||'').trim().toLowerCase();var status=document.getElementById('userStatus').value;
-    var rows=allProfiles.filter(function(profile){var hay=[profile.full_name,profile.email,profile.job_title,profile.workplace].join(' ').toLowerCase();return (!status||profile.status===status)&&(!query||hay.includes(query));});
+    var rows=allProfiles.filter(function(profile){var hay=[profile.email,profile.workplace,profile.full_name].join(' ').toLowerCase();return (!status||profile.status===status)&&(!query||hay.includes(query));});
     var list=document.getElementById('userList');
     if(!rows.length){list.innerHTML='<div class="empty-admin">Không có tài khoản phù hợp bộ lọc.</div>';return;}
     list.innerHTML=rows.map(function(profile){
       var self=currentProfile&&profile.id===currentProfile.id;
+      var department=profile.workplace||profile.full_name||'Chưa cập nhật';
+      var accountLabel=profile.role==='admin'?'Quản trị viên':(profile.account_type==='department'?'Tài khoản khoa/phòng':'Tài khoản cũ');
       return '<article class="user-row" data-user-id="'+escapeHtml(profile.id)+'">'+
-        '<div class="user-identity"><span class="user-avatar">'+escapeHtml(initials(profile.full_name))+'</span><div><b>'+escapeHtml(profile.full_name)+'</b><span>'+escapeHtml(profile.email)+(profile.role==='admin'?' · Quản trị viên':'')+'</span></div></div>'+
-        '<div class="user-work"><b>'+escapeHtml(profile.job_title||'Chưa cập nhật')+'</b><span>'+escapeHtml(profile.workplace||'Chưa cập nhật')+'</span></div>'+
+        '<div class="user-identity"><span class="user-avatar">'+escapeHtml(initials(department))+'</span><div><b>'+escapeHtml(department)+'</b><span>'+escapeHtml(profile.email)+(profile.role==='admin'?' · Quản trị viên':'')+'</span></div></div>'+
+        '<div class="user-work"><b>'+escapeHtml(accountLabel)+'</b><span>Lịch sử ghi nhận: '+escapeHtml(department)+'</span></div>'+
         '<span class="status-badge '+escapeHtml(profile.status)+'">'+statusLabel(profile.status)+'</span>'+
         '<div class="user-actions">'+
           (profile.status!=='approved'?'<button class="approve-action" data-set-status="approved">Duyệt</button>':'')+
@@ -173,29 +173,30 @@
     list.querySelectorAll('[data-set-status]').forEach(function(button){button.addEventListener('click',async function(){var row=button.closest('[data-user-id]');await setUserStatus(row.dataset.userId,button.dataset.setStatus,button);});});
   }
   async function loadProfiles(){
-    setMessage('adminMessage','');var result=await client.from('profiles').select('id,email,full_name,job_title,workplace,role,status,created_at,updated_at,last_login_at').order('created_at',{ascending:false});
+    setMessage('adminMessage','');var result=await client.from('profiles').select('id,email,full_name,job_title,workplace,account_type,role,status,created_at,updated_at,last_login_at').order('created_at',{ascending:false});
     if(result.error){setMessage('adminMessage','Không tải được danh sách tài khoản: '+errorText(result.error));return;}
     allProfiles=result.data||[];renderStats();renderUsers();
   }
   async function setUserStatus(userId,status,button){
     var action=status==='approved'?'duyệt':status==='rejected'?'từ chối':'thu hồi quyền truy cập của';
     var profile=allProfiles.find(function(x){return x.id===userId;});
-    if(!profile||!window.confirm('Xác nhận '+action+' tài khoản '+profile.full_name+'?'))return;
+    var department=profile&&(profile.workplace||profile.full_name||profile.email);
+    if(!profile||!window.confirm('Xác nhận '+action+' tài khoản '+department+'?'))return;
     button.disabled=true;var result=await client.rpc('admin_set_profile_status',{target_user_id:userId,new_status:status});button.disabled=false;
     if(result.error){setMessage('adminMessage','Không cập nhật được tài khoản: '+errorText(result.error));return;}
-    setMessage('adminMessage','Đã cập nhật trạng thái tài khoản '+profile.full_name+'.','success');await loadProfiles();
+    setMessage('adminMessage','Đã cập nhật trạng thái tài khoản '+department+'.','success');await loadProfiles();
   }
   async function loadAudit(){
-    var body=document.getElementById('auditRows');body.innerHTML='<tr><td colspan="7">Đang tải nhật ký…</td></tr>';
+    var body=document.getElementById('auditRows');body.innerHTML='<tr><td colspan="6">Đang tải nhật ký…</td></tr>';
     var result=await client.from('renal_lookup_logs').select('*').order('created_at',{ascending:false}).limit(500);
-    if(result.error){body.innerHTML='<tr><td colspan="7">Không tải được nhật ký. Kiểm tra quyền admin và tệp SQL.</td></tr>';return;}
+    if(result.error){body.innerHTML='<tr><td colspan="6">Không tải được nhật ký. Kiểm tra quyền admin và tệp SQL.</td></tr>';return;}
     allAudit=result.data||[];renderAudit();
   }
   function renderAudit(){
-    var query=String(document.getElementById('auditSearch').value||'').trim().toLowerCase();var rows=allAudit.filter(function(item){return !query||[item.staff_name||item.doctor_name,item.staff_email||item.doctor_email,item.job_title,item.department,item.drug_name,item.result_summary].join(' ').toLowerCase().includes(query);});
+    var query=String(document.getElementById('auditSearch').value||'').trim().toLowerCase();var rows=allAudit.filter(function(item){return !query||[item.department,item.drug_name,item.result_summary].join(' ').toLowerCase().includes(query);});
     var body=document.getElementById('auditRows');
-    if(!rows.length){body.innerHTML='<tr><td colspan="7">Chưa có nhật ký phù hợp.</td></tr>';return;}
-    body.innerHTML=rows.map(function(item){var staffName=item.staff_name||item.doctor_name||'Nhân viên';var staffEmail=item.staff_email||item.doctor_email||'';return '<tr><td>'+escapeHtml(formatDate(item.created_at))+'</td><td><b>'+escapeHtml(item.patient_code||'—')+'</b></td><td><b>'+escapeHtml(staffName)+'</b><small>'+escapeHtml(item.job_title)+' · '+escapeHtml(staffEmail)+'</small></td><td>'+escapeHtml(item.department)+'</td><td>'+escapeHtml(item.drug_name||'Đánh giá chức năng thận')+'</td><td><b>CrCl: '+escapeHtml(item.crcl_ml_min==null?'—':item.crcl_ml_min)+' mL/ph</b><small>eGFR: '+escapeHtml(item.egfr_ml_min_1_73m2==null?'—':item.egfr_ml_min_1_73m2)+'</small></td><td>'+escapeHtml(item.result_summary||item.renal_band||'—')+'</td></tr>';}).join('');
+    if(!rows.length){body.innerHTML='<tr><td colspan="6">Chưa có nhật ký phù hợp.</td></tr>';return;}
+    body.innerHTML=rows.map(function(item){return '<tr><td>'+escapeHtml(formatDate(item.created_at))+'</td><td><b>'+escapeHtml(item.patient_code||'—')+'</b></td><td><b>'+escapeHtml(item.department||'Chưa cập nhật')+'</b></td><td>'+escapeHtml(item.drug_name||'Đánh giá chức năng thận')+'</td><td><b>CrCl: '+escapeHtml(item.crcl_ml_min==null?'—':item.crcl_ml_min)+' mL/ph</b><small>eGFR: '+escapeHtml(item.egfr_ml_min_1_73m2==null?'—':item.egfr_ml_min_1_73m2)+'</small></td><td>'+escapeHtml(item.result_summary||item.renal_band||'—')+'</td></tr>';}).join('');
   }
   async function showAdmin(){
     card.hidden=true;adminShell.hidden=false;document.body.classList.add('admin-mode');document.documentElement.classList.remove('auth-loading');

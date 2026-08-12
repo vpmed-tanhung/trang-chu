@@ -1,16 +1,17 @@
 -- ClinpharmAI / VPMED
--- Cài đặt đăng ký nhân viên bệnh viện @vpmed.vn, duyệt tài khoản và nhật ký tra cứu liều thận.
+-- Cài đặt tài khoản khoa/phòng dùng email @vpmed.vn, duyệt tài khoản và nhật ký tra cứu liều thận.
 -- Dùng cho dự án Supabase mới hoàn toàn. Chạy một lần trên dự án mới.
 
 begin;
 
--- 1. Tạo hồ sơ nhân viên bệnh viện.
+-- 1. Tạo hồ sơ tài khoản nội bộ bệnh viện.
 create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   email text not null unique,
   full_name text not null,
   job_title text not null,
   workplace text,
+  account_type text not null default 'personal' check (account_type in ('personal', 'department')),
   role text not null default 'user' check (role in ('user', 'admin')),
   status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),
   approved_at timestamptz,
@@ -39,6 +40,10 @@ create trigger enforce_vpmed_profile_email
 before insert or update of email on public.profiles
 for each row execute function public.enforce_vpmed_profile_email();
 
+create unique index profiles_one_department_account_idx
+  on public.profiles (lower(trim(workplace)))
+  where account_type = 'department';
+
 -- 3. Tự tạo hồ sơ khi Supabase Auth tạo người dùng mới.
 create or replace function public.handle_new_vpmed_user()
 returns trigger
@@ -50,29 +55,44 @@ declare
   profile_name text;
   profile_job_title text;
   profile_department text;
+  profile_account_type text;
 begin
   if lower(trim(coalesce(new.email, ''))) !~ '^[^@[:space:]]+@vpmed\.vn$' then
     raise exception 'Chỉ chấp nhận email bệnh viện @vpmed.vn';
   end if;
 
-  profile_name := coalesce(
-    nullif(trim(new.raw_user_meta_data ->> 'full_name'), ''),
-    lower(trim(new.email))
-  );
-  profile_job_title := coalesce(
-    nullif(trim(new.raw_user_meta_data ->> 'job_title'), ''),
-    'Chưa cập nhật'
-  );
+  profile_account_type := case
+    when lower(trim(coalesce(new.raw_user_meta_data ->> 'account_type', ''))) = 'department'
+      then 'department'
+    else 'personal'
+  end;
   profile_department := coalesce(
     nullif(trim(new.raw_user_meta_data ->> 'department'), ''),
     nullif(trim(new.raw_user_meta_data ->> 'workplace'), ''),
     'Chưa cập nhật'
   );
 
+  if profile_account_type = 'department' then
+    if profile_department = 'Chưa cập nhật' then
+      raise exception 'Vui lòng nhập khoa/phòng/đơn vị sử dụng';
+    end if;
+    profile_name := profile_department;
+    profile_job_title := 'Tài khoản khoa/phòng';
+  else
+    profile_name := coalesce(
+      nullif(trim(new.raw_user_meta_data ->> 'full_name'), ''),
+      lower(trim(new.email))
+    );
+    profile_job_title := coalesce(
+      nullif(trim(new.raw_user_meta_data ->> 'job_title'), ''),
+      'Chưa cập nhật'
+    );
+  end if;
+
   insert into public.profiles (
-    id, email, full_name, job_title, workplace, role, status, created_at, updated_at
+    id, email, full_name, job_title, workplace, account_type, role, status, created_at, updated_at
   ) values (
-    new.id, lower(trim(new.email)), profile_name, profile_job_title, profile_department,
+    new.id, lower(trim(new.email)), profile_name, profile_job_title, profile_department, profile_account_type,
     'user', 'pending', now(), now()
   )
   on conflict (id) do update set
@@ -80,6 +100,7 @@ begin
     full_name = coalesce(nullif(trim(public.profiles.full_name), ''), excluded.full_name),
     job_title = coalesce(nullif(trim(public.profiles.job_title), ''), excluded.job_title),
     workplace = coalesce(nullif(trim(public.profiles.workplace), ''), excluded.workplace),
+    account_type = coalesce(public.profiles.account_type, excluded.account_type),
     updated_at = now();
 
   return new;
@@ -216,10 +237,16 @@ begin
   if not found then raise exception 'Approved profile required'; end if;
 
   new.user_id := auth.uid();
-  new.staff_name := coalesce(nullif(trim(current_profile.full_name), ''), current_profile.email);
-  new.staff_email := current_profile.email;
-  new.job_title := coalesce(nullif(trim(current_profile.job_title), ''), 'Chưa cập nhật');
   new.department := coalesce(nullif(trim(current_profile.workplace), ''), 'Chưa cập nhật');
+  new.staff_name := case
+    when current_profile.account_type = 'department' then new.department
+    else coalesce(nullif(trim(current_profile.full_name), ''), current_profile.email)
+  end;
+  new.staff_email := current_profile.email;
+  new.job_title := case
+    when current_profile.account_type = 'department' then 'Tài khoản khoa/phòng'
+    else coalesce(nullif(trim(current_profile.job_title), ''), 'Chưa cập nhật')
+  end;
   new.created_at := now();
   return new;
 end;

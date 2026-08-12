@@ -12,19 +12,19 @@
   var menuName=document.getElementById('homeUserMenuName'),menuDetail=document.getElementById('homeUserMenuDetail');
   var statusEl=document.getElementById('homeUserStatus'),logout=document.getElementById('homeUserLogout'),adminLink=document.getElementById('homeAdminLink');
   var routed=false;
-  function initials(value){var parts=String(value||'').trim().split(/\s+/).filter(Boolean);if(!parts.length)return 'NV';return ((parts[0][0]||'')+(parts.length>1?(parts[parts.length-1][0]||''):'')).toUpperCase();}
+  function initials(value){var parts=String(value||'').trim().split(/\s+/).filter(Boolean);if(!parts.length)return 'KP';return ((parts[0][0]||'')+(parts.length>1?(parts[parts.length-1][0]||''):'')).toUpperCase();}
   function closeMenu(){menu.hidden=true;trigger.setAttribute('aria-expanded','false');}
   function reveal(user,profile){
     if(routed)return;routed=true;
-    var data=user.user_metadata||{};var fullName=profile.full_name||data.full_name||user.email||'Người dùng';var jobTitle=profile.job_title||data.job_title||'Nhân viên bệnh viện';var workplace=profile.workplace||data.department||data.workplace||'';var detail=[jobTitle,workplace].filter(Boolean).join(' · ');
-    avatar.textContent=initials(fullName);nameEl.textContent=fullName;metaEl.textContent=detail||'Nhân viên bệnh viện';menuName.textContent=fullName;menuDetail.textContent=(detail?detail+'\n':'')+(profile.email||user.email||'');statusEl.textContent='Tài khoản đã được duyệt';
+    var data=user.user_metadata||{};var workplace=profile.workplace||data.department||data.workplace||profile.full_name||'';var isDepartment=profile.account_type==='department'||profile.job_title==='Tài khoản khoa/phòng';var displayName=(profile.role==='admin'&&!isDepartment)?(profile.full_name||user.email):(workplace||profile.full_name||user.email||'Khoa/phòng');var detail=profile.role==='admin'?'Quản trị viên':'Tài khoản khoa/phòng';
+    avatar.textContent=initials(displayName);nameEl.textContent=displayName;metaEl.textContent=detail;menuName.textContent=displayName;menuDetail.textContent=detail+'\n'+(profile.email||user.email||'');statusEl.textContent='Tài khoản đã được duyệt';
     if(adminLink)adminLink.hidden=profile.role!=='admin';account.hidden=false;document.documentElement.classList.remove('vpmed-auth-checking');
     window.VPMED_AUTH={client:client,user:user,profile:profile};window.dispatchEvent(new CustomEvent('vpmed-auth-ready',{detail:window.VPMED_AUTH}));
     client.rpc('touch_my_last_login').then(function(){});
   }
   async function applySession(session){
     if(!session||!session.user){redirect();return;}
-    var result=await client.from('profiles').select('id,email,full_name,job_title,workplace,role,status').eq('id',session.user.id).maybeSingle();
+    var result=await client.from('profiles').select('id,email,full_name,job_title,workplace,account_type,role,status').eq('id',session.user.id).maybeSingle();
     if(result.error||!result.data||result.data.status!=='approved'){redirect();return;}
     reveal(session.user,result.data);
   }

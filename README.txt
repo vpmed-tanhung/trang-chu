@@ -1,12 +1,13 @@
-BẢN CẬP NHẬT HỆ THỐNG TÀI KHOẢN NHÂN VIÊN VPMED
+BẢN CẬP NHẬT HỆ THỐNG TÀI KHOẢN KHOA/PHÒNG VPMED
 - Trang đăng nhập, đăng ký và quản trị mới: tai-khoan.html.
-- Chỉ chấp nhận email @vpmed.vn; đăng ký bắt buộc có họ tên, chức danh/vị trí và khoa/phòng/đơn vị.
+- Chỉ chấp nhận email @vpmed.vn; mỗi khoa/phòng đăng ký một tài khoản dùng chung, không dùng họ tên hoặc chức danh cá nhân.
 - Tài khoản mới ở trạng thái chờ duyệt; chỉ admin được duyệt, từ chối hoặc thu hồi.
 - Chỉ tài khoản đã duyệt mới vào được trang chủ. Tài khoản chờ duyệt không còn được chuyển sang trang công cụ cũ.
-- Admin xem được người thực hiện tra cứu liều thận; lịch sử chỉ lưu mã HIS, không lưu họ tên bệnh nhân.
+- Lịch sử dùng chung hiển thị khoa/phòng sử dụng; không hiển thị danh tính cá nhân và không lưu họ tên bệnh nhân.
 - Lịch sử tính liều suy thận được dùng chung qua Supabase: mọi tài khoản đã duyệt được xem, chỉ admin được xóa và xuất báo cáo CSV.
 - Với dự án đã cài đặt, chạy thêm supabase/lich_su_tra_cuu_dung_chung.sql một lần.
 - Nếu admin đã duyệt vẫn không xóa được, chạy supabase/sua_quyen_xoa_admin.sql và tải bản mã mới.
+- Với dự án hiện tại, chạy supabase/chuyen_tai_khoan_theo_khoa_phong.sql trước khi tải mã website mới.
 - Xem HUONG_DAN_DANG_NHAP_VA_NHAT_KY.md trước khi triển khai.
 
 BẢN CẬP NHẬT HIỆU CHỈNH LIỀU THEO CrCl
