@@ -3,7 +3,9 @@ BẢN CẬP NHẬT HỆ THỐNG TÀI KHOẢN NHÂN VIÊN VPMED
 - Chỉ chấp nhận email @vpmed.vn; đăng ký bắt buộc có họ tên, chức danh/vị trí và khoa/phòng/đơn vị.
 - Tài khoản mới ở trạng thái chờ duyệt; chỉ admin được duyệt, từ chối hoặc thu hồi.
 - Chỉ tài khoản đã duyệt mới vào được trang chủ. Tài khoản chờ duyệt không còn được chuyển sang trang công cụ cũ.
-- Admin xem được người thực hiện tra cứu liều thận; nhật ký không gửi định danh bệnh nhân.
+- Admin xem được người thực hiện tra cứu liều thận; lịch sử chỉ lưu mã HIS, không lưu họ tên bệnh nhân.
+- Lịch sử tính liều suy thận được dùng chung qua Supabase: mọi tài khoản đã duyệt được xem, chỉ admin được xóa và xuất báo cáo CSV.
+- Với dự án đã cài đặt, chạy thêm supabase/lich_su_tra_cuu_dung_chung.sql một lần.
 - Xem HUONG_DAN_DANG_NHAP_VA_NHAT_KY.md trước khi triển khai.
 
 BẢN CẬP NHẬT HIỆU CHỈNH LIỀU THEO CrCl

@@ -156,8 +156,8 @@
         </section>
         <section class="admin-panel" id="adminAudit">
           <div class="admin-filters"><input id="auditSearch" type="search" placeholder="Tìm nhân viên, thuốc, khoa/phòng…"><button type="button" class="secondary-button compact" id="auditReload">Tải nhật ký</button></div>
-          <p class="audit-note">Nhật ký không lưu họ tên hoặc mã bệnh nhân. Danh tính hiển thị là nhân viên thực hiện tra cứu.</p>
-          <div class="table-scroll"><table class="audit-table"><thead><tr><th>Thời gian</th><th>Nhân viên</th><th>Đơn vị</th><th>Thuốc</th><th>CrCl / eGFR</th><th>Kết quả</th></tr></thead><tbody id="auditRows"><tr><td colspan="6">Chọn “Tải nhật ký” để xem dữ liệu.</td></tr></tbody></table></div>
+          <p class="audit-note">Nhật ký chỉ lưu mã người bệnh trên HIS, không lưu họ tên người bệnh. Danh tính hiển thị là nhân viên thực hiện tra cứu.</p>
+          <div class="table-scroll"><table class="audit-table"><thead><tr><th>Thời gian</th><th>Mã bệnh nhân</th><th>Nhân viên</th><th>Đơn vị</th><th>Thuốc</th><th>CrCl / eGFR</th><th>Kết quả</th></tr></thead><tbody id="auditRows"><tr><td colspan="7">Chọn “Tải nhật ký” để xem dữ liệu.</td></tr></tbody></table></div>
         </section>
       </div>
     </section>
@@ -165,6 +165,6 @@
 
   <footer class="auth-footer">© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng</footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="assets/vpmed-auth-page.js?v=20260812-new-system-v1"></script>
+  <script src="assets/vpmed-auth-page.js?v=20260812-shared-history-v2"></script>
 </body>
 </html>

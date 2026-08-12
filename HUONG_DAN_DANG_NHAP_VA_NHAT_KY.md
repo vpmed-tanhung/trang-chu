@@ -63,9 +63,21 @@ Admin không nên duyệt tài khoản nếu chưa đối chiếu người đăn
 
 ## 5. Dữ liệu nhật ký
 
-Nhật ký Supabase chỉ ghi danh tính **nhân viên thực hiện tra cứu** từ hồ sơ đã được duyệt. Nhật ký không gửi họ tên bệnh nhân, mã bệnh nhân, ngày sinh, cân nặng, chiều cao hoặc creatinine thô.
+Nhật ký Supabase ghi danh tính **nhân viên thực hiện tra cứu** từ hồ sơ đã được duyệt, mã người bệnh trên HIS, thời gian, thuốc, CrCl/eGFR và gợi ý liều. Không nhập hoặc lưu họ tên người bệnh, ngày sinh, cân nặng, chiều cao hay creatinine thô trong lịch sử dùng chung.
 
-Lịch sử có mã bệnh nhân hiển thị trong công cụ chỉ nằm trên thiết bị đang sử dụng và có thể xóa tại chỗ.
+Để bật lịch sử dùng chung trên dự án đã cài đặt trước đó, chạy thêm một lần file:
+
+`supabase/lich_su_tra_cuu_dung_chung.sql`
+
+Sau khi chạy:
+
+- Mọi tài khoản có trạng thái `approved` cùng xem được tối đa 500 lượt tra cứu gần nhất trên trang tính liều suy thận.
+- Danh sách tự làm mới mỗi 30 giây và có nút **Làm mới**.
+- Người dùng thường chỉ được xem và thêm lượt tra cứu của chính thao tác tính liều; không có quyền xóa.
+- Admin có thêm nút **Xuất CSV**, **Xóa** từng dòng và **Xóa toàn bộ**.
+- Khi xóa toàn bộ, admin phải nhập đúng cụm `XOA LICH SU` để xác nhận.
+
+Supabase là nguồn lịch sử chung duy nhất. File Apps Script cũ không cần triển khai và không được nạp trong `index.html`, tránh hai nguồn dữ liệu bị trùng hoặc lệch.
 
 ## 6. Các file mới cần tải đủ lên GitHub
 
@@ -75,6 +87,7 @@ Lịch sử có mã bệnh nhân hiển thị trong công cụ chỉ nằm trên
 - `assets/vpmed-access.css`
 - `assets/vpmed-access.js`
 - `assets/vpmed-renal-audit.js`
+- `supabase/lich_su_tra_cuu_dung_chung.sql`
 - `index.html` đã cập nhật
 
 Phải tải đúng cả cấu trúc thư mục. Nếu chỉ thay `index.html` mà thiếu các file trong `assets/`, giao diện tài khoản sẽ không hoạt động đúng.

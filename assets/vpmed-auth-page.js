@@ -186,16 +186,16 @@
     setMessage('adminMessage','Đã cập nhật trạng thái tài khoản '+profile.full_name+'.','success');await loadProfiles();
   }
   async function loadAudit(){
-    var body=document.getElementById('auditRows');body.innerHTML='<tr><td colspan="6">Đang tải nhật ký…</td></tr>';
+    var body=document.getElementById('auditRows');body.innerHTML='<tr><td colspan="7">Đang tải nhật ký…</td></tr>';
     var result=await client.from('renal_lookup_logs').select('*').order('created_at',{ascending:false}).limit(500);
-    if(result.error){body.innerHTML='<tr><td colspan="6">Không tải được nhật ký. Kiểm tra quyền admin và tệp SQL.</td></tr>';return;}
+    if(result.error){body.innerHTML='<tr><td colspan="7">Không tải được nhật ký. Kiểm tra quyền admin và tệp SQL.</td></tr>';return;}
     allAudit=result.data||[];renderAudit();
   }
   function renderAudit(){
     var query=String(document.getElementById('auditSearch').value||'').trim().toLowerCase();var rows=allAudit.filter(function(item){return !query||[item.staff_name||item.doctor_name,item.staff_email||item.doctor_email,item.job_title,item.department,item.drug_name,item.result_summary].join(' ').toLowerCase().includes(query);});
     var body=document.getElementById('auditRows');
-    if(!rows.length){body.innerHTML='<tr><td colspan="6">Chưa có nhật ký phù hợp.</td></tr>';return;}
-    body.innerHTML=rows.map(function(item){var staffName=item.staff_name||item.doctor_name||'Nhân viên';var staffEmail=item.staff_email||item.doctor_email||'';return '<tr><td>'+escapeHtml(formatDate(item.created_at))+'</td><td><b>'+escapeHtml(staffName)+'</b><small>'+escapeHtml(item.job_title)+' · '+escapeHtml(staffEmail)+'</small></td><td>'+escapeHtml(item.department)+'</td><td>'+escapeHtml(item.drug_name||'Đánh giá chức năng thận')+'</td><td><b>CrCl: '+escapeHtml(item.crcl_ml_min==null?'—':item.crcl_ml_min)+' mL/ph</b><small>eGFR: '+escapeHtml(item.egfr_ml_min_1_73m2==null?'—':item.egfr_ml_min_1_73m2)+'</small></td><td>'+escapeHtml(item.result_summary||item.renal_band||'—')+'</td></tr>';}).join('');
+    if(!rows.length){body.innerHTML='<tr><td colspan="7">Chưa có nhật ký phù hợp.</td></tr>';return;}
+    body.innerHTML=rows.map(function(item){var staffName=item.staff_name||item.doctor_name||'Nhân viên';var staffEmail=item.staff_email||item.doctor_email||'';return '<tr><td>'+escapeHtml(formatDate(item.created_at))+'</td><td><b>'+escapeHtml(item.patient_code||'—')+'</b></td><td><b>'+escapeHtml(staffName)+'</b><small>'+escapeHtml(item.job_title)+' · '+escapeHtml(staffEmail)+'</small></td><td>'+escapeHtml(item.department)+'</td><td>'+escapeHtml(item.drug_name||'Đánh giá chức năng thận')+'</td><td><b>CrCl: '+escapeHtml(item.crcl_ml_min==null?'—':item.crcl_ml_min)+' mL/ph</b><small>eGFR: '+escapeHtml(item.egfr_ml_min_1_73m2==null?'—':item.egfr_ml_min_1_73m2)+'</small></td><td>'+escapeHtml(item.result_summary||item.renal_band||'—')+'</td></tr>';}).join('');
   }
   async function showAdmin(){
     card.hidden=true;adminShell.hidden=false;document.body.classList.add('admin-mode');document.documentElement.classList.remove('auth-loading');

@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#075f9f">
   <title>Hệ thống Hỗ trợ Dược lâm sàng | VPMED Tân Hưng</title>
   <link rel="stylesheet" href="assets/style.css?v=20260812-user-account-v2">
-  <link rel="stylesheet" href="assets/vpmed-access.css?v=20260812-new-system-v1">
+  <link rel="stylesheet" href="assets/vpmed-access.css?v=20260812-shared-history-v2">
   <link rel="stylesheet" href="assets/hepatotoxicity.css">
   <link rel="stylesheet" href="assets/pregnancy_lactation.css">
   <link rel="stylesheet" href="assets/responsive-polish.css?v=20260712-balanced">
@@ -122,8 +122,9 @@
       <div class="dose-main">
         <div id="output" class="empty-state"><div>🧪</div><b>Chưa có kết quả</b><span>Nhập tuổi, cân nặng, creatinine và chọn kháng sinh để bắt đầu.</span></div>
         <section class="section-card history-card">
-          <div class="section-heading"><div><span class="kicker">Lịch sử tra cứu</span><h2>Lịch sử trên thiết bị này</h2><small id="renalAuditStatus">Nhật ký người thực hiện được lưu riêng, không kèm mã hoặc tên bệnh nhân.</small></div><div class="heading-actions"><button class="btn btn-soft" id="exportHist">Xuất CSV</button><button class="btn btn-soft" id="clear">Làm mới lịch sử</button></div></div>
-          <div class="table-wrap"><table><thead><tr><th>Thời gian</th><th>Mã bệnh nhân</th><th>CrCl</th><th>eGFR</th><th>Thuốc</th><th>Gợi ý</th></tr></thead><tbody id="hist"></tbody></table></div>
+          <div class="section-heading"><div><span class="kicker">Lịch sử tra cứu</span><h2>Lịch sử tra cứu dùng chung</h2><small id="renalAuditStatus">Mọi nhân viên đã được duyệt cùng xem dữ liệu này. Chỉ quản trị viên được xóa.</small></div><div class="heading-actions"><button class="btn btn-soft" id="refreshHist" type="button">Làm mới</button><button class="btn btn-soft" id="exportHist" type="button" hidden>Xuất CSV</button><button class="btn btn-danger-soft" id="clear" type="button" hidden>Xóa toàn bộ</button></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Thời gian</th><th>Mã bệnh nhân</th><th>Người tra cứu</th><th>CrCl</th><th>eGFR</th><th>Thuốc</th><th>Gợi ý</th><th id="historyManageHeading" hidden>Quản lý</th></tr></thead><tbody id="hist"><tr><td colspan="8" style="text-align:center">Đang tải lịch sử dùng chung…</td></tr></tbody></table></div>
+          <p class="history-privacy-note">Chỉ nhập mã người bệnh trên HIS; không nhập họ tên người bệnh vào ô mã.</p>
         </section>
       </div>
     </div>
@@ -1304,7 +1305,7 @@ calc();
 <script defer src="assets/renal_database_20260723.js?v=20260723-renal-only-v4"></script>
 <script defer src="assets/diseases.js"></script>
 <script defer src="assets/unified.js?v=20260802-structure-only"></script>
-<script defer src="assets/vpmed-renal-audit.js?v=20260812-new-system-v1"></script>
+<script defer src="assets/vpmed-renal-audit.js?v=20260812-shared-history-v2"></script>
 <script defer src="assets/antibiotic_consultation.js?v=20260716-inpatient-first"></script>
 <script defer src="assets/dose_24h_summary.js?v=20260802-structure-only"></script>
 <script defer src="assets/vancomycin_renal_v2.js?v=20260723-renal-only-v6"></script>

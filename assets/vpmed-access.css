@@ -11,3 +11,7 @@ html.vpmed-auth-checking .topbar,html.vpmed-auth-checking .app-shell,html.vpmed-
 .home-user-menu button{width:100%;margin-top:8px;padding:9px 12px;border:1px solid #efcaca;border-radius:9px;background:#fff5f5;color:#a62e2e;font-size:12px;font-weight:850;cursor:pointer}.home-user-menu button:hover{background:#ffeaea}
 @media(max-width:1100px){.home-user-account{margin-left:auto;max-width:220px}.home-user-trigger{min-width:175px;max-width:220px}}
 @media(max-width:720px){.home-user-account{max-width:48px}.home-user-trigger{min-width:44px;width:44px;padding:4px;border:0;background:transparent;box-shadow:none}.home-user-avatar{width:38px;height:38px;flex-basis:38px}.home-user-copy,.home-user-chevron{display:none}.home-user-menu{right:-42px;width:min(280px,calc(100vw - 24px))}}
+.history-privacy-note{margin:10px 0 0;color:#667d90;font-size:11px;line-height:1.45}
+.history-user-cell{min-width:150px}.history-user-cell b,.history-user-cell small{display:block}.history-user-cell b{color:#0a4e7e}.history-user-cell small{margin-top:3px;color:#71899a;font-size:10px}
+.history-delete-row{padding:6px 9px;border:1px solid #efbec7;border-radius:7px;background:#fff3f4;color:#ad2743;font-size:10px;font-weight:850;cursor:pointer}.history-delete-row:hover{background:#ffe7eb}
+#renalAuditStatus[data-tone="success"]{color:#08784d}#renalAuditStatus[data-tone="error"]{color:#b32643}
