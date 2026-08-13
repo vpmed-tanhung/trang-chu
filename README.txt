@@ -8,6 +8,7 @@ BẢN CẬP NHẬT HỆ THỐNG TÀI KHOẢN KHOA/PHÒNG VPMED
 - Với dự án đã cài đặt, chạy thêm supabase/lich_su_tra_cuu_dung_chung.sql một lần.
 - Nếu admin đã duyệt vẫn không xóa được, chạy supabase/sua_quyen_xoa_admin.sql và tải bản mã mới.
 - Với dự án hiện tại, chạy supabase/chuyen_tai_khoan_theo_khoa_phong.sql trước khi tải mã website mới.
+- Nếu hiện dòng đỏ “Kết quả đã tính nhưng chưa lưu được vào lịch sử chung”, chạy một lần supabase/sua_loi_ghi_nhat_ky.sql trong Supabase SQL Editor.
 - Xem HUONG_DAN_DANG_NHAP_VA_NHAT_KY.md trước khi triển khai.
 
 BẢN CẬP NHẬT HIỆU CHỈNH LIỀU THEO CrCl

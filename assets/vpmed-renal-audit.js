@@ -36,6 +36,21 @@
     el.textContent=message;
     el.dataset.tone=tone||'';
   }
+  function databaseErrorText(error){
+    if(!error)return 'Lỗi Supabase không xác định';
+    var code=String(error.code||'').trim();
+    var message=String(error.message||error.details||error.hint||'Lỗi Supabase').replace(/\s+/g,' ').trim();
+    if(code==='42501'||/row-level security|permission denied/i.test(message)){
+      return 'Supabase đang chặn quyền ghi (RLS/policy INSERT)';
+    }
+    if(code==='23502'||/null value.*not-null|violates not-null/i.test(message)){
+      return 'Cấu trúc bảng cũ còn cột bắt buộc chưa được cập nhật';
+    }
+    if(code==='PGRST204'||/schema cache|could not find.*column/i.test(message)){
+      return 'Supabase chưa nhận cấu trúc cột mới';
+    }
+    return (code?code+': ':'')+message.slice(0,220);
+  }
   function isAdmin(){return !!(auth&&auth.profile&&auth.profile.role==='admin');}
   function colspan(){return isAdmin()?8:7;}
 
@@ -73,7 +88,8 @@
     if(result.error){
       sharedRows=[];
       renderSharedHistory();
-      setStatus('Chưa tải được lịch sử chung. Admin cần chạy file supabase/lich_su_tra_cuu_dung_chung.sql.','error');
+      console.error('[renal_lookup_logs:select]',result.error);
+      setStatus('Chưa tải được lịch sử chung: '+databaseErrorText(result.error)+'.','error');
       return;
     }
     sharedRows=result.data||[];
@@ -102,6 +118,7 @@
     var summary=resultNode?resultNode.textContent.trim().replace(/\s+/g,' ').slice(0,1500):'Đã tính chức năng thận và gợi ý liều.';
     setStatus('Đang lưu lượt tra cứu vào lịch sử dùng chung…');
     var result=await auth.client.from('renal_lookup_logs').insert({
+      user_id:auth.user.id,
       patient_code:patientCode,
       lookup_type:'antibiotic_renal_dose',
       module_name:'Tính liều kháng sinh & CrCl/eGFR',
@@ -112,7 +129,8 @@
       result_summary:summary
     });
     if(result.error){
-      setStatus('Kết quả đã tính nhưng chưa lưu được vào lịch sử chung. Kiểm tra file SQL cập nhật.','error');
+      console.error('[renal_lookup_logs:insert]',result.error);
+      setStatus('Kết quả đã tính nhưng chưa lưu được vào lịch sử chung: '+databaseErrorText(result.error)+'. Admin chạy supabase/sua_loi_ghi_nhat_ky.sql.','error');
       return;
     }
     await refreshSharedHistory();

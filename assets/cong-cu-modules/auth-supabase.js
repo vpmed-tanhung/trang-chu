@@ -462,6 +462,7 @@
     if(!AUDIT_ALLOWED_TYPES[payload.lookup_type]) return Promise.resolve(false);
     var row = {
       user_id: CURRENT_USER.id,
+      patient_code: auditText(payload.patient_code, 30) || 'KHONG_CO_MA',
       lookup_type: payload.lookup_type,
       module_name: auditText(payload.module_name, 160),
       drug_name: auditText(payload.drug_name, 180),

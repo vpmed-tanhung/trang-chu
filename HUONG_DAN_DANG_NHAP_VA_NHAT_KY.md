@@ -71,6 +71,12 @@ Nhật ký Supabase hiển thị **khoa/phòng sử dụng**, mã người bện
 
 `supabase/lich_su_tra_cuu_dung_chung.sql`
 
+Nếu giao diện báo **“Kết quả đã tính nhưng chưa lưu được vào lịch sử chung”**, chạy file sửa chữa tổng hợp:
+
+`supabase/sua_loi_ghi_nhat_ky.sql`
+
+File này không xóa tài khoản hoặc lịch sử. Nó bổ sung các cột còn thiếu, gỡ ràng buộc `NOT NULL` của cột định danh đời cũ, cài lại trigger tự điền khoa/phòng và khôi phục policy `INSERT` cho tài khoản đã duyệt.
+
 Sau khi chạy:
 
 - Mọi tài khoản có trạng thái `approved` cùng xem được tối đa 500 lượt tra cứu gần nhất trên trang tính liều suy thận.
