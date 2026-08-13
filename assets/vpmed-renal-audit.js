@@ -66,7 +66,7 @@
       return '<tr>'+
         '<td>'+escapeHtml(formatDate(item.created_at))+'</td>'+
         '<td><b>'+escapeHtml(item.patient_code||'—')+'</b></td>'+
-        '<td class="history-user-cell"><b>'+escapeHtml(item.department||'Chưa cập nhật')+'</b><small>Tài khoản khoa/phòng</small></td>'+
+        '<td class="history-user-cell"><b>'+escapeHtml(item.department||'Chưa cập nhật')+'</b></td>'+
         '<td>'+escapeHtml(item.crcl_ml_min==null?'—':item.crcl_ml_min)+' mL/ph</td>'+
         '<td>'+escapeHtml(item.egfr_ml_min_1_73m2==null?'—':item.egfr_ml_min_1_73m2)+'</td>'+
         '<td>'+escapeHtml(item.drug_name||'—')+'</td>'+
