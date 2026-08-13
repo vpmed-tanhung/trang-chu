@@ -94,7 +94,7 @@
     }
     sharedRows=result.data||[];
     renderSharedHistory();
-    setStatus('Đã đồng bộ '+sharedRows.length+' lượt tra cứu gần nhất. Mọi khoa/phòng có tài khoản đã duyệt cùng xem dữ liệu này.','success');
+    setStatus(sharedRows.length+' lượt tra cứu.','success');
   }
 
   async function logLookup(){
