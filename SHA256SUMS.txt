@@ -1,4 +1,4 @@
-e5770dbca82d2048b2bd92ae67119c615bf4b5ffdacaa180f085511d6ee8c33c  ./.github/workflows/cap-nhat-canh-bao-duoc.yml
+f3f8e886262a3775a99c20b48e908297168739e61d53de3fbbb271f08a952e9b  ./.github/workflows/cap-nhat-canh-bao-duoc.yml
 8b332b42e642d0103f4d25f758500777bff907d55c86a63a7c2941aace2599e3  ./.gitignore
 91abc7d017bd79b01177510231008693835b289a3b3cff700ce1cf05ed7565b5  ./BAO_CAO_LOC_DU_LIEU_DUOC_LAM_SANG_20260814.md
 276eff3bb1a3e1d8b7a19376c6f6023daab1a1c5531fb6b491e3219d3e214707  ./CNAME
