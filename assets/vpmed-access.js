@@ -10,12 +10,18 @@
   var trigger=document.getElementById('homeUserTrigger'),menu=document.getElementById('homeUserMenu');
   var avatar=document.getElementById('homeUserAvatar'),nameEl=document.getElementById('homeUserName'),metaEl=document.getElementById('homeUserMeta');
   var menuName=document.getElementById('homeUserMenuName'),menuDetail=document.getElementById('homeUserMenuDetail');
-  var logout=document.getElementById('homeUserLogout'),adminLink=document.getElementById('homeAdminLink');
+  var logout=document.getElementById('homeUserLogout'),adminLink=document.getElementById('homeAdminLink'),changePassword=document.getElementById('homeChangePassword');
+  var passwordModal=document.getElementById('passwordChangeModal'),passwordForm=document.getElementById('passwordChangeForm'),passwordMessage=document.getElementById('passwordChangeMessage');
+  var currentUser=null,passwordRedirectPending=false;
   var routed=false;
   function initials(value){var parts=String(value||'').trim().split(/\s+/).filter(Boolean);if(!parts.length)return 'KP';return ((parts[0][0]||'')+(parts.length>1?(parts[parts.length-1][0]||''):'')).toUpperCase();}
   function closeMenu(){menu.hidden=true;trigger.setAttribute('aria-expanded','false');}
+  function setPasswordMessage(message,type){passwordMessage.textContent=message||'';passwordMessage.className='password-change-message'+(type==='success'?' success':'');}
+  function openPasswordModal(){closeMenu();passwordForm.reset();setPasswordMessage('');passwordModal.hidden=false;document.body.classList.add('password-modal-open');window.setTimeout(function(){document.getElementById('currentPassword').focus();},0);}
+  function closePasswordModal(){passwordModal.hidden=true;document.body.classList.remove('password-modal-open');passwordForm.reset();setPasswordMessage('');}
   function reveal(user,profile){
     if(routed)return;routed=true;
+    currentUser=user;
     var data=user.user_metadata||{};var workplace=profile.workplace||data.department||data.workplace||profile.full_name||'';var isDepartment=profile.account_type==='department'||profile.job_title==='Tài khoản khoa/phòng';var displayName=(profile.role==='admin'&&!isDepartment)?(profile.full_name||user.email):(workplace||profile.full_name||user.email||'Khoa/phòng');var detail=profile.role==='admin'?'Quản trị viên':'Tài khoản khoa/phòng';
     avatar.textContent=initials(displayName);nameEl.textContent=displayName;metaEl.textContent=detail;menuName.textContent=displayName;menuDetail.textContent=detail+'\n'+(profile.email||user.email||'');
     if(adminLink)adminLink.hidden=profile.role!=='admin';account.hidden=false;document.documentElement.classList.remove('vpmed-auth-checking');
@@ -30,7 +36,28 @@
   }
   trigger.addEventListener('click',function(){var open=menu.hidden;menu.hidden=!open;trigger.setAttribute('aria-expanded',open?'true':'false');});
   document.addEventListener('click',function(event){if(!account.contains(event.target))closeMenu();});
+  changePassword.addEventListener('click',openPasswordModal);
+  document.querySelectorAll('[data-close-password-modal]').forEach(function(button){button.addEventListener('click',closePasswordModal);});
+  document.querySelectorAll('[data-toggle-home-password]').forEach(function(button){button.addEventListener('click',function(){var input=document.getElementById(button.dataset.toggleHomePassword);var visible=input.type==='text';input.type=visible?'password':'text';button.textContent=visible?'Hiện':'Ẩn';});});
+  document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!passwordModal.hidden)closePasswordModal();});
+  passwordForm.addEventListener('submit',async function(event){
+    event.preventDefault();setPasswordMessage('');
+    var current=document.getElementById('currentPassword').value;
+    var next=document.getElementById('newPassword').value;
+    var confirmNext=document.getElementById('confirmNewPassword').value;
+    if(!current){setPasswordMessage('Vui lòng nhập mật khẩu hiện tại.');return;}
+    if(next.length<8){setPasswordMessage('Mật khẩu mới cần có ít nhất 8 ký tự.');return;}
+    if(next!==confirmNext){setPasswordMessage('Hai mật khẩu mới chưa khớp nhau.');return;}
+    if(next===current){setPasswordMessage('Mật khẩu mới phải khác mật khẩu hiện tại.');return;}
+    var submit=passwordForm.querySelector('[type="submit"]');submit.disabled=true;submit.textContent='Đang cập nhật…';
+    var verified=await client.auth.signInWithPassword({email:currentUser.email,password:current});
+    if(verified.error){submit.disabled=false;submit.textContent='Cập nhật mật khẩu';setPasswordMessage('Mật khẩu hiện tại không đúng.');return;}
+    var updated=await client.auth.updateUser({password:next});
+    if(updated.error){submit.disabled=false;submit.textContent='Cập nhật mật khẩu';setPasswordMessage('Chưa đổi được mật khẩu. Vui lòng thử lại.');return;}
+    setPasswordMessage('Đã đổi mật khẩu. Đang quay lại đăng nhập…','success');
+    window.setTimeout(async function(){passwordRedirectPending=true;await client.auth.signOut();location.replace('tai-khoan.html?password_reset=success');},900);
+  });
   logout.addEventListener('click',async function(){logout.disabled=true;await client.auth.signOut();location.replace('tai-khoan.html');});
   client.auth.getSession().then(function(result){applySession(result.data&&result.data.session);}).catch(redirect);
-  client.auth.onAuthStateChange(function(event,session){if(event==='SIGNED_OUT')redirect();else if(!routed&&event==='SIGNED_IN')setTimeout(function(){applySession(session);},0);});
+  client.auth.onAuthStateChange(function(event,session){if(event==='SIGNED_OUT'&&!passwordRedirectPending)redirect();else if(!routed&&event==='SIGNED_IN')setTimeout(function(){applySession(session);},0);});
 })();

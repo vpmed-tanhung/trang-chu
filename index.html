@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#075f9f">
   <title>Hệ thống Hỗ trợ Dược lâm sàng | VPMED Tân Hưng</title>
   <link rel="stylesheet" href="assets/style.css?v=20260812-user-account-v2">
-  <link rel="stylesheet" href="assets/vpmed-access.css?v=20260812-shared-history-v3">
+  <link rel="stylesheet" href="assets/vpmed-access.css?v=20260814-password-change-v1">
   <link rel="stylesheet" href="assets/hepatotoxicity.css">
   <link rel="stylesheet" href="assets/pregnancy_lactation.css">
   <link rel="stylesheet" href="assets/responsive-polish.css?v=20260712-balanced">
@@ -55,11 +55,38 @@
         <div class="home-user-menu-name" id="homeUserMenuName">Người dùng</div>
         <div class="home-user-menu-detail" id="homeUserMenuDetail">Tài khoản khoa/phòng</div>
         <a class="home-admin-link" id="homeAdminLink" href="tai-khoan.html#admin" hidden>Quản trị tài khoản</a>
+        <button class="home-password-action" type="button" id="homeChangePassword">Đổi mật khẩu</button>
         <button type="button" id="homeUserLogout">Đăng xuất</button>
       </div>
     </div>
   </div>
 </header>
+
+<div class="password-change-modal" id="passwordChangeModal" hidden>
+  <div class="password-change-backdrop" data-close-password-modal></div>
+  <section class="password-change-card" role="dialog" aria-modal="true" aria-labelledby="passwordChangeTitle">
+    <button class="password-change-close" type="button" data-close-password-modal aria-label="Đóng">×</button>
+    <div class="password-change-icon" aria-hidden="true">🔐</div>
+    <h2 id="passwordChangeTitle">Đổi mật khẩu</h2>
+    <p>Mật khẩu mới cần có ít nhất 8 ký tự.</p>
+    <form id="passwordChangeForm" novalidate>
+      <label>Mật khẩu hiện tại
+        <span class="password-change-field"><input id="currentPassword" type="password" autocomplete="current-password" required><button type="button" data-toggle-home-password="currentPassword">Hiện</button></span>
+      </label>
+      <label>Mật khẩu mới
+        <span class="password-change-field"><input id="newPassword" type="password" autocomplete="new-password" minlength="8" required><button type="button" data-toggle-home-password="newPassword">Hiện</button></span>
+      </label>
+      <label>Nhập lại mật khẩu mới
+        <span class="password-change-field"><input id="confirmNewPassword" type="password" autocomplete="new-password" minlength="8" required><button type="button" data-toggle-home-password="confirmNewPassword">Hiện</button></span>
+      </label>
+      <p class="password-change-message" id="passwordChangeMessage" role="alert"></p>
+      <div class="password-change-actions">
+        <button class="password-change-cancel" type="button" data-close-password-modal>Hủy</button>
+        <button class="password-change-submit" type="submit">Cập nhật mật khẩu</button>
+      </div>
+    </form>
+  </section>
+</div>
 
 <main class="app-shell">
   <section class="view active" id="view-home">
@@ -1291,7 +1318,7 @@ calc();
   <div><a class="nav-evaluation" href="phieu-danh-gia.html" target="_blank" rel="noopener">Phiếu đánh giá phần mềm</a> · <a href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a> · Công cụ hỗ trợ, không thay thế đánh giá lâm sàng.</div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="assets/vpmed-access.js?v=20260813-hide-account-status-v1"></script>
+<script defer src="assets/vpmed-access.js?v=20260814-password-change-v1"></script>
 <script defer src="assets/data.js"></script>
 <script defer src="assets/contra_adr_hdsd_duocthu_20260717.js?v=20260717-final"></script>
 <script defer src="assets/clinical_updates.js"></script>
