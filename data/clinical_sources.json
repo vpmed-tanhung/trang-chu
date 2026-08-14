@@ -1,0 +1,72 @@
+[
+  {
+    "id": "dav-approved-label",
+    "name": "Cục Quản lý Dược – Bộ Y tế: công bố giấy đăng ký thuốc và tờ hướng dẫn sử dụng",
+    "priority": 1,
+    "scope": ["liều dùng", "chống chỉ định", "ADR", "tương tác", "cách dùng", "bảo quản", "thai kỳ/cho con bú"],
+    "url": "https://dichvucong.dav.gov.vn/congbothuoc/index",
+    "note": "Ưu tiên đối chiếu đúng tên thuốc, hoạt chất, hàm lượng, dạng bào chế, số đăng ký và tờ hướng dẫn sử dụng đã được phê duyệt.",
+    "reviewedDate": "2026-07-04",
+    "status": "active"
+  },
+  {
+    "id": "kcb-guidelines",
+    "name": "Cục Quản lý Khám, chữa bệnh – Bộ Y tế: thư viện hướng dẫn chẩn đoán, điều trị",
+    "priority": 2,
+    "scope": ["phác đồ", "lựa chọn kháng sinh", "đối tượng đặc biệt", "quy trình chuyên môn"],
+    "url": "https://kcb.vn/phac-do",
+    "note": "Dùng để cập nhật hướng dẫn chuyên môn còn hiệu lực do Bộ Y tế/Cục Quản lý Khám, chữa bệnh công bố.",
+    "reviewedDate": "2026-07-04",
+    "status": "active"
+  },
+  {
+    "id": "byt-708-antibiotic",
+    "name": "Quyết định 708/QĐ-BYT – Hướng dẫn sử dụng kháng sinh",
+    "priority": 3,
+    "scope": ["nguyên tắc sử dụng kháng sinh", "kháng sinh theo bệnh lý", "PK/PD"],
+    "url": "https://kcb.vn/thu-vien-tai-lieu/tai-lieu-huong-dan-su-dung-khang-sinh.html",
+    "note": "Tài liệu nền cho lựa chọn kháng sinh; cần đối chiếu thêm kháng sinh đồ bệnh viện và tờ HDSD của từng chế phẩm.",
+    "reviewedDate": "2026-07-04",
+    "status": "reference"
+  },
+  {
+    "id": "byt-5948-interaction",
+    "name": "Quyết định 5948/QĐ-BYT – Tương tác thuốc chống chỉ định",
+    "priority": 2,
+    "scope": ["tương tác thuốc chống chỉ định", "cơ chế", "hậu quả", "xử trí"],
+    "url": "https://kcb.vn/tin-tuc/danh-muc-tuong-tac-thuoc-chong-chi-dinh-trong-thuc-hanh-lam-sang-va-huong-dan-giam-sat-phan-ung-co-hai-cua-thuoc-adr-tai.html",
+    "note": "Dùng cho module kiểm tra tương tác thuốc chống chỉ định trong thực hành lâm sàng.",
+    "reviewedDate": "2026-07-04",
+    "status": "active"
+  },
+  {
+    "id": "byt-29-adr",
+    "name": "Quyết định 29/QĐ-BYT – Hướng dẫn giám sát phản ứng có hại của thuốc",
+    "priority": 3,
+    "scope": ["ADR", "quy trình theo dõi", "báo cáo phản ứng có hại"],
+    "url": "https://kcb.vn/tin-tuc/danh-muc-tuong-tac-thuoc-chong-chi-dinh-trong-thuc-hanh-lam-sang-va-huong-dan-giam-sat-phan-ung-co-hai-cua-thuoc-adr-tai.html",
+    "note": "Dùng cho cảnh báo ADR và quy trình xử trí/báo cáo trong bệnh viện.",
+    "reviewedDate": "2026-07-04",
+    "status": "active"
+  },
+  {
+    "id": "byt-2388-ckd",
+    "name": "Quyết định 2388/QĐ-BYT năm 2024 – Hướng dẫn chẩn đoán và điều trị bệnh thận mạn",
+    "priority": 3,
+    "scope": ["eGFR", "bệnh thận mạn", "phân tầng chức năng thận", "theo dõi thận"],
+    "url": "https://kcb.vn/phac-do/quyet-dinh-so-2388-qd-byt-ngay-12-8-2024-ve-viec-ban-hanh-tai-lieu-chuyen-mon-huong-dan-chan-doan-va-dieu-tri-benh-than-.html?categoryId=101796520",
+    "note": "Dùng làm căn cứ chuyên môn cho phân loại chức năng thận và theo dõi bệnh nhân bệnh thận mạn.",
+    "reviewedDate": "2026-07-04",
+    "status": "active"
+  },
+  {
+    "id": "tt-21-hdt",
+    "name": "Thông tư 21/2013/TT-BYT – Hội đồng Thuốc và Điều trị trong bệnh viện",
+    "priority": 4,
+    "scope": ["phê duyệt danh mục thuốc", "quy trình cập nhật", "HĐT&ĐT"],
+    "url": "https://congbao.chinhphu.vn/van-ban/thong-tu-so-21-2013-tt-byt-7406/4043.htm",
+    "note": "Dùng làm căn cứ tổ chức quy trình duyệt, rà soát và cập nhật dữ liệu chuyên môn nội bộ.",
+    "reviewedDate": "2026-07-04",
+    "status": "active"
+  }
+]

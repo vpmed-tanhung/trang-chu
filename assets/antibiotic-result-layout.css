@@ -1,0 +1,95 @@
+#view-dose .clinical-result-flow{
+  display:flex;flex-direction:column;gap:12px;padding:18px;
+  background:#fff;border:1px solid #d2e0e8;border-radius:22px;
+  box-shadow:0 10px 28px rgba(24,78,109,.08)
+}
+#view-dose .result-overview{
+  padding:16px;border:1px solid #c6dce8;border-radius:13px;background:#f6fbfe
+}
+#view-dose .result-eyebrow,
+#view-dose .result-metric>span,
+#view-dose .result-primary-card>span,
+#view-dose .result-source-row>span{
+  display:block;color:#305c74;font-size:11px;font-weight:850;letter-spacing:.02em
+}
+#view-dose .result-overview h2{margin:6px 0 2px;color:#064f82;font-size:21px;line-height:1.3}
+#view-dose .result-overview p{margin:0;color:#587282;font-size:13px}
+
+#view-dose .result-metric-grid,
+#view-dose .result-primary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#view-dose .result-metric{
+  min-width:0;padding:15px;border:1px solid #c6dce8;border-radius:13px;background:#fff
+}
+#view-dose .result-metric>div{margin-top:7px;color:#075b91;line-height:1.15}
+#view-dose .result-metric strong{font-size:24px}
+#view-dose .result-metric small{font-size:12px;font-weight:750;color:#4f7184}
+#view-dose .result-metric p{margin:7px 0 0;color:#617786;font-size:12px;line-height:1.4}
+
+#view-dose .result-primary-card{
+  min-width:0;padding:15px;border:1px solid #86d0aa;border-radius:13px;background:#f0fbf5;color:#075d43
+}
+#view-dose .result-primary-card>strong{display:block;margin-top:7px;font-size:16px;line-height:1.45}
+#view-dose .administration-list{margin:7px 0 0;padding-left:19px}
+#view-dose .administration-list li{margin:5px 0;color:#0b664a;font-size:13px;line-height:1.45}
+#view-dose .dialysis-notice{margin-top:9px;padding:9px 10px;border-radius:8px;background:#fff1f1;color:#874343;font-size:12px;line-height:1.4}
+
+#view-dose .result-disclosure{margin-top:10px;border-top:1px solid rgba(31,113,83,.18)}
+#view-dose .result-disclosure summary,
+#view-dose .result-safety summary{
+  padding-top:9px;color:#17638a;font-size:12px;font-weight:800;cursor:pointer;list-style-position:inside
+}
+#view-dose .disclosure-body{
+  margin-top:10px;padding:13px;background:#fff;border:1px solid #dce7ec;border-radius:9px;color:#274c5f
+}
+#view-dose .disclosure-body h4{margin:0 0 5px;color:#155773;font-size:13px}
+#view-dose .disclosure-body h4:not(:first-child){margin-top:13px}
+#view-dose .disclosure-body p,#view-dose .disclosure-body li{font-size:13px;line-height:1.48}
+#view-dose .disclosure-body p{margin:0 0 7px}
+#view-dose .dose-detail-grid,#view-dose .safety-detail-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px
+}
+
+#view-dose #dose24Anchor:empty{display:none}
+#view-dose .dose24-card{margin:0!important;order:0}
+#view-dose .result-safety{
+  padding:10px 13px;border:1px solid #d8e3e9;border-radius:10px;background:#fafcfd
+}
+#view-dose .result-safety summary{padding:0;color:#315f78}
+#view-dose .safety-footnote{margin:10px 0 0;color:#697d88;font-size:11px;line-height:1.4}
+
+#view-dose .result-source-row{
+  padding:11px 13px;border:1px solid #d8e3e9;border-radius:9px;background:#f6f8fa
+}
+#view-dose .result-source-row>span{margin-bottom:4px;color:#657c8a}
+#view-dose .direct-dose-sources,#view-antibiotics .direct-dose-sources{
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px
+}
+#view-dose .direct-dose-sources a{
+  padding:0;background:transparent;color:#235f83;font-size:11px;font-weight:700;text-decoration:underline;text-underline-offset:2px
+}
+#view-antibiotics .direct-dose-sources{flex-direction:column;align-items:flex-start;gap:8px}
+#view-antibiotics .direct-dose-sources a{
+  display:inline-flex;padding:8px 10px;border-radius:9px;background:#eaf6ff;color:#075f91;font-weight:750;text-decoration:none;overflow-wrap:anywhere
+}
+#view-dose .direct-dose-sources a:hover,#view-antibiotics .direct-dose-sources a:hover{text-decoration:underline}
+#view-dose #sharedHistoryStatus{display:block;margin-top:5px;color:#667d90;font-size:12px;line-height:1.45}
+
+#view-antibiotics .tabpane h3{font-size:18px}
+#view-antibiotics .tabpane p,#view-antibiotics .tabpane li{font-size:15px;line-height:1.55}
+
+/* Giữ thanh điều hướng máy tính như bản gốc; nút ☰ chỉ dùng cho màn hình nhỏ. */
+@media(min-width:861px){
+  #menuBtn{display:none!important}
+}
+@media(min-width:861px) and (max-width:1100px){
+  #mainNav{position:static!important;display:flex!important;flex-direction:row!important;width:auto!important;min-width:0!important;max-height:none!important;overflow:visible!important;padding:6px!important;border-radius:999px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)!important}
+  #mainNav button,#mainNav a,#mainNav .nav-evaluation,#mainNav .facebook-text-link{width:auto!important;justify-content:center!important;padding:10px 12px!important;border-radius:999px!important}
+}
+
+@media(max-width:760px){
+  #view-dose .clinical-result-flow{padding:10px;border-radius:16px}
+  #view-dose .result-overview{padding:14px}
+  #view-dose .result-overview h2{font-size:18px}
+  #view-dose .result-metric-grid,#view-dose .result-primary-grid{grid-template-columns:1fr}
+  #view-dose .dose-detail-grid,#view-dose .safety-detail-grid{grid-template-columns:1fr}
+}

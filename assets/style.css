@@ -1,0 +1,1008 @@
+:root{--blue:#0767a8;--blue2:#0b7dc3;--navy:#063b67;--cyan:#e9f7ff;--bg:#edf4f9;--card:#fff;--line:#d5e3ed;--ink:#102d45;--muted:#667d90;--green:#087b54;--danger:#b64242;--shadow:0 12px 34px rgba(31,74,108,.10)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f5f9fc 0,#eaf2f8 100%);min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.topbar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-top:3px solid #1d2a33;border-bottom:1px solid var(--line)}.topbar-inner{max-width:1380px;margin:auto;min-height:76px;padding:0 22px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:12px;min-width:320px}.brand-logo{width:82px;height:48px;object-fit:contain;object-position:left center;display:block;flex:0 0 auto}.brand strong,.brand span{display:block}.brand strong{font-size:15px}.brand span{font-size:12px;color:var(--muted);margin-top:3px}.main-nav{display:flex;gap:6px}.main-nav button,.main-nav a{border:0;background:transparent;color:#174c73;padding:11px 13px;border-radius:10px;font-weight:800;font-size:13px;display:inline-flex;align-items:center}.main-nav button.active,.main-nav button:hover,.main-nav a:hover{background:#e8f4fc;color:#0767a8}.main-nav .nav-evaluation{background:#e9fff3;color:#087b54;border:1px solid #b9e8ce}.main-nav .facebook-text-link{background:transparent!important;border:0!important;border-radius:0!important;padding:11px 6px!important;color:#075d98!important;font-size:12px!important;font-weight:800!important;text-decoration:underline!important;text-underline-offset:2px}.main-nav .facebook-text-link:hover{background:transparent!important;color:#034f84!important;text-decoration-thickness:2px!important}.menu-btn{display:none;border:1px solid var(--line);background:white;border-radius:9px;padding:8px 10px}.app-shell{max-width:1380px;margin:auto;padding:22px 22px 48px}.view{display:none}.view.active{display:block}.hero-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(260px,.9fr);gap:18px}.hero-grid-single{grid-template-columns:1fr}.hero-panel{background:linear-gradient(135deg,#116da9,#064a80);border-radius:22px;padding:38px;color:white;box-shadow:var(--shadow)}.eyebrow,.kicker{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;font-weight:900}.eyebrow{color:#bfeeff}.hero-panel h1{font-size:42px;line-height:1.06;max-width:870px;margin:12px 0 16px}.hero-panel p{max-width:850px;line-height:1.6;color:#e4f3fb}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.stat-stack{display:grid;gap:12px}.stat-stack article,.mini-stats article{background:white;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow)}.stat-stack strong,.mini-stats strong{display:block;font-size:30px;color:var(--blue)}.stat-stack span,.mini-stats span{font-size:13px;color:var(--muted)}.section-card{background:white;border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow);margin-top:20px}.section-card.compact{padding:20px}.section-heading,.page-title{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.page-title{margin:4px 0 16px}.page-title h1,.section-heading h2{color:var(--navy);margin:7px 0 5px}.page-title h1{font-size:31px}.section-heading h2{font-size:25px}.page-title p{margin:0;color:var(--muted)}.stats-title{align-items:center}.mini-stats{display:flex;gap:10px}.mini-stats article{min-width:120px;padding:16px}.feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}.feature-card{text-align:left;border:1px solid var(--line);background:white;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:9px;min-height:220px;transition:.2s}.feature-card:hover{transform:translateY(-3px);border-color:#91c9ec;box-shadow:0 12px 24px rgba(31,74,108,.12)}.feature-icon{font-size:30px}.feature-card b{color:#075d98;font-size:16px}.feature-card small{color:var(--muted);line-height:1.55;flex:1}.feature-card em{font-style:normal;font-size:11px;font-weight:850;color:var(--green);background:#e9fff3;border:1px solid #a7e8c1;border-radius:999px;padding:5px 9px;align-self:flex-start}.btn{border:0;border-radius:10px;padding:11px 15px;font-weight:850}.btn-light{background:white;color:#075d98}.btn-ghost{background:transparent;color:white;border:1px solid rgba(255,255,255,.55)}.btn-primary{background:linear-gradient(135deg,#0871b4,#0a83c8);color:white}.btn-soft{background:#eaf5fc;color:#075d98;border:1px solid #cbe2f1}.btn-danger-soft{background:#fff0f0;color:var(--danger);border:1px solid #efcaca}.full{width:100%}.dose-layout{display:grid;grid-template-columns:350px 1fr;gap:18px}.form-card{background:white;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow);align-self:start;position:sticky;top:98px}.form-card h3{margin:0 0 12px;color:var(--navy)}label{font-size:12px;font-weight:800;color:#244965;display:block}input,select{width:100%;border:1px solid #c9dbe8;background:#fbfdff;border-radius:10px;padding:11px 12px;margin-top:6px;outline:none}input:focus,select:focus{border-color:#5db0df;box-shadow:0 0 0 3px rgba(40,146,207,.12)}.form-card label{margin-top:12px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.checkline{display:flex!important;align-items:center;gap:8px;margin:14px 0!important}.checkline input{width:auto;margin:0}.dose-main{min-width:0}.empty-state{min-height:330px;background:white;border:1px dashed #b9d5e8;border-radius:18px;display:grid;place-content:center;text-align:center;color:var(--muted);gap:8px}.empty-state div{font-size:42px}.empty-state b{color:var(--navy)}.result-card{background:white;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)}.result-card h2{font-size:36px;color:var(--blue);margin:5px 0}.result-grid,.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.info-box{border:1px solid var(--line);background:#fbfdff;border-radius:14px;padding:15px;line-height:1.55}.info-box h3{font-size:15px;color:#075d98;margin-top:0}.alert{background:#fff8e9;border:1px solid #ead18f;border-radius:12px;padding:14px;line-height:1.55;color:#6f5a1c}.history-card{margin-top:18px}.heading-actions{display:flex;gap:8px}.table-wrap{overflow:auto;margin-top:14px}.table-wrap table{width:100%;border-collapse:collapse;min-width:820px}.table-wrap th,.table-wrap td{padding:11px;border-bottom:1px solid #e5edf3;text-align:left;font-size:12px}.table-wrap th{background:#eff7fc;color:#075783}.filter-grid{display:grid;grid-template-columns:1fr 220px;gap:12px;margin-bottom:14px}.directory{display:grid;grid-template-columns:300px 1fr;gap:16px}.drug-list{height:660px;overflow:auto;border:1px solid var(--line);border-radius:14px;padding:8px;background:#f7fbfe}.drug-item{background:white;border:1px solid transparent;border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer}.drug-item:hover,.drug-item.active{border-color:#2d98d5;background:#fafdff}.drug-item b,.drug-item small{display:block}.drug-item b{color:#075d98}.drug-item small{font-size:11px;margin-top:4px}.profile{border:1px solid var(--line);border-radius:16px;padding:20px;min-height:660px}.profile h2{font-size:29px;color:var(--navy);margin:5px 0}.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:15px 0}.pill{background:#f2f7fb;border:1px solid #cddfe9;border-radius:999px;padding:9px 12px;font-size:12px}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0}.tab{border:1px solid #c8dbe8;background:#f9fcfe;color:#0a598f;border-radius:9px;padding:9px 12px;font-weight:800}.tab.active{background:#0871b4;color:white}.tabpane{display:none}.tabpane.active{display:block}.profile-grid{grid-template-columns:1fr 1fr}.source-list{display:grid;gap:10px}.source-line{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fbfdff}.pair{display:grid;grid-template-columns:1fr 48px 1fr 120px;gap:10px;align-items:end}.swap{height:43px;border:1px solid var(--line);border-radius:10px;background:white}.result{margin-top:15px;border:1px dashed #b9d5e8;border-radius:13px;padding:17px;background:#fbfdff}.search-wide{margin-top:8px}.int-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.int{border:1px solid var(--line);border-radius:13px;padding:14px;background:white;cursor:pointer}.int b{color:#075d98}.int .hint{float:right;color:#0b79bb;font-size:11px}.detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #e2ebf1;line-height:1.5}.int.open .detail{display:block}.source-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}.source-card{border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;min-height:230px}.source-card>div{font-size:29px}.source-card h3{color:#075d98}.source-card p{color:var(--muted);font-size:13px;line-height:1.55;flex:1}footer{text-align:center;color:var(--muted);font-size:12px;padding:24px}.site-footer{display:grid;gap:5px}.site-footer a{color:#2f648b;text-decoration:underline;text-underline-offset:2px}.site-footer a:hover{color:var(--blue)}.hidden{display:none!important}@media(max-width:1100px){.main-nav{position:absolute;top:76px;right:16px;background:white;border:1px solid var(--line);border-radius:14px;padding:8px;box-shadow:var(--shadow);display:none;flex-direction:column;min-width:220px}.main-nav.open{display:flex}.main-nav button,.main-nav a{text-align:left}.menu-btn{display:block}.hero-grid{grid-template-columns:1fr}.stat-stack{grid-template-columns:repeat(3,1fr)}.feature-grid,.source-grid{grid-template-columns:repeat(2,1fr)}.dose-layout{grid-template-columns:1fr}.form-card{position:static}.directory{grid-template-columns:1fr}.drug-list{height:320px}.profile{min-height:auto}}@media(max-width:720px){.topbar-inner{padding:0 12px}.brand{min-width:0}.brand-logo{width:64px;height:40px}.brand strong{font-size:13px}.brand span{font-size:11px}.app-shell{padding:14px 10px 35px}.hero-panel{padding:25px 20px}.hero-panel h1{font-size:31px}.stat-stack,.feature-grid,.source-grid,.mini-stats{grid-template-columns:1fr;display:grid}.section-card{padding:17px}.page-title h1{font-size:27px}.filter-grid,.form-row,.result-grid,.profile-grid,.pair{grid-template-columns:1fr}.swap{display:none}.meta{grid-template-columns:1fr}.int-list{grid-template-columns:1fr}.heading-actions{width:100%;margin-top:10px}.section-heading{display:block}.stats-title{display:block}.mini-stats{margin-top:12px}.mini-stats article{min-width:0}}
+.selected-drug-banner{display:flex;flex-direction:column;gap:4px;margin:10px 0 16px;padding:12px 14px;border:1px solid #b8d8ee;border-radius:12px;background:#edf7fd}.selected-drug-banner span{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:#496b83;font-weight:800}.selected-drug-banner strong{font-size:1.05rem;color:#004a7c}.source-line a{display:inline-block;margin-top:5px;color:#006db4;font-weight:700;text-decoration:none}.source-line a:hover{text-decoration:underline}
+.dose-decision{margin:14px 0;padding:16px;border:1px solid #8dc7ee;background:#eef8ff;border-radius:14px;display:grid;gap:6px}.dose-decision span{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:#386b8c}.dose-decision strong{font-size:1.08rem;color:#004b80}.dose-decision small,.dose-source-badge{color:#516b7d}.dose-source-badge{margin-top:14px;padding:10px 12px;border-radius:10px;background:#fff8e8;border:1px solid #f0cc75;font-size:.86rem}
+.renal-dose-table{margin:10px 0 14px;overflow:hidden;border:1px solid #63bb8c;border-radius:14px;background:#fff}.renal-dose-table-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.renal-dose-cell{min-height:92px;padding:15px 14px;border-top:1px solid #cfe8da}.renal-dose-cell:nth-child(-n+2){border-top:0}.renal-dose-cell:nth-child(odd){border-right:1px solid #cfe8da}.renal-dose-cell span{display:block;font-weight:400}.renal-dose-label{margin-bottom:8px;color:#315f4c;font-size:.86rem}.renal-dose-value{color:#062f22;font-size:1rem;line-height:1.42}.renal-dose-notes{margin:8px 0 14px;padding:10px 14px;border-left:4px solid #79b996;background:#f2faf6;border-radius:8px}.renal-dose-notes ul{margin:0;padding-left:18px}.renal-dose-notes li{margin:5px 0;line-height:1.45}@media(max-width:650px){.renal-dose-table-grid{grid-template-columns:1fr}.renal-dose-cell:nth-child(n){border-top:1px solid #cfe8da;border-right:0}.renal-dose-cell:first-child{border-top:0}.renal-dose-cell{min-height:0}}
+.clinical-list{margin:8px 0 14px;padding-left:21px}.clinical-list li{margin:7px 0;line-height:1.55}.clinical-stack{display:grid;gap:10px}.clinical-item{border:1px solid var(--line);background:#fff;border-radius:12px;padding:13px}.clinical-item b{color:#075d98}.clinical-item p{margin:7px 0;line-height:1.5}.clinical-item small{display:block;margin-top:8px;color:var(--muted)}.source-note{margin-top:14px;padding:11px 12px;border-radius:10px;background:#edf7fd;border:1px solid #c8e3f3;color:#315d79;font-size:12px;line-height:1.5}.result-card .info-box h3:not(:first-child){margin-top:18px}
+
+/* Pha truyền: tách rõ từng thao tác để tránh gộp nội dung */
+.infusion-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:10px 0 14px}
+.infusion-grid section{border:1px solid #cfe0ef;border-radius:14px;padding:14px;background:#f8fbfe}
+.infusion-grid section:nth-child(5){grid-column:1/-1}
+.infusion-grid h4{margin:0 0 8px;color:#005c9f;font-size:15px}
+.infusion-grid p{margin:0;line-height:1.6}
+@media(max-width:760px){.infusion-grid{grid-template-columns:1fr}.infusion-grid section:nth-child(5){grid-column:auto}}
+
+
+/* Đánh giá chức năng thận theo CrCl */
+.renal-alert{display:grid;grid-template-columns:48px 1fr;gap:13px;align-items:start;margin:14px 0;padding:14px 16px;border:1px solid;border-radius:14px;box-shadow:0 5px 14px rgba(15,66,105,.06)}
+.renal-alert-icon{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:17px;background:rgba(255,255,255,.78);border:1px solid currentColor}
+.renal-alert span{display:block;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;opacity:.8;margin-bottom:3px}
+.renal-alert strong{display:block;font-size:20px;line-height:1.25;margin-bottom:5px}
+.renal-alert p{margin:0 0 7px;font-weight:650;line-height:1.45}
+.renal-alert small{display:block;line-height:1.4;opacity:.86}
+.renal-preserved{background:#ecfdf3;border-color:#72d49a;color:#075b2d}
+.renal-mild{background:#f3fbe8;border-color:#a8d66d;color:#385d0d}
+.renal-moderate{background:#fff8dc;border-color:#efc75e;color:#775200}
+.renal-severe{background:#fff0e6;border-color:#f29b62;color:#8a3100}
+.renal-critical{background:#ffebee;border-color:#e26a76;color:#8b1020}
+@media(max-width:640px){.renal-alert{grid-template-columns:38px 1fr;padding:12px}.renal-alert-icon{width:34px;height:34px}.renal-alert strong{font-size:17px}}
+
+/* Hiển thị đồng thời CrCl và eGFR */
+.optional-note{display:block;font-weight:500;color:var(--muted);font-size:10px;line-height:1.35;margin-top:2px}
+.kidney-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:9px 0 15px}
+.kidney-metric{border:1px solid #c8ddea;background:#f8fcff;border-radius:14px;padding:13px 15px;display:grid;gap:3px}
+.kidney-metric.primary{background:#eaf6ff;border-color:#86c4ec}
+.kidney-metric span{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#496b83}
+.kidney-metric strong{font-size:29px;line-height:1.1;color:#0769aa}
+.kidney-metric small{color:#546e7f;font-weight:700}
+.egfr-absolute{margin:5px 0 7px;padding:7px 9px;border-radius:8px;background:rgba(255,255,255,.65)}
+@media(max-width:820px){.kidney-metrics{grid-template-columns:1fr}.kidney-metric strong{font-size:25px}}
+
+/* Antibiotics by disease */
+.disease-warning{border-left:5px solid #e6a700;background:#fff9e8;color:#664600;margin-bottom:16px}
+.disease-filters{display:grid;grid-template-columns:1fr 260px;gap:14px;margin-bottom:14px}
+.disease-filters label{font-weight:700;color:#073b68}.disease-filters input,.disease-filters select{margin-top:7px;width:100%}
+.disease-layout{display:grid;grid-template-columns:330px minmax(0,1fr);gap:16px;min-height:650px}
+.disease-list{border:1px solid #cfe0ee;border-radius:16px;padding:8px;overflow:auto;max-height:720px;background:#f7fbfe}
+.disease-item{display:block;width:100%;text-align:left;border:1px solid transparent;background:#fff;border-radius:13px;padding:13px 14px;margin-bottom:8px;cursor:pointer;color:#063d6e}
+.disease-item:hover,.disease-item.active{border-color:#1687c9;background:#eef8ff}.disease-item span{display:block;text-transform:uppercase;font-size:11px;letter-spacing:.08em;color:#5080a2;font-weight:800}.disease-item b{display:block;font-size:16px;margin:4px 0}.disease-item small{color:#60788d}
+.disease-profile{border:1px solid #cfe0ee;border-radius:16px;padding:20px;background:#fff}.disease-head{border-bottom:1px solid #dce8f2;padding-bottom:14px;margin-bottom:16px}.disease-head h2{margin:5px 0 10px;color:#053e70}.severity-pill{display:inline-block;border-radius:999px;background:#e9f5fd;color:#075f9f;font-weight:700;padding:7px 12px}
+.disease-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.disease-grid section{border:1px solid #d6e4ef;border-radius:14px;padding:16px;background:#fbfdff}.disease-grid section.wide{grid-column:1/-1}.disease-grid h3{margin:0 0 10px;color:#075f9f;font-size:17px}.disease-grid p{line-height:1.6}.disease-grid ul{margin:0;padding-left:22px}.disease-grid li{margin:7px 0;line-height:1.5}
+.renal-link{margin-top:13px;padding:11px 12px;border-radius:10px;background:#eef8ff}.renal-link button{border:0;background:none;color:#006eb7;text-decoration:underline;font-weight:800;cursor:pointer}
+.disease-sources{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}.disease-sources article{display:flex;flex-direction:column;gap:6px;border:1px solid #d7e5ef;border-radius:10px;padding:12px;background:#fff}.disease-sources span{font-size:13px;color:#5b7184}.disease-sources a{font-weight:700;color:#006eb7}
+.clinical-disclaimer{margin-top:16px;border:1px solid #efc66d;background:#fff8e8;border-radius:12px;padding:13px;line-height:1.5;color:#684600}
+@media(max-width:900px){.disease-layout{grid-template-columns:1fr}.disease-list{max-height:310px}.disease-filters{grid-template-columns:1fr}.disease-grid{grid-template-columns:1fr}.disease-grid section.wide{grid-column:auto}}
+
+/* Nút quay lại Trang chủ — chỉ bổ sung, không thay đổi nội dung hiện có */
+.back-home-wrap{display:flex;align-items:center;margin:0 0 14px}
+.back-home-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;color:var(--blue);padding:10px 14px;border-radius:10px;font-weight:800;box-shadow:0 5px 16px rgba(31,74,108,.08);transition:transform .18s ease,background .18s ease,border-color .18s ease}
+.back-home-btn:hover{background:var(--cyan);border-color:#a9d4ec;transform:translateY(-1px)}
+.back-home-btn:focus-visible{outline:3px solid rgba(11,125,195,.25);outline-offset:2px}
+.back-home-btn span{font-size:19px;line-height:1}
+@media(max-width:640px){.back-home-wrap{margin-bottom:10px}.back-home-btn{width:100%;justify-content:center;padding:11px 14px}}
+
+/* Nội dung giới thiệu Trang chủ */
+.hero-intro{
+  max-width: 900px;
+  color: rgba(255,255,255,.96);
+  font-size: 17px;
+  line-height: 1.7;
+}
+.hero-intro p{
+  margin: 0 0 10px;
+}
+.hero-intro ul{
+  margin: 8px 0 14px 20px;
+  padding: 0;
+}
+.hero-intro li{
+  margin: 5px 0;
+}
+.hero-intro strong{
+  color: #fff;
+}
+
+/* Danh mục 633 cặp tương tác - Quyết định 5948/QĐ-BYT */
+.int-title{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.int-title>b{flex:1;min-width:260px}
+.int-stt{color:#64748b;font-size:12px}
+.interaction-level{display:inline-flex;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900}
+.interaction-level.contra{background:#fee4e2;color:#b42318}
+.interaction-level.conditional{background:#fff1d6;color:#9a5b00}
+
+
+
+
+/* PET/CT dose tool - direct inline (không dùng iframe, không cuộn khung trong) */
+#view-petct-dose .petct-inline{
+  --bg:#f6f8fb;--card:#fff;--text:#0f172a;--muted:#475569;--line:#d7e0ea;
+  --blue:#0b5cad;--green:#0f766e;--red:#b91c1c;--amber:#b45309;--ok:#166534;
+  --dark:#111827;--dark2:#1f2937;--darkLine:#374151;
+  color:var(--text);line-height:1.55;width:100%;
+}
+#view-petct-dose .petct-inline ::selection{background:#fde68a;color:#111827}
+#view-petct-dose .petct-inline .wrap{max-width:1180px;margin:0;padding:0;width:100%}
+#view-petct-dose .petct-inline .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:0 2px 8px rgba(15,23,42,.05)}
+#view-petct-dose .petct-inline h1{font-size:22px;margin:0 0 8px;color:var(--blue)}
+#view-petct-dose .petct-inline h2{font-size:17px;color:var(--blue);margin:0 0 12px}
+#view-petct-dose .petct-inline h3{font-size:14px;margin:10px 0 5px;color:#334155}
+#view-petct-dose .petct-inline .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+#view-petct-dose .petct-inline .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+#view-petct-dose .petct-inline label{display:block;font-size:13px;font-weight:700;margin:8px 0 5px}
+#view-petct-dose .petct-inline input,#view-petct-dose .petct-inline select,#view-petct-dose .petct-inline textarea{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font-size:15px;background:#fff}
+#view-petct-dose .petct-inline textarea{min-height:72px}
+#view-petct-dose .petct-inline input:focus,#view-petct-dose .petct-inline select:focus,#view-petct-dose .petct-inline textarea:focus{outline:2px solid rgba(11,92,173,.17);border-color:var(--blue)}
+#view-petct-dose .petct-inline .help{font-size:12px;color:var(--muted);margin-top:4px}
+#view-petct-dose .petct-inline .formulaPanel{background:#ffffff;color:#0f172a;border:1px solid #d7e0ea;border-radius:14px;padding:14px}
+#view-petct-dose .petct-inline .formulaPanel h2,#view-petct-dose .petct-inline .formulaPanel h3{color:#0b5cad}
+#view-petct-dose .petct-inline .step{border:1px solid #cbd5e1;border-radius:12px;padding:12px;margin:10px 0;background:#f8fafc}
+#view-petct-dose .petct-inline .step b{color:#0b5cad;font-size:15px}
+#view-petct-dose .petct-inline .eq{font-family:Arial,Helvetica,sans-serif;background:#eaf3ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px;margin:8px 0;color:#0f172a;overflow:auto;font-weight:800}
+#view-petct-dose .petct-inline .plain{font-size:13px;color:#334155}
+#view-petct-dose .petct-inline .resultBox{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+#view-petct-dose .petct-inline .kpi{border:1px solid var(--line);border-radius:12px;padding:12px;background:#f8fafc}
+#view-petct-dose .petct-inline .kpi b{display:block;color:#334155;font-size:13px;margin-bottom:6px}
+#view-petct-dose .petct-inline .kpi span{font-size:21px;font-weight:800;color:var(--blue)}
+#view-petct-dose .petct-inline .warn{border-left:5px solid var(--amber);background:#fff7ed;padding:10px;border-radius:10px;margin:8px 0}
+#view-petct-dose .petct-inline .err{border-left:5px solid var(--red);background:#fef2f2;padding:10px;border-radius:10px;margin:8px 0}
+#view-petct-dose .petct-inline .ok{border-left:5px solid var(--ok);background:#f0fdf4;padding:10px;border-radius:10px;margin:8px 0}
+#view-petct-dose .petct-inline table{width:100%;border-collapse:collapse;font-size:14px}
+#view-petct-dose .petct-inline th,#view-petct-dose .petct-inline td{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+#view-petct-dose .petct-inline th{background:#f8fafc}
+#view-petct-dose .petct-inline .darkTable th{background:#182231;color:#e5e7eb;border-bottom:1px solid var(--darkLine)}
+#view-petct-dose .petct-inline .darkTable td{color:#e5e7eb;border-bottom:1px solid var(--darkLine)}
+#view-petct-dose .petct-inline button{border:0;border-radius:10px;padding:10px 12px;font-weight:800;cursor:pointer}
+#view-petct-dose .petct-inline .btn{background:var(--blue);color:#fff}
+#view-petct-dose .petct-inline .btn2{background:#e2e8f0;color:#0f172a}
+#view-petct-dose .petct-inline .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+#view-petct-dose .petct-inline .small{font-size:12px;color:var(--muted)}
+#view-petct-dose .petct-inline .tip{background:#e0f2fe;border:1px solid #7dd3fc;border-radius:10px;padding:10px;margin-top:10px;font-size:13px;color:#0f172a;font-weight:700}
+#view-petct-dose .petct-inline .refBox{background:#111827;color:#e5e7eb;border-radius:14px;padding:16px;margin-bottom:14px}
+#view-petct-dose .petct-inline .refBox h2{color:#fff;font-size:18px}
+#view-petct-dose .petct-inline .refBox h3{color:#fff}
+#view-petct-dose .petct-inline .refBox p,#view-petct-dose .petct-inline .refBox li{color:#e5e7eb}
+#view-petct-dose .petct-inline .refBox .muted{color:#cbd5e1}
+#view-petct-dose .petct-inline .refFormula{text-align:left;font-family:Arial,Helvetica,sans-serif;font-size:17px;font-weight:800;margin:12px 0;color:#fff;line-height:1.55}
+#view-petct-dose .petct-inline .callout{background:#2b303b;border-radius:12px;padding:12px;margin:12px 0;color:#e5e7eb}
+@media(max-width:900px){
+  #view-petct-dose .petct-inline .grid,#view-petct-dose .petct-inline .grid3,#view-petct-dose .petct-inline .resultBox{grid-template-columns:1fr}
+  #view-petct-dose .petct-inline h1{font-size:20px}
+  #view-petct-dose .petct-inline table{font-size:13px}
+}
+@media print{
+  #view-petct-dose .petct-inline .actions{display:none}
+  #view-petct-dose .petct-inline .wrap{padding:0}
+  #view-petct-dose .petct-inline .card{box-shadow:none;break-inside:avoid}
+  #view-petct-dose .petct-inline .resultBox{grid-template-columns:repeat(2,1fr)}
+}
+
+
+/* ===== NAVBAR refined unified pills ===== */
+.topbar{border-top:0;border-bottom:1px solid var(--line);box-shadow:0 8px 24px rgba(16,45,69,.06)}
+.topbar-inner{min-height:82px;gap:18px}
+.main-nav{display:flex;align-items:center;gap:10px;padding:6px;background:#f3f8fc;border:1px solid #d8e6f0;border-radius:999px;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.main-nav button,.main-nav a{appearance:none;-webkit-appearance:none;border:1px solid transparent;background:transparent;color:#174c73;padding:10px 16px;border-radius:999px;font-weight:800;font-size:13px;line-height:1;display:inline-flex;align-items:center;justify-content:center;min-height:42px;white-space:nowrap;transition:all .2s ease;text-decoration:none}
+.main-nav button:hover,.main-nav a:hover{background:#fff;color:#075d98;border-color:#c9ddea;transform:translateY(-1px);box-shadow:0 6px 14px rgba(7,103,168,.10)}
+.main-nav button.active{background:linear-gradient(135deg,#0b78bf,#095f9d);color:#fff;border-color:#0a6eaf;box-shadow:0 8px 18px rgba(7,103,168,.22)}
+.main-nav .nav-evaluation,.main-nav .facebook-text-link{background:transparent!important;border:1px solid transparent!important;border-radius:999px!important;padding:10px 16px!important;color:#174c73!important;font-size:13px!important;font-weight:800!important;text-decoration:none!important;text-underline-offset:0!important}
+.main-nav .nav-evaluation:hover,.main-nav .facebook-text-link:hover{background:#fff!important;color:#075d98!important;border-color:#c9ddea!important;text-decoration:none!important;box-shadow:0 6px 14px rgba(7,103,168,.10)!important}
+.main-nav .nav-evaluation{position:relative}
+.main-nav .nav-evaluation::before{content:"★";font-size:11px;margin-right:7px;color:#1d9b63}
+.main-nav .facebook-text-link::before{content:"f";display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#1877f2;color:#fff;font-size:12px;font-weight:900;margin-right:7px;font-family:Arial,sans-serif}
+.home-user-account{position:relative;flex:0 0 auto;max-width:245px}
+.home-user-account[hidden]{display:none!important}
+.home-user-trigger{width:100%;min-width:190px;max-width:245px;display:flex;align-items:center;gap:9px;padding:7px 10px 7px 8px;border:1px solid #d6e5ef;border-radius:14px;background:#fff;color:#102d45;box-shadow:0 5px 15px rgba(16,45,69,.08);text-align:left}
+.home-user-trigger:hover{border-color:#9bc9e4;background:#f8fcff}
+.home-user-trigger:focus-visible{outline:3px solid rgba(11,125,195,.2);outline-offset:2px}
+.home-user-avatar{width:36px;height:36px;flex:0 0 36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#1370b5,#074691);color:#fff;border:2px solid #d9edf9;font-size:12px;font-weight:900;letter-spacing:.03em}
+.home-user-copy{min-width:0;display:grid;gap:2px;line-height:1.2}
+.home-user-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;color:#063b67}
+.home-user-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9.5px;color:#667d90}
+.home-user-chevron{margin-left:auto;color:#62809d;font-size:11px}
+.home-user-menu{position:absolute;top:calc(100% + 9px);right:0;z-index:120;width:260px;padding:14px;background:#fff;border:1px solid #d5e3ed;border-radius:14px;box-shadow:0 18px 40px rgba(16,45,69,.2)}
+.home-user-menu[hidden]{display:none!important}
+.home-user-menu-name{font-weight:900;color:#063b67;font-size:14px}
+.home-user-menu-detail{margin-top:4px;color:#667d90;font-size:11px;line-height:1.45}
+.home-user-status{display:inline-flex;margin-top:10px;padding:5px 9px;border-radius:999px;background:#fff7dc;border:1px solid #efd47d;color:#7a5600;font-size:10.5px;font-weight:850}
+.home-user-status.approved{background:#eaf9f1;border-color:#a9dfc2;color:#087b54}
+.home-user-status.rejected{background:#fff0f0;border-color:#efcaca;color:#b64242}
+.home-user-menu button{width:100%;margin-top:12px;padding:9px 12px;border:1px solid #efcaca;border-radius:9px;background:#fff5f5;color:#a62e2e;font-size:12px;font-weight:850}
+.home-user-menu button:hover{background:#ffeaea}
+@media(max-width:1100px){
+  .topbar-inner{min-height:76px}
+  .main-nav{position:absolute;top:76px;right:16px;left:auto;background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px;box-shadow:var(--shadow);display:none;flex-direction:column;min-width:250px;gap:6px}
+  .main-nav.open{display:flex}
+  .main-nav button,.main-nav a,.main-nav .nav-evaluation,.main-nav .facebook-text-link{width:100%;justify-content:flex-start;padding:12px 14px!important;border-radius:12px!important}
+  .main-nav button.active{transform:none}
+  .home-user-account{margin-left:auto;max-width:220px}
+  .home-user-trigger{min-width:175px;max-width:220px}
+}
+@media(max-width:720px){
+  .brand{gap:10px}
+  .brand strong{font-size:14px}
+  .brand span{font-size:11px}
+  .home-user-account{max-width:48px}
+  .home-user-trigger{min-width:44px;width:44px;padding:4px;border:0;background:transparent;box-shadow:none}
+  .home-user-avatar{width:38px;height:38px;flex-basis:38px}
+  .home-user-copy,.home-user-chevron{display:none}
+  .home-user-menu{right:-42px;width:min(280px,calc(100vw - 24px))}
+}
+
+
+/* ===== PET/CT compact calculation-first layout ===== */
+#view-petct-dose .page-title{margin-bottom:14px}
+.petct-workspace{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 360px;
+  gap:16px;
+  align-items:start;
+}
+.petct-main-calc{
+  min-width:0;
+}
+.petct-side-refs{
+  position:sticky;
+  top:96px;
+  max-height:calc(100vh - 115px);
+  overflow:auto;
+  display:grid;
+  gap:10px;
+}
+.petct-reference-panel,
+.petct-formula-details{
+  background:#ffffff!important;
+  border:1px solid #d5e3ed!important;
+  border-radius:16px!important;
+  padding:12px!important;
+  box-shadow:0 8px 22px rgba(31,74,108,.08)!important;
+  color:#102d45!important;
+}
+.petct-reference-panel>h2{
+  margin:0 0 4px!important;
+  font-size:16px!important;
+  color:#063b67!important;
+}
+.petct-ref-compact{
+  border:1px solid #dbe8f2;
+  border-radius:12px;
+  background:#f8fbfd;
+  margin-top:8px;
+  overflow:hidden;
+}
+.petct-ref-compact summary,
+.petct-formula-details summary{
+  cursor:pointer;
+  padding:10px 12px;
+  font-weight:900;
+  color:#075d98;
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.petct-ref-compact summary::after,
+.petct-formula-details summary::after{
+  content:"Mở";
+  font-size:11px;
+  color:#667d90;
+  background:#eaf5fc;
+  border:1px solid #cbe2f1;
+  padding:3px 7px;
+  border-radius:999px;
+  margin-left:8px;
+}
+.petct-ref-compact[open] summary::after,
+.petct-formula-details[open] summary::after{content:"Đóng"}
+.petct-ref-body{
+  padding:0 12px 12px;
+}
+.petct-ref-body p,
+.petct-ref-body li{
+  font-size:12px!important;
+  line-height:1.55!important;
+}
+.petct-ref-body .callout,
+.petct-ref-body .step,
+.petct-ref-body .tip{
+  padding:9px!important;
+  margin:8px 0!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+}
+.petct-ref-body .refFormula,
+.petct-ref-body .eq{
+  font-size:12px!important;
+  line-height:1.45!important;
+  padding:8px!important;
+  text-align:left!important;
+}
+#view-petct-dose .refBox,
+#view-petct-dose .formulaPanel{
+  margin-bottom:10px!important;
+}
+#view-petct-dose .darkTable{
+  font-size:11px!important;
+  min-width:520px;
+}
+#view-petct-dose .darkTable th,
+#view-petct-dose .darkTable td{
+  padding:7px!important;
+}
+#view-petct-dose .petct-side-refs table{
+  display:block;
+  overflow:auto;
+  max-height:280px;
+}
+#view-petct-dose .petct-side-refs .btn2{
+  padding:6px 8px!important;
+  min-height:auto!important;
+  font-size:11px!important;
+}
+#view-petct-dose .card{
+  border-radius:16px;
+}
+#view-petct-dose .resultBox{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+#view-petct-dose .kpi{
+  padding:12px;
+}
+#view-petct-dose .table-wrap{
+  max-height:none;
+}
+#view-petct-dose .tip ol{
+  margin-top:6px!important;
+}
+@media(max-width:1180px){
+  .petct-workspace{grid-template-columns:1fr}
+  .petct-side-refs{position:static;max-height:none;order:2}
+  .petct-main-calc{order:1}
+  .petct-reference-panel{display:block}
+}
+@media(max-width:760px){
+  #view-petct-dose .resultBox{grid-template-columns:1fr}
+  .petct-side-refs{display:block}
+}
+
+
+/* PET/CT focus cleanup: bỏ các cảnh báo trống gây rối mắt */
+#view-petct-dose #alerts:empty,
+#view-petct-dose #batchAlerts:empty{
+  display:none!important;
+}
+#view-petct-dose #alerts,
+#view-petct-dose #batchAlerts{
+  margin-top:0!important;
+}
+
+
+/* ===== PET/CT final: tính toán trước, tài liệu tham khảo thu gọn phía dưới ===== */
+#view-petct-dose .petct-inline > main.wrap{
+  max-width:1180px;
+}
+#view-petct-dose .petct-inline .refBox,
+#view-petct-dose .petct-inline .formulaPanel{
+  margin-bottom:10px;
+}
+.petct-refs-bottom,
+.petct-single-details{
+  background:#fff;
+  border:1px solid #d5e3ed;
+  border-radius:16px;
+  box-shadow:0 8px 22px rgba(31,74,108,.06);
+  margin:14px 0;
+  overflow:hidden;
+}
+.petct-refs-bottom > summary,
+.petct-single-details > summary{
+  cursor:pointer;
+  padding:14px 16px;
+  font-weight:900;
+  color:#075d98;
+  background:#f4f9fd;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.petct-refs-bottom > summary::after,
+.petct-single-details > summary::after{
+  content:"Mở";
+  font-size:12px;
+  color:#667d90;
+  border:1px solid #cbe2f1;
+  border-radius:999px;
+  padding:4px 10px;
+  background:#fff;
+}
+.petct-refs-bottom[open] > summary::after,
+.petct-single-details[open] > summary::after{
+  content:"Đóng";
+}
+.petct-refs-bottom-body{
+  padding:12px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.petct-refs-bottom-body .refBox,
+.petct-refs-bottom-body .formulaPanel{
+  transform:none!important;
+  background:#111827;
+  border-radius:14px;
+  padding:14px;
+  max-height:520px;
+  overflow:auto;
+}
+.petct-refs-bottom-body .refBox h2,
+.petct-refs-bottom-body .formulaPanel h2{
+  font-size:16px!important;
+}
+.petct-refs-bottom-body p,
+.petct-refs-bottom-body li,
+.petct-refs-bottom-body td,
+.petct-refs-bottom-body th{
+  font-size:12px!important;
+  line-height:1.45!important;
+}
+.petct-refs-bottom-body .refFormula{
+  font-size:13px!important;
+  text-align:left!important;
+}
+.petct-refs-bottom-body .darkTable{
+  min-width:520px;
+}
+.petct-single-details .grid{
+  padding:14px;
+}
+.petct-single-details > section.card,
+.petct-single-details .card{
+  margin:14px;
+  box-shadow:none;
+}
+#view-petct-dose #alerts:empty,
+#view-petct-dose #batchAlerts:empty{
+  display:none!important;
+}
+@media(max-width:980px){
+  .petct-refs-bottom-body{grid-template-columns:1fr}
+}
+
+/* PET/CT: khu vực làm việc và bảng kế hoạch nhiều ca */
+#view-petct-dose.petct-wide-view{
+  max-width:none!important;
+}
+
+#view-petct-dose .petct-inline,
+#view-petct-dose .petct-inline > main.wrap,
+#view-petct-dose main.wrap{
+  max-width:1480px!important;
+  width:calc(100vw - 48px)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+
+#view-petct-dose .card,
+#view-petct-dose .resultBox,
+#view-petct-dose .tip,
+#view-petct-dose .table-wrap{
+  width:100%;
+}
+
+#view-petct-dose .grid3{
+  grid-template-columns:repeat(3,minmax(260px,1fr));
+  gap:14px;
+}
+
+#view-petct-dose .grid2{
+  grid-template-columns:repeat(2,minmax(320px,1fr));
+  gap:14px;
+}
+
+#view-petct-dose .resultBox{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(220px,1fr));
+  gap:14px;
+}
+
+#view-petct-dose .table-wrap{
+  overflow-x:auto;
+  border-radius:14px;
+}
+
+#view-petct-dose .table-wrap th,
+#view-petct-dose .table-wrap td{
+  padding:12px 10px;
+  vertical-align:middle;
+}
+
+#view-petct-dose input[placeholder="HH:mm"]{letter-spacing:.02em}
+#view-petct-dose .petct-condition-grid{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px dashed #cfe1ee;
+}
+#view-petct-dose .petct-condition-grid label{color:#074d7c}
+
+#view-petct-dose .field-unit{
+  display:block;
+  margin-top:5px;
+  color:#64748b;
+  font-size:12px;
+  font-weight:700;
+}
+#view-petct-dose .btn2-muted{
+  border-color:#d8e1e8!important;
+  background:#f8fafc!important;
+  color:#526476!important;
+}
+#view-petct-dose .batch-status{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-top:12px;
+  padding:14px 16px;
+  border:1px solid #dbe4eb;
+  border-radius:12px;
+  background:#f8fafc;
+  color:#526476;
+}
+#view-petct-dose .batch-status b{color:#243b4d}
+#view-petct-dose .batch-status span{font-size:13px;text-align:right}
+#view-petct-dose .batch-status.is-ok{
+  border-color:#b9dfca;
+  background:#f0fbf5;
+  color:#23734c;
+}
+#view-petct-dose .batch-status.is-ok b{color:#15633e}
+#view-petct-dose .batch-status.is-error{
+  border-color:#ecc5c5;
+  background:#fff5f5;
+  color:#a23939;
+}
+#view-petct-dose .batch-status.is-error b{color:#8e2f2f}
+
+#view-petct-dose .batch-table-panel{
+  margin-top:12px;
+  border:1px solid #cfdee8;
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 8px 20px rgba(36,74,101,.06);
+  overflow:hidden;
+}
+#view-petct-dose .batch-auto-summary{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(150px,1fr));
+  border-bottom:1px solid #cfdee8;
+  background:#f4f9fc;
+}
+#view-petct-dose .batch-auto-summary > div{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:baseline;
+  gap:10px;
+  padding:13px 16px;
+  border-right:1px solid #d8e5ed;
+}
+#view-petct-dose .batch-auto-summary > div:last-child{border-right:0}
+#view-petct-dose .batch-auto-summary span{
+  color:#4a6579;
+  font-size:12px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+#view-petct-dose .batch-auto-summary strong{
+  color:#075d98;
+  font-size:22px;
+  font-variant-numeric:tabular-nums;
+}
+#view-petct-dose .batch-auto-summary small{
+  color:#7b8d9b;
+  font-size:11px;
+  font-weight:700;
+}
+#view-petct-dose .batch-table-panel .table-wrap{border-radius:0}
+#view-petct-dose .batch-table-wrap table{
+  width:100%;
+  min-width:1180px!important;
+  table-layout:auto;
+  border-collapse:separate;
+  border-spacing:0;
+}
+#view-petct-dose .batch-table-wrap th{
+  white-space:nowrap;
+  color:#24465f;
+  font-size:13px;
+  background:#eef6fb;
+  border-bottom:1px solid #cfdfe9;
+}
+#view-petct-dose .batch-table-wrap th span{
+  color:#6b7f8f;
+  font-size:11px;
+  font-weight:700;
+}
+#view-petct-dose .batchWeight,
+#view-petct-dose .batchGlucose,
+#view-petct-dose .batchInjTime{min-width:105px}
+#view-petct-dose .batchDiabetesCell{text-align:center}
+#view-petct-dose .batch-check{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:42px;
+  padding:0 10px;
+  border:1px solid #d8e4ec;
+  border-radius:10px;
+  background:#f8fbfd;
+  color:#35566d;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+}
+#view-petct-dose .batch-check input{
+  width:17px;
+  height:17px;
+  margin:0;
+  accent-color:#075d98;
+}
+#view-petct-dose .batchTarget,
+#view-petct-dose .batchAllocated,
+#view-petct-dose .batchStockBefore,
+#view-petct-dose .batchStockAfter{
+  min-width:120px;
+  font-variant-numeric:tabular-nums;
+}
+#view-petct-dose .batchAllocated{font-weight:800;color:#075d98}
+#view-petct-dose .batchAllocated.is-negative{
+  background:#fff0f0;
+  color:#b13232;
+}
+#view-petct-dose .batchStockBefore{font-weight:800;color:#253e50}
+#view-petct-dose .batchStockAfter{font-weight:800;color:#176b48}
+#view-petct-dose .batchStockBefore.is-negative,
+#view-petct-dose .batchStockAfter.is-negative{
+  background:#fff0f0;
+  color:#b13232;
+}
+#view-petct-dose .batch-dose-adjustment{
+  display:block;
+  margin-top:4px;
+  color:#9a5a0a;
+  font-size:11px;
+  font-weight:800;
+  white-space:nowrap;
+}
+#view-petct-dose .batch-receive-row td{
+  background:#eff8f1;
+  color:#22653f;
+  font-weight:800;
+}
+#view-petct-dose .batch-receive-row td:first-child span{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#dff1e5;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+#view-petct-dose .batch-table-wrap tfoot td{
+  border-top:2px solid #bdd3e1;
+  background:#f4f9fc;
+}
+#view-petct-dose .batch-table-wrap tfoot td:first-child{
+  min-width:130px;
+  color:#425e72;
+}
+#view-petct-dose .batch-table-wrap tfoot span{
+  display:block;
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+}
+#view-petct-dose .batch-table-wrap tfoot strong{
+  display:block;
+  margin-top:3px;
+  color:#075d98;
+  font-size:18px;
+  font-variant-numeric:tabular-nums;
+}
+#view-petct-dose .batchRemove{
+  width:34px;
+  height:34px;
+  padding:0!important;
+  border:1px solid #efcaca!important;
+  background:#fff7f7!important;
+  color:#b64242!important;
+  font-size:20px;
+  line-height:1;
+}
+#view-petct-dose .batch-formula-details{
+  margin-top:12px;
+  border:1px solid #dbe6ed;
+  border-radius:12px;
+  background:#fbfdfe;
+  overflow:hidden;
+}
+#view-petct-dose .batch-formula-details > summary{
+  cursor:pointer;
+  padding:12px 14px;
+  color:#315a75;
+  font-size:13px;
+  font-weight:800;
+}
+#view-petct-dose .batch-formula-details > div{
+  padding:0 14px 12px;
+  color:#52697b;
+  font-size:13px;
+}
+#view-petct-dose .batch-formula-details p{margin:7px 0}
+
+@media(max-width:1200px){
+  #view-petct-dose .petct-inline,
+  #view-petct-dose .petct-inline > main.wrap,
+  #view-petct-dose main.wrap{
+    width:calc(100vw - 28px)!important;
+  }
+  #view-petct-dose .resultBox{
+    grid-template-columns:repeat(2,minmax(220px,1fr));
+  }
+}
+
+@media(max-width:760px){
+  #view-petct-dose .grid3,
+  #view-petct-dose .grid2{
+    grid-template-columns:1fr;
+  }
+  #view-petct-dose .resultBox{
+    grid-template-columns:1fr;
+  }
+  #view-petct-dose .batch-auto-summary{grid-template-columns:1fr}
+  #view-petct-dose .batch-auto-summary > div{
+    border-right:0;
+    border-bottom:1px solid #d8e5ed;
+  }
+  #view-petct-dose .batch-auto-summary > div:last-child{border-bottom:0}
+  #view-petct-dose .batch-status{
+    display:block;
+  }
+  #view-petct-dose .batch-status span{
+    display:block;
+    margin-top:4px;
+    text-align:left;
+  }
+}
+
+/* Sources: PET/CT reference group */
+.source-subtitle{
+  margin:22px 0 12px;
+  padding:16px 18px;
+  border:1px solid #cfe1ee;
+  border-radius:16px;
+  background:#f4faff;
+}
+.source-subtitle h2{
+  margin:0 0 6px;
+  color:#004b7a;
+  font-size:22px;
+}
+.source-subtitle p{
+  margin:0;
+  color:#526b80;
+}
+.petct-source-grid{
+  margin-top:12px;
+}
+
+
+/* ICD-10 & BHYT lookup */
+.icd10-feature{border-color:#c9dff0;background:linear-gradient(180deg,#ffffff 0%,#f2f9ff 100%)}
+.icd10-warning{border-left:5px solid #0b5d92;background:#f3f9ff;color:#17384f;line-height:1.65}
+.result-chip{display:inline-flex;align-items:center;border-radius:999px;padding:8px 12px;background:#eef6ff;color:#075985;font-weight:700;font-size:13px}
+.icd-filter-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin-bottom:14px}
+.icd-filter-grid label,.icd-direct-label{font-weight:700;color:#17384f;display:flex;flex-direction:column;gap:7px}
+.icd-filter-grid input,.icd-filter-grid select,.icd-direct-label input{border:1px solid #cbddea;border-radius:13px;padding:12px 14px;font:inherit;background:#fff;color:#18384c}
+.icd-layout{display:grid;grid-template-columns:minmax(270px,34%) 1fr;gap:16px;align-items:start}
+.icd-med-column{display:flex;flex-direction:column;gap:14px;min-width:0}
+.icd-med-list{display:flex;flex-direction:column;gap:8px;max-height:720px;overflow:auto;padding-right:4px}
+.icd-med-item{text-align:left;border:1px solid #d7e6f0;background:#fff;border-radius:16px;padding:12px 14px;cursor:pointer;box-shadow:0 6px 16px rgba(13,56,89,.06)}
+.icd-med-item b{display:block;color:#062f4f;font-size:15px;margin-bottom:4px}
+.icd-med-item span{display:block;color:#34576c;font-size:13px;line-height:1.35}
+.icd-med-item small{display:block;color:#71889a;margin-top:5px;line-height:1.35}
+.icd-med-item.active{border-color:#075f9f;background:#eef8ff;box-shadow:0 8px 18px rgba(7,95,159,.13)}
+.icd-profile{min-height:360px}
+.icd-profile-head{background:linear-gradient(135deg,#eff8ff,#ffffff);border:1px solid #cfe1ee;border-radius:20px;padding:18px;margin-bottom:12px}
+.icd-profile-head h2{margin:4px 0 8px;color:#062f4f;font-size:26px;line-height:1.15}
+.icd-profile-head p{margin:0 0 10px;line-height:1.55;color:#25465a}
+.icd-meta{display:flex;gap:8px;flex-wrap:wrap}
+.icd-meta span{background:#fff;border:1px solid #d9e8f2;border-radius:999px;padding:7px 10px;color:#31576d;font-size:13px}
+.icd-safety-note{border:1px solid #f0cf82;background:#fff8dc;border-radius:16px;padding:13px 15px;color:#60470b;line-height:1.6;margin:10px 0 12px}
+.icd-product-box,.icd-source-box,.icd-profile-level{border:1px solid #dae7f0;border-radius:16px;padding:14px;background:#fff;margin:12px 0;line-height:1.55}
+.icd-product-box h3,.icd-source-box h3,.icd-clinical-grid h3{margin:0 0 8px;color:#06476f;font-size:17px}
+.icd-product-box p,.icd-source-box p{margin:0}
+.icd-clinical-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.icd-clinical-grid section{background:#fff;border:1px solid #dae7f0;border-radius:16px;padding:14px;min-height:110px}
+.icd-clinical-grid p,.icd-clinical-grid ul{margin:0;color:#25465a;line-height:1.55}
+.icd-clinical-grid ul{padding-left:18px}
+.icd-ddi{border-top:1px dashed #d4e3ee;padding-top:8px;margin-top:8px}
+.icd-ddi:first-child{border-top:0;padding-top:0;margin-top:0}
+.icd-suggest-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin:16px 0 10px}
+.icd-suggest-head h3{margin:0;color:#062f4f}
+.icd-suggest-head div{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.icd-suggest-head span{background:#eaf6ff;color:#075985;border:1px solid #c8e0f2;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:700}
+.icd-code-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.icd-code-card{border:1px solid #d9e8f2;background:#fff;border-radius:15px;padding:12px;line-height:1.45;box-shadow:0 4px 12px rgba(13,56,89,.04)}
+.icd-code-card>div{display:flex;gap:10px;align-items:flex-start}
+.icd-code-card b{background:#0b5d92;color:white;border-radius:9px;padding:4px 7px;min-width:62px;text-align:center}
+.icd-code-card strong{color:#0a3452;font-size:15px}
+.icd-code-card small{display:block;color:#6a8192;margin-top:6px}
+.icd-code-card p{margin:7px 0 0;color:#465f70;font-size:13px}
+.icd-flags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.icd-flags span{background:#fff0e8;border:1px solid #ffc7a8;color:#9a3412;border-radius:999px;padding:3px 7px;font-size:11px;font-weight:700}
+.icd-ok{margin-top:8px;color:#166534;background:#effaf1;border:1px solid #b8e4c0;border-radius:10px;padding:6px 8px;font-size:12px;font-weight:700}
+.icd-direct-results{margin-top:12px}
+@media(max-width:1000px){.icd-filter-grid,.icd-layout,.icd-clinical-grid,.icd-code-grid{grid-template-columns:1fr}.icd-med-list{max-height:360px}.icd-suggest-head{display:block}.icd-suggest-head div{justify-content:flex-start;margin-top:8px}}
+
+.icd-source-box a{font-weight:700;color:#075f9f}
+
+/* ICD-10 profile cleanup 10/07/2026: bỏ khung thừa, chỉ giữ dữ liệu chuyên môn đã xác minh */
+.icd-unverified-note{margin:10px 0 12px;padding:12px 14px;border:1px solid #efc56a;border-radius:14px;background:#fff9e8;color:#654c10;line-height:1.5}
+.icd-source-compact,.icd-code-details{margin:12px 0;border:1px solid #d8e7f1;border-radius:14px;background:#fff;overflow:hidden}
+.icd-source-compact summary,.icd-code-details summary{cursor:pointer;padding:11px 14px;font-weight:800;color:#075985;background:#f5faff;list-style:none}
+.icd-source-compact summary::-webkit-details-marker,.icd-code-details summary::-webkit-details-marker{display:none}
+.icd-source-compact summary::after,.icd-code-details summary::after{content:'＋';float:right}
+.icd-source-compact[open] summary::after,.icd-code-details[open] summary::after{content:'−'}
+.icd-source-compact ul{margin:0;padding:12px 18px 14px 32px;line-height:1.55}
+.icd-source-compact a{color:#075f9f;font-weight:700}
+.icd-suggest-compact{margin-top:16px;border-top:1px solid #d9e8f2;padding-top:14px}
+.icd-suggest-title{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px}
+.icd-suggest-title h3{margin:0;color:#062f4f;font-size:18px}
+.icd-suggest-title small{color:#60798a}
+.icd-term-code-list{display:flex;gap:7px;flex-wrap:wrap}
+.icd-term-code{display:inline-flex;align-items:center;gap:7px;border:1px solid #bcd9ec;background:#edf8ff;border-radius:999px;padding:6px 10px;line-height:1.2}
+.icd-term-code strong{font-size:12px;color:#075985}
+.icd-term-code em{font-style:normal;font-weight:900;font-size:12px;color:#fff;background:#0b5d92;border-radius:999px;padding:3px 7px}
+.icd-compact-list{padding:6px 12px 12px}
+.icd-compact-row{display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:start;padding:9px 2px;border-bottom:1px dashed #d8e7f1}
+.icd-compact-row:last-child{border-bottom:0}
+.icd-compact-row b{color:#075985}
+.icd-compact-row span{color:#17384f;font-weight:700}
+.icd-compact-row small{grid-column:2;color:#9a3412}
+@media(max-width:700px){
+  .icd-suggest-title{display:block}
+  .icd-suggest-title small{display:block;margin-top:4px}
+  .icd-term-code{width:100%;justify-content:space-between}
+  .icd-clinical-grid section{min-height:0}
+}
+.icd-ddi-official{margin-top:10px;padding-top:10px;border-top:1px solid #d8e7f1;color:#25465a}
+.icd-ddi-official>b{display:block;margin-bottom:6px;color:#06476f}
+
+/* Kiểm soát dữ liệu hồ sơ 305 thuốc – 10/07/2026 */
+.icd-quality-note{margin:8px 0 12px;border:1px solid #f0d28a;border-radius:12px;background:#fffaf0;overflow:hidden}
+.icd-quality-note summary{cursor:pointer;padding:9px 12px;font-weight:800;color:#745312;list-style:none}
+.icd-quality-note summary::-webkit-details-marker{display:none}
+.icd-quality-note summary::after{content:'＋';float:right}
+.icd-quality-note[open] summary::after{content:'−'}
+.icd-quality-note p{margin:0;padding:0 12px 11px;color:#654c10;line-height:1.5}
+.icd-source-scope{margin:0;padding:0 14px 13px;color:#506b7d;line-height:1.5;font-size:13px}
+
+/* ===== Cập nhật 11/07/2026: giới thiệu tự đồng bộ theo thẻ chức năng ===== */
+#heroFeatureList{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px 24px;
+  margin:10px 0 15px;
+  padding-left:20px;
+}
+#heroFeatureList li{
+  margin:0;
+  padding-right:8px;
+  line-height:1.55;
+}
+#heroFeatureList strong{font-weight:850}
+@media(max-width:820px){#heroFeatureList{grid-template-columns:1fr;gap:7px}}
+
+/* ===== Pha/truyền thuốc: tách từng thông số để bác sĩ đọc lướt ===== */
+.icd-infusion-section{grid-column:1/-1}
+.infusion-readable{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.infusion-readable-row{
+  border:1px solid #d6e5ef;
+  border-left:4px solid #8fb8d3;
+  border-radius:12px;
+  background:#f9fcfe;
+  padding:11px 13px;
+  min-width:0;
+}
+.infusion-readable-row>span{
+  display:block;
+  margin-bottom:5px;
+  color:#45677f;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.055em;
+  line-height:1.35;
+  text-transform:uppercase;
+}
+.infusion-readable-row p{margin:0!important;color:#183f5c;line-height:1.55;overflow-wrap:anywhere}
+.infusion-readable-row.primary{border-left-color:#0878bb;background:#eef8ff}
+.infusion-readable-row.primary>span{color:#075f9f}
+.infusion-readable-row.warning{border-left-color:#dc6b24;background:#fff7ed}
+.infusion-readable-row.warning>span{color:#9a3d00}
+.infusion-readable-row.stability{border-left-color:#2e9b6f;background:#f0fbf6}
+.infusion-readable-row.stability>span{color:#176a4b}
+.infusion-na{display:flex;align-items:center;gap:10px;border:1px solid #d7e2ea;border-radius:11px;background:#f8fafc;padding:11px 13px;color:#536b7b}
+.infusion-na b{flex:0 0 auto;color:#365b73}
+.infusion-na span{line-height:1.45}
+@media(max-width:760px){
+  .infusion-readable{grid-template-columns:1fr}
+  .icd-infusion-section{grid-column:auto}
+  .infusion-na{align-items:flex-start;flex-direction:column;gap:3px}
+}
+
+/* ===== Lưu ý sử dụng mã ICD-10 ===== */
+.icd-clinical-warning{
+  padding:12px 14px;
+  border:1px solid #ef9b9b;
+  border-left:5px solid #d62828;
+  border-radius:12px;
+  background:#fff7f7;
+  color:#9c1c1c;
+  font-size:13px;
+  font-weight:650;
+  line-height:1.55;
+  box-shadow:0 4px 12px rgba(180,0,0,.05);
+}
+.icd-clinical-warning b{font-weight:900}
+.icd-clinical-warning-sidebar{
+  margin:0;
+  position:sticky;
+  bottom:8px;
+}
+@media(max-width:1000px){
+  .icd-clinical-warning-sidebar{position:static;order:2}
+}
+@media(max-width:760px){.icd-clinical-warning{font-size:12.5px;padding:10px 12px}}
+/* V9: cố định khung lưu ý ICD-10 ở cuối cột danh sách trên màn hình lớn */
+@media(min-width:1001px){
+  .icd-med-column{
+    position:sticky;
+    top:94px;
+    height:calc(100vh - 112px);
+    max-height:760px;
+    align-self:start;
+  }
+  .icd-med-list{
+    flex:1 1 auto;
+    min-height:0;
+    max-height:none;
+    overflow:auto;
+  }
+  .icd-clinical-warning-sidebar{
+    position:static;
+    flex:0 0 auto;
+    margin-top:auto;
+    z-index:2;
+  }
+}
+
+/* Khóa tạm thời công cụ ICD-10 trong thời gian cập nhật */
+.feature-card.icd10-feature:disabled{
+  cursor:not-allowed;
+  opacity:.68;
+  filter:grayscale(.2);
+}
+.feature-card.icd10-feature:disabled:hover{
+  transform:none;
+  border-color:var(--line);
+  box-shadow:none;
+}
+.feature-card.icd10-feature:disabled em{
+  color:#7a5a12;
+  background:#fff7df;
+  border-color:#e6cf87;
+}
+
+/* Công cụ Dược lâm sàng tích hợp trong luồng điều hướng chính (hoà vào nền trang, không tạo khung "web trong web") */
+.clinical-tool-frame{
+  display:block;width:100%;height:calc(100vh - 220px);min-height:720px;
+  border:0;border-radius:0;background:transparent;box-shadow:none
+}
+.clinical-source-strip{
+  display:flex;align-items:center;flex-wrap:wrap;gap:8px;
+  margin:0 0 14px;padding:12px 14px;border:1px solid #cbe2f1;
+  border-radius:13px;background:#f4faff;color:#244965;font-size:12px
+}
+.clinical-source-strip strong{color:#063b67}
+.clinical-source-strip a{
+  display:inline-flex;padding:7px 10px;border:1px solid #b9d8eb;
+  border-radius:9px;background:#fff;color:#075d98;font-weight:800
+}
+.clinical-source-strip a:hover,.clinical-source-strip a:focus-visible{
+  border-color:#4c9dcb;background:#e8f4fc;outline:none
+}
+@media(max-width:720px){
+  .clinical-tool-frame{height:calc(100vh - 190px);min-height:680px}
+  .clinical-source-strip{align-items:stretch;flex-direction:column}
+}

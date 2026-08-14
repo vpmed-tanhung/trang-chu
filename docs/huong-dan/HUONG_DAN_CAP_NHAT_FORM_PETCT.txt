@@ -1,0 +1,46 @@
+VPMED TÂN HƯNG – CẬP NHẬT FORM PET/CT THEO TỪNG BƯỚC
+Ngày: 13/07/2026
+
+NỘI DUNG ĐÃ LÀM
+- Chia form “Tính đơn bệnh nhân khi phát sinh ca lẻ” thành 5 màn hình rõ ràng:
+  1. Thông tin ca và liều mục tiêu.
+  2. Thời gian đo/rút đến lúc tiêm.
+  3. Nồng độ và thể tích cần rút.
+  4. Liều thực tiêm sau tiêm – không bắt buộc trước tiêm.
+  5. Kết quả.
+- Thêm dấu * màu đỏ cho trường bắt buộc.
+- Thêm hướng dẫn ngắn và ví dụ ngay dưới ô nhập.
+- Cho người dùng chọn 1 trong 2 cách nhập thời gian:
+  + Nhập trực tiếp số phút chờ; hoặc
+  + Nhập ngày/giờ đo-rút và ngày/giờ tiêm.
+- Cho người dùng chọn 1 trong 2 cách nhập nồng độ:
+  + Nhập trực tiếp mCi/mL; hoặc
+  + Nhập tổng hoạt độ và tổng thể tích.
+- Thu gọn thông tin lâm sàng bổ sung và ngưỡng kiểm tra nâng cao.
+- Tương thích cả máy tính và điện thoại.
+- Có kiểm tra trường thiếu ngay tại ô nhập.
+
+PHẠM VI AN TOÀN
+- Không sửa công thức PET/CT.
+- Không sửa hàm calc(), calcBatchDose(), dữ liệu thuốc, liều, tương tác, ICD-10.
+- index.html chỉ được thêm đúng 1 dòng nạp file giao diện mới.
+
+CÁCH ĐƯA LÊN GITHUB
+1. Giải nén file ZIP.
+2. Tải đúng 2 thư mục sau vào thư mục gốc repository:
+   - assets
+   - .github
+3. Commit changes.
+4. Mở tab Actions trên GitHub.
+5. Chọn “Áp dụng form PET-CT theo từng bước”.
+6. Nếu Action chưa tự chạy, bấm “Run workflow”.
+7. Chờ Action hoàn thành và GitHub Pages phát hành lại.
+8. Mở web, vào “Tính liều PET/CT – Y học hạt nhân” và kiểm tra mục tính đơn bệnh nhân.
+
+FILE ĐƯỢC THÊM
+- assets/petct_step_form.js
+- .github/scripts/apply_petct_step_form.py
+- .github/workflows/ap-dung-form-petct-theo-buoc.yml
+
+FILE ĐƯỢC SỬA TỰ ĐỘNG
+- index.html: chỉ thêm thẻ nạp assets/petct_step_form.js trước </body>.
