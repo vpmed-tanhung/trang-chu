@@ -1,6 +1,6 @@
 # Hệ thống tài khoản khoa/phòng VPMED
 
-Phiên bản này có một hệ thống tài khoản **mới và độc lập** tại `tai-khoan.html`. Trang tài khoản không chuyển người dùng đến `cong-cu-duoc-lam-sang.html` và không dùng giao diện quản trị của trang đó.
+Phiên bản này có một hệ thống tài khoản **mới và độc lập** tại `tai-khoan.html`. Hai công cụ Nhi khoa và thuốc tiêm chạy trực tiếp trong `index.html`; không còn phụ thuộc trang công cụ dược lâm sàng cũ hoặc giao diện quản trị của trang đó.
 
 ## Quy trình hoạt động
 

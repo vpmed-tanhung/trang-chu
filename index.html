@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="assets/responsive-polish.css?v=20260712-balanced">
   <link rel="stylesheet" href="assets/antibiotic-result-layout.css?v=20260802-structure-only">
   <link rel="stylesheet" href="assets/system-loader.css?v=20260811-desktop-spin-fix">
+  <link rel="stylesheet" href="assets/stock_clinical_tools.css?v=20260814-direct-sources-v6">
+  <link rel="stylesheet" href="assets/injectable_guide.css?v=20260814-content-from-original-v2">
   <script>document.documentElement.classList.add('system-loading','vpmed-auth-checking');</script>
   <noscript><style>#systemLoader{display:none!important}</style></noscript>
 </head>
@@ -92,39 +94,29 @@
   <section class="view active" id="view-home">
     <div class="hero-grid hero-grid-single">
       <div class="hero-panel">
-        <div class="eyebrow">Khoa Dược · Dược lâm sàng · Tra cứu, tính liều và hỗ trợ chuyên môn</div>
+        <div class="eyebrow">Khoa Dược · Dược lâm sàng</div>
         <h1>Hệ thống hỗ trợ lâm sàng</h1>
         <div class="hero-intro">
-          <p>Hệ thống hỗ trợ nhân viên y tế tra cứu thông tin thuốc, tính liều và tham khảo dữ liệu chuyên môn trong thực hành lâm sàng và y học hạt nhân.</p>
-          <p>Các chức năng chính hiện có gồm:</p>
-          <ul id="heroFeatureList" aria-live="polite">
-            <li><strong>Tính liều kháng sinh &amp; CrCl/eGFR:</strong> Tính Cockcroft–Gault, eGFR CKD-EPI 2021 và gợi ý liều theo chức năng thận.</li>
-            <li><strong>Tính liều PET/CT – Y học hạt nhân:</strong> Lập kế hoạch liều cho nhiều bệnh nhân, bù phân rã và tính thể tích cần rút.</li>
-            <li><strong>Danh mục kháng sinh nội trú:</strong> Tra cứu biệt dược, hoạt chất, liều, pha truyền, ADR và TDM.</li>
-            <li><strong>Kháng sinh theo bệnh lý:</strong> Tra cứu phác đồ kinh nghiệm cho các hội chứng nhiễm khuẩn thường gặp.</li>
-            <li><strong>Kiểm tra tương tác thuốc:</strong> Kiểm tra nhanh các cặp thuốc trong danh mục tương tác.</li>
-          </ul>
-          <p>Chọn chức năng phù hợp tại mục <strong>“Ứng dụng chính”</strong> bên dưới để sử dụng trực tiếp.</p>
+          <p>Tra cứu thuốc, tính liều và hỗ trợ an toàn điều trị.</p>
         </div>
       </div>
     </div>
 
     <section class="section-card">
-      <div class="section-heading"><div><span class="kicker">Ứng dụng chính</span><h2>Chọn công cụ cần sử dụng</h2></div></div>
+      <div class="section-heading"><div><span class="kicker">Công cụ lâm sàng</span><h2>Chọn mô-đun</h2></div></div>
       <div class="feature-grid">
-        <button class="feature-card" data-open="dose"><span class="feature-icon">🧮</span><b>Tính liều kháng sinh & CrCl/eGFR</b><small>Tính Cockcroft–Gault, eGFR CKD-EPI 2021, gợi ý theo thận và lưu lịch sử.</small><em>Đang hoạt động</em></button>
-        <button class="feature-card" data-open="petct-dose"><span class="feature-icon">☢️</span><b>Tính liều PET/CT – Y học hạt nhân</b><small>Lập kế hoạch liều cho nhiều bệnh nhân PET/CT trong ngày, bù phân rã theo giờ tiêm; vẫn có phần tính đơn khi cần.</small><em>Đang hoạt động</em></button>
-        <button class="feature-card" data-open="antibiotics"><span class="feature-icon">💊</span><b>Danh mục kháng sinh nội trú</b><small>Tra cứu từng biệt dược, hoạt chất, liều, pha truyền, ADR và TDM.</small><em>Đang hoạt động</em></button>
-        <button class="feature-card" data-open="diseases"><span class="feature-icon">🩺</span><b>Kháng sinh theo bệnh lý</b><small>Tra cứu phác đồ kinh nghiệm cho các hội chứng nhiễm khuẩn thường gặp, liên kết liều theo chức năng thận.</small><em>Đang hoạt động</em></button>
-        <button class="feature-card" data-open="interactions"><span class="feature-icon">⚠️</span><b>Kiểm tra tương tác thuốc</b><small>Kiểm tra nhanh hai thuốc hoặc tìm trong toàn bộ danh mục tương tác.</small><em>Đang hoạt động</em></button>
-        <button class="feature-card hepatotoxic-feature" data-open="hepatotoxicity"><span class="feature-icon">🫀</span><b>Thuốc có nguy cơ gây độc gan</b><small>Tra cứu thuốc trong kho nội trú, mức cảnh báo, nguy cơ chính và khuyến nghị theo dõi chức năng gan.</small><em>Đang hoạt động</em></button>
-        <button class="feature-card pregnancy-feature" data-open="pregnancy-lactation"><span class="feature-icon">🤰</span><b>Thuốc dùng khi có thai & cho con bú</b><small>Tra cứu 151 hoạt chất/nhóm theo tài liệu nội bộ, kèm phân loại FDA/TGA và liên kết đối chiếu hiện hành.</small><em>Đang hoạt động</em></button>
-        <button class="feature-card" data-open="pediatric-dose"><span class="feature-icon">🍼</span><b>Tính liều kháng sinh Nhi</b><small>60 kháng sinh · Sơ sinh và Nhi khoa theo tuổi/cân nặng.</small><em>Đang hoạt động</em></button>
-        <button class="feature-card" data-open="clinical-nutrition"><span class="feature-icon">🍽️</span><b>Dinh dưỡng lâm sàng</b><small>TPN · EN · Năng lượng Harris–Benedict/Mifflin · Đạm · Lipid.</small><em>Đang hoạt động</em></button>
-        <button class="feature-card" data-open="injectable-guide"><span class="feature-icon">💉</span><b>Pha &amp; Bảo quản Thuốc Tiêm</b><small>428 thuốc · Dung môi · Nồng độ · Thời gian ổn định · Tương kỵ.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="dose"><span class="feature-icon">🧮</span><b>Tính liều kháng sinh & CrCl/eGFR</b><small>Tính chức năng thận, gợi ý chỉnh liều và lưu lịch sử.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="petct-dose"><span class="feature-icon">☢️</span><b>Tính liều PET/CT – Y học hạt nhân</b><small>Tính liều, bù phân rã và thể tích rút cho ca PET/CT.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="antibiotics"><span class="feature-icon">💊</span><b>Danh mục kháng sinh nội trú</b><small>Tra cứu liều, pha truyền, ADR và TDM của kháng sinh trong kho.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="diseases"><span class="feature-icon">🩺</span><b>Kháng sinh theo bệnh lý</b><small>Tra cứu phác đồ kháng sinh theo bệnh lý nhiễm khuẩn.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="interactions"><span class="feature-icon">⚠️</span><b>Kiểm tra tương tác thuốc</b><small>Kiểm tra tương tác giữa hai thuốc hoặc trong toàn bộ danh mục.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card hepatotoxic-feature" data-open="hepatotoxicity"><span class="feature-icon">🫀</span><b>Thuốc có nguy cơ gây độc gan</b><small>Tra cứu nguy cơ độc gan và khuyến nghị theo dõi.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card pregnancy-feature" data-open="pregnancy-lactation"><span class="feature-icon">🤰</span><b>Thuốc dùng khi có thai & cho con bú</b><small>Tra cứu an toàn thuốc trong thai kỳ và khi cho con bú.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="pediatric-dose"><span class="feature-icon">🍼</span><b>Tính liều kháng sinh Nhi</b><small>Tính liều theo tuổi/PMA, cân nặng và lưu lịch sử tra cứu.</small><em>Đã kiểm chứng nguồn</em></button>
+        <button class="feature-card" data-open="injectable-guide"><span class="feature-icon">💉</span><b>Pha &amp; Bảo quản Thuốc Tiêm</b><small>Tra cứu cách pha, bảo quản và tương kỵ thuốc tiêm.</small><em>Đã lọc theo kho</em></button>
 
-        <button type="button" class="feature-card icd10-feature" data-open="icd10-bhyt" disabled aria-disabled="true" title="Chức năng đang cập nhật"><span class="feature-icon">🧾</span><b>ICD-10 & BHYT theo thuốc nội trú</b><small>Chức năng đang được rà soát và cập nhật dữ liệu.</small><em>Đang cập nhật</em></button>
-        <button class="feature-card" data-open="sources" data-intro-exclude="true"><span class="feature-icon">📚</span><b>Nguồn dữ liệu hệ thống</b><small>Mở các tệp nội bộ và xem nguyên tắc ưu tiên nguồn chuyên môn.</small><em>Đang hoạt động</em></button>
+        <button type="button" class="feature-card icd10-feature" data-open="icd10-bhyt" disabled aria-disabled="true" title="Chức năng đang cập nhật"><span class="feature-icon">🧾</span><b>ICD-10 & BHYT theo thuốc nội trú</b><small>Tra cứu mã ICD-10 và điều kiện BHYT theo thuốc.</small><em>Đang cập nhật</em></button>
+        <button class="feature-card" data-open="sources" data-intro-exclude="true"><span class="feature-icon">📚</span><b>Nguồn dữ liệu hệ thống</b><small>Xem tài liệu nguồn và nguyên tắc ưu tiên dữ liệu.</small><em>Đang hoạt động</em></button>
       </div>
     </section>
   </section>
@@ -1202,37 +1194,24 @@ calc();
     <div class="back-home-wrap">
       <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
     </div>
-    <div class="page-title"><div><span class="kicker">Dược lâm sàng Nhi khoa</span><h1>Tính liều kháng sinh Nhi</h1><p>Tính liều theo tuổi, cân nặng và nhóm tuổi sơ sinh/Nhi khoa.</p></div></div>
-    <div class="clinical-source-strip" aria-label="Nguồn chuyên môn Bộ Y tế">
-      <strong>Nguồn Bộ Y tế:</strong>
-      <a href="https://thuvienphapluat.vn/van-ban/The-thao-Y-te/Quyet-dinh-2323-QD-BYT-2025-tai-lieu-chuyen-mon-Huong-dan-quoc-gia-cham-soc-dieu-tri-tre-so-sinh-665133.aspx" target="_blank" rel="noopener noreferrer">QĐ 2323/QĐ-BYT – Hướng dẫn quốc gia chăm sóc và điều trị trẻ sơ sinh ↗</a>
-      <a href="https://thuvienphapluat.vn/van-ban/The-thao-Y-te/Quyet-dinh-3445-QD-BYT-2022-Duoc-thu-quoc-gia-Viet-Nam-lan-xuat-ban-thu-ba-560334.aspx" target="_blank" rel="noopener noreferrer">QĐ 3445/QĐ-BYT – Dược thư Quốc gia Việt Nam, lần III ↗</a>
-    </div>
-    <iframe class="clinical-tool-frame" src="cong-cu-duoc-lam-sang.html?embed=1#nelson" title="Tính liều kháng sinh Nhi"></iframe>
-  </section>
-
-  <section class="view clinical-tool-view" id="view-clinical-nutrition">
-    <div class="back-home-wrap">
-      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
-    </div>
-    <div class="page-title"><div><span class="kicker">Hỗ trợ dinh dưỡng</span><h1>Dinh dưỡng lâm sàng</h1><p>Tính nhu cầu năng lượng, đạm, lipid và hỗ trợ lập kế hoạch TPN/EN.</p></div></div>
-    <div class="clinical-source-strip" aria-label="Nguồn chuyên môn Bộ Y tế">
-      <strong>Nguồn Bộ Y tế:</strong>
-      <a href="https://thuvienphapluat.vn/van-ban/The-thao-Y-te/Quyet-dinh-2598-QD-BYT-2025-tai-lieu-chuyen-mon-quy-trinh-ky-thuat-Dinh-duong-lam-sang-669627.aspx" target="_blank" rel="noopener noreferrer">QĐ 2598/QĐ-BYT – Hướng dẫn quy trình kỹ thuật về Dinh dưỡng lâm sàng ↗</a>
-    </div>
-    <iframe class="clinical-tool-frame" src="cong-cu-duoc-lam-sang.html?embed=1#nutrition" title="Dinh dưỡng lâm sàng"></iframe>
+    <div class="page-title"><div><span class="kicker">Dược lâm sàng Nhi khoa · Theo danh mục kho</span><h1>Tính liều kháng sinh Nhi</h1><p>Tính liều khởi đầu theo cân nặng, tự xác định bảng Nhi khoa/Sơ sinh và hiển thị bệnh cảnh phù hợp từ các trang chuyên môn có nội dung đọc trực tiếp.</p></div></div>
+    <div id="stockPediatricTool"></div>
   </section>
 
   <section class="view clinical-tool-view" id="view-injectable-guide">
     <div class="back-home-wrap">
       <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
     </div>
-    <div class="page-title"><div><span class="kicker">Tra cứu thuốc tiêm</span><h1>Pha &amp; Bảo quản Thuốc Tiêm</h1><p>Tra cứu dung môi, nồng độ, thời gian ổn định và tương kỵ của 428 thuốc.</p></div></div>
-    <div class="clinical-source-strip" aria-label="Nguồn chuyên môn Bộ Y tế">
-      <strong>Nguồn Bộ Y tế:</strong>
-      <a href="https://thuvienphapluat.vn/van-ban/The-thao-Y-te/Quyet-dinh-3445-QD-BYT-2022-Duoc-thu-quoc-gia-Viet-Nam-lan-xuat-ban-thu-ba-560334.aspx" target="_blank" rel="noopener noreferrer">QĐ 3445/QĐ-BYT – Dược thư Quốc gia Việt Nam, lần III ↗</a>
-    </div>
-    <iframe class="clinical-tool-frame" src="cong-cu-duoc-lam-sang.html?embed=1#inject" title="Pha và Bảo quản Thuốc Tiêm"></iframe>
+    <section class="injectable-guide" id="injectableGuide" aria-label="Tra cứu pha và bảo quản thuốc tiêm">
+      <label class="injectable-search-label" for="injectableSearch">🔍 Tra cứu Pha &amp; Bảo quản Tiêm — 149 thuốc kho nội trú</label>
+      <div class="injectable-search-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+        <input class="injectable-search" id="injectableSearch" type="search" autocomplete="off" spellcheck="false" placeholder="Nhập tên biệt dược, hoạt chất, hàm lượng hoặc mã thuốc…">
+        <button class="injectable-clear" id="injectableClear" type="button" aria-label="Xóa từ khóa" hidden>×</button>
+        <div class="injectable-suggestions" id="injectableSuggestions" role="listbox" hidden></div>
+      </div>
+      <div id="injectableOutput" aria-live="polite"></div>
+    </section>
   </section>
 
   <section class="view" id="view-sources">
@@ -1331,11 +1310,10 @@ calc();
 <script defer src="assets/renal_database_20260723.js?v=20260723-renal-only-v4"></script>
 <script defer src="assets/diseases.js"></script>
 <script defer src="assets/unified.js?v=20260802-structure-only"></script>
-<script defer src="assets/vpmed-renal-audit.js?v=20260813-audit-write-fix-v4"></script>
-<script defer src="assets/antibiotic_consultation.js?v=20260716-inpatient-first"></script>
+<script defer src="assets/vpmed-renal-audit.js?v=20260814-module-history-v5"></script>
+<script defer src="assets/antibiotic_consultation.js?v=20260814-short-module-copy-v1"></script>
 <script defer src="assets/dose_24h_summary.js?v=20260802-structure-only"></script>
 <script defer src="assets/vancomycin_renal_v2.js?v=20260723-renal-only-v6"></script>
-<script defer src="assets/home_feature_sync.js"></script>
 <!--
   TỐI ƯU 07/08/2026: Tạm ẩn 5 file dữ liệu/logic của tính năng "ICD-10 & BHYT theo thuốc nội trú"
   vì tính năng này đang bị khóa (disabled, "Đang cập nhật") trong index.html — người dùng
@@ -1361,6 +1339,10 @@ calc();
 <script defer src="assets/disease_updates_2026.js"></script>
 <script defer src="assets/hepatotoxicity.js"></script>
 <script defer src="assets/pregnancy_lactation.js"></script>
+<script defer src="assets/stock_clinical_data_20260814.js"></script>
+<script defer src="assets/stock_clinical_tools.js?v=20260814-direct-sources-v6"></script>
+<script defer src="assets/injectable_guide_data.js?v=20260814-content-from-original-v2"></script>
+<script defer src="assets/injectable_guide.js?v=20260814-content-from-original-v2"></script>
 <script defer src="evaluation-embed.js?v=20260811-evaluation-copy-v3"></script>
 <script defer src="clinical-update-module.js?v=20260715-pharmacy-staff"></script>
 <script defer src="vpmed-approved-data-bridge.js"></script>
@@ -1369,7 +1351,7 @@ calc();
   <script defer src="assets/pharmacovigilance_auto_data.js?v=20260814072455"></script>
   <script defer src="assets/pharmacovigilance_bulletin_76_data.js?v=20260804"></script>
   <script defer src="assets/pharmacovigilance_auto_editor.js?v=20260728-structured"></script>
-  <script defer src="assets/pharmacovigilance_integration.js?v=20260805-all-source-buttons"></script>
+  <script defer src="assets/pharmacovigilance_integration.js?v=20260814-short-module-copy-v1"></script>
   <script defer src="assets/professional_icons.js?v=20260715-clinical-cute"></script>
   <script defer src="assets/petct_step_form.js?v=20260713"></script>
 </body>

@@ -200,7 +200,7 @@ create table public.renal_lookup_logs (
   job_title text not null,
   department text not null,
   lookup_type text not null check (
-    lookup_type in ('renal_function', 'antibiotic_renal_dose', 'colistin_renal_dose')
+    lookup_type in ('renal_function', 'antibiotic_renal_dose', 'colistin_renal_dose', 'pediatric_antibiotic_dose')
   ),
   module_name text,
   drug_name text,

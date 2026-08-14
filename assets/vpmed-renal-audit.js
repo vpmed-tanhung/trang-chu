@@ -7,6 +7,7 @@
   var sharedRows=[];
   var refreshTimer=null;
   var HISTORY_LIMIT=500;
+  var PEDIATRIC_HISTORY_MODULE='Tính liều kháng sinh Nhi';
 
   function escapeHtml(value){
     return String(value==null?'':value).replace(/[&<>'"]/g,function(ch){
@@ -92,7 +93,7 @@
       setStatus('Chưa tải được lịch sử chung: '+databaseErrorText(result.error)+'.','error');
       return;
     }
-    sharedRows=result.data||[];
+    sharedRows=(result.data||[]).filter(function(item){return item.module_name!==PEDIATRIC_HISTORY_MODULE;});
     renderSharedHistory();
     setStatus(sharedRows.length+' lượt tra cứu.','success');
   }
@@ -149,12 +150,14 @@
 
   async function clearAll(){
     if(!isAdmin())return;
-    if(!window.confirm('Xóa TOÀN BỘ lịch sử tra cứu dùng chung? Hành động này không thể hoàn tác.'))return;
+    if(!window.confirm('Xóa TOÀN BỘ lịch sử công cụ suy thận? Lịch sử Nhi khoa không bị xóa.'))return;
     var typed=window.prompt('Nhập XOA LICH SU để xác nhận:');
     if(typed!=='XOA LICH SU')return;
     var button=document.getElementById('clear');
     button.disabled=true;
-    var result=await auth.client.from('renal_lookup_logs').delete().gte('id',0).select('id');
+    var ids=sharedRows.map(function(item){return item.id;}).filter(function(id){return id!=null;});
+    if(!ids.length){button.disabled=false;await refreshSharedHistory();return;}
+    var result=await auth.client.from('renal_lookup_logs').delete().in('id',ids).select('id');
     button.disabled=false;
     if(result.error){setStatus('Không xóa được lịch sử: '+String(result.error.message||result.error.code||'Lỗi Supabase')+'.','error');return;}
     if(sharedRows.length&&(!result.data||!result.data.length)){setStatus('Supabase chưa cho phép xóa. Hãy chạy file sua_quyen_xoa_admin.sql và đăng nhập lại.','error');return;}

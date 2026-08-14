@@ -167,7 +167,7 @@
     button.type = 'button';
     button.className = 'feature-card consultation-feature';
     button.dataset.open = MODULE_ID;
-    button.innerHTML = '<span class="feature-icon">👥</span><b>Kháng sinh cần hội chẩn khi dùng</b><small>Tra cứu đầy đủ danh mục ưu tiên quản lý của Bộ Y tế và đối chiếu thuốc hiện có tại bệnh viện.</small><em>Đang hoạt động</em>';
+    button.innerHTML = '<span class="feature-icon">👥</span><b>Kháng sinh cần hội chẩn khi dùng</b><small>Tra cứu kháng sinh cần hội chẩn và đối chiếu thuốc trong kho.</small><em>Đang hoạt động</em>';
     const anchor = grid.querySelector('[data-open="interactions"]');
     grid.insertBefore(button, anchor || null);
     button.addEventListener('click', () => openView(MODULE_ID));

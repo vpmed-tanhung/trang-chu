@@ -55,6 +55,28 @@ alter table public.renal_lookup_logs alter column job_title set not null;
 alter table public.renal_lookup_logs alter column department set default 'Chưa cập nhật';
 alter table public.renal_lookup_logs alter column department set not null;
 
+-- Cho phép công cụ Tính liều kháng sinh Nhi ghi cùng bảng nhật ký.
+-- Tự tìm và thay constraint CHECK cũ để chạy được trên các bản database đã triển khai.
+do $$
+declare lookup_constraint text;
+begin
+  select c.conname into lookup_constraint
+  from pg_constraint c
+  where c.conrelid = 'public.renal_lookup_logs'::regclass
+    and c.contype = 'c'
+    and pg_get_constraintdef(c.oid) ilike '%lookup_type%'
+  limit 1;
+
+  if lookup_constraint is not null then
+    execute format('alter table public.renal_lookup_logs drop constraint %I', lookup_constraint);
+  end if;
+
+  alter table public.renal_lookup_logs
+    add constraint renal_lookup_logs_lookup_type_check
+    check (lookup_type in ('renal_function', 'antibiotic_renal_dose', 'colistin_renal_dose', 'pediatric_antibiotic_dose'));
+end;
+$$;
+
 -- Bản rất cũ có doctor_name/doctor_email NOT NULL, khiến client mới không INSERT được.
 do $$
 begin
