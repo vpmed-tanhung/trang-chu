@@ -378,7 +378,7 @@
       const small = card.querySelector('small');
       const em = card.querySelector('em');
       if (small) small.textContent = 'Tra cứu cảnh báo an toàn, ADR, tương tác và bản tin dược.';
-      if (em) em.textContent = `Kiểm tra nguồn ${this.lastSyncDate || this.latestDateText()}`;
+      if (em) em.textContent = 'Đang hoạt động';
     }
   }
 
@@ -403,7 +403,7 @@
       card.className = 'feature-card pharmacovigilance-feature';
       card.dataset.open = VIEW_NAME;
       card.dataset.introExclude = 'true';
-      card.innerHTML = '<span class="feature-icon">⚕️</span><b>Cảnh báo dược về sử dụng thuốc</b><small>Tra cứu cảnh báo an toàn, ADR, tương tác và bản tin dược.</small><em>Cập nhật tự động</em>';
+      card.innerHTML = '<span class="feature-icon">⚕️</span><b>Cảnh báo dược về sử dụng thuốc</b><small>Tra cứu cảnh báo an toàn, ADR, tương tác và bản tin dược.</small><em>Đang hoạt động</em>';
       const sourceCard = grid.querySelector('[data-open="sources"]');
       if (sourceCard) grid.insertBefore(card, sourceCard); else grid.appendChild(card);
       card.addEventListener('click', () => showView(VIEW_NAME));

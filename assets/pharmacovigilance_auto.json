@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-14T07:24:55+07:00",
+  "generated_at": "2026-08-15T06:21:36+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
   "newly_fetched_count": 0,
@@ -7,6 +7,42 @@
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
+    {
+      "id": "auto-0b6ae6ed4f417b",
+      "level": "red",
+      "year": "2026",
+      "date": "14/08/2026",
+      "category": "Cảnh báo an toàn thuốc",
+      "system": "Tim mạch · Thần kinh · Chuyển hóa",
+      "interaction": false,
+      "title": "Nguy cơ thuyên tắc vi mạch phổi khi tiêm bắp các chế phẩm Testosterone dạng dầu: Thông tin từ Bản tin BIP Occitanie số 02/2026",
+      "drugs": "Thuốc/nhóm thuốc nêu trong tiêu đề; xem bài nguồn để xác định đầy đủ.",
+      "summary": "Các chế phẩm testosterone dạng dung dịch dầu (dầu thầu dầu) được chỉ định tiêm bắp trong điều trị suy giảm nội tiết tố nam. Biến cố thuyên tắc vi mạch phổi sau tiêm Sự xuất hiện của triệu chứng ho, khó thở, đôi khi kèm theo tăng tiết mồ hôi, đau ngực hoặc ngất trong hoặc ngay sau khi tiêm, có thể là dấu hiệu của tình trạng thuyên tắc vi mạch phổi do dầu (POME - Pulmonary oil microembolism). Đây là một tác dụng không mong muốn (ADR) hiếm gặp nhưng đã được ghi nhận trong y văn. Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn. Khuyến cáo dành cho nhân viên y tế khuyến cáo nhân viên y tế chủ động thực hiện các biện pháp thận trọng nhằm giảm thiểu nguy cơ liên quan biến cố này: Thực hiện tiêm chậm và tiêm đúng vị trí vào cơ mông Thực hiện thao tác hút ngược để kiểm tra xem đầu kim có lỡ đâm vào mạch máu hay không trước khi bơm thuốc nhằm hạn chế nguy cơ vô tình tiêm vào lòng mạch.",
+      "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
+      "risk": [
+        "Các chế phẩm testosterone dạng dung dịch dầu (dầu thầu dầu) được chỉ định tiêm bắp trong điều trị suy giảm nội tiết tố nam."
+      ],
+      "signs": [
+        "Biến cố thuyên tắc vi mạch phổi sau tiêm Sự xuất hiện của triệu chứng ho, khó thở, đôi khi kèm theo tăng tiết mồ hôi, đau ngực hoặc ngất trong hoặc ngay sau khi tiêm, có thể là dấu hiệu của tình trạng thuyên tắc vi mạch phổi do dầu (POME - Pulmonary oil microembolism).",
+        "Các triệu chứng hầu hết là thoáng qua và tự hồi phục, chỉ cần can thiệp xử trí triệu chứng khi cần thiết, đặc biệt là bằng liệu pháp oxy.",
+        "Cơ chế gây ra thuyên tắc vi mạch phổi Biến cố này xảy ra do một lượng nhỏ dung dịch dầu vô tình đi vào trong lòng mạch, gây ra thuyên tắc vi mạch phổi.",
+        "Bản tin BIP Occitanie đánh giá biến cố này là lành tính và thoáng qua."
+      ],
+      "action": [
+        "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn."
+      ],
+      "monitor": [
+        "Khuyến cáo dành cho nhân viên y tế khuyến cáo nhân viên y tế chủ động thực hiện các biện pháp thận trọng nhằm giảm thiểu nguy cơ liên quan biến cố này: Thực hiện tiêm chậm và tiêm đúng vị trí vào cơ mông Thực hiện thao tác hút ngược để kiểm tra xem đầu kim có lỡ đâm vào mạch máu hay không trước khi bơm thuốc nhằm hạn chế nguy cơ vô tình tiêm vào lòng mạch."
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5855/nguy-co-thuyen-tac-vi-mach-phoi-khi-tiem-bap-testosterone-dang-dau-bip-02.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5855/nguy-co-thuyen-tac-vi-mach-phoi-khi-tiem-bap-testosterone-dang-dau-bip-02.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-structured"
+    },
     {
       "id": "auto-b8db165901be9a",
       "level": "red",
@@ -36,7 +72,7 @@
         "Phụ nữ đang sử dụng các thuốc này cần được theo dõi về các dấu hiệu và triệu chứng nghi ngờ u màng não, bao gồm thay đổi thị lực, giảm thính lực hoặc ù tai, mất khứu giác, đau đầu tiến triển, suy giảm trí nhớ, co giật hoặc yếu chi."
       ],
       "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
-      "source_note": "",
+      "source_note": "https://www.ema.europa.eu/en/news/meeting-highlights-pharmacovigilance-risk-assessment-committee-prac-6-9-july-2026#prac-statistics-july-2026-87464",
       "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5851/ema-nguy-co-u-mang-nao-khi-su-dung-keo-dai-cac-thuoc-tranh-thai.htm",
       "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5851/ema-nguy-co-u-mang-nao-khi-su-dung-keo-dai-cac-thuoc-tranh-thai.htm",
       "auto": true,
