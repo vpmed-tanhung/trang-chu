@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="assets/system-loader.css?v=20260811-desktop-spin-fix">
   <link rel="stylesheet" href="assets/stock_clinical_tools.css?v=20260814-direct-sources-v6">
   <link rel="stylesheet" href="assets/injectable_guide.css?v=20260814-content-from-original-v2">
-  <link rel="stylesheet" href="assets/prescription-check.css?v=20260817-rx-bhyt-v8">
+  <link rel="stylesheet" href="assets/prescription-check.css?v=20260817-rx-regulatory-v2">
   <script>document.documentElement.classList.add('system-loading','vpmed-auth-checking');</script>
   <noscript><style>#systemLoader{display:none!important}</style></noscript>
 </head>
@@ -128,7 +128,7 @@
       <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
     </div>
     <div class="page-title rx-page-title">
-      <div><span class="kicker">BHYT · DỊCH VỤ · AN TOÀN THUỐC</span><h1>Rà soát đơn thuốc trước giám định</h1><p>Gộp toàn bộ thuốc trong cùng lượt khám để kiểm tra tương tác, đồng thời đối chiếu mã bệnh đối với từng thuốc BHYT.</p></div>
+      <div><span class="kicker">BHYT · DỊCH VỤ · AN TOÀN THUỐC</span><h1>Rà soát đơn thuốc trước giám định</h1></div>
       <div class="rx-data-state" id="rxDataState"><span class="rx-data-dot"></span><div><b>Đang chuẩn bị dữ liệu</b></div></div>
     </div>
 
@@ -194,12 +194,12 @@
           <header class="rx-result-header"><div><span class="kicker">KẾT QUẢ RÀ SOÁT</span><h2 id="rxResultTitle">Chưa kiểm tra</h2></div><div class="rx-score" id="rxScore"><b>—</b><small>/100</small></div></header>
           <div class="rx-summary" id="rxSummary"><div><b>—</b><span>Tương tác</span></div><div><b>—</b><span>Mã bệnh</span></div><div><b>—</b><span>Đã đối chiếu</span></div></div>
           <div class="rx-result-body" id="rxResultBody"><div class="rx-result-empty"><span>✓</span><b>Sẵn sàng nhận dữ liệu</b><p>Tải các đơn của cùng lượt khám; hệ thống sẽ tự đọc loại đơn, mã bệnh và danh sách thuốc.</p></div></div>
-          <footer class="rx-result-footer"><span id="rxRuleVersion">QĐ 5948/QĐ-BYT · TT06/2026/TT-BYT (ICD-10) · TT20/2022 + TT37/2024</span><button type="button" id="rxPrintResult">In phiếu</button></footer>
+          <footer class="rx-result-footer"><span id="rxRuleVersion">Tương tác: QĐ 5948/QĐ-BYT + QĐ 29/QĐ-BYT/DI&ADR · ICD-10: TT06/2026/TT-BYT · Kê đơn: TT26/2025/TT-BYT · BHYT: TT20/2022 + TT37/2024</span><button type="button" id="rxPrintResult">In phiếu</button></footer>
         </section>
       </aside>
     </div>
 
-    <section class="section-card rx-scope-note"><b>Phạm vi:</b> Công cụ hỗ trợ sàng lọc trước giám định. Gợi ý ICD-10 được đối chiếu từ hồ sơ thuốc đã rà soát, không tự động khẳng định chỉ định được BHYT thanh toán và không thay thế quyết định của bác sĩ, dược sĩ hoặc bộ phận giám định.</section>
+    <section class="section-card rx-scope-note"><b>Phạm vi:</b> Công cụ hỗ trợ sàng lọc trước giám định. <b>QĐ 5948/QĐ-BYT</b> là lớp xác định tương tác chống chỉ định. Cảnh báo từ <b>Trung tâm DI &amp; ADR Quốc gia</b> là lớp chuyên môn bổ sung trong khung giám sát ADR theo QĐ 29/QĐ-BYT và <b>không tự động được quy thành chống chỉ định</b> nếu QĐ 5948 không quy định. TT26/2025/TT-BYT và TT37/2024/TT-BYT được dùng theo đúng phạm vi kê đơn/BHYT; không dùng để tự sinh cặp tương tác thuốc. Gợi ý ICD-10 không thay thế quyết định của bác sĩ, dược sĩ hoặc bộ phận giám định.</section>
   </section>
 
   <section class="view" id="view-dose">
@@ -1380,6 +1380,7 @@ calc();
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script defer src="assets/vpmed-access.js?v=20260817-admin-delete-v1"></script>
 <script defer src="assets/data.js"></script>
+<script defer src="assets/interaction-regulatory-data.js?v=20260817-rx-regulatory-v2"></script>
 <script defer src="assets/contra_adr_hdsd_duocthu_20260717.js?v=20260717-final"></script>
 <script defer src="assets/clinical_updates.js"></script>
 <script defer src="assets/clinical_details.js"></script>
@@ -1393,7 +1394,7 @@ calc();
 <script defer src="assets/unified.js?v=20260817-prescription-check-v1"></script>
 <script defer src="assets/icd-clinical-match.js?v=20260817-tt06-2026"></script>
 <script defer src="assets/prescription-diagnosis-ocr.js?v=20260817-exact-icd-v2"></script>
-<script defer src="assets/prescription-check.js?v=20260817-rx-bhyt-v10"></script>
+<script defer src="assets/prescription-check.js?v=20260817-rx-regulatory-v2"></script>
 <script defer src="assets/vpmed-renal-audit.js?v=20260814-module-history-v5"></script>
 <script defer src="assets/antibiotic_consultation.js?v=20260814-short-module-copy-v1"></script>
 <script defer src="assets/dose_24h_summary.js?v=20260802-structure-only"></script>

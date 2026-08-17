@@ -76,3 +76,10 @@ Do yêu cầu riêng tư này, PDF và OCR máy chủ không được hỗ trợ
 - Cảnh báo ICD là đối chiếu với hồ sơ gợi ý hiện có, không phải kết luận được BHYT thanh toán.
 - Không tự động thêm mã bệnh khi không có chẩn đoán lâm sàng trong hồ sơ.
 - Kết quả không loại trừ tương tác ngoài QĐ 5948, chống chỉ định theo bệnh nền, dị ứng, liều, xét nghiệm hoặc quy định thanh toán khác.
+
+## Cập nhật 17/08/2026 — phân tầng nguồn tương tác chính thức
+
+- QĐ 5948/QĐ-BYT là lớp chuẩn để xác định cặp tương tác chống chỉ định; hệ thống giữ đủ 633 cặp và hiển thị khác nhau giữa chống chỉ định tuyệt đối và chống chỉ định có điều kiện/ưu tiên tránh.
+- Bổ sung lớp cảnh báo tương tác từ Trung tâm DI & ADR Quốc gia. Lớp này được ghi rõ là cảnh báo chuyên môn bổ sung trong khung giám sát ADR theo QĐ 29/QĐ-BYT và **không tự động được nâng thành chống chỉ định** nếu QĐ 5948 không quy định.
+- TT26/2025/TT-BYT và TT37/2024/TT-BYT được ghi nhận theo đúng phạm vi kê đơn/BHYT, không dùng để tự sinh cặp tương tác thuốc.
+- Khi dán danh sách từ HIS, tên hoạt chất có trong bộ tương tác/cảnh báo vẫn có thể được nhận diện dù chưa có trong danh mục kho nội trú hiện tại; các thuốc chưa chuẩn hóa vẫn phải được nhân viên y tế xác nhận.

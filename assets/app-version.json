@@ -1,6 +1,6 @@
 {
-  "version": "2026.08.17.9",
-  "updatedAt": "2026-08-17T14:24:00+07:00",
-  "note": "Cập nhật danh sách loại đơn, chỉ giữ Đơn ngoại trú.",
-  "buildId": "outpatient-only-20260817-9"
+  "version": "2026.08.17.10",
+  "updatedAt": "2026-08-17T16:50:00+07:00",
+  "note": "Mở rộng rà soát tương tác theo QĐ 5948 và lớp cảnh báo DI&ADR chính thức; phân tầng mức cảnh báo và căn cứ pháp lý/chuyên môn.",
+  "buildId": "rx-regulatory-interactions-20260817-10"
 }

@@ -1,6 +1,8 @@
 /*
  * Rà soát đơn thuốc BHYT & dịch vụ
  * - Đối chiếu tương tác theo VPMED_INTERACTIONS (QĐ 5948/QĐ-BYT)
+ * - Bổ sung lớp cảnh giác dược quốc gia VPMED_RX_INTERACTION_SUPPLEMENTAL
+ *   nhưng không tự động quy cảnh báo bổ sung thành chống chỉ định pháp lý
  * - Cảnh báo thuốc BHYT chưa có mã bệnh nằm trong hồ sơ ICD gợi ý của thuốc
  * - OCR ảnh chỉ hỗ trợ nhập liệu; nhân viên y tế phải xác nhận tên thuốc
  */
@@ -82,7 +84,9 @@
       const profiles=getProfiles();
       const interactions=getInteractions();
       populateDrugOptions();
-      setDataState('ready','Dữ liệu sẵn sàng','');
+      const baseCount=Array.isArray(window.VPMED_INTERACTIONS)?window.VPMED_INTERACTIONS.length:0;
+      const supplementalCount=Array.isArray(window.VPMED_RX_INTERACTION_SUPPLEMENTAL)?window.VPMED_RX_INTERACTION_SUPPLEMENTAL.length:0;
+      setDataState('ready','Dữ liệu sẵn sàng',`${baseCount} cặp QĐ 5948 + ${supplementalCount} cảnh báo DI&ADR bổ sung`);
       return {meds,profiles,interactions};
     }).catch(error=>{
       dataPromise=null;
@@ -95,7 +99,11 @@
   function getMeds(){return window.VPMED_INPATIENT_MEDICINES_20260707||[]}
   function getProfiles(){return window.VPMED_FULL_DRUG_PROFILES_305||[]}
   function getVerifiedProfiles(){return window.VPMED_VERIFIED_DRUG_PROFILES||[]}
-  function getInteractions(){return window.VPMED_INTERACTIONS||[]}
+  function getInteractions(){
+    const base=Array.isArray(window.VPMED_INTERACTIONS)?window.VPMED_INTERACTIONS:[];
+    const supplemental=Array.isArray(window.VPMED_RX_INTERACTION_SUPPLEMENTAL)?window.VPMED_RX_INTERACTION_SUPPLEMENTAL:[];
+    return [...base,...supplemental];
+  }
 
   function populateDrugOptions(){
     const list=rx$('#rxDrugOptions');
@@ -243,12 +251,33 @@
     return best;
   }
 
+  function interactionNameVariants(value){
+    const full=String(value||'').trim();
+    if(!full)return [];
+    const noParen=full.replace(/\([^)]*\)/g,' ').replace(/\s+/g,' ').trim();
+    const slashParts=full.split('/').map(part=>part.replace(/\([^)]*\)/g,' ').trim()).filter(Boolean);
+    return unique([full,noParen,...slashParts]).filter(item=>norm(item).length>=5);
+  }
+
+  function bestInteractionDrugInLine(line){
+    const normalized=norm(line);
+    let best='',bestLength=0;
+    getInteractions().forEach(rule=>{
+      [rule.drug1,rule.drug2].flatMap(interactionNameVariants).forEach(value=>{
+        const key=norm(value);
+        if(key.length>=5&&normalized.includes(key)&&key.length>bestLength){best=value;bestLength=key.length}
+      });
+    });
+    return best;
+  }
+
   function parseDrugLines(text,source={sourceId:'his-paste',sourceName:'Dữ liệu HIS'}){
     return String(text||'').split(/\r?\n/).map(line=>line.trim()).filter(Boolean).slice(0,100).map(line=>{
       const payment=parsePayment(line);
       const found=bestMedicineInLine(line);
-      if(!found&&source.sourceId==='his-paste')return null;
-      let raw=found?.name||line.split(/[|;\t]/)[0];
+      const interactionName=found?'':bestInteractionDrugInLine(line);
+      if(!found&&!interactionName&&source.sourceId==='his-paste')return null;
+      let raw=found?.name||interactionName||line.split(/[|;\t]/)[0];
       raw=raw.replace(/^\s*(?:[-–—•*]|\d+[.)-])\s*/,'').trim();
       return raw?resolvedDrug(raw,payment,{...source,orderText:line}):null;
     }).filter(Boolean);
@@ -515,17 +544,67 @@
     return {missing,unmapped,matched};
   }
 
+  function interactionVisualSeverity(rule){
+    const explicit=norm(rule?.visualSeverity);
+    if(explicit==='critical')return {key:'critical',className:'rx-interaction-critical'};
+    if(explicit==='high')return {key:'high',className:'rx-interaction-high'};
+    if(explicit==='moderate')return {key:'moderate',className:'rx-interaction-moderate'};
+    if(explicit==='low')return {key:'low',className:'rx-interaction-low'};
+
+    const level=norm(rule?.level);
+    const detail=norm(`${rule?.level||''} ${rule?.management||''} ${rule?.consequence||''}`);
+    if(rule?.sourceType==='moh-contraindication-list'&&!rule?.conditional){
+      return {key:'critical',className:'rx-interaction-critical'};
+    }
+    if(rule?.conditional||/co dieu kien|uu tien tranh|tranh phoi hop/.test(level)){
+      return {key:'high',className:'rx-interaction-high'};
+    }
+    if(/chong chi dinh|tuyet doi|rat nghiem trong|critical/.test(level)){
+      return {key:'critical',className:'rx-interaction-critical'};
+    }
+    if(/nghiem trong|nguy co cao|major|severe/.test(detail)){
+      return {key:'high',className:'rx-interaction-high'};
+    }
+    if(/trung binh|can than|theo doi|dieu chinh|moderate/.test(detail)){
+      return {key:'moderate',className:'rx-interaction-moderate'};
+    }
+    return {key:'low',className:'rx-interaction-low'};
+  }
+
+  function interactionSourceTier(rule){
+    if(rule?.sourceType==='moh-contraindication-list'||/5948\/qd byt/.test(norm(rule?.legalBasis||rule?.source))){
+      return {key:'moh',label:'Bộ Y tế · QĐ 5948',note:'Danh mục chống chỉ định'};
+    }
+    if(rule?.sourceType==='national-pharmacovigilance'){
+      return {key:'diadr',label:'DI&ADR Quốc gia',note:'Cảnh báo chuyên môn bổ sung'};
+    }
+    return {key:'other',label:'Nguồn chuyên môn',note:'Cần đối chiếu nguồn'};
+  }
+
+  function safeSourceUrl(value){
+    const url=String(value||'').trim();
+    return /^(https?:\/\/|sources\/)/i.test(url)?url:'';
+  }
+
   function interactionHtml(hit){
     const {rule,first,second}=hit;
     const cross=first.payment!==second.payment;
-    return `<article class="rx-alert rx-alert-danger">
-      <div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><small>${esc(rule.level||'Tương tác cần xử trí')}${rule.conditional?' · Có điều kiện':''}</small><h3>${esc(first.name)} + ${esc(second.name)}</h3></div></div>
+    const severity=interactionVisualSeverity(rule);
+    const tier=interactionSourceTier(rule);
+    const sourceUrl=safeSourceUrl(rule.sourceUrl||rule.url);
+    const sourceText=esc(rule.source||'QĐ 5948/QĐ-BYT');
+    const sourceHtml=sourceUrl?`<a class="rx-source-link" href="${esc(sourceUrl)}" target="_blank" rel="noopener">${sourceText} ↗</a>`:sourceText;
+    return `<article class="rx-alert rx-alert-interaction ${severity.className}" data-interaction-severity="${severity.key}" data-source-tier="${tier.key}">
+      <div class="rx-source-tier rx-source-tier-${tier.key}"><b>${esc(tier.label)}</b><span>${esc(tier.note)}</span></div>
+      <div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><small>${esc(rule.level||'Tương tác cần xử trí')}</small><h3>${esc(first.name)} + ${esc(second.name)}</h3></div></div>
       <div class="rx-cross-payment"><span class="${paymentTagClass(first.payment)}">${esc(first.payment)}</span><em>${cross?'↔ kiểm tra chéo ↔':'↔ cùng nguồn ↔'}</em><span class="${paymentTagClass(second.payment)}">${esc(second.payment)}</span></div>
       <dl>
+        <div><dt>Trạng thái</dt><dd>${esc(rule.regulatoryStatus||rule.level||'Cảnh báo tương tác')}</dd></div>
         <div><dt>Cơ chế</dt><dd>${esc(rule.mechanism||'Chưa có mô tả.')}</dd></div>
         <div><dt>Hậu quả</dt><dd>${esc(rule.consequence||'Cần đánh giá nguy cơ lâm sàng.')}</dd></div>
         <div><dt>Xử trí</dt><dd>${esc(rule.management||'Đối chiếu nguồn và trao đổi bác sĩ điều trị.')}</dd></div>
-        <div><dt>Nguồn</dt><dd>${esc(rule.source||'QĐ 5948/QĐ-BYT')}</dd></div>
+        <div><dt>Căn cứ</dt><dd>${esc(rule.legalBasis||'Quyết định 5948/QĐ-BYT ngày 30/12/2021')}</dd></div>
+        <div><dt>Nguồn</dt><dd>${sourceHtml}</dd></div>
       </dl>
     </article>`;
   }
@@ -683,7 +762,9 @@
 
   function inpatientInteractionHtml(hit){
     const {rule,first,second}=hit;
-    return `<article class="rx-alert rx-alert-danger"><div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><h3>${esc(first.name)} + ${esc(second.name)}</h3></div></div><p>• <b>Tương tác:</b> ${esc(rule.level||'Cần xử trí')}</p><p>• <b>Hậu quả:</b> ${esc(shorten(rule.consequence||'Cần đánh giá nguy cơ lâm sàng.',170))}</p><p>• <b>Xử trí:</b> ${esc(shorten(rule.management||'Trao đổi bác sĩ điều trị.',190))}</p></article>`;
+    const severity=interactionVisualSeverity(rule);
+    const tier=interactionSourceTier(rule);
+    return `<article class="rx-alert rx-alert-interaction ${severity.className}" data-interaction-severity="${severity.key}" data-source-tier="${tier.key}"><div class="rx-source-tier rx-source-tier-${tier.key}"><b>${esc(tier.label)}</b><span>${esc(tier.note)}</span></div><div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><small>${esc(rule.level||'Tương tác cần xử trí')}</small><h3>${esc(first.name)} + ${esc(second.name)}</h3></div></div><p>• <b>Trạng thái:</b> ${esc(rule.regulatoryStatus||rule.level||'Cảnh báo tương tác')}</p><p>• <b>Hậu quả:</b> ${esc(shorten(rule.consequence||'Cần đánh giá nguy cơ lâm sàng.',170))}</p><p>• <b>Xử trí:</b> ${esc(shorten(rule.management||'Trao đổi bác sĩ điều trị.',190))}</p><p>• <b>Căn cứ:</b> ${esc(rule.legalBasis||'QĐ 5948/QĐ-BYT')}</p></article>`;
   }
 
   function inpatientDrugHtml(drug){

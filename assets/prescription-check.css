@@ -132,6 +132,132 @@
 .rx-result-footer button{flex:0 0 auto;padding:6px 10px;border:1px solid #bcd5d0;border-radius:7px;color:#2e6d66;background:#f4faf8;font-size:10px;font-weight:850;cursor:pointer}
 .rx-scope-note{margin-top:18px;color:#5c7470;background:#f8fbfa;font-size:11px;line-height:1.65}
 
+/* ==========================================================
+   Cảnh báo TƯƠNG TÁC THUỐC theo mức độ
+   Chỉ áp dụng bên trong module Rà soát đơn thuốc BHYT & dịch vụ.
+   Không tác động tới chấm/trạng thái các module trên Trang chủ.
+   ========================================================== */
+.rx-alert-interaction{
+  position:relative;
+  isolation:isolate;
+  transition:border-color .2s ease,background-color .2s ease,box-shadow .2s ease;
+}
+.rx-alert-interaction .rx-alert-icon{
+  position:relative;
+  z-index:1;
+}
+.rx-alert-interaction small,
+.rx-alert-interaction h3,
+.rx-alert-interaction dt{
+  font-weight:900;
+}
+
+/* Mức rất cao: chống chỉ định -> đỏ, nháy nhanh và rõ nhất. */
+.rx-interaction-critical{
+  border-color:#f0a5ad;
+  border-left-color:#c92335;
+  background:#fff7f8;
+  animation:rxInteractionCriticalCard .68s ease-in-out infinite;
+}
+.rx-interaction-critical .rx-alert-icon{
+  color:#fff;
+  background:#c92335;
+  animation:rxInteractionCriticalIcon .68s steps(2,end) infinite;
+}
+.rx-interaction-critical small,
+.rx-interaction-critical h3,
+.rx-interaction-critical dt{color:#a51728}
+.rx-interaction-critical dl div{border-color:#f1d8db}
+
+/* Mức cao: chống chỉ định có điều kiện / ưu tiên tránh -> cam, nháy vừa. */
+.rx-interaction-high{
+  border-color:#f1c18f;
+  border-left-color:#e36d13;
+  background:#fffaf5;
+  animation:rxInteractionHighCard .95s ease-in-out infinite;
+}
+.rx-interaction-high .rx-alert-icon{
+  color:#fff;
+  background:#e36d13;
+  animation:rxInteractionHighIcon .95s ease-in-out infinite;
+}
+.rx-interaction-high small,
+.rx-interaction-high h3,
+.rx-interaction-high dt{color:#a94d08}
+.rx-interaction-high dl div{border-color:#f1dfcd}
+
+/* Mức trung bình (dự phòng cho dữ liệu mở rộng) -> vàng, nháy chậm. */
+.rx-interaction-moderate{
+  border-color:#ead28d;
+  border-left-color:#c99612;
+  background:#fffdf5;
+  animation:rxInteractionModerateCard 1.35s ease-in-out infinite;
+}
+.rx-interaction-moderate .rx-alert-icon{
+  color:#5f4300;
+  background:#f5cf5b;
+  animation:rxInteractionModerateIcon 1.35s ease-in-out infinite;
+}
+.rx-interaction-moderate small,
+.rx-interaction-moderate h3,
+.rx-interaction-moderate dt{color:#80600a}
+.rx-interaction-moderate dl div{border-color:#eee2bf}
+
+/* Mức thấp/thông tin (dự phòng) -> xanh, chỉ nháy nhẹ. */
+.rx-interaction-low{
+  border-color:#bfd9e8;
+  border-left-color:#3f8bb2;
+  background:#fbfeff;
+  animation:rxInteractionLowCard 1.8s ease-in-out infinite;
+}
+.rx-interaction-low .rx-alert-icon{
+  color:#fff;
+  background:#3f8bb2;
+  animation:rxInteractionLowIcon 1.8s ease-in-out infinite;
+}
+.rx-interaction-low small,
+.rx-interaction-low h3,
+.rx-interaction-low dt{color:#2a6f92}
+.rx-interaction-low dl div{border-color:#d9e8f0}
+
+@keyframes rxInteractionCriticalCard{
+  0%,100%{box-shadow:0 0 0 0 rgba(201,35,53,0);background:#fff7f8}
+  50%{box-shadow:0 0 0 4px rgba(201,35,53,.18),0 7px 20px rgba(201,35,53,.14);background:#ffedef}
+}
+@keyframes rxInteractionCriticalIcon{
+  0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(201,35,53,.15)}
+  50%{opacity:.32;transform:scale(.88);box-shadow:0 0 0 7px rgba(201,35,53,.16)}
+}
+@keyframes rxInteractionHighCard{
+  0%,100%{box-shadow:0 0 0 0 rgba(227,109,19,0);background:#fffaf5}
+  50%{box-shadow:0 0 0 3px rgba(227,109,19,.15),0 5px 16px rgba(227,109,19,.10);background:#fff2e7}
+}
+@keyframes rxInteractionHighIcon{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.48;transform:scale(.92)}
+}
+@keyframes rxInteractionModerateCard{
+  0%,100%{box-shadow:0 0 0 0 rgba(201,150,18,0);background:#fffdf5}
+  50%{box-shadow:0 0 0 2px rgba(201,150,18,.12);background:#fff8dc}
+}
+@keyframes rxInteractionModerateIcon{
+  0%,100%{opacity:1}
+  50%{opacity:.58}
+}
+@keyframes rxInteractionLowCard{
+  0%,100%{box-shadow:none;background:#fbfeff}
+  50%{box-shadow:0 0 0 2px rgba(63,139,178,.08);background:#f1f9fd}
+}
+@keyframes rxInteractionLowIcon{
+  0%,100%{opacity:1}
+  50%{opacity:.68}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .rx-alert-interaction,
+  .rx-alert-interaction .rx-alert-icon{animation:none!important}
+}
+
 @media(max-width:1120px){
   .rx-workspace{grid-template-columns:1fr}
   .rx-result-column{position:static}
@@ -152,3 +278,19 @@
   .back-home-wrap,.rx-page-title,.rx-main-column,.rx-scope-note,.rx-result-footer button{display:none!important}
   .rx-workspace{display:block}.rx-result-column{position:static}.rx-result-card{box-shadow:none}.rx-result-body{max-height:none;overflow:visible}
 }
+
+/* Phân tầng nguồn cảnh báo trong module rà soát đơn. */
+.rx-source-tier{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:0 0 9px;padding:6px 9px;border:1px solid #d7e4ea;border-radius:8px;background:#f8fbfc;font-size:10px;line-height:1.35}
+.rx-source-tier b{font-size:10px;font-weight:950;letter-spacing:.02em}
+.rx-source-tier span{font-weight:750;color:#61747d}
+.rx-source-tier-moh{border-color:#efb8bf;background:#fff2f4}
+.rx-source-tier-moh b{color:#a51728}
+.rx-source-tier-diadr{border-color:#f0cf9f;background:#fff8ec}
+.rx-source-tier-diadr b{color:#9c5909}
+.rx-source-tier-other{border-color:#c8dce6;background:#f5fbfe}
+.rx-source-tier-other b{color:#2a6f92}
+.rx-source-link{color:inherit;font-weight:850;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+.rx-source-link:hover{text-decoration-thickness:2px}
+
+/* Nhãn nguồn không nhấp nháy: chỉ phần cảnh báo theo mức độ mới có chuyển động. */
+.rx-alert-interaction .rx-source-tier{animation:none!important;box-shadow:none!important}
