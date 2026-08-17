@@ -1,6 +1,6 @@
 {
-  "version": "2026.08.15.1",
-  "updatedAt": "2026-08-15T12:00:00+07:00",
-  "note": "Đã bổ sung thông báo phiên bản mới và nút cập nhật nhanh.",
-  "buildId": "update-notifier-20260815-1"
+  "version": "2026.08.17.8",
+  "updatedAt": "2026-08-17T20:55:00+07:00",
+  "note": "Làm sáng phần căn cứ pháp lý và bỏ các thống kê dữ liệu kỹ thuật khỏi giao diện.",
+  "buildId": "prescription-clean-status-20260817-8"
 }

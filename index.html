@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="assets/system-loader.css?v=20260811-desktop-spin-fix">
   <link rel="stylesheet" href="assets/stock_clinical_tools.css?v=20260814-direct-sources-v6">
   <link rel="stylesheet" href="assets/injectable_guide.css?v=20260814-content-from-original-v2">
+  <link rel="stylesheet" href="assets/prescription-check.css?v=20260817-rx-bhyt-v8">
   <script>document.documentElement.classList.add('system-loading','vpmed-auth-checking');</script>
   <noscript><style>#systemLoader{display:none!important}</style></noscript>
 </head>
@@ -109,6 +110,7 @@
         <button class="feature-card" data-open="petct-dose"><span class="feature-icon">☢️</span><b>Tính liều PET/CT – Y học hạt nhân</b><small>Tính liều, bù phân rã và thể tích rút cho ca PET/CT.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="antibiotics"><span class="feature-icon">💊</span><b>Danh mục kháng sinh nội trú</b><small>Tra cứu liều, pha truyền, ADR và TDM của kháng sinh trong kho.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="diseases"><span class="feature-icon">🩺</span><b>Kháng sinh theo bệnh lý</b><small>Tra cứu phác đồ kháng sinh theo bệnh lý nhiễm khuẩn.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card prescription-feature" data-open="prescription-check"><span class="feature-icon">📋</span><b>Rà soát đơn thuốc BHYT &amp; dịch vụ</b><small>Kiểm tra tương tác toàn đơn và cảnh báo thuốc BHYT chưa có mã bệnh phù hợp.</small><em>Tính năng mới</em></button>
         <button class="feature-card" data-open="interactions"><span class="feature-icon">⚠️</span><b>Kiểm tra tương tác thuốc</b><small>Kiểm tra tương tác giữa hai thuốc hoặc trong toàn bộ danh mục.</small><em>Đang hoạt động</em></button>
         <button class="feature-card hepatotoxic-feature" data-open="hepatotoxicity"><span class="feature-icon">🫀</span><b>Thuốc có nguy cơ gây độc gan</b><small>Tra cứu nguy cơ độc gan và khuyến nghị theo dõi.</small><em>Đang hoạt động</em></button>
         <button class="feature-card pregnancy-feature" data-open="pregnancy-lactation"><span class="feature-icon">🤰</span><b>Thuốc dùng khi có thai & cho con bú</b><small>Tra cứu an toàn thuốc trong thai kỳ và khi cho con bú.</small><em>Đang hoạt động</em></button>
@@ -119,6 +121,85 @@
         <button class="feature-card" data-open="sources" data-intro-exclude="true"><span class="feature-icon">📚</span><b>Nguồn dữ liệu hệ thống</b><small>Xem tài liệu nguồn và nguyên tắc ưu tiên dữ liệu.</small><em>Đang hoạt động</em></button>
       </div>
     </section>
+  </section>
+
+  <section class="view" id="view-prescription-check">
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <div class="page-title rx-page-title">
+      <div><span class="kicker">BHYT · DỊCH VỤ · AN TOÀN THUỐC</span><h1>Rà soát đơn thuốc trước giám định</h1><p>Gộp toàn bộ thuốc trong cùng lượt khám để kiểm tra tương tác, đồng thời đối chiếu mã bệnh đối với từng thuốc BHYT.</p></div>
+      <div class="rx-data-state" id="rxDataState"><span class="rx-data-dot"></span><div><b>Đang chuẩn bị dữ liệu</b></div></div>
+    </div>
+
+    <div class="rx-workspace">
+      <div class="rx-main-column">
+        <section class="section-card rx-card">
+          <div class="section-heading rx-heading"><div><span class="rx-step">1</span><div><span class="kicker">THÔNG TIN LƯỢT KHÁM</span><h2>Hồ sơ cần kiểm tra</h2></div></div><button type="button" class="btn btn-soft" id="rxResetPrescription" disabled title="Nút được bật sau khi kiểm tra đơn">↻ Đơn mới</button></div>
+          <div class="rx-encounter-grid">
+            <label>Loại đơn<select id="rxEncounterType"><option>Đơn ngoại trú</option><option>Y lệnh nội trú</option><option>Đơn ra viện</option></select></label>
+            <div class="rx-diagnosis-field">
+              <label>Chẩn đoán tự nhận diện từ đơn <small>Đọc từng mã chính xác trong mục chính/kèm theo · không gộp theo nhóm ICD</small></label>
+              <div class="rx-diagnosis-auto-grid">
+                <article><span>Mã bệnh chính</span><b id="rxPrimaryDiagnosisCode">Chưa nhận diện</b><small id="rxPrimaryDiagnosisSource">Chờ đọc đơn thuốc</small></article>
+                <article><span>Mã bệnh kèm theo</span><div id="rxSecondaryDiagnosisCodes"><em>Chưa nhận diện</em></div></article>
+              </div>
+              <button type="button" class="rx-diagnosis-edit-toggle" id="rxEditDiagnosis">Chỉnh lại nếu OCR đọc sai</button>
+              <input class="rx-diagnosis-edit" id="rxDiagnosisCodes" type="text" autocomplete="off" spellcheck="false" placeholder="Mã đầu tiên là bệnh chính; các mã sau là bệnh kèm theo" hidden>
+            </div>
+          </div>
+          <div class="rx-diagnosis-chips" id="rxDiagnosisChips"><span>Chờ OCR nhận diện mã bệnh từ đơn</span></div>
+        </section>
+
+        <section class="section-card rx-card">
+          <div class="section-heading rx-heading"><div><span class="rx-step">2</span><div><span class="kicker">NHẬN ĐƠN THUỐC</span><h2>Tải đơn hoặc dán dữ liệu từ HIS</h2></div></div></div>
+          <div class="rx-import-grid">
+            <div class="rx-upload-panel">
+              <label class="rx-upload-zone" for="rxPrescriptionFile">
+                <input id="rxPrescriptionFile" type="file" accept="image/*" multiple>
+                <span class="rx-upload-icon">↑</span>
+                <b>Chụp ảnh hoặc tải nhiều đơn thuốc</b>
+                <small>Chỉ OCR cục bộ trên thiết bị · không tải ảnh lên máy chủ · tối đa 20 ảnh/lượt</small>
+                <em>Chọn nhiều tệp</em>
+              </label>
+              <div class="rx-file-state" id="rxFileState" hidden><span id="rxFileIcon">▦</span><div><b id="rxFileName"></b><small id="rxFileNote"></small></div><button type="button" id="rxRunOcr">Đọc tất cả</button></div>
+              <div class="rx-file-queue" id="rxFileQueue" hidden></div>
+              <div class="rx-ocr-progress" id="rxOcrProgress" hidden><span><i id="rxOcrBar"></i></span><small id="rxOcrText">Đang nhận dạng…</small></div>
+            </div>
+            <div class="rx-or"><span>hoặc</span></div>
+            <div class="rx-paste-panel">
+              <label>Dán riêng danh sách thuốc từ HIS<textarea id="rxPasteDrugs" rows="6" placeholder="Không dán thông tin người bệnh. Mỗi thuốc một dòng, ví dụ:&#10;Diclofenac | BHYT&#10;Ketorolac-BFS | Dịch vụ&#10;Comiaryl 2mg/500mg | BHYT"></textarea></label>
+              <button type="button" class="btn btn-soft full" id="rxApplyPaste">Nhận danh sách thuốc</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card rx-card">
+          <div class="section-heading rx-heading"><div><span class="rx-step">3</span><div><span class="kicker">DANH SÁCH ĐÃ CHUẨN HÓA</span><h2>Thuốc BHYT và dịch vụ trong cùng lượt khám</h2></div></div><button type="button" class="btn btn-soft" id="rxAddDrug">+ Thêm thuốc</button></div>
+          <datalist id="rxDrugOptions"></datalist>
+          <div class="rx-drug-table-wrap">
+            <table class="rx-drug-table">
+              <thead><tr><th>Thuốc / hoạt chất</th><th>Hàm lượng</th><th>Đường dùng</th><th>Nguồn chi trả</th><th>Trạng thái</th><th></th></tr></thead>
+              <tbody id="rxDrugRows"><tr><td colspan="6" class="rx-empty-row">Chưa có thuốc. Tải đơn, dán dữ liệu HIS hoặc thêm thủ công.</td></tr></tbody>
+            </table>
+          </div>
+          <div class="rx-table-footer"><span id="rxDrugCount">0 thuốc</span><span>Bấm vào tên thuốc để chỉnh sửa trước khi kiểm tra.</span></div>
+        </section>
+
+        <button type="button" class="rx-check-button" id="rxCheckPrescription"><span>⌁</span><b>Kiểm tra toàn bộ lượt khám</b><small>Tương tác trong từng đơn và chéo BHYT–dịch vụ · Mã bệnh · Dữ liệu chưa xác minh</small></button>
+      </div>
+
+      <aside class="rx-result-column">
+        <section class="rx-result-card" id="rxResultCard">
+          <header class="rx-result-header"><div><span class="kicker">KẾT QUẢ RÀ SOÁT</span><h2 id="rxResultTitle">Chưa kiểm tra</h2></div><div class="rx-score" id="rxScore"><b>—</b><small>/100</small></div></header>
+          <div class="rx-summary" id="rxSummary"><div><b>—</b><span>Tương tác</span></div><div><b>—</b><span>Mã bệnh</span></div><div><b>—</b><span>Đã đối chiếu</span></div></div>
+          <div class="rx-result-body" id="rxResultBody"><div class="rx-result-empty"><span>✓</span><b>Sẵn sàng nhận dữ liệu</b><p>Tải các đơn của cùng lượt khám; hệ thống sẽ tự đọc loại đơn, mã bệnh và danh sách thuốc.</p></div></div>
+          <footer class="rx-result-footer"><span id="rxRuleVersion">QĐ 5948/QĐ-BYT · TT06/2026/TT-BYT (ICD-10) · TT20/2022 + TT37/2024</span><button type="button" id="rxPrintResult">In phiếu</button></footer>
+        </section>
+      </aside>
+    </div>
+
+    <section class="section-card rx-scope-note"><b>Phạm vi:</b> Công cụ hỗ trợ sàng lọc trước giám định. Gợi ý ICD-10 được đối chiếu từ hồ sơ thuốc đã rà soát, không tự động khẳng định chỉ định được BHYT thanh toán và không thay thế quyết định của bác sĩ, dược sĩ hoặc bộ phận giám định.</section>
   </section>
 
   <section class="view" id="view-dose">
@@ -1244,7 +1325,7 @@ calc();
         <article class="source-card"><div>🧪</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/7/25-byt.signed.pdf">Thông tư 25/2026/TT-BYT – Sửa đổi quy định về chất lượng xét nghiệm và hoạt động khám chữa bệnh <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 15/08/2026; riêng Điều 2 và Điều 3 có hiệu lực từ ngày 01/07/2026.</p></article>
         <article class="source-card"><div>🩻</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/7/24-byt.signed.pdf">Thông tư 24/2026/TT-BYT – Quản lý rủi ro sản phẩm, hàng hóa là thiết bị y tế <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/07/2026.</p></article>
         <article class="source-card"><div>🎁</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/5/16-byt.pdf">Thông tư 16/2026/TT-BYT – Chương trình hỗ trợ thuốc miễn phí cho cơ sở khám chữa bệnh <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 10/07/2026.</p></article>
-        <article class="source-card"><div>🔎</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/4/06-byt.pdf">Thông tư 06/2026/TT-BYT – Mã hóa bệnh tật, nguyên nhân tử vong theo ICD-10 <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/07/2026; các nội dung tại khoản 2 và khoản 3 Điều 5 có hiệu lực từ ngày 01/06/2026.</p></article>
+        <article class="source-card"><div>🔎</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/4/06-byt.pdf">Thông tư 06/2026/TT-BYT – Mã hóa bệnh tật, nguyên nhân tử vong theo ICD-10 <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/07/2026; các nội dung tại khoản 2 và khoản 3 Điều 5 có hiệu lực từ ngày 01/06/2026.<br><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/4/06-byt-kem.pdf">Mở trực tiếp Phụ lục Danh mục ICD-10 <span class="source-link-icon" aria-hidden="true">↗</span></a></p></article>
         <article class="source-card"><div>🌿</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/01/55-byt.pdf">Thông tư 55/2025/TT-BYT – Kê đơn thuốc cổ truyền, dược liệu và phối hợp thuốc hóa dược <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/03/2026; Thông tư 44/2018/TT-BYT hết hiệu lực từ cùng ngày.</p></article>
         <article class="source-card"><div>🧪</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2025/7/30-byt.pdf">Thông tư 30/2025/TT-BYT – Chất lượng, kiểm nghiệm và thu hồi thuốc <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/07/2025.</p></article>
         <article class="source-card"><div>✍️</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2025/7/26-byt.pdf">Thông tư 26/2025/TT-BYT – Đơn thuốc và kê đơn thuốc hóa dược, sinh phẩm <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p><strong>Hiệu lực:</strong> từ ngày 01/07/2025.</p></article>
@@ -1309,7 +1390,10 @@ calc();
 <script defer src="assets/antibiotic_38_complete.js?v=20260716-38-drugs"></script>
 <script defer src="assets/renal_database_20260723.js?v=20260723-renal-only-v4"></script>
 <script defer src="assets/diseases.js"></script>
-<script defer src="assets/unified.js?v=20260802-structure-only"></script>
+<script defer src="assets/unified.js?v=20260817-prescription-check-v1"></script>
+<script defer src="assets/icd-clinical-match.js?v=20260817-tt06-2026"></script>
+<script defer src="assets/prescription-diagnosis-ocr.js?v=20260817-exact-icd-v2"></script>
+<script defer src="assets/prescription-check.js?v=20260817-rx-bhyt-v10"></script>
 <script defer src="assets/vpmed-renal-audit.js?v=20260814-module-history-v5"></script>
 <script defer src="assets/antibiotic_consultation.js?v=20260814-short-module-copy-v1"></script>
 <script defer src="assets/dose_24h_summary.js?v=20260802-structure-only"></script>
@@ -1318,10 +1402,10 @@ calc();
   TỐI ƯU 07/08/2026: Tạm ẩn 5 file dữ liệu/logic của tính năng "ICD-10 & BHYT theo thuốc nội trú"
   vì tính năng này đang bị khóa (disabled, "Đang cập nhật") trong index.html — người dùng
   KHÔNG thể mở view này (showView() luôn chuyển 'icd10-bhyt' về 'home').
-  5 file dưới đây tổng ~7,8MB, chiếm ~78% tổng dung lượng JS của trang chủ, và đã xác minh
-  KHÔNG có tính năng nào khác dùng dữ liệu này (window.VPMED_ICD10_BYT2026,
-  VPMED_VERIFIED_DRUG_PROFILES, VPMED_FULL_DRUG_PROFILES_305, VPMED_INPATIENT_MEDICINES_20260707
-  chỉ được đọc trong icd10_bhyt_lookup.js).
+  5 file dưới đây tổng ~7,8MB, chiếm ~78% tổng dung lượng JS của trang chủ.
+  Tính năng "Rà soát đơn thuốc BHYT & dịch vụ" chỉ nạp động hai tệp nhẹ hơn là
+  inpatient_medicines_20260707.js và drug_profiles_305_vpmed_20260710.js khi người dùng mở tính năng;
+  dữ liệu ICD-10 toàn bộ vẫn không nạp ở trang chủ.
   => KHI MỞ LẠI tính năng ICD-10 & BHYT (bỏ thuộc tính disabled ở nút "ICD-10 & BHYT theo thuốc
   nội trú" và bỏ dòng `if(name==='icd10-bhyt')name='home';` trong assets/unified.js),
   hãy bỏ comment khối script bên dưới để tính năng hoạt động trở lại.

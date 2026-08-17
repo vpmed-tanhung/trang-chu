@@ -38,6 +38,42 @@
       ]
     },
     {
+      key:'human_insulin_biphasic_30_70',
+      aliases:['insulin người biphasic 30 70','insulin human recombinant 30 soluble insulin neutral va 70 isophane insulin','insulin người hỗn hợp'],
+      regNumbers:['890410177200'],
+      group:'Insulin người trộn sẵn 30/70',
+      standard:'Liều insulin phải cá thể hóa theo đường huyết, bữa ăn, chức năng thận và nguy cơ hạ đường huyết; không suy ra liều chỉ từ mã ICD.',
+      route:'Tiêm dưới da theo đúng tờ HDSD của chế phẩm; không dùng đường tĩnh mạch đối với hỗn dịch insulin trộn sẵn.',
+      indications:['Điều trị đái tháo đường cần insulin khi chế độ insulin trộn sẵn phù hợp với mục tiêu và lịch ăn của người bệnh.'],
+      contraindications:['Đang hạ đường huyết','Quá mẫn với insulin người hoặc tá dược','Không dùng bơm insulin hoặc đường tĩnh mạch đối với hỗn dịch trộn sẵn'],
+      infusionDetails:['Không pha truyền; đây là hỗn dịch tiêm dưới da.'],
+      interactions:['Thuốc chẹn beta có thể che lấp triệu chứng hạ đường huyết','Corticosteroid và thiazid có thể làm tăng glucose','Rượu, salicylat và một số thuốc hạ áp có thể làm thay đổi nhu cầu insulin'],
+      icdMappings:[{term:'Đái tháo đường cần insulin',codes:['E10.9','E11.9']}],
+      sources:[
+        {title:'Cục Quản lý Dược – quyết định đăng ký/gia hạn Wosulin 30/70',url:'https://dav.gov.vn/upload_images/files/519_Q%C4%90_QLD_signed.pdf'},
+        {title:'Hướng dẫn chẩn đoán và điều trị đái tháo đường – Cục Quản lý Khám, chữa bệnh',url:'https://daithaoduong.kcb.vn/huong-dan-chan-doan-va-dieu-tri'},
+        ...COMMON_SOURCES
+      ]
+    },
+    {
+      key:'losartan', aliases:['losartan','losartan kali'], regNumbers:['383110010624'], group:'Chẹn thụ thể angiotensin II',
+      standard:'Liều phải cá thể hóa theo huyết áp, chức năng thận, kali máu và đúng tờ HDSD của chế phẩm.',
+      route:'Uống theo tờ HDSD, thường một lần mỗi ngày; theo dõi huyết áp, creatinin và kali.',
+      indications:['Điều trị tăng huyết áp','Điều trị bệnh thận do đái tháo đường typ 2 có protein niệu theo chỉ định','Điều trị suy tim trong trường hợp phù hợp với phác đồ và tờ HDSD'],
+      contraindications:['Mang thai','Quá mẫn','Phối hợp aliskiren ở người đái tháo đường hoặc suy thận trong các trường hợp chống chỉ định'],
+      infusionDetails:['Không áp dụng pha/truyền đối với viên uống.'],
+      interactions:['Kali và thuốc lợi tiểu giữ kali: tăng nguy cơ tăng kali máu','NSAID: giảm tác dụng hạ áp và tăng nguy cơ tổn thương thận','Lithium: có thể tăng nồng độ lithium'],
+      icdMappings:[
+        {term:'Tăng huyết áp',codes:['I10']},
+        {term:'Suy tim',codes:['I50.9']},
+        {term:'Đái tháo đường typ 2 có biến chứng thận',codes:['E11.2']}
+      ],
+      sources:[
+        {title:'Tờ HDSD losartan do Cục Quản lý Dược công bố – đối chiếu theo hoạt chất',url:'https://dav.gov.vn/file/2014/1364/img614.pdf'},
+        ...COMMON_SOURCES
+      ]
+    },
+    {
       key:'acetylsalicylic_acid', aliases:['acetylsalicylic acid','aspirin'], group:'Thuốc chống kết tập tiểu cầu',
       standard:'Dự phòng huyết khối động mạch: thường 75–150 mg uống mỗi ngày. Trong hội chứng vành cấp có thể dùng liều nạp theo hướng dẫn chuyên khoa; không áp dụng liều giảm đau/kháng viêm cho chế phẩm aspirin liều thấp nếu chưa kiểm tra đúng chỉ định.',
       route:'Uống sau ăn với nước; không nghiền viên bao tan trong ruột trừ khi tờ HDSD cho phép.',
