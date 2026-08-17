@@ -182,6 +182,7 @@
       sourceId:source.sourceId||'',
       sourceName:source.sourceName||'Nhập thủ công',
       sourceTitle:source.sourceTitle||'',
+      orderText:String(source.orderText||'').trim(),
       med,
       profile,
       resolved:Boolean(med)
@@ -190,7 +191,7 @@
 
   function refreshDrug(drug,newName){
     const payment=drug.payment;
-    const next=resolvedDrug(newName,payment,{sourceId:drug.sourceId,sourceName:drug.sourceName,sourceTitle:drug.sourceTitle});
+    const next=resolvedDrug(newName,payment,{sourceId:drug.sourceId,sourceName:drug.sourceName,sourceTitle:drug.sourceTitle,orderText:drug.orderText});
     next.id=drug.id;
     return next;
   }
@@ -249,7 +250,7 @@
       if(!found&&source.sourceId==='his-paste')return null;
       let raw=found?.name||line.split(/[|;\t]/)[0];
       raw=raw.replace(/^\s*(?:[-–—•*]|\d+[.)-])\s*/,'').trim();
-      return raw?resolvedDrug(raw,payment,source):null;
+      return raw?resolvedDrug(raw,payment,{...source,orderText:line}):null;
     }).filter(Boolean);
   }
 
@@ -312,21 +313,76 @@
     }).join('');
   }
 
+  function compactOrderText(value){
+    return String(value||'').replace(/\s+/g,' ').trim().slice(0,320);
+  }
+
+  function findOrderTextForMedicine(text,med){
+    const lines=String(text||'').split(/\r?\n/).map(line=>line.trim()).filter(Boolean);
+    const name=norm(med?.name);
+    const active=norm(med?.active);
+    const instruction=/\b(uong|tiem|truyen|ngam|nho|boi|xit|khi dung|vien|ong|lo|ml|mg|mcg|iu|ui|don vi|lan|ngay|gio|phut|sang|trua|chieu|toi|toc do|pha)\b/;
+    let best='',bestScore=-1;
+    lines.forEach((line,index)=>{
+      const key=norm(line);
+      const nameHit=name.length>=5&&key.includes(name);
+      const activeHit=active.length>=7&&key.includes(active);
+      if(!nameHit&&!activeHit)return;
+      const context=[line];
+      for(let offset=1;offset<=2;offset+=1){
+        const next=lines[index+offset];
+        if(!next)break;
+        if(instruction.test(norm(next)))context.push(next);
+        else break;
+      }
+      const joined=compactOrderText(context.join(' · '));
+      const score=(nameHit?100:60)+(instruction.test(norm(joined))?20:0)+Math.min(joined.length,120)/20;
+      if(score>bestScore){best=joined;bestScore=score}
+    });
+    return best;
+  }
+
   function matchDrugsFromText(text,entry,providedDrugs=[]){
     const source={sourceId:entry.id,sourceName:entry.name,sourceTitle:entry.title};
     if(Array.isArray(providedDrugs)&&providedDrugs.length){
       return providedDrugs.map(item=>{
         const name=typeof item==='string'?item:(item.name||item.drug||'');
-        return name?resolvedDrug(name,entry.payment,source):null;
+        const orderText=typeof item==='string'?'':(item.orderText||item.instruction||item.dose||item.sig||'');
+        return name?resolvedDrug(name,entry.payment,{...source,orderText}):null;
       }).filter(Boolean);
     }
     const normalized=norm(text);
-    const found=[];
+    const matches=[];
     getMeds().forEach(med=>{
-      const keys=[norm(med.name),norm(med.active)].filter(key=>key.length>=5);
-      if(keys.some(key=>normalized.includes(key))&&!found.some(item=>item.med?.code===med.code))found.push(resolvedDrug(med.name,entry.payment,source));
+      // Chỉ đối chiếu tên thuốc trong danh mục với nội dung OCR. Không quét theo
+      // hoạt chất vì một hoạt chất có thể tương ứng nhiều biệt dược/hàm lượng.
+      const medicineName=norm(med.name);
+      if(medicineName.length<5)return;
+      let from=0;
+      while(from<normalized.length){
+        const start=normalized.indexOf(medicineName,from);
+        if(start<0)break;
+        matches.push({med,start,end:start+medicineName.length,length:medicineName.length});
+        from=start+Math.max(1,medicineName.length);
+      }
     });
-    return found;
+
+    // Nếu nhiều tên danh mục cùng khớp vào một đoạn OCR, giữ tên đầy đủ nhất.
+    // Việc này loại bản ghi con/biến thể chồng lấn mà không dựa vào tên thuốc cụ thể.
+    matches.sort((a,b)=>a.start-b.start||b.length-a.length);
+    const selected=[];
+    matches.forEach(candidate=>{
+      const overlaps=selected.some(current=>candidate.start<current.end&&candidate.end>current.start);
+      if(!overlaps)selected.push(candidate);
+    });
+
+    const seen=new Set();
+    return selected.map(({med})=>{
+      const key=String(med.code||med.name||'');
+      if(seen.has(key))return null;
+      seen.add(key);
+      return resolvedDrug(med.name,entry.payment,{...source,orderText:findOrderTextForMedicine(text,med)});
+    }).filter(Boolean);
   }
 
   function diagnosisOcr(){
@@ -379,7 +435,7 @@
     state.diagnosis={
       primary,
       secondary,
-      source:withDiagnosis.length?`OCR từ ${withDiagnosis.length} đơn · ${primary.length} mã chính, ${secondary.length} mã kèm theo · không gộp theo nhóm ICD`:'OCR chưa tìm thấy vùng chẩn đoán',
+      source:withDiagnosis.length?'':'OCR chưa tìm thấy vùng chẩn đoán',
       conflicts:primary.length>1?primary:[],
       manual:false
     };
@@ -398,7 +454,8 @@
     const primary=rx$('#rxPrimaryDiagnosisCode');
     const secondary=rx$('#rxSecondaryDiagnosisCodes');
     if(primary)primary.textContent=state.diagnosis.primary.length?state.diagnosis.primary.join(' · '):'Chưa nhận diện';
-    if(rx$('#rxPrimaryDiagnosisSource'))rx$('#rxPrimaryDiagnosisSource').textContent=state.diagnosis.source||'Chờ đọc đơn thuốc';
+    const diagnosisSource=rx$('#rxPrimaryDiagnosisSource');
+    if(diagnosisSource){diagnosisSource.textContent=state.diagnosis.source||'';diagnosisSource.hidden=!state.diagnosis.source;}
     if(secondary)secondary.innerHTML=state.diagnosis.secondary.length?state.diagnosis.secondary.map(code=>`<span>${esc(code)}</span>`).join(''):'<em>Chưa nhận diện</em>';
     const box=rx$('#rxDiagnosisChips');
     if(box)box.innerHTML=codes.length
@@ -476,8 +533,8 @@
   function missingIcdHtml(item){
     const terms=item.mappings.map(mapping=>`${mapping.term}: ${(mapping.codes||[]).join(', ')}`).join(' · ');
     return `<article class="rx-alert rx-alert-warning">
-      <div class="rx-alert-header"><span class="rx-alert-icon">ICD</span><div><small>Thuốc BHYT · ${esc(item.drug.sourceName||'Đơn chưa đặt tên')} · Chưa tìm thấy mã bệnh thuộc nhóm chỉ định đã xác minh</small><h3>${esc(item.drug.name)}</h3></div></div>
-      <p>Chưa có mã ICD khớp trực tiếp hoặc cùng nhóm ICD đã được hồ sơ nguồn xác nhận cho thuốc. Cần kiểm tra hồ sơ bệnh án và điều kiện thanh toán hiện hành; không tự thêm mã bệnh nếu không có chẩn đoán lâm sàng.</p>
+      <div class="rx-alert-header"><span class="rx-alert-icon">ICD</span><div><h3>Thiếu mã bệnh tương ứng với chỉ định của thuốc</h3></div></div>
+      <p>Vui lòng kiểm tra lại chẩn đoán và mã ICD trong hồ sơ.</p>
       <dl><div><dt>Gợi ý</dt><dd>${esc(terms)}</dd></div></dl>
       <div class="rx-suggested-codes">${item.allowed.slice(0,8).map(code=>`<button type="button" data-rx-add-code="${esc(code)}" title="Chỉ thêm khi hồ sơ có chẩn đoán tương ứng">+ ${esc(code)}</button>`).join('')}</div>
     </article>`;
@@ -487,12 +544,200 @@
     const rows=items.filter(item=>item.match?.mode==='category');
     if(!rows.length)return '';
     return `<article class="rx-alert rx-alert-success">
-      <div class="rx-alert-header"><span class="rx-alert-icon">✓</span><div><small>Đối chiếu theo cấu trúc ICD-10</small><h3>${rows.length} thuốc đã nhận mã bệnh cùng nhóm chỉ định</h3></div></div>
-      <p>${rows.map(item=>`${esc(item.drug.name)}: ${esc(item.match.observed)} thuộc nhóm ${esc(item.match.category)}`).join(' · ')}.</p>
+      <div class="rx-alert-header"><span class="rx-alert-icon">✓</span><div><h3>Chưa ghi nhận tương tác thuốc hoặc thiếu mã bệnh</h3></div></div>
     </article>`;
   }
 
+  function isInpatientOrder(){
+    return norm(rx$('#rxEncounterType')?.value)==='y lenh noi tru';
+  }
+
+  function shorten(value,max=190){
+    const text=compactOrderText(value);
+    return text.length>max?`${text.slice(0,max-1).trim()}…`:text;
+  }
+
+  function num(value){
+    const parsed=Number(String(value||'').replace(',','.'));
+    return Number.isFinite(parsed)?parsed:null;
+  }
+
+  function prettyNumber(value){
+    if(!Number.isFinite(value))return '';
+    return Number.isInteger(value)?String(value):String(Math.round(value*100)/100).replace('.',',');
+  }
+
+  function parseStrengthAmount(strength){
+    const text=String(strength||'').replace(/,/g,'.');
+    if(/[+;]/.test(text))return null;
+    const match=text.match(/(\d+(?:\.\d+)?)\s*(mcg|µg|mg|g|iu|ui)\b/i);
+    if(!match)return null;
+    let value=num(match[1]);
+    let unit=match[2].toLowerCase();
+    if(unit==='µg')unit='mcg';
+    if(unit==='ui')unit='IU';
+    else if(unit==='iu')unit='IU';
+    return {value,unit};
+  }
+
+  function parseFrequencyPerDay(text){
+    const key=norm(text);
+    let match=key.match(/(?:ngay|24 gio)[^0-9]{0,18}(\d+(?:[.,]\d+)?)\s*lan\b/);
+    if(!match)match=key.match(/\b(\d+(?:[.,]\d+)?)\s*lan\s*(?:\/|moi)?\s*ngay\b/);
+    if(match)return num(match[1]);
+    match=key.match(/\bmoi\s*(\d+(?:[.,]\d+)?)\s*gio\b/);
+    if(match){const hours=num(match[1]);return hours?24/hours:null}
+    match=key.match(/\bq\s*(\d+(?:[.,]\d+)?)\s*h\b/);
+    if(match){const hours=num(match[1]);return hours?24/hours:null}
+    return null;
+  }
+
+  function parseUnitPerDose(text){
+    const key=norm(text);
+    let match=key.match(/(?:moi lan|lan)[^0-9]{0,14}(\d+(?:[.,]\d+)?)\s*(vien|ong|lo|goi|ml)\b/);
+    if(!match)match=key.match(/\b(\d+(?:[.,]\d+)?)\s*(vien|ong|lo|goi|ml)\s*(?:\/|moi)?\s*lan\b/);
+    if(!match)return null;
+    return {value:num(match[1]),unit:match[2]};
+  }
+
+  function parseExplicitDose(text){
+    const raw=String(text||'').replace(/,/g,'.');
+    const patterns=[
+      /(?:liều|lieu|mỗi lần|moi lan|tiêm|tiem|truyền|truyen|uống|uong|dùng|dung)\D{0,24}(\d+(?:\.\d+)?)\s*(mcg|µg|mg|g|iu|ui)\b/i,
+      /\b(\d+(?:\.\d+)?)\s*(mcg|µg|mg|g|iu|ui)\s*(?:\/|mỗi|moi)\s*(?:lần|lan)\b/i
+    ];
+    for(const pattern of patterns){
+      const match=raw.match(pattern);
+      if(match){
+        let unit=match[2].toLowerCase();
+        if(unit==='µg')unit='mcg';
+        if(unit==='ui'||unit==='iu')unit='IU';
+        return {value:num(match[1]),unit};
+      }
+    }
+    return null;
+  }
+
+  function doseUnitLabel(unit){
+    return ({vien:'viên',ong:'ống',lo:'lọ',goi:'gói',ml:'mL'})[unit]||unit;
+  }
+
+  function doseCalculation(drug){
+    const order=drug.orderText||'';
+    if(!order)return {text:'Chưa đọc được liều/tần suất từ y lệnh.',complete:false};
+    const frequency=parseFrequencyPerDay(order);
+    const units=parseUnitPerDose(order);
+    const strength=parseStrengthAmount(drug.strength);
+    const explicit=parseExplicitDose(order);
+    const parts=[];
+    if(units&&Number.isFinite(units.value))parts.push(`${prettyNumber(units.value)} ${doseUnitLabel(units.unit)}/lần`);
+    if(explicit&&Number.isFinite(explicit.value))parts.push(`${prettyNumber(explicit.value)} ${explicit.unit}/lần`);
+    if(frequency&&Number.isFinite(frequency))parts.push(`${prettyNumber(frequency)} lần/ngày`);
+    if(units&&strength&&frequency&&Number.isFinite(units.value)&&Number.isFinite(strength.value)){
+      parts.push(`≈ ${prettyNumber(units.value*strength.value*frequency)} ${strength.unit}/ngày`);
+    }else if(explicit&&frequency&&Number.isFinite(explicit.value)){
+      parts.push(`≈ ${prettyNumber(explicit.value*frequency)} ${explicit.unit}/ngày`);
+    }else if(units&&frequency&&Number.isFinite(units.value)){
+      parts.push(`≈ ${prettyNumber(units.value*frequency)} ${doseUnitLabel(units.unit)}/ngày`);
+    }
+    return {text:parts.length?parts.join(' · '):'Chưa đủ dữ liệu để tính tổng liều/ngày.',complete:Boolean(frequency&&(units||explicit))};
+  }
+
+  function infusionCalculation(drug){
+    const routeKey=norm([drug.route,drug.profile?.productRoute,drug.orderText].join(' '));
+    if(!/\b(truyen|ttm|tinh mach)\b/.test(routeKey))return null;
+    const raw=String(drug.orderText||'').replace(/,/g,'.');
+    const durationMatch=raw.match(/(?:trong|truyền trong|truyen trong)\s*(\d+(?:\.\d+)?)\s*(phút|phut|giờ|gio|h)\b/i);
+    const volumes=[...raw.matchAll(/(\d+(?:\.\d+)?)\s*ml\b/ig)].map(match=>num(match[1])).filter(Number.isFinite);
+    const volume=volumes.length?Math.max(...volumes):null;
+    if(!durationMatch)return {text:'Chưa có thời gian truyền để tính tốc độ.',complete:false};
+    const durationValue=num(durationMatch[1]);
+    const unit=norm(durationMatch[2]);
+    const hours=/phut/.test(unit)?durationValue/60:durationValue;
+    if(!hours)return {text:'Chưa đủ dữ liệu để tính tốc độ truyền.',complete:false};
+    const parts=[];
+    if(volume)parts.push(`${prettyNumber(volume/hours)} mL/giờ`);
+    const dose=parseExplicitDose(raw);
+    if(dose&&Number.isFinite(dose.value))parts.push(`${prettyNumber(dose.value/hours)} ${dose.unit}/giờ`);
+    return {text:parts.length?parts.join(' · '):`Thời gian truyền ${prettyNumber(durationValue)} ${/phut/.test(unit)?'phút':'giờ'}; chưa có thể tích/liều để tính tốc độ.`,complete:Boolean(parts.length)};
+  }
+
+  function profileSourceLabel(profile){
+    const titles=unique((profile?.sources||[]).map(source=>source?.title).filter(Boolean));
+    const clinical=titles.filter(title=>/Dược thư|Duoc thu|Hướng dẫn|Huong dan/i.test(title));
+    const approved=titles.filter(title=>/HDSD|Quản lý Dược|Quan ly Duoc/i.test(title));
+    const preferred=unique([...clinical,...approved]);
+    return shorten((preferred.length?preferred:titles).slice(0,2).join(' · '),120)||'Dữ liệu thuốc đã xác minh của hệ thống';
+  }
+
+  function inpatientDuplicateActives(){
+    const groups=new Map();
+    state.drugs.forEach(drug=>{
+      const key=tokenKey(drug.active);
+      if(!key)return;
+      if(!groups.has(key))groups.set(key,[]);
+      groups.get(key).push(drug);
+    });
+    return [...groups.values()].filter(group=>group.length>1);
+  }
+
+  function inpatientInteractionHtml(hit){
+    const {rule,first,second}=hit;
+    return `<article class="rx-alert rx-alert-danger"><div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><h3>${esc(first.name)} + ${esc(second.name)}</h3></div></div><p>• <b>Tương tác:</b> ${esc(rule.level||'Cần xử trí')}</p><p>• <b>Hậu quả:</b> ${esc(shorten(rule.consequence||'Cần đánh giá nguy cơ lâm sàng.',170))}</p><p>• <b>Xử trí:</b> ${esc(shorten(rule.management||'Trao đổi bác sĩ điều trị.',190))}</p></article>`;
+  }
+
+  function inpatientDrugHtml(drug){
+    const dose=doseCalculation(drug);
+    const infusion=infusionCalculation(drug);
+    const standard=shorten(drug.profile?.standard||'Chưa có liều tham chiếu đã xác minh trong dữ liệu hiện có.',220);
+    const order=shorten(drug.orderText||'OCR/HIS chưa đọc được câu y lệnh.',190);
+    const indication=shorten((drug.profile?.indications||[])[0]||'Chưa có chỉ định cấu trúc trong hồ sơ thuốc.',170);
+    const tone='rx-alert-info';
+    return `<article class="rx-alert ${tone}"><div class="rx-alert-header"><span class="rx-alert-icon">Rx</span><div><h3>${esc(drug.name||drug.rawName)}</h3></div></div><p>• <b>Y lệnh:</b> ${esc(order)}</p><p>• <b>Liều tính:</b> ${esc(dose.text)}</p><p>• <b>Liều/cách dùng tham chiếu:</b> ${esc(standard)}</p>${infusion?`<p>• <b>Tốc độ truyền:</b> ${esc(infusion.text)}</p>`:''}<p>• <b>Chỉ định:</b> ${esc(indication)}</p><p>• <b>Nguồn:</b> ${esc(profileSourceLabel(drug.profile))}</p></article>`;
+  }
+
+  function inpatientBhytHtml(item){
+    return `<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">BHYT</span><div><h3>${esc(item.drug.name)}</h3></div></div><p>• <b>Xuất toán BHYT:</b> Chưa thấy mã ICD phù hợp trong dữ liệu đã xác minh.</p><p>• <b>Xử trí:</b> Kiểm tra chẩn đoán, hồ sơ bệnh án và điều kiện thanh toán hiện hành.</p></article>`;
+  }
+
+  function checkInpatientOrder(){
+    if(!state.drugs.length){alert('Vui lòng thêm ít nhất một thuốc vào y lệnh.');return}
+    const codes=diagnosisCodes();
+    const interactions=findInteractions();
+    const {missing,unmapped,matched}=icdReview(codes);
+    const unknown=state.drugs.filter(drug=>!drug.resolved);
+    const duplicates=inpatientDuplicateActives();
+    const doseIssues=state.drugs.filter(drug=>{
+      const dose=doseCalculation(drug);
+      const infusion=infusionCalculation(drug);
+      return !dose.complete||Boolean(infusion&&!infusion.complete);
+    });
+    const bhytIssues=missing.length+(state.drugs.some(drug=>drug.payment==='BHYT')&&!codes.length?1:0);
+    const critical=interactions.length+duplicates.length+unknown.length+bhytIssues;
+    state.lastCheck={mode:'inpatient',interactions,missing,unmapped,matched,unknown,duplicates,doseIssues,checkedAt:new Date()};
+    rx$('#rxResetPrescription').disabled=false;
+    rx$('#rxResetPrescription').title='Xóa dữ liệu y lệnh hiện tại để kiểm tra y lệnh mới';
+    rx$('#rxResultTitle').textContent='Phân tích y lệnh nội trú';
+    rx$('#rxScore').innerHTML='<b>—</b><small></small>';
+    rx$('#rxSummary').innerHTML=`<div><b>${doseIssues.length}</b><span>Liều/cách dùng</span></div><div><b>${interactions.length}</b><span>Tương tác</span></div><div><b>${bhytIssues}</b><span>BHYT</span></div>`;
+    const blocks=[];
+    interactions.forEach(hit=>blocks.push(inpatientInteractionHtml(hit)));
+    duplicates.forEach(group=>blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><h3>Trùng hoạt chất trong y lệnh</h3></div></div><p>• <b>Thuốc:</b> ${esc(group.map(drug=>drug.name).join(' + '))}</p><p>• <b>Xử trí:</b> Kiểm tra trùng điều trị và tổng liều trước khi thực hiện.</p></article>`));
+    state.drugs.forEach(drug=>blocks.push(inpatientDrugHtml(drug)));
+    if(state.drugs.some(drug=>drug.payment==='BHYT')&&!codes.length)blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">BHYT</span><div><h3>Thiếu mã bệnh để kiểm tra BHYT</h3></div></div><p>• <b>Xuất toán BHYT:</b> Chưa đủ dữ liệu mã ICD để đối chiếu.</p></article>`);
+    missing.forEach(item=>blocks.push(inpatientBhytHtml(item)));
+    if(unmapped.length)blocks.push(`<article class="rx-alert rx-alert-info"><div class="rx-alert-header"><span class="rx-alert-icon">i</span><div><h3>Chưa đủ dữ liệu BHYT</h3></div></div><p>• <b>Thuốc:</b> ${esc(unmapped.map(drug=>drug.name).join(', '))}</p><p>• <b>Xử trí:</b> Đối chiếu HDSD và quy định thanh toán hiện hành.</p></article>`);
+    if(unknown.length)blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">?</span><div><h3>Có thuốc chưa chuẩn hóa</h3></div></div><p>• <b>Thuốc:</b> ${esc(unknown.map(drug=>drug.rawName||drug.name).join(', '))}</p><p>• <b>Xử trí:</b> Xác nhận tên/hàm lượng trước khi kết luận.</p></article>`);
+    const conclusionTone=critical?'rx-alert-warning':doseIssues.length?'rx-alert-info':'rx-alert-success';
+    const conclusion=critical?'Cần rà soát và xử trí các mục cảnh báo trước khi thực hiện y lệnh.':doseIssues.length?'Chưa thấy cảnh báo nghiêm trọng; cần bổ sung dữ liệu liều/cách dùng còn thiếu.':'Chưa ghi nhận vấn đề nổi bật trên dữ liệu y lệnh hiện có.';
+    const conclusionIcon=critical||doseIssues.length?'!':'✓';
+    blocks.push(`<article class="rx-alert ${conclusionTone}"><div class="rx-alert-header"><span class="rx-alert-icon">${conclusionIcon}</span><div><h3>Kết luận</h3></div></div><p>• <b>Kết luận:</b> ${esc(conclusion)}</p></article>`);
+    rx$('#rxResultBody').innerHTML=blocks.join('');
+    rx$('#rxResultCard').scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches?'auto':'smooth',block:'start'});
+  }
+
   function checkPrescription(){
+    if(isInpatientOrder()){checkInpatientOrder();return}
     if(!state.drugs.length){alert('Vui lòng thêm ít nhất một thuốc vào đơn.');return}
     const codes=diagnosisCodes();
     const interactions=findInteractions();
@@ -511,7 +756,7 @@
     rx$('#rxResetPrescription').disabled=false;
     rx$('#rxResetPrescription').title='Xóa dữ liệu đơn hiện tại để kiểm tra đơn mới';
 
-    const title=interactions.length?'Có tương tác chống chỉ định/cần xử trí':unclassifiedCount?'Cần xác nhận loại đơn':icdIssueCount?'Cần bổ sung kiểm tra mã bệnh':'Không phát hiện cảnh báo trong dữ liệu hiện có';
+    const title=interactions.length?'Có tương tác chống chỉ định/cần xử trí':unclassifiedCount?'Cần xác nhận loại đơn':icdIssueCount?'Cần bổ sung kiểm tra mã bệnh':'Đơn thuốc đã được rà soát';
     rx$('#rxResultTitle').textContent=title;
     rx$('#rxScore').innerHTML=`<b>${score}</b><small>/100</small>`;
     rx$('#rxSummary').innerHTML=`<div><b>${interactions.length}</b><span>Tương tác</span></div><div><b>${icdIssueCount}</b><span>Mã bệnh</span></div><div><b>${state.drugs.length}</b><span>Đã đối chiếu</span></div>`;
@@ -521,12 +766,12 @@
     if(missingPrimary)blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><small>OCR chẩn đoán chưa hoàn tất</small><h3>${noDiagnosis?'Chưa nhận diện được mã bệnh trên các đơn':'Đã thấy mã bệnh kèm theo nhưng chưa xác định được mã bệnh chính'}</h3></div></div><p>Hệ thống đã tự tìm vùng chẩn đoán nhưng chưa xác định chắc MA_BENH_CHINH. Hãy kiểm tra chất lượng ảnh hoặc dùng mục “Chỉnh lại nếu OCR đọc sai”; không tự thêm mã khi hồ sơ không có chẩn đoán tương ứng.</p></article>`);
     if(diagnosisConflict)blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><small>Nhiều ứng viên mã bệnh chính</small><h3>${esc(state.diagnosis.conflicts.join(' · '))}</h3></div></div><p>Các đơn trong cùng lượt có mã bệnh chính OCR khác nhau. Cần xác nhận đúng mã chính trước khi gửi dữ liệu giám định.</p></article>`);
     missing.forEach(item=>blocks.push(missingIcdHtml(item)));
-    const familyMatchBlock=familyMatchesHtml(matched);
+    const familyMatchBlock=icdIssueCount===0?familyMatchesHtml(matched):'';
     if(familyMatchBlock)blocks.push(familyMatchBlock);
     if(unclassifiedCount)blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">?</span><div><small>OCR tiêu đề chưa chắc chắn</small><h3>${unclassifiedCount} đơn/nhóm thuốc chưa xác định BHYT hay dịch vụ</h3></div></div><p>${esc(unclassifiedFiles.length?unclassifiedFiles.map(entry=>entry.name).join(', '):unclassifiedDrugs.map(drug=>drug.sourceName||drug.name).join(', '))}. Vui lòng chọn lại loại đơn trong hàng đợi hoặc bảng thuốc rồi kiểm tra lại.</p></article>`);
     if(unmapped.length)blocks.push(`<article class="rx-alert rx-alert-info"><div class="rx-alert-header"><span class="rx-alert-icon">i</span><div><small>Chưa đủ dữ liệu đối chiếu</small><h3>${unmapped.length} thuốc BHYT chưa có bản đồ ICD gợi ý</h3></div></div><p>${esc(unmapped.map(drug=>drug.name).join(', '))}. Cần đối chiếu chỉ định, tờ hướng dẫn sử dụng và quy định thanh toán hiện hành.</p></article>`);
     if(unknown.length)blocks.push(`<article class="rx-alert rx-alert-info"><div class="rx-alert-header"><span class="rx-alert-icon">?</span><div><small>Cần nhân viên y tế xác nhận</small><h3>${unknown.length} tên thuốc chưa chuẩn hóa</h3></div></div><p>${esc(unknown.map(drug=>drug.rawName||drug.name).join(', '))}. Các thuốc này chưa được dùng để kết luận tương tác hoặc ICD.</p></article>`);
-    if(!blocks.length)blocks.push('<article class="rx-alert rx-alert-success"><div class="rx-alert-header"><span class="rx-alert-icon">✓</span><div><small>Đã rà soát dữ liệu hiện có</small><h3>Không phát hiện cặp tương tác hoặc thiếu mã ICD gợi ý</h3></div></div><p>Kết quả không loại trừ các tương tác ngoài danh mục, chống chỉ định theo bệnh nền, dị ứng, liều, xét nghiệm hoặc quy định thanh toán khác.</p></article>');
+    if(!blocks.length)blocks.push('<article class="rx-alert rx-alert-success"><div class="rx-alert-header"><span class="rx-alert-icon">✓</span><div><h3>Chưa ghi nhận tương tác thuốc hoặc thiếu mã bệnh</h3></div></div></article>');
     rx$('#rxResultBody').innerHTML=blocks.join('');
     rx$('#rxResultCard').scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches?'auto':'smooth',block:'start'});
   }
@@ -679,7 +924,6 @@
   }
 
   function resetPrescription(){
-    if(!confirm('Xóa dữ liệu đơn hiện tại để kiểm tra đơn mới?'))return;
     state.drugs=[];
     state.files=[];
     state.lastCheck=null;
@@ -713,6 +957,7 @@
   function bindEvents(){
     document.querySelectorAll('[data-open="prescription-check"]').forEach(button=>button.addEventListener('click',()=>ensureData().catch(()=>{})));
     rx$('#rxResetPrescription')?.addEventListener('click',resetPrescription);
+    rx$('#rxEncounterType')?.addEventListener('change',markStale);
     rx$('#rxDiagnosisCodes')?.addEventListener('input',()=>{syncDiagnosisFromEdit();markStale()});
     rx$('#rxEditDiagnosis')?.addEventListener('click',()=>{
       const input=rx$('#rxDiagnosisCodes');

@@ -10,7 +10,7 @@
 })(typeof window!=='undefined'?window:globalThis,function createPrescriptionDiagnosisOcr(root){
   'use strict';
 
-  const VERSION='2026.08.17-exact-icd-v2';
+  const VERSION='2026.08.17-exact-icd-v3';
   const unique=items=>[...new Set((items||[]).filter(Boolean))];
   let cachedCatalogSource=null;
   let cachedCatalog=null;
@@ -46,6 +46,9 @@
   function extractIcdCodes(value,officialCodes){
     const prepared=String(value||'').toUpperCase()
       .replace(/[‐‑‒–—]/g,'-')
+      // Ghép khoảng trắng OCR bị chèn bên trong cấu trúc mã trước khi đối chiếu
+      // với danh mục ICD chính thức. Không suy ra mã từ nội dung ngoài danh mục.
+      .replace(/\b([A-Z1][0-9OIL])\s+([0-9OIL])(?=\s*[.,·]|[,;:()/-]|\s|$)/g,'$1$2')
       .replace(/\b([A-Z1])\s+([0-9OIL]{2})(?=\s*[.,·]|\s|[,;:()/-]|$)/g,'$1$2')
       .replace(/\b([A-Z1][0-9OIL]{2})\s*[,·]\s*([0-9OIL]{1,4})\b/g,'$1.$2')
       .replace(/\s*\.\s*/g,'.')
@@ -86,7 +89,7 @@
     markers.sort((a,b)=>a.index-b.index||b.end-a.end);
     const deduped=markers.filter((marker,index)=>!markers.slice(0,index).some(previous=>marker.index>=previous.index&&marker.end<=previous.end));
     const result={primary:[],secondary:[]};
-    const stopPattern=/\b(?:TEN\s*THUOC|DANH\s*SACH\s*THUOC|THUOC\s*DIEU\s*TRI|LIEU\s*DUNG|CACH\s*DUNG|LOI\s*DAN|DON\s*THUOC|BAC\s*SI|NGUOI\s*KE\s*DON|HO\s*TEN|MA\s*NGUOI\s*BENH|SO\s*THE|DIA\s*CHI|NGAY\s*SINH|GIOI\s*TINH)\b/;
+    const stopPattern=/\b(?:TEN\s*THUOC|DANH\s*SACH\s*THUOC|THUOC\s*DIEU(?:\s*TRI)?|LIEU\s*DUNG|CACH\s*DUNG|LOI\s*DAN|DON\s*THUOC|BAC\s*SI|NGUOI\s*KE\s*DON|HO\s*TEN|MA\s*NGUOI\s*BENH|SO\s*THE|DIA\s*CHI|NGAY\s*SINH|GIOI\s*TINH)\b/;
     deduped.forEach((marker,index)=>{
       const next=deduped[index+1];
       let segment=folded.slice(marker.end,next?next.index:folded.length);
