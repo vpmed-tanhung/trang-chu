@@ -1,6 +1,6 @@
 {
-  "version": "2026.08.17.8",
-  "updatedAt": "2026-08-17T20:55:00+07:00",
-  "note": "Làm sáng phần căn cứ pháp lý và bỏ các thống kê dữ liệu kỹ thuật khỏi giao diện.",
-  "buildId": "prescription-clean-status-20260817-8"
+  "version": "2026.08.17.9",
+  "updatedAt": "2026-08-17T14:24:00+07:00",
+  "note": "Cập nhật danh sách loại đơn, chỉ giữ Đơn ngoại trú.",
+  "buildId": "outpatient-only-20260817-9"
 }
