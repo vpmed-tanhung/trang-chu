@@ -17,7 +17,7 @@ Trong Supabase, mở **SQL Editor → New query**, dán toàn bộ nội dung `s
 
 - Hồ sơ tài khoản khoa/phòng và giới hạn email `@vpmed.vn` ở phía cơ sở dữ liệu.
 - Trạng thái `pending`, `approved`, `rejected`.
-- Quyền admin duyệt hoặc thu hồi tài khoản.
+- Quyền admin duyệt, thu hồi và xóa vĩnh viễn tài khoản.
 - Nhật ký khoa/phòng thực hiện tra cứu liều thận.
 - RLS để tài khoản chưa được duyệt không thể tự cấp quyền hoặc đọc danh sách tài khoản.
 
@@ -59,6 +59,7 @@ Trong trang quản trị:
 - **Duyệt**: cho phép tài khoản truy cập trang chủ.
 - **Từ chối**: chặn tài khoản đăng nhập vào hệ thống.
 - **Thu hồi**: đưa tài khoản đã duyệt về trạng thái chờ duyệt.
+- **Xóa tài khoản**: xóa hẳn tài khoản khỏi Supabase Auth và `profiles`, kể cả tài khoản đã duyệt. Người bị xóa phải đăng ký lại từ đầu và chờ duyệt lại mới có thể dùng web.
 - Tab **Nhật ký tra cứu liều thận**: xem khoa/phòng nào đã thực hiện tra cứu, thời gian, thuốc và kết quả CrCl/eGFR.
 
 Admin không nên duyệt nếu chưa đối chiếu email và khoa/phòng đăng ký. Mỗi khoa/phòng chỉ có một tài khoản dùng chung.

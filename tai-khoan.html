@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0867a8">
   <meta name="robots" content="noindex,nofollow">
   <title>Tài khoản khoa/phòng | VPMED Tân Hưng</title>
-  <link rel="stylesheet" href="assets/vpmed-auth.css?v=20260812-new-system-v1">
+  <link rel="stylesheet" href="assets/vpmed-auth.css?v=20260817-account-groups-v2">
   <script>document.documentElement.classList.add('auth-loading');</script>
 </head>
 <body>
@@ -139,18 +139,28 @@
         <div class="admin-user"><span id="adminIdentity"></span><a href="index.html" class="secondary-button compact">Về trang chủ</a><button type="button" class="secondary-button compact" data-sign-out>Đăng xuất</button></div>
       </header>
       <div class="admin-content">
-        <div class="admin-title"><div><span class="auth-kicker">Quyền quản trị viên</span><h1>Tài khoản khoa/phòng và nhật ký tra cứu</h1><p>Duyệt đúng đơn vị trước khi cho phép sử dụng dữ liệu chuyên môn.</p></div><button type="button" class="secondary-button compact" id="adminReload">Làm mới</button></div>
+        <div class="admin-title"><div><span class="auth-kicker">Quyền quản trị viên</span><h1>Phân cấp và quản lý tài khoản</h1><p>Tài khoản khoa/phòng và tài khoản quản trị được tách thành từng mục riêng. Có thể duyệt, thu hồi hoặc xóa vĩnh viễn; tài khoản đã xóa phải đăng ký lại từ đầu.</p></div><button type="button" class="secondary-button compact" id="adminReload">Làm mới</button></div>
         <div class="stat-grid">
-          <article><span>Chờ duyệt</span><strong id="statPending">0</strong></article>
-          <article><span>Đã duyệt</span><strong id="statApproved">0</strong></article>
-          <article><span>Từ chối</span><strong id="statRejected">0</strong></article>
+          <article><span>Khoa/phòng chờ duyệt</span><strong id="statPending">0</strong></article>
+          <article><span>Khoa/phòng đã duyệt</span><strong id="statApproved">0</strong></article>
+          <article><span>Tài khoản quản trị</span><strong id="statAdmins">0</strong></article>
           <article><span>Tổng tài khoản</span><strong id="statTotal">0</strong></article>
         </div>
-        <div class="admin-tabs" role="tablist"><button type="button" class="active" data-admin-tab="users">Tài khoản khoa/phòng</button><button type="button" data-admin-tab="audit">Nhật ký tra cứu liều thận</button></div>
-        <section class="admin-panel active" id="adminUsers">
-          <div class="admin-filters"><input id="userSearch" type="search" placeholder="Tìm email hoặc khoa/phòng…"><select id="userStatus"><option value="">Tất cả trạng thái</option><option value="pending">Chờ duyệt</option><option value="approved">Đã duyệt</option><option value="rejected">Từ chối</option></select></div>
-          <p class="form-message" id="adminMessage" role="alert"></p>
-          <div class="admin-list" id="userList"></div>
+        <p class="form-message admin-global-message" id="adminMessage" role="alert"></p>
+        <div class="admin-tabs" role="tablist">
+          <button type="button" class="active" data-admin-tab="departments">Tài khoản các khoa/phòng</button>
+          <button type="button" data-admin-tab="admins">Tài khoản quản trị</button>
+          <button type="button" data-admin-tab="audit">Nhật ký tra cứu liều thận</button>
+        </div>
+        <section class="admin-panel active" id="adminDepartments">
+          <div class="admin-section-heading"><div><b>Tài khoản các khoa/phòng</b><span>Chỉ hiển thị tài khoản sử dụng web của khoa/phòng, không bao gồm tài khoản quản trị.</span></div></div>
+          <div class="admin-filters"><input id="departmentUserSearch" type="search" placeholder="Tìm email hoặc khoa/phòng…"><select id="departmentUserStatus"><option value="">Tất cả trạng thái</option><option value="pending">Chờ duyệt</option><option value="approved">Đã duyệt</option><option value="rejected">Từ chối</option></select></div>
+          <div class="admin-list" id="departmentUserList"></div>
+        </section>
+        <section class="admin-panel" id="adminAdmins">
+          <div class="admin-section-heading"><div><b>Tài khoản quản trị</b><span>Chỉ hiển thị các tài khoản có quyền quản trị hệ thống.</span></div></div>
+          <div class="admin-filters"><input id="adminUserSearch" type="search" placeholder="Tìm email hoặc tên quản trị viên…"><select id="adminUserStatus"><option value="">Tất cả trạng thái</option><option value="pending">Chờ duyệt</option><option value="approved">Đã duyệt</option><option value="rejected">Từ chối</option></select></div>
+          <div class="admin-list" id="adminUserList"></div>
         </section>
         <section class="admin-panel" id="adminAudit">
           <div class="admin-filters"><input id="auditSearch" type="search" placeholder="Tìm khoa/phòng hoặc thuốc…"><button type="button" class="secondary-button compact" id="auditReload">Tải nhật ký</button></div>
@@ -163,7 +173,7 @@
 
   <footer class="auth-footer">© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng</footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="assets/vpmed-auth-page.js?v=20260814-password-reset-flow-v1"></script>
+  <script src="assets/vpmed-auth-page.js?v=20260817-account-groups-v2"></script>
   <script defer src="assets/update-notifier.js?v=20260815-update-notifier-v1"></script>
 </body>
 </html>

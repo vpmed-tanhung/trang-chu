@@ -13,7 +13,7 @@
   var logout=document.getElementById('homeUserLogout'),adminLink=document.getElementById('homeAdminLink'),changePassword=document.getElementById('homeChangePassword');
   var passwordModal=document.getElementById('passwordChangeModal'),passwordForm=document.getElementById('passwordChangeForm'),passwordMessage=document.getElementById('passwordChangeMessage');
   var currentUser=null,passwordRedirectPending=false;
-  var routed=false;
+  var routed=false,accessCheckBusy=false,accessCheckTimer=null;
   function initials(value){var parts=String(value||'').trim().split(/\s+/).filter(Boolean);if(!parts.length)return 'KP';return ((parts[0][0]||'')+(parts.length>1?(parts[parts.length-1][0]||''):'')).toUpperCase();}
   function closeMenu(){menu.hidden=true;trigger.setAttribute('aria-expanded','false');}
   function setPasswordMessage(message,type){passwordMessage.textContent=message||'';passwordMessage.className='password-change-message'+(type==='success'?' success':'');}
@@ -28,11 +28,32 @@
     window.VPMED_AUTH={client:client,user:user,profile:profile};window.dispatchEvent(new CustomEvent('vpmed-auth-ready',{detail:window.VPMED_AUTH}));
     client.rpc('touch_my_last_login').then(function(){});
   }
+  async function forceDeletedLogout(){
+    if(accessCheckTimer){window.clearInterval(accessCheckTimer);accessCheckTimer=null;}
+    try{await client.auth.signOut({scope:'local'});}catch(error){}
+    location.replace('tai-khoan.html?account_deleted=1');
+  }
+  async function verifyStillApproved(){
+    if(accessCheckBusy||!currentUser)return;
+    accessCheckBusy=true;
+    try{
+      var result=await client.from('profiles').select('id,status').eq('id',currentUser.id).maybeSingle();
+      if(result.error)return;
+      if(!result.data){await forceDeletedLogout();return;}
+      if(result.data.status!=='approved'){redirect();return;}
+    }finally{accessCheckBusy=false;}
+  }
+  function startAccessWatch(){
+    if(accessCheckTimer)window.clearInterval(accessCheckTimer);
+    accessCheckTimer=window.setInterval(verifyStillApproved,10000);
+  }
   async function applySession(session){
     if(!session||!session.user){redirect();return;}
     var result=await client.from('profiles').select('id,email,full_name,job_title,workplace,account_type,role,status').eq('id',session.user.id).maybeSingle();
-    if(result.error||!result.data||result.data.status!=='approved'){redirect();return;}
-    reveal(session.user,result.data);
+    if(result.error){redirect();return;}
+    if(!result.data){await forceDeletedLogout();return;}
+    if(result.data.status!=='approved'){redirect();return;}
+    reveal(session.user,result.data);startAccessWatch();
   }
   trigger.addEventListener('click',function(){var open=menu.hidden;menu.hidden=!open;trigger.setAttribute('aria-expanded',open?'true':'false');});
   document.addEventListener('click',function(event){if(!account.contains(event.target))closeMenu();});
@@ -57,7 +78,9 @@
     setPasswordMessage('Đã đổi mật khẩu. Đang quay lại đăng nhập…','success');
     window.setTimeout(async function(){passwordRedirectPending=true;await client.auth.signOut();location.replace('tai-khoan.html?password_reset=success');},900);
   });
-  logout.addEventListener('click',async function(){logout.disabled=true;await client.auth.signOut();location.replace('tai-khoan.html');});
+  logout.addEventListener('click',async function(){logout.disabled=true;if(accessCheckTimer)window.clearInterval(accessCheckTimer);await client.auth.signOut();location.replace('tai-khoan.html');});
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')verifyStillApproved();});
+  window.addEventListener('focus',verifyStillApproved);
   client.auth.getSession().then(function(result){applySession(result.data&&result.data.session);}).catch(redirect);
   client.auth.onAuthStateChange(function(event,session){if(event==='SIGNED_OUT'&&!passwordRedirectPending)redirect();else if(!routed&&event==='SIGNED_IN')setTimeout(function(){applySession(session);},0);});
 })();
