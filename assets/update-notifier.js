@@ -31,11 +31,19 @@
     return /^[0-9A-Za-z._-]{1,40}$/.test(version) ? version : '';
   }
 
+  function getFooterVersion() {
+    return document.getElementById('vpmedLatestVersion');
+  }
+
   function ensureStyle() {
     if (document.getElementById('vpmedUpdateNotifierStyle')) return;
     var style = document.createElement('style');
     style.id = 'vpmedUpdateNotifierStyle';
     style.textContent = [
+      '#vpmedLatestVersion{display:inline-flex;align-items:center;gap:4px;margin-left:2px;color:#2f648b;font-size:11px;font-weight:850;white-space:nowrap;vertical-align:baseline}',
+      '#vpmedLatestVersion.vpmed-version-update{color:#b45309;font-weight:900;cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}',
+      '#vpmedLatestVersion.vpmed-version-update:hover{color:#8a3f07}',
+      '#vpmedLatestVersion.vpmed-version-update:focus-visible{outline:2px solid rgba(8,116,183,.28);outline-offset:3px;border-radius:3px}',
       '#vpmedUpdateNotice{position:fixed;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:999999;max-width:calc(100vw - 24px);display:flex;align-items:center;gap:7px;padding:7px 8px;border:1px solid #e7bd69;border-radius:999px;background:rgba(255,250,240,.97);color:#374151;box-shadow:0 8px 24px rgba(25,55,78,.16);font-family:inherit;line-height:1.2;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}',
       '#vpmedUpdateNotice.vpmed-update-success{border-color:#8ad9ad;background:rgba(241,255,247,.97)}',
       '#vpmedUpdateNotice .vpmed-update-icon{flex:0 0 auto;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:#fff0c9;color:#9a5a00;font-size:14px;font-weight:900}',
@@ -48,10 +56,43 @@
       '#vpmedUpdateNotice button{margin:0;min-height:28px;padding:5px 9px;border:0;border-radius:999px;background:#0874b7;color:#fff;font:inherit;font-size:11px;font-weight:900;line-height:1;cursor:pointer;box-shadow:none;white-space:nowrap}',
       '#vpmedUpdateNotice button:hover{background:#06649f}',
       '#vpmedUpdateNotice button:focus-visible{outline:3px solid rgba(8,116,183,.25);outline-offset:2px}',
-      '@media(max-width:420px){#vpmedUpdateNotice{right:8px;bottom:max(8px,env(safe-area-inset-bottom));max-width:calc(100vw - 16px);gap:5px;padding:6px 7px}#vpmedUpdateNotice .vpmed-update-icon{width:22px;height:22px;font-size:13px}#vpmedUpdateNotice strong{font-size:11.5px}#vpmedUpdateNotice p{font-size:10.5px}#vpmedUpdateNotice button{min-height:26px;padding:4px 8px;font-size:10.5px}}',
+      '@media(max-width:420px){#vpmedLatestVersion{font-size:10.5px}#vpmedUpdateNotice{right:8px;bottom:max(8px,env(safe-area-inset-bottom));max-width:calc(100vw - 16px);gap:5px;padding:6px 7px}#vpmedUpdateNotice .vpmed-update-icon{width:22px;height:22px;font-size:13px}#vpmedUpdateNotice strong{font-size:11.5px}#vpmedUpdateNotice p{font-size:10.5px}#vpmedUpdateNotice button{min-height:26px;padding:4px 8px;font-size:10.5px}}',
       '@media(prefers-reduced-motion:no-preference){#vpmedUpdateNotice{animation:vpmedUpdateIn .2s ease-out}@keyframes vpmedUpdateIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}}'
     ].join('');
     document.head.appendChild(style);
+  }
+
+  function setFooterLatest(displayVersion) {
+    var target = getFooterVersion();
+    if (!target) return false;
+    ensureStyle();
+    target.className = 'site-version';
+    target.textContent = '· v' + displayVersion;
+    target.setAttribute('title', 'Phiên bản mới nhất: v' + displayVersion);
+    target.removeAttribute('role');
+    target.removeAttribute('tabindex');
+    target.onclick = null;
+    target.onkeydown = null;
+    return true;
+  }
+
+  function setFooterUpdate(version, displayVersion) {
+    var target = getFooterVersion();
+    if (!target) return false;
+    ensureStyle();
+    target.className = 'site-version vpmed-version-update';
+    target.textContent = '· Bản mới v' + displayVersion;
+    target.setAttribute('title', 'Bấm để cập nhật lên v' + displayVersion);
+    target.setAttribute('role', 'button');
+    target.setAttribute('tabindex', '0');
+    target.onclick = function () { reloadForUpdate(version); };
+    target.onkeydown = function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        reloadForUpdate(version);
+      }
+    };
+    return true;
   }
 
   function getNotice() {
@@ -91,6 +132,7 @@
   }
 
   function showSuccess(displayVersion) {
+    if (setFooterLatest(displayVersion)) return;
     var box = getNotice();
     box.className = 'vpmed-update-success';
     box.querySelector('.vpmed-update-icon').textContent = '✓';
@@ -118,9 +160,11 @@
   }
 
   function showUpdate(data) {
-    var box = getNotice();
     var version = data.version;
     var displayVersion = data.displayVersion || version;
+    if (setFooterUpdate(version, displayVersion)) return;
+
+    var box = getNotice();
     box.className = '';
     box.querySelector('.vpmed-update-icon').textContent = '↻';
     box.querySelector('strong').textContent = 'Bản mới';
@@ -151,10 +195,17 @@
       activeVersion = version;
       writeStorage(window.localStorage, SEEN_VERSION_KEY, version);
       cleanUpdateQuery();
+      setFooterLatest(displayVersion);
       return;
     }
 
-    if (activeVersion !== version) showUpdate({ version: version, displayVersion: displayVersion, note: data.note });
+    if (activeVersion !== version) {
+      showUpdate({ version: version, displayVersion: displayVersion, note: data.note });
+      return;
+    }
+
+    cleanUpdateQuery();
+    setFooterLatest(displayVersion);
   }
 
   function checkVersion() {
