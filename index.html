@@ -15,7 +15,6 @@
   <link rel="stylesheet" href="assets/stock_clinical_tools.css?v=20260814-direct-sources-v6">
   <link rel="stylesheet" href="assets/injectable_guide.css?v=20260814-content-from-original-v2">
   <link rel="stylesheet" href="assets/prescription-check.css?v=20260818-rx-bhyt-v4">
-  <link rel="stylesheet" href="assets/service-medicines.css?v=20260818-service-catalog-v44">
   <script>document.documentElement.classList.add('system-loading','vpmed-auth-checking');</script>
   <noscript><style>#systemLoader{display:none!important}</style></noscript>
 </head>
@@ -110,7 +109,6 @@
         <button class="feature-card" data-open="dose"><span class="feature-icon">🧮</span><b>Tính liều kháng sinh & CrCl/eGFR</b><small>Tính chức năng thận, gợi ý chỉnh liều và lưu lịch sử.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="petct-dose"><span class="feature-icon">☢️</span><b>Tính liều PET/CT – Y học hạt nhân</b><small>Tính liều, bù phân rã và thể tích rút cho ca PET/CT.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="antibiotics"><span class="feature-icon">💊</span><b>Danh mục kháng sinh nội trú</b><small>Tra cứu liều, pha truyền, ADR và TDM của kháng sinh trong kho.</small><em>Đang hoạt động</em></button>
-        <button class="feature-card" data-open="service-medicines"><span class="feature-icon">🏷️</span><b>Danh mục thuốc dịch vụ</b><small>Tra cứu thuốc, mỹ phẩm, thiết bị y tế và sản phẩm dịch vụ theo tên, hoạt chất, đường dùng hoặc hàm lượng.</small><em>Mới cập nhật</em></button>
         <button class="feature-card" data-open="diseases"><span class="feature-icon">🩺</span><b>Kháng sinh theo bệnh lý</b><small>Tra cứu phác đồ kháng sinh theo bệnh lý nhiễm khuẩn.</small><em>Đang hoạt động</em></button>
         <button class="feature-card prescription-feature" data-open="prescription-check"><span class="feature-icon">📋</span><b>Rà soát đơn thuốc BHYT</b><small>Kiểm tra tương tác toàn đơn và cảnh báo thuốc BHYT chưa có mã bệnh phù hợp.</small><em>Tính năng mới</em></button>
         <button class="feature-card" data-open="interactions"><span class="feature-icon">⚠️</span><b>Kiểm tra tương tác thuốc</b><small>Kiểm tra tương tác giữa hai thuốc hoặc trong toàn bộ danh mục.</small><em>Đang hoạt động</em></button>
@@ -1307,30 +1305,6 @@ calc();
     </section>
   </section>
 
-
-  <section class="view" id="view-service-medicines">
-    <div class="back-home-wrap">
-      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
-    </div>
-    <div class="page-title">
-      <div><h1>Danh mục thuốc dịch vụ</h1><small class="service-updated">Cập nhật 18/08/2026</small><p>Tra cứu nhanh các mặt hàng dịch vụ theo danh sách Khoa Dược cung cấp.</p></div>
-    </div>
-    <section class="section-card">
-      <div class="service-catalog-toolbar">
-        <label>Tìm kiếm<input id="serviceSearch" type="search" autocomplete="off" spellcheck="false" placeholder="Tên thuốc, hoạt chất, hàm lượng, đường dùng…"></label>
-        <label>Loại<select id="serviceType"><option value="">Tất cả loại</option></select></label>
-        <label>Đường dùng<select id="serviceRoute"><option value="">Tất cả đường dùng</option></select></label>
-        <button type="button" class="btn btn-soft service-clear" id="serviceClear">Xóa bộ lọc</button>
-      </div>
-      <div class="table-wrap service-table">
-        <table>
-          <thead><tr><th>Tên thuốc / sản phẩm</th><th>Hoạt chất / nhóm</th><th>Đường dùng</th><th>Hàm lượng / quy cách</th><th>Loại</th></tr></thead>
-          <tbody id="serviceRows"><tr><td colspan="5" class="service-empty">Đang tải dữ liệu…</td></tr></tbody>
-        </table>
-      </div>
-    </section>
-  </section>
-
   <section class="view" id="view-sources">
     <style>
       #view-sources .source-title-link{display:inline-flex;align-items:flex-start;gap:6px;color:#075d98;text-decoration:none}
@@ -1410,7 +1384,7 @@ calc();
 </main>
 
 <footer class="site-footer">
-  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v4.4</span></div>
+  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v4.0</span></div>
   <div><a class="nav-evaluation" href="phieu-danh-gia.html" target="_blank" rel="noopener">Phiếu đánh giá phần mềm</a> · <a href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a> · Công cụ hỗ trợ, không thay thế đánh giá lâm sàng.</div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1428,8 +1402,6 @@ calc();
 <script defer src="assets/renal_database_20260723.js?v=20260723-renal-only-v4"></script>
 <script defer src="assets/diseases.js"></script>
 <script defer src="assets/unified.js?v=20260817-prescription-check-v1"></script>
-<script defer src="assets/service_medicines_20260818.js?v=20260818"></script>
-<script defer src="assets/service-medicines.js?v=20260818-service-catalog-v44"></script>
 <script defer src="assets/icd-clinical-match.js?v=20260817-tt06-2026"></script>
 <script defer src="assets/prescription-diagnosis-ocr.js?v=20260817-exact-icd-v2"></script>
 <script defer src="assets/prescription-check.js?v=20260818-rx-bhyt-v3"></script>

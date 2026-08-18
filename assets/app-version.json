@@ -1,7 +1,7 @@
 {
-  "version": "2026.08.18.15",
-  "displayVersion": "4.4",
-  "updatedAt": "2026-08-18T11:14:44+07:00",
-  "note": "Bỏ cụm thống kê tổng mặt hàng/thuốc/sản phẩm khác khỏi Danh mục thuốc dịch vụ; giữ giao diện tra cứu gọn.",
-  "buildId": "v4.4-service-medicines-no-stats-20260818-15"
+  "version": "2026.08.18.9",
+  "displayVersion": "4.0",
+  "updatedAt": "2026-08-18T08:35:00+07:00",
+  "note": "Đồng bộ thông báo cập nhật với bản mới nhất v4.0.",
+  "buildId": "v4-release-version-sync-20260818-09"
 }
