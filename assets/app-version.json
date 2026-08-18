@@ -1,7 +1,7 @@
 {
-  "version": "2026.08.18.7",
+  "version": "2026.08.18.8",
   "displayVersion": "3.0",
-  "updatedAt": "2026-08-18T07:58:00+07:00",
-  "note": "Thu gọn Tuyên bố trách nhiệm, chia câu rõ ràng và chuyển xuống dưới danh sách công cụ trên Trang chủ.",
-  "buildId": "home-disclaimer-bottom-v3-20260818-07"
+  "updatedAt": "2026-08-18T08:30:00+07:00",
+  "note": "Sửa bảng Lịch sử tra cứu dùng chung (renal/pediatric): tiêu đề cột không còn bị xuống dòng lệch nhau, canh giữa dọc chữ trong ô.",
+  "buildId": "history-table-header-align-20260818-08"
 }
