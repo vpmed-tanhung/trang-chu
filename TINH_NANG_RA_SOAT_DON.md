@@ -21,8 +21,10 @@ Nút **Đơn mới** chỉ được bật sau khi đã kiểm tra đơn. Khi b�
 
 ## Quy tắc phân loại nhiều đơn
 
+- Dấu hiệu mạnh `ĐƠN THUỐC BHYT`, `Quầy Phát Thuốc Bảo Hiểm` hoặc `Quầy Phát Thuốc Bảo Hiểm Y Tế`: gợi ý **BHYT** và được ưu tiên khi OCR đồng thời đọc được vùng liên hệ của nhà thuốc.
 - Tiêu đề có `BHYT` hoặc `Bảo hiểm y tế`: gợi ý **BHYT**.
-- Tiêu đề có `Dịch vụ`, `Tự túc`, `Thu phí`, `Ngoài BHYT` hoặc `Không BHYT`: gợi ý **Dịch vụ**.
+- Tiêu đề có `Dịch vụ`, `Tự túc`, `Thu phí`, `Ngoài BHYT`, `Không BHYT` hoặc `Không bảo hiểm`: gợi ý **Dịch vụ**.
+- Mẫu có cụm `Nhà thuốc Bệnh Viện` (bao gồm dòng `Liên hệ: Nhà thuốc Bệnh Viện` hoặc cụm này dưới tên phòng khám): gợi ý **Dịch vụ** khi không có dấu hiệu BHYT mạnh. Tiêu đề `ĐƠN THUỐC` đứng một mình không đủ để phân loại.
 - Không đọc rõ tiêu đề: **Chưa xác định** và không dùng thuốc của đơn đó để cảnh báo thiếu ICD cho đến khi nhân viên xác nhận.
 - Không tải chung đơn của nhiều người bệnh hoặc nhiều lượt khám. Công cụ kiểm tra tương tác giữa tất cả thuốc đã tải trong một lượt.
 

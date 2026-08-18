@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="assets/system-loader.css?v=20260811-desktop-spin-fix">
   <link rel="stylesheet" href="assets/stock_clinical_tools.css?v=20260814-direct-sources-v6">
   <link rel="stylesheet" href="assets/injectable_guide.css?v=20260814-content-from-original-v2">
-  <link rel="stylesheet" href="assets/prescription-check.css?v=20260818-rx-bhyt-v4">
+  <link rel="stylesheet" href="assets/prescription-check.css?v=20260818-rx-ui-v8">
   <script>document.documentElement.classList.add('system-loading','vpmed-auth-checking');</script>
   <noscript><style>#systemLoader{display:none!important}</style></noscript>
 </head>
@@ -145,7 +145,7 @@
     <div class="rx-workspace">
       <div class="rx-main-column">
         <section class="section-card rx-card">
-          <div class="section-heading rx-heading"><div><span class="rx-step">1</span><div><span class="kicker">THÔNG TIN LƯỢT KHÁM</span><h2>Hồ sơ cần kiểm tra</h2></div></div><button type="button" class="btn btn-soft" id="rxResetPrescription" disabled title="Nút được bật sau khi kiểm tra đơn">↻ Đơn mới</button></div>
+          <div class="section-heading rx-heading"><div><span class="rx-step">1</span><div><span class="kicker">THÔNG TIN LƯỢT KHÁM</span><h2>Hồ sơ cần kiểm tra</h2></div></div></div>
           <div class="rx-encounter-grid">
             <label>Loại đơn<select id="rxEncounterType"><option>Đơn ngoại trú</option></select></label>
             <div class="rx-diagnosis-field">
@@ -180,6 +180,7 @@
             <div class="rx-paste-panel">
               <label>Dán riêng danh sách thuốc từ HIS<textarea id="rxPasteDrugs" rows="6" placeholder="Không dán thông tin người bệnh. Mỗi thuốc một dòng, ví dụ:&#10;Diclofenac | BHYT&#10;Ketorolac-BFS | Dịch vụ&#10;Comiaryl 2mg/500mg | BHYT"></textarea></label>
               <button type="button" class="btn btn-soft full" id="rxApplyPaste">Nhận danh sách thuốc</button>
+              <div class="rx-new-prescription-action"><button type="button" class="btn btn-soft" id="rxResetPrescription" disabled title="Nút được bật sau khi kiểm tra đơn">↻ Đơn mới</button></div>
             </div>
           </div>
         </section>
@@ -204,7 +205,7 @@
           <header class="rx-result-header"><div><span class="kicker">KẾT QUẢ RÀ SOÁT</span><h2 id="rxResultTitle">Chưa kiểm tra</h2></div><div class="rx-score" id="rxScore"><b>—</b><small>/100</small></div></header>
           <div class="rx-summary" id="rxSummary"><div><b>—</b><span>Tương tác</span></div><div><b>—</b><span>Mã bệnh</span></div><div><b>—</b><span>Đã đối chiếu</span></div></div>
           <div class="rx-result-body" id="rxResultBody"><div class="rx-result-empty"><span>✓</span><b>Sẵn sàng nhận dữ liệu</b><p>Tải các đơn của cùng lượt khám; hệ thống sẽ tự đọc loại đơn, mã bệnh và danh sách thuốc.</p></div></div>
-          <footer class="rx-result-footer"><span id="rxRuleVersion">Tương tác: QĐ 5948/QĐ-BYT + QĐ 29/QĐ-BYT/DI&ADR · ICD-10: TT06/2026/TT-BYT · Kê đơn: TT26/2025/TT-BYT · BHYT: TT20/2022 + TT37/2024</span><button type="button" id="rxPrintResult">In phiếu</button></footer>
+          <footer class="rx-result-footer"><div id="rxRuleVersion" class="rx-rule-version" aria-label="Căn cứ rà soát"><div class="rx-rule-item rx-rule-wide"><b>Tương tác</b><span>QĐ 5948/QĐ-BYT · QĐ 29/QĐ-BYT/DI&amp;ADR</span></div><div class="rx-rule-item"><b>ICD-10</b><span>TT06/2026/TT-BYT</span></div><div class="rx-rule-item"><b>Kê đơn</b><span>TT26/2025/TT-BYT</span></div><div class="rx-rule-item rx-rule-wide"><b>BHYT</b><span>TT20/2022 · TT37/2024</span></div></div><div class="rx-result-actions"><button type="button" class="btn btn-soft rx-clear-session" id="rxClearSession" title="Xóa ngay toàn bộ dữ liệu tra cứu trên màn hình">🗑 Xóa dữ liệu tra cứu</button><button type="button" id="rxPrintResult">In phiếu</button></div></footer>
         </section>
       </aside>
     </div>
@@ -1384,7 +1385,7 @@ calc();
 </main>
 
 <footer class="site-footer">
-  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v4.1</span></div>
+  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v4.8</span></div>
   <div><a class="nav-evaluation" href="phieu-danh-gia.html" target="_blank" rel="noopener">Phiếu đánh giá phần mềm</a> · <a href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a> · Công cụ hỗ trợ, không thay thế đánh giá lâm sàng.</div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1404,7 +1405,7 @@ calc();
 <script defer src="assets/unified.js?v=20260817-prescription-check-v1"></script>
 <script defer src="assets/icd-clinical-match.js?v=20260817-tt06-2026"></script>
 <script defer src="assets/prescription-diagnosis-ocr.js?v=20260817-exact-icd-v2"></script>
-<script defer src="assets/prescription-check.js?v=20260818-rx-bhyt-v3"></script>
+<script defer src="assets/prescription-check.js?v=20260818-rx-payment-v8"></script>
 <script defer src="assets/vpmed-renal-audit.js?v=20260814-module-history-v5"></script>
 <script defer src="assets/antibiotic_consultation.js?v=20260814-short-module-copy-v1"></script>
 <script defer src="assets/dose_24h_summary.js?v=20260802-structure-only"></script>

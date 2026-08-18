@@ -29,8 +29,9 @@
 
   function normalizePayment(value){
     const normalized=norm(value);
-    if(/\b(dich vu|service|tu tuc|thu phi|ngoai bhyt|khong bhyt)\b/.test(normalized)||normalized==='dv')return 'Dịch vụ';
-    if(/\b(bhyt|bao hiem y te|bao hiem)\b/.test(normalized))return 'BHYT';
+    if(normalized==='dv')return 'Dịch vụ';
+    if(PAYMENT_SERVICE_PATTERN.test(normalized))return 'Dịch vụ';
+    if(PAYMENT_BHYT_PATTERN.test(normalized)||BHYT_CARD_NUMBER_PATTERN.test(normalized))return 'BHYT';
     return 'Chưa xác định';
   }
 
@@ -248,7 +249,7 @@
 
   function parsePayment(line){
     const normalized=norm(line);
-    if(/\b(dich vu|service|tu tuc)\b/.test(normalized)||/(^|[|;\t\s])dv($|[|;\t\s])/.test(normalized))return 'Dịch vụ';
+    if(PAYMENT_SERVICE_PATTERN.test(normalized)||/(^|[|;\t\s])dv($|[|;\t\s])/.test(normalized))return 'Dịch vụ';
     return 'BHYT';
   }
 
@@ -297,18 +298,69 @@
     }).filter(Boolean);
   }
 
+  const SERVICE_HOSPITAL_PHARMACY_PATTERN=/\bnha\s+thuoc\s+benh\s+vien\b/;
+  // “Đơn thuốc” (không kèm dấu hiệu BHYT rõ ràng) được hiểu trực tiếp là đơn dịch vụ:
+  // bệnh nhân nhận đơn để mua thuốc tại Nhà thuốc Bệnh viện. Đây KHÔNG phải tín hiệu yếu/fallback.
+  const SERVICE_GENERIC_PRESCRIPTION_PATTERN=/\b(?:don\s+thuoc|phieu\s+thuoc)\b/;
+  const BHYT_STRONG_MARKER_PATTERN=/\b(?:don\s+thuoc\s+(?:bhyt|bao\s+hiem(?:\s+y\s+te)?)|quay\s+(?:phat\s+)?thuoc\s+(?:bhyt|bao\s+hiem(?:\s+y\s+te)?)|phat\s+thuoc\s+(?:bhyt|bao\s+hiem(?:\s+y\s+te)?))\b/;
+
+  function hasHospitalPharmacyServiceMarker(value){
+    // Dấu hiệu mạnh của đơn dịch vụ. Quét toàn bộ OCR vì cụm này có thể nằm
+    // ở dòng liên hệ, dưới tên phòng khám hoặc ở phần cuối đơn.
+    return SERVICE_HOSPITAL_PHARMACY_PATTERN.test(norm(value));
+  }
+
+  function hasBhytPrescriptionMarker(value){
+    // Dấu hiệu mạnh của đơn BHYT: “ĐƠN THUỐC BHYT”, “Quầy Phát Thuốc Bảo Hiểm”…
+    // norm() giúp nhận chữ hoa/thường, dấu tiếng Việt và dấu câu khác nhau.
+    return BHYT_STRONG_MARKER_PATTERN.test(norm(value));
+  }
+
   function extractPrescriptionTitle(text){
-    const header=norm(String(text||'').split(/\r?\n/).slice(0,14).join(' '));
-    if(/\b(ngoai bhyt|khong bhyt|dich vu|tu tuc|thu phi|service)\b/.test(header))return 'Đơn thuốc dịch vụ';
-    if(/\b(bhyt|bao hiem y te|bao hiem)\b/.test(header))return 'Đơn thuốc BHYT';
-    if(/\b(don thuoc|phieu thuoc)\b/.test(header))return 'Đơn thuốc — chưa rõ loại';
+    const fullText=String(text||'');
+    const header=norm(fullText.split(/\r?\n/).slice(0,14).join(' '));
+    const full=norm(fullText);
+
+    // Quét TOÀN BỘ OCR trước khi kết luận “Không xác định”.
+    // Quy tắc loại đơn theo mẫu thực tế:
+    // - “Đơn thuốc BHYT” / “Quầy Phát Thuốc Bảo Hiểm” => BHYT.
+    // - “Đơn thuốc” / “Nhà thuốc Bệnh Viện” => Dịch vụ.
+    // BHYT rõ ràng phải được xét trước vì cụm “Đơn thuốc BHYT” cũng chứa “Đơn thuốc”.
+    if(hasBhytPrescriptionMarker(fullText))return 'Đơn thuốc BHYT';
+    if(hasHospitalPharmacyServiceMarker(fullText))return 'Đơn thuốc dịch vụ';
+    if(SERVICE_GENERIC_PRESCRIPTION_PATTERN.test(full))return 'Đơn thuốc dịch vụ';
+    if(/\b(ngoai bhyt|khong bhyt|khong bao hiem)\b/.test(full))return 'Đơn thuốc dịch vụ';
+    if(PAYMENT_SERVICE_PATTERN.test(header))return 'Đơn thuốc dịch vụ';
+    if(PAYMENT_BHYT_PATTERN.test(header)||BHYT_CARD_NUMBER_PATTERN.test(header))return 'Đơn thuốc BHYT';
+    if(PAYMENT_SERVICE_PATTERN.test(full))return 'Đơn thuốc dịch vụ';
+    if(PAYMENT_BHYT_PATTERN.test(full)||BHYT_CARD_NUMBER_PATTERN.test(full))return 'Đơn thuốc BHYT';
     return 'Không xác định tiêu đề';
   }
 
+  const PAYMENT_SERVICE_PATTERN=/\b(ngoai bhyt|khong bhyt|khong bao hiem|dich vu|tu tuc|tu nguyen|thu phi|thu tien|vien phi|yeu cau|ngoai danh muc|service)\b/;
+  const PAYMENT_BHYT_PATTERN=/\b(bhyt|bao hiem y te|bao hiem|the bhyt|so the|ma the|doi tuong bhyt|dien bhyt)\b/;
+  const BHYT_CARD_NUMBER_PATTERN=/\b[a-z]{2}\d{1}\s?\d{2}\s?\d{3}\s?\d{5}\b|\b[a-z]{2}\d{13}\b/;
+
   function detectPaymentFromTitle(title,text=''){
-    const header=norm([title,String(text||'').split(/\r?\n/).slice(0,14).join(' ')].join(' '));
-    if(/\b(ngoai bhyt|khong bhyt|dich vu|tu tuc|thu phi|service)\b/.test(header))return 'Dịch vụ';
-    if(/\b(bhyt|bao hiem y te|bao hiem)\b/.test(header))return 'BHYT';
+    const fullText=String(text||'');
+    const header=norm([title,fullText.split(/\r?\n/).slice(0,14).join(' ')].join(' '));
+    const full=norm([title,fullText].join(' '));
+
+    // Quét TOÀN BỘ văn bản OCR trước khi trả về “Chưa xác định”.
+    // Quy tắc ưu tiên:
+    // 1) Dấu hiệu BHYT rõ ràng thắng trước, vì “Đơn thuốc BHYT” có chứa “Đơn thuốc”.
+    if(hasBhytPrescriptionMarker(fullText)||hasBhytPrescriptionMarker(title))return 'BHYT';
+    // 2) “Nhà thuốc Bệnh Viện” hoặc “Đơn thuốc” là dấu hiệu trực tiếp của đơn Dịch vụ,
+    //    không phải fallback yếu.
+    if(hasHospitalPharmacyServiceMarker(fullText)||hasHospitalPharmacyServiceMarker(title))return 'Dịch vụ';
+    if(SERVICE_GENERIC_PRESCRIPTION_PATTERN.test(full))return 'Dịch vụ';
+    // 3) Các cụm loại trừ BHYT là dịch vụ rõ ràng.
+    if(/\b(ngoai bhyt|khong bhyt|khong bao hiem)\b/.test(full))return 'Dịch vụ';
+    // 4) Sau các mẫu loại đơn ở trên mới dùng các từ khóa thanh toán còn lại.
+    if(PAYMENT_SERVICE_PATTERN.test(header))return 'Dịch vụ';
+    if(PAYMENT_BHYT_PATTERN.test(header)||BHYT_CARD_NUMBER_PATTERN.test(header))return 'BHYT';
+    if(PAYMENT_SERVICE_PATTERN.test(full))return 'Dịch vụ';
+    if(PAYMENT_BHYT_PATTERN.test(full)||BHYT_CARD_NUMBER_PATTERN.test(full))return 'BHYT';
     return 'Chưa xác định';
   }
 
@@ -469,7 +521,11 @@
     const detected=detectPaymentFromTitle(entry.title,text);
     if(entry.paymentSource!=='manual'){
       entry.payment=detected;
-      entry.paymentSource=detected==='Chưa xác định'?'unresolved':'title';
+      entry.paymentSource=detected==='Chưa xác định'
+        ?'unresolved'
+        :(detected==='BHYT'&&hasBhytPrescriptionMarker(text)
+          ?'bhyt-marker'
+          :(detected==='Dịch vụ'&&hasHospitalPharmacyServiceMarker(text)?'hospital-pharmacy':'title'));
     }
     const drugs=matchDrugsFromText(text,entry,providedDrugs);
     const structured=normalizeProvidedDiagnosis(providedDiagnosis);
@@ -478,7 +534,13 @@
     entry.status=entry.payment==='Chưa xác định'||!drugs.length?'review':'done';
     entry.note=entry.payment==='Chưa xác định'
       ?'Không chắc loại đơn — cần chọn thủ công'
-      :`${entry.payment} theo tiêu đề · ${drugs.length} thuốc`;
+      :(entry.paymentSource==='bhyt-marker'
+        ?`BHYT theo mẫu Đơn thuốc/Quầy phát thuốc Bảo Hiểm · ${drugs.length} thuốc`
+        :(entry.paymentSource==='hospital-pharmacy'
+          ?`Dịch vụ theo mẫu Nhà thuốc Bệnh Viện · ${drugs.length} thuốc`
+          :(entry.payment==='Dịch vụ'&&SERVICE_GENERIC_PRESCRIPTION_PATTERN.test(norm(text))
+            ?`Dịch vụ theo mẫu Đơn thuốc · ${drugs.length} thuốc`
+            :`${entry.payment} theo tiêu đề · ${drugs.length} thuốc`)));
     return drugs;
   }
 
@@ -1038,7 +1100,7 @@
     markStale();
   }
 
-  function resetPrescription(){
+  function resetPrescription(options={}){
     state.drugs=[];
     state.files=[];
     state.lastCheck=null;
@@ -1066,7 +1128,24 @@
     renderDiagnosisChips();
     renderFileQueue();
     renderRows();
-    rx$('#view-prescription-check')?.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches?'auto':'smooth',block:'start'});
+    if(options.scroll!==false)rx$('#view-prescription-check')?.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches?'auto':'smooth',block:'start'});
+  }
+
+  function showRxToast(message){
+    let toast=rx$('#rxToast');
+    if(!toast){
+      toast=document.createElement('div');
+      toast.id='rxToast';
+      toast.className='rx-toast';
+      toast.setAttribute('role','status');
+      toast.setAttribute('aria-live','polite');
+      document.body.appendChild(toast);
+    }
+    toast.textContent=message;
+    clearTimeout(toast._hideTimer);
+    toast.classList.remove('is-visible');
+    requestAnimationFrame(()=>toast.classList.add('is-visible'));
+    toast._hideTimer=setTimeout(()=>toast.classList.remove('is-visible'),2800);
   }
 
   function bindEvents(){
@@ -1148,6 +1227,12 @@
     rx$('#rxPrescriptionFile')?.addEventListener('change',event=>{onFilesSelected(event.target.files);event.target.value=''});
     rx$('#rxRunOcr')?.addEventListener('click',runOcr);
     rx$('#rxPrintResult')?.addEventListener('click',()=>window.print());
+    rx$('#rxClearSession')?.addEventListener('click',()=>{
+      // Xóa ngay dữ liệu tra cứu trên màn hình, không hỏi xác nhận.
+      // Không cuộn trang để người dùng vẫn giữ đúng vị trí vừa thao tác.
+      resetPrescription({scroll:false});
+      showRxToast('Đã xóa toàn bộ dữ liệu tra cứu');
+    });
   }
 
   bindEvents();

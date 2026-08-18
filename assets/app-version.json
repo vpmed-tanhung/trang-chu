@@ -1,7 +1,7 @@
 {
-  "version": "2026.08.18.10",
-  "displayVersion": "4.1",
-  "updatedAt": "2026-08-18T09:15:00+07:00",
-  "note": "Bổ sung danh mục thuốc dịch vụ (477 sản phẩm, 463 thuốc mới) vào công cụ Rà soát đơn BHYT & dịch vụ.",
-  "buildId": "v4.1-service-drug-catalog-20260818-10"
+  "version": "2026.08.18.17",
+  "displayVersion": "4.8",
+  "updatedAt": "2026-08-18T16:56:00+07:00",
+  "note": "Điều chỉnh quy tắc nhận diện loại đơn: “Đơn thuốc” được hiểu trực tiếp là đơn Dịch vụ (không còn là fallback yếu); “Nhà thuốc Bệnh Viện” cũng là Dịch vụ. “Đơn thuốc BHYT” và “Quầy Phát Thuốc Bảo Hiểm” vẫn được ưu tiên nhận diện BHYT trước vì có chứa cụm “Đơn thuốc”. Hệ thống tiếp tục quét toàn bộ văn bản OCR trước khi kết luận Chưa xác định.",
+  "buildId": "v4.8-rx-generic-prescription-service-20260818-17"
 }
