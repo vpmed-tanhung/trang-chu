@@ -1,12 +1,48 @@
 {
-  "generated_at": "2026-08-18T06:22:19+07:00",
+  "generated_at": "2026-08-19T06:21:42+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
-  "newly_fetched_count": 0,
+  "newly_fetched_count": 1,
   "retained_history_count": 0,
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
+    {
+      "id": "auto-910a0cbf8c7f9b",
+      "level": "orange",
+      "year": "2026",
+      "date": "18/08/2026",
+      "category": "Thai kỳ & sức khỏe sinh sản",
+      "system": "Tim mạch · Thần kinh · Sản khoa",
+      "interaction": false,
+      "title": "HSA: Kéo dài thời gian sử dụng biện pháp tránh thai từ 6 tuần lên 6 tháng sau khi ngừng mycophenolat mofetil ở nữ giới đang trong độ tuổi sinh sản",
+      "drugs": "Corticosteroid",
+      "summary": "Mycophenolate mofetil được chỉ định trong dự phòng thải ghép cấp và điều trị thải ghép kháng trị ở bệnh nhân ghép thận đồng loài. Thuốc cho thấy khả năng cải thiện tỷ lệ sống sót của mô ghép và bệnh nhân ở những người ghép tim đồng loài. Mycophenolate mofetil thường được phối hợp điều trị với cyclosporin và corticosteroid. Theo dõi các dấu hiệu hoặc biến cố bất thường được mô tả trong bài nguồn. Mycophenolate mofetil chống chỉ định cho phụ nữ có thai, phụ nữ cho con bú, phụ nữ trong độ tuổi sinh sản và không sử dụng các biện pháp tránh thai an toàn. Các dị tật bẩm sinh được báo cáo thường xuyên nhất trong quá trình giám sát hậu mại, bao gồm: - Dị tật vùng mặt như sứt môi, hở hàm ếch, tật hàm nhỏ và tật hai hốc mắt xa nhau; Dị thường ở tai (ví dụ: tai ngoài/tai giữa hình thành bất thường hoặc không có) và mắt (ví dụ: khuyết mống mắt, tật mắt nhỏ); Dị tật ở các ngón (ví dụ: tật thừa ngón, tật dính…",
+      "quick": "Mycophenolate mofetil chống chỉ định cho phụ nữ có thai, phụ nữ cho con bú, phụ nữ trong độ tuổi sinh sản và không sử dụng các biện pháp tránh thai an toàn.",
+      "risk": [
+        "Mycophenolate mofetil được chỉ định trong dự phòng thải ghép cấp và điều trị thải ghép kháng trị ở bệnh nhân ghép thận đồng loài.",
+        "Thuốc cho thấy khả năng cải thiện tỷ lệ sống sót của mô ghép và bệnh nhân ở những người ghép tim đồng loài.",
+        "Mycophenolate mofetil thường được phối hợp điều trị với cyclosporin và corticosteroid.",
+        "Ngoài ra, mycophenolate mofetil được chỉ định trong điều trị dẫn nhập và điều trị duy trì ở bệnh nhân viêm thận lupus Nhóm III–V."
+      ],
+      "signs": [
+        "Theo dõi các dấu hiệu hoặc biến cố bất thường được mô tả trong bài nguồn."
+      ],
+      "action": [
+        "Mycophenolate mofetil chống chỉ định cho phụ nữ có thai, phụ nữ cho con bú, phụ nữ trong độ tuổi sinh sản và không sử dụng các biện pháp tránh thai an toàn."
+      ],
+      "monitor": [
+        "Các dị tật bẩm sinh được báo cáo thường xuyên nhất trong quá trình giám sát hậu mại, bao gồm: - Dị tật vùng mặt như sứt môi, hở hàm ếch, tật hàm nhỏ và tật hai hốc mắt xa nhau; Dị thường ở tai (ví dụ: tai ngoài/tai giữa hình thành bất thường hoặc không có) và mắt (ví dụ: khuyết mống mắt, tật mắt nhỏ); Dị tật ở các ngón (ví dụ: tật thừa ngón, tật dính…"
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5856/hsa-keo-dai-thoi-gian-tranh-thai-khi-ngung-mycophenolat-mofetil.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5856/hsa-keo-dai-thoi-gian-tranh-thai-khi-ngung-mycophenolat-mofetil.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-structured"
+    },
     {
       "id": "auto-0b6ae6ed4f417b",
       "level": "red",
