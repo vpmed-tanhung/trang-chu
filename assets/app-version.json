@@ -1,7 +1,7 @@
 {
-  "version": "2026.08.18.9",
-  "displayVersion": "4.0",
-  "updatedAt": "2026-08-18T08:35:00+07:00",
-  "note": "Đồng bộ thông báo cập nhật với bản mới nhất v4.0.",
-  "buildId": "v4-release-version-sync-20260818-09"
+  "version": "2026.08.18.10",
+  "displayVersion": "4.1",
+  "updatedAt": "2026-08-18T09:15:00+07:00",
+  "note": "Bổ sung danh mục thuốc dịch vụ (477 sản phẩm, 463 thuốc mới) vào công cụ Rà soát đơn BHYT & dịch vụ.",
+  "buildId": "v4.1-service-drug-catalog-20260818-10"
 }
