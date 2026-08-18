@@ -1,6 +1,7 @@
 {
-  "version": "2026.08.17.10",
-  "updatedAt": "2026-08-17T16:50:00+07:00",
-  "note": "Mở rộng rà soát tương tác theo QĐ 5948 và lớp cảnh báo DI&ADR chính thức; phân tầng mức cảnh báo và căn cứ pháp lý/chuyên môn.",
-  "buildId": "rx-regulatory-interactions-20260817-10"
+  "version": "2026.08.18.5",
+  "displayVersion": "1.0",
+  "updatedAt": "2026-08-18T07:47:00+07:00",
+  "note": "Hiển thị phiên bản cập nhật theo dạng đơn giản v1.0, v2.0, v3.0...; mã build nội bộ vẫn dùng riêng cho cơ chế phát hiện cập nhật.",
+  "buildId": "update-display-version-v1-20260818-05"
 }
