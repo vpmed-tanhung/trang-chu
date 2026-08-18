@@ -40,23 +40,14 @@
     var style = document.createElement('style');
     style.id = 'vpmedUpdateNotifierStyle';
     style.textContent = [
-      '#vpmedLatestVersion{display:inline-flex;align-items:center;gap:4px;margin-left:2px;color:#2f648b;font-size:11px;font-weight:850;white-space:nowrap;vertical-align:baseline}',
-      '#vpmedLatestVersion.vpmed-version-update{color:#b45309;font-weight:900;cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}',
-      '#vpmedLatestVersion.vpmed-version-update:hover{color:#8a3f07}',
-      '#vpmedLatestVersion.vpmed-version-update:focus-visible{outline:2px solid rgba(8,116,183,.28);outline-offset:3px;border-radius:3px}',
-      '#vpmedUpdateNotice{position:fixed;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:999999;max-width:calc(100vw - 24px);display:flex;align-items:center;gap:7px;padding:7px 8px;border:1px solid #e7bd69;border-radius:999px;background:rgba(255,250,240,.97);color:#374151;box-shadow:0 8px 24px rgba(25,55,78,.16);font-family:inherit;line-height:1.2;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}',
-      '#vpmedUpdateNotice.vpmed-update-success{border-color:#8ad9ad;background:rgba(241,255,247,.97)}',
-      '#vpmedUpdateNotice .vpmed-update-icon{flex:0 0 auto;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:#fff0c9;color:#9a5a00;font-size:14px;font-weight:900}',
-      '#vpmedUpdateNotice.vpmed-update-success .vpmed-update-icon{background:#dff8e9;color:#087a42}',
-      '#vpmedUpdateNotice .vpmed-update-content{min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:nowrap}',
-      '#vpmedUpdateNotice strong{display:block;margin:0;color:#754300;font-size:12px;font-weight:900;white-space:nowrap}',
-      '#vpmedUpdateNotice.vpmed-update-success strong{color:#08673b}',
-      '#vpmedUpdateNotice p{margin:0;color:#5d6772;font-size:11px;white-space:nowrap}',
-      '#vpmedUpdateNotice .vpmed-update-version{font-weight:800;color:#3e5668}',
-      '#vpmedUpdateNotice button{margin:0;min-height:28px;padding:5px 9px;border:0;border-radius:999px;background:#0874b7;color:#fff;font:inherit;font-size:11px;font-weight:900;line-height:1;cursor:pointer;box-shadow:none;white-space:nowrap}',
-      '#vpmedUpdateNotice button:hover{background:#06649f}',
-      '#vpmedUpdateNotice button:focus-visible{outline:3px solid rgba(8,116,183,.25);outline-offset:2px}',
-      '@media(max-width:420px){#vpmedLatestVersion{font-size:10.5px}#vpmedUpdateNotice{right:8px;bottom:max(8px,env(safe-area-inset-bottom));max-width:calc(100vw - 16px);gap:5px;padding:6px 7px}#vpmedUpdateNotice .vpmed-update-icon{width:22px;height:22px;font-size:13px}#vpmedUpdateNotice strong{font-size:11.5px}#vpmedUpdateNotice p{font-size:10.5px}#vpmedUpdateNotice button{min-height:26px;padding:4px 8px;font-size:10.5px}}',
+      '#vpmedLatestVersion{display:inline-flex;align-items:center;margin-left:2px;color:#2f648b;font-size:11px;font-weight:850;white-space:nowrap;vertical-align:baseline;cursor:default;text-decoration:none;user-select:text}',
+      '#vpmedUpdateNotice{position:fixed;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:999999;display:inline-flex;align-items:center;gap:5px;max-width:calc(100vw - 24px);padding:7px 10px;border:1px solid #e7bd69;border-radius:999px;background:rgba(255,250,240,.98);color:#754300;box-shadow:0 8px 24px rgba(25,55,78,.16);font-family:inherit;font-size:11.5px;font-weight:800;line-height:1.15;white-space:nowrap;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}',
+      '#vpmedUpdateNotice:hover{background:#fff5dc;border-color:#dca94d}',
+      '#vpmedUpdateNotice:focus-visible{outline:3px solid rgba(8,116,183,.25);outline-offset:2px}',
+      '#vpmedUpdateNotice .vpmed-update-icon{font-size:13px;line-height:1}',
+      '#vpmedUpdateNotice .vpmed-update-action{color:#0874b7;font-weight:900}',
+      '#vpmedUpdateNotice.vpmed-update-success{cursor:default;border-color:#8ad9ad;background:rgba(241,255,247,.98);color:#08673b}',
+      '@media(max-width:420px){#vpmedLatestVersion{font-size:10.5px}#vpmedUpdateNotice{right:8px;bottom:max(8px,env(safe-area-inset-bottom));max-width:calc(100vw - 16px);padding:6px 8px;font-size:10.8px}}',
       '@media(prefers-reduced-motion:no-preference){#vpmedUpdateNotice{animation:vpmedUpdateIn .2s ease-out}@keyframes vpmedUpdateIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}}'
     ].join('');
     document.head.appendChild(style);
@@ -77,22 +68,8 @@
   }
 
   function setFooterUpdate(version, displayVersion) {
-    var target = getFooterVersion();
-    if (!target) return false;
-    ensureStyle();
-    target.className = 'site-version vpmed-version-update';
-    target.textContent = '· Bản mới v' + displayVersion;
-    target.setAttribute('title', 'Bấm để cập nhật lên v' + displayVersion);
-    target.setAttribute('role', 'button');
-    target.setAttribute('tabindex', '0');
-    target.onclick = function () { reloadForUpdate(version); };
-    target.onkeydown = function (event) {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        reloadForUpdate(version);
-      }
-    };
-    return true;
+    /* Footer chỉ hiển thị phiên bản mới nhất, không dùng làm nút cập nhật. */
+    return setFooterLatest(displayVersion);
   }
 
   function getNotice() {
@@ -100,24 +77,21 @@
     ensureStyle();
     notice = document.createElement('aside');
     notice.id = 'vpmedUpdateNotice';
-    notice.setAttribute('role', 'status');
     notice.setAttribute('aria-live', 'polite');
 
     var icon = document.createElement('span');
     icon.className = 'vpmed-update-icon';
     icon.setAttribute('aria-hidden', 'true');
 
-    var content = document.createElement('div');
-    content.className = 'vpmed-update-content';
-    var title = document.createElement('strong');
-    var message = document.createElement('p');
-    var button = document.createElement('button');
-    button.type = 'button';
-    content.appendChild(title);
-    content.appendChild(message);
-    content.appendChild(button);
+    var text = document.createElement('span');
+    text.className = 'vpmed-update-text';
+
+    var action = document.createElement('span');
+    action.className = 'vpmed-update-action';
+
     notice.appendChild(icon);
-    notice.appendChild(content);
+    notice.appendChild(text);
+    notice.appendChild(action);
     document.body.appendChild(notice);
     return notice;
   }
@@ -132,18 +106,21 @@
   }
 
   function showSuccess(displayVersion) {
-    if (setFooterLatest(displayVersion)) return;
+    setFooterLatest(displayVersion);
     var box = getNotice();
     box.className = 'vpmed-update-success';
+    box.removeAttribute('role');
+    box.removeAttribute('tabindex');
+    box.onclick = null;
+    box.onkeydown = null;
     box.querySelector('.vpmed-update-icon').textContent = '✓';
-    box.querySelector('strong').textContent = 'Đã cập nhật';
-    box.querySelector('p').textContent = 'v' + displayVersion;
-    box.querySelector('button').hidden = true;
+    box.querySelector('.vpmed-update-text').textContent = 'Đã cập nhật v' + displayVersion;
+    box.querySelector('.vpmed-update-action').textContent = '';
     window.clearTimeout(successTimer);
     successTimer = window.setTimeout(function () {
       if (box.parentNode) box.parentNode.removeChild(box);
       notice = null;
-    }, 5000);
+    }, 3500);
   }
 
   function reloadForUpdate(version) {
@@ -162,18 +139,25 @@
   function showUpdate(data) {
     var version = data.version;
     var displayVersion = data.displayVersion || version;
-    if (setFooterUpdate(version, displayVersion)) return;
+
+    /* Luôn giữ phiên bản ở footer là chữ hiển thị, không thể bấm. */
+    setFooterLatest(displayVersion);
 
     var box = getNotice();
     box.className = '';
+    box.setAttribute('role', 'button');
+    box.setAttribute('tabindex', '0');
+    box.setAttribute('aria-label', 'Có bản mới v' + displayVersion + '. Bấm để cập nhật.');
     box.querySelector('.vpmed-update-icon').textContent = '↻';
-    box.querySelector('strong').textContent = 'Bản mới';
-    box.querySelector('p').textContent = 'v' + displayVersion;
-    box.querySelector('p').className = 'vpmed-update-version';
-    var button = box.querySelector('button');
-    button.hidden = false;
-    button.textContent = 'Cập nhật';
-    button.onclick = function () { reloadForUpdate(version); };
+    box.querySelector('.vpmed-update-text').textContent = 'Có bản mới v' + displayVersion;
+    box.querySelector('.vpmed-update-action').textContent = '· Cập nhật';
+    box.onclick = function () { reloadForUpdate(version); };
+    box.onkeydown = function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        reloadForUpdate(version);
+      }
+    };
   }
 
   function applyVersion(data) {
