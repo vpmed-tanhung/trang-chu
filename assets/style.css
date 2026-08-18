@@ -1006,3 +1006,32 @@
   .clinical-tool-frame{height:calc(100vh - 190px);min-height:680px}
   .clinical-source-strip{align-items:stretch;flex-direction:column}
 }
+
+
+/* ===== Home responsibility notice — 18/08/2026 ===== */
+#view-home .home-responsibility-note{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin:14px 0 18px;
+  padding:16px 18px;
+  border:1px solid #efb7bc;
+  border-left:5px solid #c43a45;
+  border-radius:14px;
+  background:#fff7f7;
+  color:#a92732;
+  box-shadow:0 8px 20px rgba(170,39,50,.06);
+  font-size:15px;
+  line-height:1.65;
+}
+#view-home .home-responsibility-note b{
+  flex:0 0 auto;
+  color:#a81722;
+  font-size:15px;
+  font-weight:900;
+}
+#view-home .home-responsibility-note span{font-weight:650}
+@media(max-width:720px){
+  #view-home .home-responsibility-note{display:block;padding:14px 15px;font-size:14px;line-height:1.6}
+  #view-home .home-responsibility-note b{display:block;margin-bottom:5px;font-size:14px}
+}

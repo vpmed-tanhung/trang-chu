@@ -78,15 +78,14 @@
       loadScript('assets/inpatient_medicines_20260707.js',()=>Array.isArray(window.VPMED_INPATIENT_MEDICINES_20260707)),
       loadScript('assets/drug_profiles_305_vpmed_20260710.js',()=>Array.isArray(window.VPMED_FULL_DRUG_PROFILES_305)),
       loadScript('assets/icd10_verified_profiles_20260710.js',()=>Array.isArray(window.VPMED_VERIFIED_DRUG_PROFILES)),
-      loadScript('assets/icd10_code_index_2026.js',()=>Array.isArray(window.VPMED_ICD10_CODE_INDEX_2026))
+      loadScript('assets/icd10_code_index_2026.js',()=>Array.isArray(window.VPMED_ICD10_CODE_INDEX_2026)),
+      loadScript('assets/icd10_name_map_2026.js',()=>window.VPMED_ICD10_NAME_MAP_2026&&typeof window.VPMED_ICD10_NAME_MAP_2026==='object')
     ]).then(()=>{
       const meds=getMeds();
       const profiles=getProfiles();
       const interactions=getInteractions();
       populateDrugOptions();
-      const baseCount=Array.isArray(window.VPMED_INTERACTIONS)?window.VPMED_INTERACTIONS.length:0;
-      const supplementalCount=Array.isArray(window.VPMED_RX_INTERACTION_SUPPLEMENTAL)?window.VPMED_RX_INTERACTION_SUPPLEMENTAL.length:0;
-      setDataState('ready','Dữ liệu sẵn sàng',`${baseCount} cặp QĐ 5948 + ${supplementalCount} cảnh báo DI&ADR bổ sung`);
+      setDataState('ready','Dữ liệu sẵn sàng','');
       return {meds,profiles,interactions};
     }).catch(error=>{
       dataPromise=null;
@@ -422,6 +421,22 @@
 
   function exactIcdCatalog(){return window.VPMED_ICD10_CODE_INDEX_2026||[]}
 
+  function icdKey(value){
+    return String(value||'').trim().toUpperCase().replace(/[†*]/g,'').replace(/\s+/g,'');
+  }
+
+  function icdName(code){
+    const map=window.VPMED_ICD10_NAME_MAP_2026||{};
+    const raw=String(code||'').trim().toUpperCase();
+    return map[raw]||map[icdKey(raw)]||'';
+  }
+
+  function icdLabel(code){
+    const raw=String(code||'').trim().toUpperCase();
+    const name=icdName(raw);
+    return name?`${raw} — ${name}`:raw;
+  }
+
   function extractIcdCodes(value){
     return diagnosisOcr().extractIcdCodes(value,exactIcdCatalog());
   }
@@ -482,13 +497,13 @@
     const codes=diagnosisCodes();
     const primary=rx$('#rxPrimaryDiagnosisCode');
     const secondary=rx$('#rxSecondaryDiagnosisCodes');
-    if(primary)primary.textContent=state.diagnosis.primary.length?state.diagnosis.primary.join(' · '):'Chưa nhận diện';
+    if(primary)primary.textContent=state.diagnosis.primary.length?state.diagnosis.primary.map(icdLabel).join(' · '):'Chưa nhận diện';
     const diagnosisSource=rx$('#rxPrimaryDiagnosisSource');
     if(diagnosisSource){diagnosisSource.textContent=state.diagnosis.source||'';diagnosisSource.hidden=!state.diagnosis.source;}
-    if(secondary)secondary.innerHTML=state.diagnosis.secondary.length?state.diagnosis.secondary.map(code=>`<span>${esc(code)}</span>`).join(''):'<em>Chưa nhận diện</em>';
+    if(secondary)secondary.innerHTML=state.diagnosis.secondary.length?state.diagnosis.secondary.map(code=>`<span>${esc(icdLabel(code))}</span>`).join(''):'<em>Chưa nhận diện</em>';
     const box=rx$('#rxDiagnosisChips');
     if(box)box.innerHTML=codes.length
-      ?`${state.diagnosis.primary.map(code=>`<span class="is-code">Chính: ${esc(code)}</span>`).join('')}${state.diagnosis.secondary.map(code=>`<span class="is-code">Kèm: ${esc(code)}</span>`).join('')}${state.diagnosis.conflicts.length?`<span>⚠ Có nhiều mã bệnh chính trên các đơn: ${esc(state.diagnosis.conflicts.join(', '))}</span>`:''}`
+      ?`${state.diagnosis.primary.map(code=>`<span class="is-code">Chính: ${esc(icdLabel(code))}</span>`).join('')}${state.diagnosis.secondary.map(code=>`<span class="is-code">Kèm: ${esc(icdLabel(code))}</span>`).join('')}${state.diagnosis.conflicts.length?`<span>⚠ Có nhiều mã bệnh chính trên các đơn: ${esc(state.diagnosis.conflicts.map(icdLabel).join(' · '))}</span>`:''}`
       :'<span>OCR chưa nhận diện được mã bệnh</span>';
   }
 
@@ -610,12 +625,16 @@
   }
 
   function missingIcdHtml(item){
-    const terms=item.mappings.map(mapping=>`${mapping.term}: ${(mapping.codes||[]).join(', ')}`).join(' · ');
-    return `<article class="rx-alert rx-alert-warning">
-      <div class="rx-alert-header"><span class="rx-alert-icon">ICD</span><div><h3>Thiếu mã bệnh tương ứng với chỉ định của thuốc</h3></div></div>
-      <p>Vui lòng kiểm tra lại chẩn đoán và mã ICD trong hồ sơ.</p>
-      <dl><div><dt>Gợi ý</dt><dd>${esc(terms)}</dd></div></dl>
-      <div class="rx-suggested-codes">${item.allowed.slice(0,8).map(code=>`<button type="button" data-rx-add-code="${esc(code)}" title="Chỉ thêm khi hồ sơ có chẩn đoán tương ứng">+ ${esc(code)}</button>`).join('')}</div>
+    const drugName=item.drug?.name||item.drug?.rawName||'Thuốc BHYT';
+    const terms=item.mappings.map(mapping=>{
+      const labels=(mapping.codes||[]).map(icdLabel).join(', ');
+      return `${mapping.term}: ${labels}`;
+    }).join(' · ');
+    return `<article class="rx-alert rx-alert-warning rx-alert-missing-icd">
+      <div class="rx-alert-header"><span class="rx-alert-icon">ICD</span><div><small>Thiếu mã bệnh BHYT</small><h3>${esc(drugName)}: chưa có mã bệnh phù hợp</h3></div></div>
+      <p><b>Thuốc cần bổ sung/đối chiếu mã bệnh:</b> ${esc(drugName)}. Kiểm tra lại chẩn đoán thực tế và hồ sơ bệnh án trước khi thêm mã.</p>
+      <dl><div><dt>Gợi ý</dt><dd>${esc(terms||item.allowed.map(icdLabel).join(', '))}</dd></div></dl>
+      <div class="rx-suggested-codes">${item.allowed.slice(0,8).map(code=>`<button type="button" data-rx-add-code="${esc(code)}" title="Chỉ thêm khi hồ sơ có chẩn đoán tương ứng">+ ${esc(icdLabel(code))}</button>`).join('')}</div>
     </article>`;
   }
 
@@ -845,7 +864,7 @@
     const blocks=[];
     interactions.forEach(hit=>blocks.push(interactionHtml(hit)));
     if(missingPrimary)blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><small>OCR chẩn đoán chưa hoàn tất</small><h3>${noDiagnosis?'Chưa nhận diện được mã bệnh trên các đơn':'Đã thấy mã bệnh kèm theo nhưng chưa xác định được mã bệnh chính'}</h3></div></div><p>Hệ thống đã tự tìm vùng chẩn đoán nhưng chưa xác định chắc MA_BENH_CHINH. Hãy kiểm tra chất lượng ảnh hoặc dùng mục “Chỉnh lại nếu OCR đọc sai”; không tự thêm mã khi hồ sơ không có chẩn đoán tương ứng.</p></article>`);
-    if(diagnosisConflict)blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><small>Nhiều ứng viên mã bệnh chính</small><h3>${esc(state.diagnosis.conflicts.join(' · '))}</h3></div></div><p>Các đơn trong cùng lượt có mã bệnh chính OCR khác nhau. Cần xác nhận đúng mã chính trước khi gửi dữ liệu giám định.</p></article>`);
+    if(diagnosisConflict)blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><small>Nhiều ứng viên mã bệnh chính</small><h3>${esc(state.diagnosis.conflicts.map(icdLabel).join(' · '))}</h3></div></div><p>Các đơn trong cùng lượt có mã bệnh chính OCR khác nhau. Cần xác nhận đúng mã chính trước khi gửi dữ liệu giám định.</p></article>`);
     missing.forEach(item=>blocks.push(missingIcdHtml(item)));
     const familyMatchBlock=icdIssueCount===0?familyMatchesHtml(matched):'';
     if(familyMatchBlock)blocks.push(familyMatchBlock);

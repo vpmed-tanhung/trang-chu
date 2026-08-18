@@ -294,3 +294,117 @@
 
 /* Nhãn nguồn không nhấp nháy: chỉ phần cảnh báo theo mức độ mới có chuyển động. */
 .rx-alert-interaction .rx-source-tier{animation:none!important;box-shadow:none!important}
+
+/* Tinh chỉnh giao diện soát đơn BHYT — 18/08/2026 */
+.rx-upload-zone{
+  min-height:205px;
+  padding:24px 20px;
+  border:2px dashed #79bcb5;
+  border-radius:16px;
+  background:linear-gradient(155deg,#fbfffe 0%,#eef9f7 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.8);
+}
+.rx-upload-zone:hover{border-color:#087c73;background:linear-gradient(155deg,#f8fffd 0%,#e5f7f3 100%);box-shadow:0 10px 24px rgba(13,115,105,.08)}
+.rx-upload-icon{width:48px;height:48px;margin-bottom:11px;border-radius:14px;color:#076f68;background:#d8f1eb;font-size:27px}
+.rx-upload-zone b{color:#174f50;font-size:16px;line-height:1.35}
+.rx-upload-zone small{max-width:460px;margin-top:7px;color:#607b78;font-size:12px;line-height:1.55;font-weight:600}
+.rx-upload-zone em{margin-top:12px;padding:8px 14px;border:1px solid #a9d9d1;border-radius:999px;color:#076f68;background:#fff;font-size:12px;font-weight:900;box-shadow:0 4px 12px rgba(13,115,105,.06)}
+.rx-paste-panel label{font-size:12px}
+.rx-paste-panel textarea{min-height:154px;padding:13px 14px;border-color:#b8d3df;background:#fbfdff;font-size:12px;line-height:1.6}
+.rx-file-state{gap:11px;margin-top:11px;padding:11px 12px;border-color:#bddbd6;border-radius:11px}
+.rx-file-state>span{width:34px;height:34px;border-radius:9px;font-size:14px}
+.rx-file-state b{font-size:12px}.rx-file-state small{margin-top:3px;font-size:10px;line-height:1.4}
+.rx-file-state button{padding:8px 11px;border-color:#8fc9bf;font-size:11px}
+.rx-file-queue{gap:8px;margin-top:10px}
+.rx-file-item{grid-template-columns:34px minmax(0,1fr) 138px 30px;gap:9px;padding:10px;border-radius:11px}
+.rx-file-item-icon{width:32px;height:32px;font-size:10px}
+.rx-file-item-main b{font-size:11px}.rx-file-item-main small{margin-top:4px;font-size:10px;line-height:1.35}
+.rx-file-item select{padding:8px 9px;font-size:10px}
+.rx-file-remove{width:29px;height:29px;font-size:17px}
+.rx-ocr-progress small{font-size:10px}
+.rx-diagnosis-auto-grid article>b{font-size:15px;line-height:1.45}
+.rx-diagnosis-auto-grid article div span{font-size:10px;line-height:1.4}
+.rx-diagnosis-chips span{font-size:10px;line-height:1.4}
+.rx-alert-missing-icd h3{font-size:14px}
+.rx-alert-missing-icd p{font-size:11px}
+.rx-suggested-codes{gap:7px}
+.rx-suggested-codes button{max-width:100%;padding:7px 9px;border-color:#d0a54b;background:#fffaf0;font-size:10px;line-height:1.35;text-align:left;white-space:normal}
+.rx-scope-note{color:#185f68;background:#f1f9fb;border-color:#b9dce6;font-size:12px;line-height:1.65}
+@media(max-width:760px){
+  .rx-upload-zone{min-height:185px;padding:21px 16px}
+  .rx-upload-zone b{font-size:15px}.rx-upload-zone small,.rx-upload-zone em{font-size:11px}
+  .rx-file-item{grid-template-columns:34px minmax(0,1fr) 30px}
+}
+
+/* Readability pass — 18/08/2026 */
+#view-prescription-check{font-size:15px}
+#view-prescription-check .kicker{font-size:12px;line-height:1.4}
+#view-prescription-check label{font-size:14px;line-height:1.45}
+#view-prescription-check input,
+#view-prescription-check select,
+#view-prescription-check textarea,
+#view-prescription-check button{font-size:14px}
+.rx-data-state b{font-size:14px}
+.rx-data-state small{font-size:12px;line-height:1.4}
+.rx-heading h2{font-size:20px;line-height:1.3}
+.rx-heading .btn{font-size:13px}
+.rx-step{font-size:14px}
+.rx-encounter-grid label small{font-size:12px}
+.rx-diagnosis-auto-grid article>span{font-size:11px;line-height:1.4}
+.rx-diagnosis-auto-grid article>b{font-size:17px;line-height:1.5}
+.rx-diagnosis-auto-grid article>small{font-size:11px;line-height:1.45}
+.rx-diagnosis-auto-grid article div span,
+.rx-diagnosis-auto-grid article div em{font-size:11.5px;line-height:1.45}
+.rx-diagnosis-edit-toggle{font-size:12px;line-height:1.4}
+.rx-diagnosis-edit{font-size:14px!important}
+.rx-diagnosis-chips span{font-size:12px;line-height:1.45}
+.rx-upload-zone b{font-size:18px;line-height:1.4}
+.rx-upload-zone small{font-size:13.5px;line-height:1.6}
+.rx-upload-zone em{font-size:13px;line-height:1.4}
+.rx-or span{font-size:11px}
+.rx-paste-panel label{font-size:14px}
+.rx-paste-panel textarea{font-size:14px;line-height:1.65}
+.rx-file-state b{font-size:13px}
+.rx-file-state small{font-size:11.5px;line-height:1.45}
+.rx-file-state button{font-size:12.5px}
+.rx-file-item-icon{font-size:11px}
+.rx-file-item-main b{font-size:12.5px}
+.rx-file-item-main small{font-size:11px;line-height:1.4}
+.rx-file-item select{font-size:12px}
+.rx-ocr-progress small{font-size:11.5px}
+.rx-drug-table th,.rx-drug-table td{font-size:13px;line-height:1.45}
+.rx-drug-table th{font-size:11px}
+.rx-drug-name-input{font-size:13.5px!important}
+.rx-active-name{font-size:11px;line-height:1.4}
+.rx-drug-table select{font-size:12.5px}
+.rx-resolve-state{font-size:11px}
+.rx-table-footer{font-size:11.5px;line-height:1.5}
+.rx-check-button b{font-size:15px}
+.rx-check-button small{font-size:11.5px;line-height:1.4}
+.rx-result-header h2{font-size:19px}
+.rx-score b{font-size:19px}
+.rx-score small{font-size:10px}
+.rx-summary span{font-size:11px;line-height:1.35}
+.rx-result-empty b{font-size:15px}
+.rx-result-empty p{font-size:12.5px;line-height:1.6}
+.rx-alert small{font-size:10.5px;line-height:1.4}
+.rx-alert h3{font-size:15px;line-height:1.45}
+.rx-alert p{font-size:12.5px;line-height:1.65}
+.rx-alert dt,.rx-alert dd{font-size:11.5px;line-height:1.5}
+.rx-cross-payment span,.rx-cross-payment em{font-size:10.5px}
+.rx-suggested-codes button{font-size:11.5px;line-height:1.5}
+.rx-result-footer{font-size:13px;line-height:1.55}
+.rx-result-footer button{font-size:12px}
+.rx-scope-note{font-size:13px;line-height:1.7}
+.rx-source-tier{font-size:11.5px;line-height:1.5}
+.rx-source-tier b{font-size:11.5px}
+.rx-source-tier span{font-size:11.5px}
+@media(max-width:760px){
+  #view-prescription-check{font-size:14px}
+  #view-prescription-check label{font-size:13.5px}
+  .rx-heading h2{font-size:18px}
+  .rx-upload-zone b{font-size:17px}
+  .rx-upload-zone small{font-size:13px}
+  .rx-upload-zone em{font-size:12.5px}
+  .rx-result-footer{font-size:12px}
+}

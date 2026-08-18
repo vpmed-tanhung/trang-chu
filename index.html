@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#075f9f">
   <title>Hệ thống Hỗ trợ Dược lâm sàng | VPMED Tân Hưng</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260812-user-account-v2">
+  <link rel="stylesheet" href="assets/style.css?v=20260818-home-disclaimer-v1">
   <link rel="stylesheet" href="assets/vpmed-access.css?v=20260814-password-change-v1">
   <link rel="stylesheet" href="assets/hepatotoxicity.css">
   <link rel="stylesheet" href="assets/pregnancy_lactation.css">
@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="assets/system-loader.css?v=20260811-desktop-spin-fix">
   <link rel="stylesheet" href="assets/stock_clinical_tools.css?v=20260814-direct-sources-v6">
   <link rel="stylesheet" href="assets/injectable_guide.css?v=20260814-content-from-original-v2">
-  <link rel="stylesheet" href="assets/prescription-check.css?v=20260817-rx-regulatory-v2">
+  <link rel="stylesheet" href="assets/prescription-check.css?v=20260818-rx-bhyt-v4">
   <script>document.documentElement.classList.add('system-loading','vpmed-auth-checking');</script>
   <noscript><style>#systemLoader{display:none!important}</style></noscript>
 </head>
@@ -103,6 +103,11 @@
       </div>
     </div>
 
+    <section class="home-responsibility-note" aria-label="Tuyên bố trách nhiệm">
+      <b>⚠️ Tuyên bố trách nhiệm</b>
+      <span>Công cụ này được thiết kế để HỖ TRỢ quyết định lâm sàng, không thay thế đánh giá lâm sàng trực tiếp. Mọi kết quả cần được xem xét trong bối cảnh lâm sàng cụ thể bởi bác sĩ/dược sĩ có chuyên môn. Người thiết kế không chịu trách nhiệm về hậu quả khi áp dụng kết quả mà không có đánh giá chuyên môn đầy đủ.</span>
+    </section>
+
     <section class="section-card">
       <div class="section-heading"><div><span class="kicker">Công cụ lâm sàng</span></div></div>
       <div class="feature-grid">
@@ -110,7 +115,7 @@
         <button class="feature-card" data-open="petct-dose"><span class="feature-icon">☢️</span><b>Tính liều PET/CT – Y học hạt nhân</b><small>Tính liều, bù phân rã và thể tích rút cho ca PET/CT.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="antibiotics"><span class="feature-icon">💊</span><b>Danh mục kháng sinh nội trú</b><small>Tra cứu liều, pha truyền, ADR và TDM của kháng sinh trong kho.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="diseases"><span class="feature-icon">🩺</span><b>Kháng sinh theo bệnh lý</b><small>Tra cứu phác đồ kháng sinh theo bệnh lý nhiễm khuẩn.</small><em>Đang hoạt động</em></button>
-        <button class="feature-card prescription-feature" data-open="prescription-check"><span class="feature-icon">📋</span><b>Rà soát đơn thuốc BHYT &amp; dịch vụ</b><small>Kiểm tra tương tác toàn đơn và cảnh báo thuốc BHYT chưa có mã bệnh phù hợp.</small><em>Tính năng mới</em></button>
+        <button class="feature-card prescription-feature" data-open="prescription-check"><span class="feature-icon">📋</span><b>Rà soát đơn thuốc BHYT</b><small>Kiểm tra tương tác toàn đơn và cảnh báo thuốc BHYT chưa có mã bệnh phù hợp.</small><em>Tính năng mới</em></button>
         <button class="feature-card" data-open="interactions"><span class="feature-icon">⚠️</span><b>Kiểm tra tương tác thuốc</b><small>Kiểm tra tương tác giữa hai thuốc hoặc trong toàn bộ danh mục.</small><em>Đang hoạt động</em></button>
         <button class="feature-card hepatotoxic-feature" data-open="hepatotoxicity"><span class="feature-icon">🫀</span><b>Thuốc có nguy cơ gây độc gan</b><small>Tra cứu nguy cơ độc gan và khuyến nghị theo dõi.</small><em>Đang hoạt động</em></button>
         <button class="feature-card pregnancy-feature" data-open="pregnancy-lactation"><span class="feature-icon">🤰</span><b>Thuốc dùng khi có thai & cho con bú</b><small>Tra cứu an toàn thuốc trong thai kỳ và khi cho con bú.</small><em>Đang hoạt động</em></button>
@@ -121,6 +126,7 @@
         <button class="feature-card" data-open="sources" data-intro-exclude="true"><span class="feature-icon">📚</span><b>Nguồn dữ liệu hệ thống</b><small>Xem tài liệu nguồn và nguyên tắc ưu tiên dữ liệu.</small><em>Đang hoạt động</em></button>
       </div>
     </section>
+
   </section>
 
   <section class="view" id="view-prescription-check">
@@ -128,7 +134,7 @@
       <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
     </div>
     <div class="page-title rx-page-title">
-      <div><span class="kicker">BHYT · DỊCH VỤ · AN TOÀN THUỐC</span><h1>Rà soát đơn thuốc trước giám định</h1></div>
+      <div><span class="kicker">BHYT · DỊCH VỤ · AN TOÀN THUỐC</span><h1>Rà soát đơn thuốc BHYT</h1></div>
       <div class="rx-data-state" id="rxDataState"><span class="rx-data-dot"></span><div><b>Đang chuẩn bị dữ liệu</b></div></div>
     </div>
 
@@ -139,7 +145,7 @@
           <div class="rx-encounter-grid">
             <label>Loại đơn<select id="rxEncounterType"><option>Đơn ngoại trú</option></select></label>
             <div class="rx-diagnosis-field">
-              <label>Chẩn đoán tự nhận diện từ đơn <small>Đọc từng mã chính xác trong mục chính/kèm theo · không gộp theo nhóm ICD</small></label>
+              <label>Chẩn đoán tự nhận diện từ đơn</label>
               <div class="rx-diagnosis-auto-grid">
                 <article><span>Mã bệnh chính</span><b id="rxPrimaryDiagnosisCode">Chưa nhận diện</b><small id="rxPrimaryDiagnosisSource">Chờ đọc đơn thuốc</small></article>
                 <article><span>Mã bệnh kèm theo</span><div id="rxSecondaryDiagnosisCodes"><em>Chưa nhận diện</em></div></article>
@@ -199,7 +205,7 @@
       </aside>
     </div>
 
-    <section class="section-card rx-scope-note"><b>Phạm vi:</b> Công cụ hỗ trợ sàng lọc trước giám định. <b>QĐ 5948/QĐ-BYT</b> là lớp xác định tương tác chống chỉ định. Cảnh báo từ <b>Trung tâm DI &amp; ADR Quốc gia</b> là lớp chuyên môn bổ sung trong khung giám sát ADR theo QĐ 29/QĐ-BYT và <b>không tự động được quy thành chống chỉ định</b> nếu QĐ 5948 không quy định. TT26/2025/TT-BYT và TT37/2024/TT-BYT được dùng theo đúng phạm vi kê đơn/BHYT; không dùng để tự sinh cặp tương tác thuốc. Gợi ý ICD-10 không thay thế quyết định của bác sĩ, dược sĩ hoặc bộ phận giám định.</section>
+    <section class="section-card rx-scope-note"><b>Phạm vi:</b> Tương tác: QĐ 5948/QĐ-BYT + QĐ 29/QĐ-BYT/DI&amp;ADR · ICD-10: TT06/2026/TT-BYT · Kê đơn: TT26/2025/TT-BYT · BHYT: TT20/2022 + TT37/2024</section>
   </section>
 
   <section class="view" id="view-dose">
@@ -1394,7 +1400,7 @@ calc();
 <script defer src="assets/unified.js?v=20260817-prescription-check-v1"></script>
 <script defer src="assets/icd-clinical-match.js?v=20260817-tt06-2026"></script>
 <script defer src="assets/prescription-diagnosis-ocr.js?v=20260817-exact-icd-v2"></script>
-<script defer src="assets/prescription-check.js?v=20260817-rx-regulatory-v2"></script>
+<script defer src="assets/prescription-check.js?v=20260818-rx-bhyt-v3"></script>
 <script defer src="assets/vpmed-renal-audit.js?v=20260814-module-history-v5"></script>
 <script defer src="assets/antibiotic_consultation.js?v=20260814-short-module-copy-v1"></script>
 <script defer src="assets/dose_24h_summary.js?v=20260802-structure-only"></script>
@@ -1433,7 +1439,7 @@ calc();
 <script defer src="vpmed-approved-data-bridge.js"></script>
 
   <script defer src="assets/pharmacovigilance_alerts_data.js?v=20260711"></script>
-  <script defer src="assets/pharmacovigilance_auto_data.js?v=20260817061928"></script>
+  <script defer src="assets/pharmacovigilance_auto_data.js?v=20260818062219"></script>
   <script defer src="assets/pharmacovigilance_bulletin_76_data.js?v=20260804"></script>
   <script defer src="assets/pharmacovigilance_auto_editor.js?v=20260728-structured"></script>
   <script defer src="assets/pharmacovigilance_integration.js?v=20260815-unified-status-v1"></script>
