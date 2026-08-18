@@ -76,6 +76,7 @@
     setDataState('','Đang chuẩn bị dữ liệu','');
     dataPromise=Promise.all([
       loadScript('assets/inpatient_medicines_20260707.js',()=>Array.isArray(window.VPMED_INPATIENT_MEDICINES_20260707)),
+      loadScript('assets/service_medicines_20260818.js',()=>Array.isArray(window.VPMED_SERVICE_MEDICINES_20260818)),
       loadScript('assets/drug_profiles_305_vpmed_20260710.js',()=>Array.isArray(window.VPMED_FULL_DRUG_PROFILES_305)),
       loadScript('assets/icd10_verified_profiles_20260710.js',()=>Array.isArray(window.VPMED_VERIFIED_DRUG_PROFILES)),
       loadScript('assets/icd10_code_index_2026.js',()=>Array.isArray(window.VPMED_ICD10_CODE_INDEX_2026)),
@@ -95,7 +96,17 @@
     return dataPromise;
   }
 
-  function getMeds(){return window.VPMED_INPATIENT_MEDICINES_20260707||[]}
+  function getMeds(){
+    const inpatient=Array.isArray(window.VPMED_INPATIENT_MEDICINES_20260707)?window.VPMED_INPATIENT_MEDICINES_20260707:[];
+    const service=Array.isArray(window.VPMED_SERVICE_MEDICINES_20260818)?window.VPMED_SERVICE_MEDICINES_20260818.map(item=>({...item,sourcePayment:'Dịch vụ',category:item.type||'Thuốc dịch vụ'})):[];
+    const seen=new Set();
+    return [...inpatient,...service].filter(med=>{
+      const key=[norm(med.name),norm(med.strength),norm(med.route)].join('|');
+      if(seen.has(key))return false;
+      seen.add(key);
+      return true;
+    });
+  }
   function getProfiles(){return window.VPMED_FULL_DRUG_PROFILES_305||[]}
   function getVerifiedProfiles(){return window.VPMED_VERIFIED_DRUG_PROFILES||[]}
   function getInteractions(){
@@ -107,7 +118,7 @@
   function populateDrugOptions(){
     const list=rx$('#rxDrugOptions');
     if(!list)return;
-    list.innerHTML=getMeds().map(med=>`<option value="${esc(med.name)}">${esc(med.active)} · ${esc(med.strength||med.regNumber||'')}</option>`).join('');
+    list.innerHTML=getMeds().map(med=>`<option value="${esc(med.name)}">${esc(med.active)} · ${esc(med.strength||med.regNumber||'')}${med.sourcePayment?` · ${esc(med.sourcePayment)}`:''}</option>`).join('');
   }
 
   function scoreCandidate(query,candidate,weight){

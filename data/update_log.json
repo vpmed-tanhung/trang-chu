@@ -1,5 +1,29 @@
 [
   {
+    "date": "2026-08-18",
+    "module": "Danh mục thuốc dịch vụ",
+    "change": "Bỏ cụm 3 ô thống kê “357 mặt hàng / 307 thuốc / 50 sản phẩm khác” khỏi đầu module, giữ giao diện gọn chỉ gồm tên module, ngày cập nhật, bộ lọc và bảng danh mục; nâng phiên bản web lên v4.4.",
+    "source": "Giao diện nội bộ",
+    "status": "published",
+    "updatedBy": "Khoa Dược"
+  },
+  {
+    "date": "2026-08-18",
+    "module": "Danh mục thuốc dịch vụ",
+    "change": "Tinh gọn giao diện: bỏ thông tin nguồn, dòng mô tả và số lượng hiển thị thừa; đưa “Cập nhật 18/08/2026” xuống dưới tên module; bỏ phân loại Nhi và khôi phục danh mục về cấu trúc tra cứu ban đầu; nâng phiên bản web lên v4.3.",
+    "source": "Giao diện nội bộ",
+    "status": "published",
+    "updatedBy": "Khoa Dược"
+  },
+  {
+    "date": "2026-08-18",
+    "module": "Danh mục thuốc dịch vụ",
+    "change": "Bổ sung danh mục 357 mặt hàng duy nhất từ 449 dòng nguồn; hỗ trợ tìm kiếm theo tên, hoạt chất, đường dùng, hàm lượng và loại sản phẩm; đồng thời bổ sung dữ liệu vào gợi ý của chức năng rà soát đơn BHYT/dịch vụ.",
+    "source": "thuoc_dich_vu_da_loc_20260818.xlsx",
+    "status": "published",
+    "updatedBy": "Khoa Dược"
+  },
+  {
     "date": "2026-07-04",
     "module": "Hệ thống dữ liệu chuyên môn",
     "change": "Tạo cấu trúc dữ liệu thực hành lâm sàng: hồ sơ thuốc, nguồn tham khảo, trạng thái duyệt và nhật ký cập nhật.",

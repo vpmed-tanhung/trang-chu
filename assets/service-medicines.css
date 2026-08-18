@@ -1,0 +1,16 @@
+#view-service-medicines .service-catalog-toolbar{display:grid;grid-template-columns:minmax(260px,1.7fr) minmax(180px,.7fr) minmax(180px,.7fr) auto;gap:12px;align-items:end}
+#view-service-medicines .service-catalog-toolbar label{margin:0}
+#view-service-medicines .service-clear{height:43px;white-space:nowrap}
+#view-service-medicines .service-updated{display:block;margin-top:3px;color:var(--muted);font-size:11px;font-weight:600;line-height:1.35}
+#view-service-medicines .service-table{margin-top:14px}
+#view-service-medicines .service-table table{min-width:900px}
+#view-service-medicines .service-name{font-weight:800;color:#075d98}
+#view-service-medicines .service-active{color:#244965}
+#view-service-medicines .service-badge{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:800;border:1px solid #cbdde8;background:#f4f9fc;color:#315b74;white-space:nowrap}
+#view-service-medicines .service-badge.type-drug{background:#eaf5fc;border-color:#b9d8ea;color:#075d98}
+#view-service-medicines .service-badge.type-cosmetic{background:#fff4fb;border-color:#efc9df;color:#8b3a68}
+#view-service-medicines .service-badge.type-device{background:#f4f7ff;border-color:#ced7ef;color:#425b9b}
+#view-service-medicines .service-badge.type-supplement{background:#f3fbef;border-color:#cee5c5;color:#4d7440}
+#view-service-medicines .service-empty{text-align:center;padding:28px!important;color:var(--muted)}
+@media(max-width:900px){#view-service-medicines .service-catalog-toolbar{grid-template-columns:1fr 1fr}#view-service-medicines .service-clear{width:100%}}
+@media(max-width:620px){#view-service-medicines .service-catalog-toolbar{grid-template-columns:1fr}}
