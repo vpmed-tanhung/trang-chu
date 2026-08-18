@@ -1010,28 +1010,31 @@
 
 /* ===== Home responsibility notice — 18/08/2026 ===== */
 #view-home .home-responsibility-note{
-  display:flex;
-  align-items:flex-start;
-  gap:10px;
-  margin-top:18px;
-  padding:16px 18px;
-  border:1px solid #efb7bc;
-  border-left:5px solid #c43a45;
-  border-radius:14px;
-  background:#fff7f7;
-  color:#a92732;
-  box-shadow:0 8px 20px rgba(170,39,50,.06);
-  font-size:15px;
-  line-height:1.65;
+  display:block;
+  margin-top:14px;
+  padding:10px 14px;
+  border:1px solid #efc4c8;
+  border-left:4px solid #c43a45;
+  border-radius:10px;
+  background:#fff8f8;
+  color:#9f2630;
+  box-shadow:0 4px 12px rgba(170,39,50,.04);
+  font-size:12.5px;
+  line-height:1.5;
 }
 #view-home .home-responsibility-note b{
-  flex:0 0 auto;
+  display:block;
+  margin-bottom:4px;
   color:#a81722;
-  font-size:15px;
+  font-size:12.5px;
   font-weight:900;
 }
-#view-home .home-responsibility-note span{font-weight:650}
+#view-home .home-responsibility-text{font-weight:600}
+#view-home .home-responsibility-text span{display:block;margin-top:2px}
+#view-home .home-responsibility-text span:first-child{margin-top:0}
+#view-home .home-responsibility-text strong{font-weight:900}
 @media(max-width:720px){
-  #view-home .home-responsibility-note{display:block;padding:14px 15px;font-size:14px;line-height:1.6}
-  #view-home .home-responsibility-note b{display:block;margin-bottom:5px;font-size:14px}
+  #view-home .home-responsibility-note{margin-top:12px;padding:9px 11px;font-size:11.5px;line-height:1.5}
+  #view-home .home-responsibility-note b{margin-bottom:3px;font-size:11.8px}
+  #view-home .home-responsibility-text span{margin-top:3px}
 }
