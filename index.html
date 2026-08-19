@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8">
+<meta name="vpmed-build-version" content="2026.08.19.27">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#075f9f">
   <title>Hệ thống Hỗ trợ Dược lâm sàng | VPMED Tân Hưng</title>
@@ -15,6 +16,7 @@
   <link rel="stylesheet" href="assets/stock_clinical_tools.css?v=20260814-direct-sources-v6">
   <link rel="stylesheet" href="assets/injectable_guide.css?v=20260814-content-from-original-v2">
   <link rel="stylesheet" href="assets/prescription-check.css?v=20260818-rx-ui-v8">
+  <link rel="stylesheet" href="assets/inpatient-order-review.css?v=20260819-inpatient-order-v2-busy">
   <script>document.documentElement.classList.add('system-loading','vpmed-auth-checking');</script>
   <noscript><style>#systemLoader{display:none!important}</style></noscript>
 </head>
@@ -111,6 +113,7 @@
         <button class="feature-card" data-open="antibiotics"><span class="feature-icon">💊</span><b>Danh mục kháng sinh nội trú</b><small>Tra cứu liều, pha truyền, ADR và TDM của kháng sinh trong kho.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="diseases"><span class="feature-icon">🩺</span><b>Kháng sinh theo bệnh lý</b><small>Tra cứu phác đồ kháng sinh theo bệnh lý nhiễm khuẩn.</small><em>Đang hoạt động</em></button>
         <button class="feature-card prescription-feature" data-open="prescription-check"><span class="feature-icon">📋</span><b>Rà soát đơn thuốc BHYT</b><small>Kiểm tra tương tác toàn đơn và phân biệt thiếu mã bệnh với mã bệnh chưa thật sự phù hợp.</small><em>Tính năng mới</em></button>
+        <button class="feature-card" data-open="inpatient-order"><span class="feature-icon">🏥</span><b>Phân tích y lệnh nội trú</b><small>Tính liều, cách dùng, tốc độ truyền, tương tác thuốc và cảnh báo suy thận từ ảnh y lệnh.</small><em>Tính năng mới</em></button>
         <button class="feature-card" data-open="interactions"><span class="feature-icon">⚠️</span><b>Kiểm tra tương tác thuốc</b><small>Kiểm tra tương tác giữa hai thuốc hoặc trong toàn bộ danh mục.</small><em>Đang hoạt động</em></button>
         <button class="feature-card hepatotoxic-feature" data-open="hepatotoxicity"><span class="feature-icon">🫀</span><b>Thuốc có nguy cơ gây độc gan</b><small>Tra cứu nguy cơ độc gan và khuyến nghị theo dõi.</small><em>Đang hoạt động</em></button>
         <button class="feature-card pregnancy-feature" data-open="pregnancy-lactation"><span class="feature-icon">🤰</span><b>Thuốc dùng khi có thai & cho con bú</b><small>Tra cứu an toàn thuốc trong thai kỳ và khi cho con bú.</small><em>Đang hoạt động</em></button>
@@ -211,6 +214,51 @@
     </div>
 
     <section class="section-card rx-scope-note"><b>Phạm vi:</b> Tương tác: QĐ 5948/QĐ-BYT + QĐ 29/QĐ-BYT/DI&amp;ADR · ICD-10: TT06/2026/TT-BYT + HDSD/SPC Cục QLD + Dược thư QGVN III + Phác đồ/Hướng dẫn BYT · Kê đơn: TT26/2025/TT-BYT + HDSD/SPC Cục QLD + Dược thư QGVN III · BHYT: TT20/2022 + TT37/2024 + TT01/2025 + NĐ188/2025</section>
+  </section>
+
+  <section class="view" id="view-inpatient-order">
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <div class="page-title">
+      <div><h1>Phân tích y lệnh dùng thuốc nội trú</h1></div>
+    </div>
+
+    <div class="io-privacy-banner">
+      <span class="io-privacy-icon">⚠️</span>
+      <div>
+        <label class="io-consent-line"><input type="checkbox" id="ioConsent"> Tôi xác nhận đã che/xóa thông tin định danh bệnh nhân trong ảnh trước khi phân tích.</label>
+      </div>
+    </div>
+
+    <div class="rx-workspace">
+      <div class="rx-main-column">
+        <section class="section-card">
+          <div class="section-heading rx-heading"><div><span class="rx-step">1</span><div><span class="kicker">TẢI ẢNH Y LỆNH</span><h2>Ảnh y lệnh/bệnh án</h2></div></div></div>
+          <label class="rx-upload-zone io-upload-zone" for="ioUploadInput" id="ioUploadZone">
+            <input id="ioUploadInput" type="file" accept="image/*" multiple>
+            <span class="rx-upload-icon">↑</span>
+            <b>Chụp ảnh hoặc tải nhiều trang y lệnh</b>
+            <em>Chọn nhiều tệp</em>
+          </label>
+          <div class="io-file-queue" id="ioFileQueue" hidden></div>
+          <div class="io-status" id="ioStatus" hidden></div>
+          <div class="rx-new-prescription-action">
+            <button type="button" class="btn btn-primary" id="ioAnalyzeBtn" disabled>⌁ Phân tích y lệnh</button>
+            <button type="button" class="btn btn-soft" id="ioResetBtn" disabled>↻ Đơn mới</button>
+          </div>
+        </section>
+      </div>
+
+      <aside class="rx-result-column">
+        <section class="rx-result-card">
+          <header class="rx-result-header"><div><span class="kicker">KẾT QUẢ PHÂN TÍCH</span><h2>Y lệnh nội trú</h2></div></header>
+          <div class="rx-result-body" id="ioResultBody"><div class="empty-state"><b>Sẵn sàng nhận ảnh y lệnh</b><p>Tải ảnh y lệnh/bệnh án của cùng một bệnh nhân, cùng một đợt y lệnh. Không giới hạn số lượng ảnh.</p></div></div>
+        </section>
+      </aside>
+    </div>
+
+    <section class="section-card rx-scope-note"><b>Phạm vi:</b> Liều dùng · Cách dùng · Tốc độ truyền (không pha chế) · Tương tác trong y lệnh · Cảnh báo suy thận. Nguồn: UpToDate · Dược thư Quốc gia Việt Nam · Phác đồ Bộ Y tế. Kết quả hỗ trợ tham khảo, không thay thế đánh giá lâm sàng.</section>
   </section>
 
   <section class="view" id="view-dose">
@@ -1406,7 +1454,8 @@ calc();
 <script defer src="assets/unified.js?v=20260817-prescription-check-v1"></script>
 <script defer src="assets/icd-clinical-match.js?v=20260817-tt06-2026"></script>
 <script defer src="assets/prescription-diagnosis-ocr.js?v=20260817-exact-icd-v2"></script>
-<script defer src="assets/prescription-check.js?v=20260818-rx-payment-v8"></script>
+<script defer src="assets/prescription-check.js?v=20260819-build21"></script>
+<script defer src="assets/inpatient-order-review.js?v=20260819-inpatient-order-v4-busy"></script>
 <script defer src="assets/vpmed-renal-audit.js?v=20260814-module-history-v5"></script>
 <script defer src="assets/antibiotic_consultation.js?v=20260814-short-module-copy-v1"></script>
 <script defer src="assets/dose_24h_summary.js?v=20260802-structure-only"></script>
@@ -1451,6 +1500,6 @@ calc();
   <script defer src="assets/pharmacovigilance_integration.js?v=20260815-unified-status-v1"></script>
   <script defer src="assets/professional_icons.js?v=20260715-clinical-cute"></script>
   <script defer src="assets/petct_step_form.js?v=20260713"></script>
-  <script defer src="assets/update-notifier.js?v=20260818-separate-update-notice"></script>
+  <script defer src="assets/update-notifier.js?v=20260819-build21"></script>
 </body>
 </html>

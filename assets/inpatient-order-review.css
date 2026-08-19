@@ -1,0 +1,52 @@
+/* Phân tích y lệnh nội trú — chỉ bổ sung phần chưa có class dùng chung */
+
+.io-privacy-banner{display:flex;gap:12px;align-items:flex-start;background:#fff8e9;border:1px solid #ead18f;border-radius:14px;padding:16px 18px;margin-bottom:16px;line-height:1.55}
+.io-privacy-banner .io-privacy-icon{font-size:22px;line-height:1}
+.io-privacy-banner b{display:block;color:#6f5a1c;margin-bottom:4px}
+.io-privacy-banner p{margin:0 0 10px;color:#6f5a1c}
+.io-consent-line{display:flex!important;align-items:flex-start;gap:9px;margin:0!important;font-size:13px;color:#6f5a1c}
+.io-consent-line input{width:auto;margin-top:3px}
+
+.io-file-queue{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.io-queue-count{flex-basis:100%;font-size:12px;color:var(--muted);font-weight:800}
+.io-file-chip{position:relative;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fbfdff;border-radius:12px;padding:6px 10px 6px 6px}
+.io-file-thumb{width:38px;height:38px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+.io-file-chip span{font-size:12px;font-weight:800;color:#075d98}
+.io-file-remove{border:0;background:#fff0f0;color:var(--danger);border-radius:999px;width:20px;height:20px;line-height:1;font-size:12px;cursor:pointer}
+
+.io-upload-zone.io-drag-over{border-color:#5db0df;background:#eaf5fc}
+
+.io-status{margin-top:12px;padding:10px 14px;border-radius:10px;background:#eaf5fc;color:#075d98;font-weight:800;font-size:13px}
+
+.io-context-alert{margin-bottom:16px}
+.io-disclaimer{margin-top:18px;font-size:12.5px}
+.io-no-interaction{color:var(--green);font-weight:700}
+
+.io-drug-card .io-dose-ok{color:#0f6b3f}
+.io-drug-card .io-dose-warn{color:#b45309;font-weight:700}
+.io-drug-card .io-dose-unknown{color:var(--muted)}
+.io-renal-inline{margin-top:10px}
+
+.io-interaction-card{border-left-width:4px}
+.io-sev-badge{display:inline-block;margin:4px 0 8px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:900}
+.io-sev-cc{border-left-color:var(--danger)}
+.io-sev-cc.io-sev-badge,.io-sev-badge.io-sev-cc{background:#ffe3e3;color:#8a1c1c}
+.io-sev-nt{border-left-color:#e08a2e}
+.io-sev-nt.io-sev-badge,.io-sev-badge.io-sev-nt{background:#fff1de;color:#8a5000}
+.io-sev-lu{border-left-color:#5db0df}
+.io-sev-lu.io-sev-badge,.io-sev-badge.io-sev-lu{background:#eaf5fc;color:#075d98}
+
+@media(max-width:640px){
+  .io-privacy-banner{flex-direction:column}
+}
+
+/* Trạng thái phân tích: gọn, rõ, không tạo thêm dòng thông báo dài. */
+.io-btn-busy{cursor:wait!important}
+.io-spinner{display:inline-block;width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:io-spin .75s linear infinite;vertical-align:-3px}
+.io-spinner-btn{width:15px;height:15px;margin-right:5px;vertical-align:-2px}
+.io-analyzing-state{min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#075d98;padding:28px}
+.io-analyzing-state b{margin-top:14px;font-size:16px;color:#064f7e}
+.io-analyzing-state p{margin:7px 0 0;color:var(--muted);font-size:13px}
+.io-spinner-result{width:30px;height:30px;border-width:3px}
+@keyframes io-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.io-spinner{animation-duration:1.8s}}

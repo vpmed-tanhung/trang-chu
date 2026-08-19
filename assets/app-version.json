@@ -1,7 +1,7 @@
 {
-  "version": "2026.08.19.20",
+  "version": "2026.08.19.27",
   "displayVersion": "4.9",
-  "updatedAt": "2026-08-19T16:57:00+07:00",
-  "note": "Phân biệt rõ thiếu mã bệnh với mã bệnh đã có nhưng chưa thật sự phù hợp; bỏ câu diễn giải thừa trong khung gợi ý ICD.",
-  "buildId": "v4.9-rx-icd-status-20260819-20"
+  "updatedAt": "2026-08-19T23:41:00+07:00",
+  "note": "Bổ sung trạng thái phân tích y lệnh gọn: spinner + “Đang phân tích…” trên nút và khung kết quả; tự biến mất khi có kết quả hoặc lỗi. Giữ nguyên luồng Apps Script + Gemini.",
+  "buildId": "v4.9-inpatient-order-busy-indicator-appscript-20260819-27"
 }

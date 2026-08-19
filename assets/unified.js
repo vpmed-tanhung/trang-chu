@@ -4,7 +4,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&
 const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 function showView(name){if(name==='icd10-bhyt')name='home';$$('.view').forEach(v=>v.classList.remove('active'));$('#view-'+name)?.classList.add('active');$$('.main-nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));history.replaceState(null,'','#'+name);$('#mainNav').classList.remove('open');window.scrollTo({top:0,behavior:'smooth'})}
 $$('[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));$$('[data-open]').forEach(b=>b.onclick=()=>showView(b.dataset.open));$$('[data-go]').forEach(b=>b.onclick=e=>{e.preventDefault();showView(b.dataset.go)});$('#menuBtn').onclick=()=>$('#mainNav').classList.toggle('open');
-const initial=location.hash.replace('#','');if(['home','dose','petct-dose','antibiotics','diseases','prescription-check','interactions','hepatotoxicity','pregnancy-lactation','icd10-bhyt','pediatric-dose','injectable-guide','sources'].includes(initial))showView(initial);
+const initial=location.hash.replace('#','');if(['home','dose','petct-dose','antibiotics','diseases','prescription-check','inpatient-order','interactions','hepatotoxicity','pregnancy-lactation','icd10-bhyt','pediatric-dose','injectable-guide','sources'].includes(initial))showView(initial);
 const statDrugs=$('#statDrugs'),statInteractions=$('#statInteractions');if(statDrugs)statDrugs.textContent=D.length;if(statInteractions)statInteractions.textContent=I.length;
 
 // Antibiotics

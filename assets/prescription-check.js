@@ -26,6 +26,21 @@
     diagnosis:{primary:[],secondary:[],source:'Chờ OCR',conflicts:[],manual:false}
   };
   let dataPromise=null;
+  let activeOcrWorker=null;
+  let ocrRunToken=0;
+
+  function cancelActiveOcr(){
+    ocrRunToken+=1;
+    const worker=activeOcrWorker;
+    activeOcrWorker=null;
+    if(worker&&typeof worker.terminate==='function'){
+      Promise.resolve(worker.terminate()).catch(()=>{});
+    }
+  }
+
+  function ocrRunIsCurrent(token){
+    return token===ocrRunToken;
+  }
 
   function normalizePayment(value){
     const normalized=norm(value);
@@ -1040,10 +1055,12 @@
     const pending=state.files.filter(entry=>entry.file);
     if(!pending.length){alert(state.files.length?'Các ảnh đã được xử lý và giải phóng khỏi bộ nhớ. Hãy chọn thêm ảnh nếu cần.':'Vui lòng chọn ít nhất một ảnh đơn thuốc.');return}
     const button=rx$('#rxRunOcr');
+    const runToken=++ocrRunToken;
     button.disabled=true;
     let worker=null;
     try{
       await ensureData();
+      if(!ocrRunIsCurrent(runToken))return;
       const sourceIds=new Set(pending.map(entry=>entry.id));
       state.drugs=state.drugs.filter(drug=>!sourceIds.has(drug.sourceId));
       state.diagnosis={primary:[],secondary:[],source:'Đang OCR chẩn đoán',conflicts:[],manual:false};
@@ -1051,12 +1068,17 @@
       const ocrPassCount=3;
       setOcrProgress(8,'Đang nạp bộ OCR cục bộ…');
       const Tesseract=await loadTesseract();
+      if(!ocrRunIsCurrent(runToken))return;
       worker=await Tesseract.createWorker(['vie','eng'],1,{logger:message=>{
+        if(!ocrRunIsCurrent(runToken))return;
         const within=(ocrPass+(message.progress||0))/ocrPassCount;
         const progress=8+((currentIndex+within)/pending.length)*88;
         setOcrProgress(progress,`Đang OCR đơn ${currentIndex+1}/${pending.length} · lượt ${ocrPass+1}/${ocrPassCount} trên thiết bị…`);
       }});
+      if(!ocrRunIsCurrent(runToken)){await worker.terminate().catch(()=>{});worker=null;return}
+      activeOcrWorker=worker;
       for(currentIndex=0;currentIndex<pending.length;currentIndex+=1){
+        if(!ocrRunIsCurrent(runToken))break;
         const entry=pending[currentIndex];
         entry.status='processing';
         entry.error='';
@@ -1065,38 +1087,53 @@
         setOcrProgress(8+(currentIndex/pending.length)*88,`Đang đọc ${entry.name} cục bộ — không tải ảnh lên máy chủ`);
         try{
           if(!entry.fileType.startsWith('image/'))throw new Error('Chỉ chấp nhận tệp ảnh để OCR cục bộ.');
+          const sourceFile=entry.file;
+          if(!sourceFile)continue;
           if(worker.setParameters)await worker.setParameters({tessedit_pageseg_mode:'3',preserve_interword_spaces:'1',user_defined_dpi:'300'}).catch(()=>{});
+          if(!ocrRunIsCurrent(runToken))break;
           ocrPass=0;
-          const pagePass=await worker.recognize(entry.file);
-          const enhancedImage=await createEnhancedOcrImage(entry.file).catch(()=>entry.file);
+          const pagePass=await worker.recognize(sourceFile);
+          if(!ocrRunIsCurrent(runToken))break;
+          let enhancedImage=await createEnhancedOcrImage(sourceFile).catch(()=>sourceFile);
           if(worker.setParameters)await worker.setParameters({tessedit_pageseg_mode:'6',preserve_interword_spaces:'1',user_defined_dpi:'300'}).catch(()=>{});
+          if(!ocrRunIsCurrent(runToken)){enhancedImage=null;break}
           ocrPass=1;
           const densePass=await worker.recognize(enhancedImage);
+          if(!ocrRunIsCurrent(runToken)){enhancedImage=null;break}
           if(worker.setParameters)await worker.setParameters({tessedit_pageseg_mode:'11',preserve_interword_spaces:'1',user_defined_dpi:'300'}).catch(()=>{});
+          if(!ocrRunIsCurrent(runToken)){enhancedImage=null;break}
           ocrPass=2;
           const sparsePass=await worker.recognize(enhancedImage);
+          enhancedImage=null;
+          if(!ocrRunIsCurrent(runToken))break;
           const text=[pagePass.data?.text||'',densePass.data?.text||'',sparsePass.data?.text||''].join('\n');
           const drugs=applyRecognizedText(entry,text);
+          if(!ocrRunIsCurrent(runToken))break;
           state.drugs.push(...drugs);
         }catch(error){
+          if(!ocrRunIsCurrent(runToken))break;
           entry.status='error';
           entry.error=error.message||'Không thể đọc tệp';
           entry.note=entry.error;
           entry.drugCount=0;
         }finally{
+          // File gốc chỉ cần tồn tại trong thời gian OCR; giải phóng tham chiếu ngay sau mỗi đơn.
           entry.file=null;
         }
+        if(!ocrRunIsCurrent(runToken))break;
         renderFileQueue();
         renderRows();
         mergeDiagnosisFromFiles();
       }
+      if(!ocrRunIsCurrent(runToken))return;
       markStale();
       rx$('#rxOcrProgress').hidden=true;
       rx$('#rxOcrBar').style.width='4%';
       rx$('#rxOcrText').textContent='Đang nhận dạng…';
     }catch(error){
-      setOcrProgress(100,error.message||'Không thể đọc đơn thuốc.');
+      if(ocrRunIsCurrent(runToken))setOcrProgress(100,error.message||'Không thể đọc đơn thuốc.');
     }finally{
+      if(activeOcrWorker===worker)activeOcrWorker=null;
       if(worker)await worker.terminate().catch(()=>{});
       button.disabled=false;
     }
@@ -1118,6 +1155,15 @@
   }
 
   function resetPrescription(options={}){
+    // Dừng mọi OCR còn chạy trước khi xóa để tác vụ bất đồng bộ không thể ghi dữ liệu trở lại sau khi người dùng đã bấm xóa.
+    cancelActiveOcr();
+    state.files.forEach(entry=>{
+      entry.file=null;
+      entry.diagnosis={primary:[],secondary:[]};
+      entry.error='';
+      entry.note='';
+      entry.title='';
+    });
     state.drugs=[];
     state.files=[];
     state.lastCheck=null;
@@ -1130,6 +1176,8 @@
     rx$('#rxEditDiagnosis').textContent='Chỉnh lại nếu OCR đọc sai';
     rx$('#rxPasteDrugs').value='';
     rx$('#rxPrescriptionFile').value='';
+    const ocrButton=rx$('#rxRunOcr');
+    if(ocrButton)ocrButton.disabled=false;
     rx$('#rxFileState').hidden=true;
     rx$('#rxFileQueue').hidden=true;
     rx$('#rxFileQueue').innerHTML='';
@@ -1162,7 +1210,11 @@
     clearTimeout(toast._hideTimer);
     toast.classList.remove('is-visible');
     requestAnimationFrame(()=>toast.classList.add('is-visible'));
-    toast._hideTimer=setTimeout(()=>toast.classList.remove('is-visible'),2800);
+    toast._hideTimer=setTimeout(()=>{
+      toast.classList.remove('is-visible');
+      // Không giữ lại nút thông báo ẩn hoặc nội dung tra cứu trong DOM sau khi hết thời gian hiển thị.
+      setTimeout(()=>{if(toast.parentNode)toast.remove()},220);
+    },2800);
   }
 
   function bindEvents(){
