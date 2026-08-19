@@ -1,7 +1,7 @@
 {
-  "version": "2026.08.18.17",
-  "displayVersion": "4.8",
-  "updatedAt": "2026-08-18T16:56:00+07:00",
-  "note": "Điều chỉnh quy tắc nhận diện loại đơn: “Đơn thuốc” được hiểu trực tiếp là đơn Dịch vụ (không còn là fallback yếu); “Nhà thuốc Bệnh Viện” cũng là Dịch vụ. “Đơn thuốc BHYT” và “Quầy Phát Thuốc Bảo Hiểm” vẫn được ưu tiên nhận diện BHYT trước vì có chứa cụm “Đơn thuốc”. Hệ thống tiếp tục quét toàn bộ văn bản OCR trước khi kết luận Chưa xác định.",
-  "buildId": "v4.8-rx-generic-prescription-service-20260818-17"
+  "version": "2026.08.19.20",
+  "displayVersion": "4.9",
+  "updatedAt": "2026-08-19T16:57:00+07:00",
+  "note": "Phân biệt rõ thiếu mã bệnh với mã bệnh đã có nhưng chưa thật sự phù hợp; bỏ câu diễn giải thừa trong khung gợi ý ICD.",
+  "buildId": "v4.9-rx-icd-status-20260819-20"
 }

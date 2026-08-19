@@ -86,6 +86,34 @@
     return families;
   }
 
+  function foldClinicalText(value){
+    return String(value||'')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g,'')
+      .replace(/đ/g,'d')
+      .replace(/[^a-z0-9]+/g,' ')
+      .trim();
+  }
+
+  const CLINICAL_STOP_WORDS=new Set([
+    'benh','khong','xac','dinh','khac','va','hoac','kem','theo','do','tai','cua','voi','trong','tren','duoi',
+    'trieu','chung','dau','hieu','roi','loan','nguyen','phat','thu','phat','dieu','tri','ho','tro','giam','tang',
+    'nhe','vua','nang','chuc','nang','cap','man','tinh','chua','phan','loai','khac','khong','dac','hieu'
+  ]);
+
+  function clinicalTokens(value){
+    return foldClinicalText(value).split(/\s+/).filter(token=>token.length>=3&&!CLINICAL_STOP_WORDS.has(token));
+  }
+
+  function isClinicalTextRelated(observedTexts,targetTexts){
+    const observed=new Set((observedTexts||[]).flatMap(clinicalTokens));
+    const target=new Set((targetTexts||[]).flatMap(clinicalTokens));
+    if(!observed.size||!target.size)return false;
+    for(const token of observed)if(target.has(token))return true;
+    return false;
+  }
+
   function matchAny(observedValues,allowedValues){
     const observed=uniqueCodes(observedValues);
     const allowed=uniqueCodes(allowedValues);
@@ -104,5 +132,5 @@
     return {matched:false,mode:'none',observed:'',allowed:'',category:''};
   }
 
-  return Object.freeze({VERSION,SOURCES,normalizeCode,categoryOf,familyCategories,matchAny});
+  return Object.freeze({VERSION,SOURCES,normalizeCode,categoryOf,familyCategories,isClinicalTextRelated,matchAny});
 });

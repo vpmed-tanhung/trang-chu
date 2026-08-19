@@ -110,7 +110,7 @@
         <button class="feature-card" data-open="petct-dose"><span class="feature-icon">☢️</span><b>Tính liều PET/CT – Y học hạt nhân</b><small>Tính liều, bù phân rã và thể tích rút cho ca PET/CT.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="antibiotics"><span class="feature-icon">💊</span><b>Danh mục kháng sinh nội trú</b><small>Tra cứu liều, pha truyền, ADR và TDM của kháng sinh trong kho.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="diseases"><span class="feature-icon">🩺</span><b>Kháng sinh theo bệnh lý</b><small>Tra cứu phác đồ kháng sinh theo bệnh lý nhiễm khuẩn.</small><em>Đang hoạt động</em></button>
-        <button class="feature-card prescription-feature" data-open="prescription-check"><span class="feature-icon">📋</span><b>Rà soát đơn thuốc BHYT</b><small>Kiểm tra tương tác toàn đơn và cảnh báo thuốc BHYT chưa có mã bệnh phù hợp.</small><em>Tính năng mới</em></button>
+        <button class="feature-card prescription-feature" data-open="prescription-check"><span class="feature-icon">📋</span><b>Rà soát đơn thuốc BHYT</b><small>Kiểm tra tương tác toàn đơn và phân biệt thiếu mã bệnh với mã bệnh chưa thật sự phù hợp.</small><em>Tính năng mới</em></button>
         <button class="feature-card" data-open="interactions"><span class="feature-icon">⚠️</span><b>Kiểm tra tương tác thuốc</b><small>Kiểm tra tương tác giữa hai thuốc hoặc trong toàn bộ danh mục.</small><em>Đang hoạt động</em></button>
         <button class="feature-card hepatotoxic-feature" data-open="hepatotoxicity"><span class="feature-icon">🫀</span><b>Thuốc có nguy cơ gây độc gan</b><small>Tra cứu nguy cơ độc gan và khuyến nghị theo dõi.</small><em>Đang hoạt động</em></button>
         <button class="feature-card pregnancy-feature" data-open="pregnancy-lactation"><span class="feature-icon">🤰</span><b>Thuốc dùng khi có thai & cho con bú</b><small>Tra cứu an toàn thuốc trong thai kỳ và khi cho con bú.</small><em>Đang hoạt động</em></button>
@@ -205,12 +205,12 @@
           <header class="rx-result-header"><div><span class="kicker">KẾT QUẢ RÀ SOÁT</span><h2 id="rxResultTitle">Chưa kiểm tra</h2></div><div class="rx-score" id="rxScore"><b>—</b><small>/100</small></div></header>
           <div class="rx-summary" id="rxSummary"><div><b>—</b><span>Tương tác</span></div><div><b>—</b><span>Mã bệnh</span></div><div><b>—</b><span>Đã đối chiếu</span></div></div>
           <div class="rx-result-body" id="rxResultBody"><div class="rx-result-empty"><span>✓</span><b>Sẵn sàng nhận dữ liệu</b><p>Tải các đơn của cùng lượt khám; hệ thống sẽ tự đọc loại đơn, mã bệnh và danh sách thuốc.</p></div></div>
-          <footer class="rx-result-footer"><div id="rxRuleVersion" class="rx-rule-version" aria-label="Căn cứ rà soát"><div class="rx-rule-item rx-rule-wide"><b>Tương tác</b><span>QĐ 5948/QĐ-BYT · QĐ 29/QĐ-BYT/DI&amp;ADR</span></div><div class="rx-rule-item"><b>ICD-10</b><span>TT06/2026/TT-BYT</span></div><div class="rx-rule-item"><b>Kê đơn</b><span>TT26/2025/TT-BYT</span></div><div class="rx-rule-item rx-rule-wide"><b>BHYT</b><span>TT20/2022 · TT37/2024</span></div></div><div class="rx-result-actions"><button type="button" class="btn btn-soft rx-clear-session" id="rxClearSession" title="Xóa ngay toàn bộ dữ liệu tra cứu trên màn hình">🗑 Xóa dữ liệu tra cứu</button><button type="button" id="rxPrintResult">In phiếu</button></div></footer>
+          <footer class="rx-result-footer"><div id="rxRuleVersion" class="rx-rule-version" aria-label="Căn cứ rà soát"><div class="rx-rule-item rx-rule-wide"><b>Tương tác</b><span>QĐ 5948/QĐ-BYT · QĐ 29/QĐ-BYT/DI&amp;ADR</span></div><div class="rx-rule-item"><b>ICD-10</b><span>TT06/2026/TT-BYT · HDSD/SPC Cục QLD · Dược thư QGVN III · Phác đồ/Hướng dẫn BYT</span></div><div class="rx-rule-item"><b>Kê đơn</b><span>TT26/2025/TT-BYT · HDSD/SPC Cục QLD · Dược thư QGVN III</span></div><div class="rx-rule-item rx-rule-wide"><b>BHYT</b><span>TT20/2022 · TT37/2024 · TT01/2025 · NĐ188/2025</span></div></div><div class="rx-result-actions"><button type="button" class="btn btn-soft rx-clear-session" id="rxClearSession" title="Xóa ngay toàn bộ dữ liệu tra cứu trên màn hình">🗑 Xóa dữ liệu tra cứu</button><button type="button" id="rxPrintResult">In phiếu</button></div></footer>
         </section>
       </aside>
     </div>
 
-    <section class="section-card rx-scope-note"><b>Phạm vi:</b> Tương tác: QĐ 5948/QĐ-BYT + QĐ 29/QĐ-BYT/DI&amp;ADR · ICD-10: TT06/2026/TT-BYT · Kê đơn: TT26/2025/TT-BYT · BHYT: TT20/2022 + TT37/2024</section>
+    <section class="section-card rx-scope-note"><b>Phạm vi:</b> Tương tác: QĐ 5948/QĐ-BYT + QĐ 29/QĐ-BYT/DI&amp;ADR · ICD-10: TT06/2026/TT-BYT + HDSD/SPC Cục QLD + Dược thư QGVN III + Phác đồ/Hướng dẫn BYT · Kê đơn: TT26/2025/TT-BYT + HDSD/SPC Cục QLD + Dược thư QGVN III · BHYT: TT20/2022 + TT37/2024 + TT01/2025 + NĐ188/2025</section>
   </section>
 
   <section class="view" id="view-dose">
@@ -1385,12 +1385,13 @@ calc();
 </main>
 
 <footer class="site-footer">
-  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v4.8</span></div>
+  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v4.9</span></div>
   <div><a class="nav-evaluation" href="phieu-danh-gia.html" target="_blank" rel="noopener">Phiếu đánh giá phần mềm</a> · <a href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a> · Công cụ hỗ trợ, không thay thế đánh giá lâm sàng.</div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script defer src="assets/vpmed-access.js?v=20260817-admin-delete-v1"></script>
 <script defer src="assets/data.js"></script>
+<script defer src="assets/rx-official-sources.js?v=20260819-rx-official-v1"></script>
 <script defer src="assets/interaction-regulatory-data.js?v=20260817-rx-regulatory-v2"></script>
 <script defer src="assets/contra_adr_hdsd_duocthu_20260717.js?v=20260717-final"></script>
 <script defer src="assets/clinical_updates.js"></script>

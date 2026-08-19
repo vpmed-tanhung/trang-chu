@@ -52,12 +52,14 @@ Nút **Đơn mới** chỉ được bật sau khi đã kiểm tra đơn. Khi b�
 
 ## Nguồn dữ liệu và thứ tự ưu tiên
 
-- Danh mục, tỷ lệ và điều kiện thanh toán BHYT: Thông tư 20/2022/TT-BYT và quy định sửa đổi tại Thông tư 37/2024/TT-BYT. Liên kết trong ứng dụng trỏ thẳng tới [tệp văn bản Thông tư 37/2024/TT-BYT](https://datafiles.chinhphu.vn/cpp/files/vbpq/2024/11/37-byt.pdf), không qua trang giới thiệu.
-- Mã bệnh: áp dụng Danh mục ICD-10 ban hành kèm Thông tư 06/2026/TT-BYT, có hiệu lực từ ngày 01/07/2026. Liên kết trỏ thẳng tới [văn bản chính](https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/4/06-byt.pdf) và [Phụ lục Danh mục mã bệnh ICD-10](https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/4/06-byt-kem.pdf), không qua trang giới thiệu hoặc tin bài.
-- Chỉ định thuốc: tờ hướng dẫn sử dụng được Cục Quản lý Dược phê duyệt, Dược thư Quốc gia Việt Nam hiện hành và hướng dẫn chẩn đoán điều trị của Bộ Y tế.
-- Tương tác chống chỉ định: Quyết định 5948/QĐ-BYT; các nguồn chính thức khác chỉ dùng bổ sung và phải được phiên bản hóa, rà soát trước khi đưa vào bộ dữ liệu.
-- Khi một thuốc có hồ sơ kiểm chứng tăng cường theo đúng hoạt chất hoặc số đăng ký, hồ sơ này được ưu tiên hơn bản đồ ICD tổng hợp. Bản hiện tại nạp thêm gói hồ sơ có dẫn nguồn chi tiết từ Cục Quản lý Dược/Dược thư thay vì chỉ dùng bảng 305 thuốc ban đầu.
-- Website không gửi ảnh đơn, toàn văn OCR hoặc mã bệnh của người dùng ra ngoài để tra cứu. Nguồn chuyên môn được quản trị thành gói dữ liệu riêng; chỉ gói đã thẩm định mới được ứng dụng sử dụng.
+- Hệ thống không coi dữ liệu nội bộ là phạm vi nguồn duy nhất. Dữ liệu cấu trúc trong ứng dụng chỉ là lớp cache/chuẩn hóa để hỗ trợ đối chiếu; căn cứ chuyên môn phải truy nguyên được về nguồn chính thức tương ứng.
+- Thuốc: ưu tiên tờ hướng dẫn sử dụng/SPC đúng chế phẩm được Cục Quản lý Dược phê duyệt; tiếp theo là Dược thư Quốc gia Việt Nam lần xuất bản thứ ba ban hành theo QĐ 3445/QĐ-BYT và hướng dẫn chẩn đoán, điều trị của Bộ Y tế/Cục Quản lý Khám, chữa bệnh.
+- Danh mục, tỷ lệ và điều kiện thanh toán BHYT: Thông tư 20/2022/TT-BYT, Thông tư 37/2024/TT-BYT, Thông tư 01/2025/TT-BYT và Nghị định 188/2025/NĐ-CP trong phạm vi liên quan.
+- Mã bệnh: áp dụng Danh mục ICD-10 ban hành kèm Thông tư 06/2026/TT-BYT, có hiệu lực từ ngày 01/07/2026. Liên kết trỏ thẳng tới [văn bản chính](https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/4/06-byt.pdf) và [Phụ lục Danh mục mã bệnh ICD-10](https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/4/06-byt-kem.pdf).
+- Kê đơn ngoại trú: Thông tư 26/2025/TT-BYT, đồng thời đối chiếu HDSD/SPC và hướng dẫn chuyên môn theo bệnh khi đánh giá chỉ định, liều và cách dùng.
+- Tương tác chống chỉ định: Quyết định 5948/QĐ-BYT; lớp cảnh giác dược bổ sung được phân tầng theo QĐ 29/QĐ-BYT/Trung tâm DI&ADR Quốc gia và không tự động nâng thành chống chỉ định nếu văn bản không quy định.
+- Khi một thuốc có hồ sơ kiểm chứng tăng cường theo đúng hoạt chất hoặc số đăng ký, hồ sơ này được ưu tiên hơn bản đồ ICD tổng hợp. Hồ sơ phải giữ nguồn dẫn chứng và không được dùng ảnh đơn thuốc của người dùng để mở rộng dữ liệu.
+- Website không gửi ảnh đơn, toàn văn OCR hoặc mã bệnh của người dùng ra ngoài để tra cứu. Việc mở rộng nguồn áp dụng cho kho tài liệu chuyên môn/căn cứ được quản trị và các cổng chính thức, không làm thay đổi nguyên tắc tối thiểu hóa dữ liệu người bệnh.
 
 ## Quy tắc riêng tư và tối thiểu dữ liệu
 
@@ -76,6 +78,7 @@ Do yêu cầu riêng tư này, PDF và OCR máy chủ không được hỗ trợ
 ## Giới hạn an toàn
 
 - Cảnh báo ICD là đối chiếu với hồ sơ gợi ý hiện có, không phải kết luận được BHYT thanh toán.
+- Phần gợi ý ICD chỉ dùng để đối chiếu; không có nút hoặc thao tác thêm mã bệnh từ kết quả gợi ý.
 - Không tự động thêm mã bệnh khi không có chẩn đoán lâm sàng trong hồ sơ.
 - Kết quả không loại trừ tương tác ngoài QĐ 5948, chống chỉ định theo bệnh nền, dị ứng, liều, xét nghiệm hoặc quy định thanh toán khác.
 

@@ -125,8 +125,6 @@
 .rx-alert-info .rx-alert-icon{color:#fff;background:#3f8bb2}.rx-alert-info small,.rx-alert-info h3{color:#2a6f92}
 .rx-alert-success{border-color:#c8e2d5;border-left-color:#4ba37a;background:#fbfffc}
 .rx-alert-success .rx-alert-icon{color:#fff;background:#4ba37a}.rx-alert-success small,.rx-alert-success h3{color:#2b7657}
-.rx-suggested-codes{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0 0 35px}
-.rx-suggested-codes button{padding:5px 8px;border:1px solid #d8b05d;border-radius:7px;color:#805707;background:#fff8e8;font-size:8px;font-weight:850;cursor:pointer}
 .rx-result-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-top:1px solid #9fd0ee;color:#075d98;background:linear-gradient(180deg,#f4fbff 0%,#e8f6ff 100%);font-size:12px;font-weight:800;line-height:1.45}
 .rx-result-footer span{min-width:0;text-shadow:0 1px 0 #fff}
 .rx-result-footer button{flex:0 0 auto;padding:6px 10px;border:1px solid #bcd5d0;border-radius:7px;color:#2e6d66;background:#f4faf8;font-size:10px;font-weight:850;cursor:pointer}
@@ -327,8 +325,6 @@
 .rx-diagnosis-chips span{font-size:10px;line-height:1.4}
 .rx-alert-missing-icd h3{font-size:14px}
 .rx-alert-missing-icd p{font-size:11px}
-.rx-suggested-codes{gap:7px}
-.rx-suggested-codes button{max-width:100%;padding:7px 9px;border-color:#d0a54b;background:#fffaf0;font-size:10px;line-height:1.35;text-align:left;white-space:normal}
 .rx-scope-note{color:#185f68;background:#f1f9fb;border-color:#b9dce6;font-size:12px;line-height:1.65}
 @media(max-width:760px){
   .rx-upload-zone{min-height:185px;padding:21px 16px}
@@ -392,7 +388,6 @@
 .rx-alert p{font-size:12.5px;line-height:1.65}
 .rx-alert dt,.rx-alert dd{font-size:11.5px;line-height:1.5}
 .rx-cross-payment span,.rx-cross-payment em{font-size:10.5px}
-.rx-suggested-codes button{font-size:11.5px;line-height:1.5}
 .rx-result-footer{font-size:13px;line-height:1.55}
 .rx-result-footer button{font-size:12px}
 .rx-scope-note{font-size:13px;line-height:1.7}

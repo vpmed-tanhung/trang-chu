@@ -10,6 +10,14 @@ assert.strictEqual(matcher.matchAny(['E11.7'],['E10.9','E11.9']).mode,'category'
 assert.strictEqual(matcher.matchAny(['E78.2'],['I25.1','E78.0','E78.5']).matched,true);
 assert.strictEqual(matcher.matchAny(['E78.2'],['I25.1','E78.0','E78.5']).mode,'category');
 assert.strictEqual(matcher.matchAny(['E78.2'],['E78.2']).mode,'exact');
+assert.strictEqual(matcher.isClinicalTextRelated(
+  ['Bệnh mạch máu não, không xác định'],
+  ['Hỗ trợ tuần hoàn não, giảm chóng mặt, đau đầu, suy giảm trí nhớ chức năng','Chóng mặt','Suy giảm nhận thức']
+),true);
+assert.strictEqual(matcher.isClinicalTextRelated(
+  ['Bệnh tăng huyết áp vô căn','Đau ngực khác','Bệnh mạch máu não, không xác định','Nhịp tim nhanh, không xác định','Tăng lipid máu hỗn hợp'],
+  ['Điều trị triệu chứng thoái hóa khớp nhẹ đến vừa, chủ yếu khớp gối','Thoái hóa khớp','Thoái hóa khớp gối']
+),false);
 
 // Không mở rộng thiếu kiểm soát chỉ vì có cùng ba ký tự đầu.
 assert.strictEqual(matcher.matchAny(['I25.0'],['I25.1']).matched,false);
