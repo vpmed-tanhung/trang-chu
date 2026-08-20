@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8">
-<meta name="vpmed-build-version" content="2026.08.19.27">
+<meta name="vpmed-build-version" content="2026.08.20.29">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#075f9f">
   <title>Hệ thống Hỗ trợ Dược lâm sàng | VPMED Tân Hưng</title>
@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="assets/stock_clinical_tools.css?v=20260814-direct-sources-v6">
   <link rel="stylesheet" href="assets/injectable_guide.css?v=20260814-content-from-original-v2">
   <link rel="stylesheet" href="assets/prescription-check.css?v=20260818-rx-ui-v8">
-  <link rel="stylesheet" href="assets/inpatient-order-review.css?v=20260819-inpatient-order-v2-busy">
+  <link rel="stylesheet" href="assets/inpatient-order-review.css?v=20260820-inpatient-renal-v2">
   <script>document.documentElement.classList.add('system-loading','vpmed-auth-checking');</script>
   <noscript><style>#systemLoader{display:none!important}</style></noscript>
 </head>
@@ -243,6 +243,38 @@
           </label>
           <div class="io-file-queue" id="ioFileQueue" hidden></div>
           <div class="io-status" id="ioStatus" hidden></div>
+
+          <section class="io-renal-panel" aria-labelledby="ioRenalHeading">
+            <div class="io-renal-heading">
+              <div><span class="rx-step">2</span><div><span class="kicker">ƯU TIÊN AN TOÀN THẬN</span><h2 id="ioRenalHeading">Dữ liệu để kiểm tra và chọn mức liều</h2></div></div>
+              <span class="io-optional-badge">Nhập khi có sẵn</span>
+            </div>
+            <p class="io-renal-intro">Dữ liệu do dược sĩ nhập được dùng để tính kiểm chứng tại trình duyệt và gửi kèm lượt phân tích. Không nhập họ tên hoặc mã người bệnh.</p>
+            <div class="io-renal-grid">
+              <label>Tình trạng chức năng thận
+                <select id="ioRenalStatus">
+                  <option value="unknown">Chưa xác định / chỉ có ảnh</option>
+                  <option value="stable">Creatinine tương đối ổn định</option>
+                  <option value="aki">AKI / creatinine đang thay đổi</option>
+                  <option value="hd">Lọc máu ngắt quãng (IHD)</option>
+                  <option value="crrt">Lọc máu liên tục (CRRT)</option>
+                </select>
+              </label>
+              <label>Tuổi (năm)<input id="ioAge" type="number" min="18" max="120" step="1" inputmode="numeric" placeholder="65"></label>
+              <label>Giới tính sinh học
+                <select id="ioSex"><option value="">Chọn</option><option value="m">Nam</option><option value="f">Nữ</option></select>
+              </label>
+              <label>Cân nặng hiện tại (kg)<input id="ioWeight" type="number" min="20" max="300" step="0.1" inputmode="decimal" placeholder="60"></label>
+              <label>Chiều cao (cm) <small>để kiểm tra cân nặng và quy đổi eGFR</small><input id="ioHeight" type="number" min="100" max="250" step="0.1" inputmode="decimal" placeholder="165"></label>
+              <label>Creatinine huyết thanh
+                <span class="io-scr-input-group"><input id="ioScr" type="number" min="0.1" step="0.1" inputmode="decimal" placeholder="90"><select id="ioScrUnit" aria-label="Đơn vị creatinine"><option value="umol">µmol/L</option><option value="mgdl">mg/dL</option></select></span>
+              </label>
+            </div>
+            <div class="io-renal-calc" id="ioRenalCalcResult" aria-live="polite">
+              Chọn tình trạng thận và nhập dữ liệu hiện có. Hệ thống không tự chốt mức liều nếu AKI, IHD/CRRT hoặc thiếu dữ liệu trọng yếu.
+            </div>
+          </section>
+
           <div class="rx-new-prescription-action">
             <button type="button" class="btn btn-primary" id="ioAnalyzeBtn" disabled>⌁ Phân tích y lệnh</button>
             <button type="button" class="btn btn-soft" id="ioResetBtn" disabled>↻ Đơn mới</button>
@@ -258,7 +290,7 @@
       </aside>
     </div>
 
-    <section class="section-card rx-scope-note"><b>Phạm vi:</b> Liều dùng · Cách dùng · Tốc độ truyền (không pha chế) · Tương tác trong y lệnh · Cảnh báo suy thận. Nguồn: UpToDate · Dược thư Quốc gia Việt Nam · Phác đồ Bộ Y tế. Kết quả hỗ trợ tham khảo, không thay thế đánh giá lâm sàng.</section>
+    <section class="section-card rx-scope-note"><b>Phạm vi:</b> Liều dùng · Cách dùng · Tốc độ truyền (không pha chế) · Tương tác trong y lệnh · Cảnh báo suy thận. CrCl/eGFR chỉ là ước tính; không dùng một giá trị tĩnh để chốt liều khi AKI hoặc đang lọc máu. Nguồn: Dược thư Quốc gia Việt Nam · HDSD đúng chế phẩm · Hướng dẫn Bộ Y tế/KDIGO · cơ sở dữ liệu chỉnh liều đã thẩm định tại bệnh viện. Kết quả hỗ trợ tham khảo, không thay thế đánh giá lâm sàng.</section>
   </section>
 
   <section class="view" id="view-dose">
@@ -1433,7 +1465,7 @@ calc();
 </main>
 
 <footer class="site-footer">
-  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v4.9</span></div>
+  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v5.0</span></div>
   <div><a class="nav-evaluation" href="phieu-danh-gia.html" target="_blank" rel="noopener">Phiếu đánh giá phần mềm</a> · <a href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a> · Công cụ hỗ trợ, không thay thế đánh giá lâm sàng.</div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1455,7 +1487,7 @@ calc();
 <script defer src="assets/icd-clinical-match.js?v=20260817-tt06-2026"></script>
 <script defer src="assets/prescription-diagnosis-ocr.js?v=20260817-exact-icd-v2"></script>
 <script defer src="assets/prescription-check.js?v=20260819-build21"></script>
-<script defer src="assets/inpatient-order-review.js?v=20260819-inpatient-order-v4-busy"></script>
+<script defer src="assets/inpatient-order-review.js?v=20260820-inpatient-renal-v2"></script>
 <script defer src="assets/vpmed-renal-audit.js?v=20260814-module-history-v5"></script>
 <script defer src="assets/antibiotic_consultation.js?v=20260814-short-module-copy-v1"></script>
 <script defer src="assets/dose_24h_summary.js?v=20260802-structure-only"></script>

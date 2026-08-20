@@ -7,10 +7,10 @@ def test_inpatient_order_feature_is_wired_without_regressing_rx_review():
     html = (ROOT / 'index.html').read_text(encoding='utf-8')
     unified = (ROOT / 'assets' / 'unified.js').read_text(encoding='utf-8')
 
-    assert 'assets/inpatient-order-review.css?v=20260819-inpatient-order-v2-busy' in html
+    assert 'assets/inpatient-order-review.css?v=20260820-inpatient-renal-v2' in html
     assert 'data-open="inpatient-order"' in html
     assert 'id="view-inpatient-order"' in html
-    assert 'assets/inpatient-order-review.js?v=20260819-inpatient-order-v4-busy' in html
+    assert 'assets/inpatient-order-review.js?v=20260820-inpatient-renal-v2' in html
     assert "'inpatient-order'" in unified
 
     # Các sửa mới nhất của module rà soát đơn BHYT phải được giữ nguyên khi merge.
@@ -28,6 +28,7 @@ def test_inpatient_order_artifacts_are_present():
         'assets/inpatient-order-review.js',
         'docs/ai-prompts/y-lenh-noi-tru-system-prompt.md',
         'tests/test_inpatient_order_severity.js',
+        'tests/test_inpatient_order_renal.js',
     ]
     for rel in required:
         assert (ROOT / rel).is_file(), rel
@@ -54,3 +55,29 @@ def test_inpatient_order_has_compact_busy_indicator():
     assert 'aria-busy' in js
     assert '.io-spinner' in css
     assert '@keyframes io-spin' in css
+
+
+def test_inpatient_order_has_deterministic_renal_safety_layer():
+    html = (ROOT / 'index.html').read_text(encoding='utf-8')
+    js = (ROOT / 'assets' / 'inpatient-order-review.js').read_text(encoding='utf-8')
+    gs = (ROOT / 'apps-script' / 'inpatient-order-review.gs').read_text(encoding='utf-8')
+
+    for field_id in [
+        'ioRenalStatus', 'ioAge', 'ioSex', 'ioWeight', 'ioHeight',
+        'ioScr', 'ioScrUnit',
+    ]:
+        assert f'id="{field_id}"' in html
+
+    assert 'id="ioScrTime"' not in html
+    assert 'id="ioVerifiedCrcl"' not in html
+
+    assert 'calculateRenalAssessment' in js
+    assert 'calcEgfr2021' in js
+    assert 'VPMED_GET_RENAL_DOSE' in js
+    assert 'note: buildRenalNote(renalAssessment)' in js
+    assert "mode === 'aki'" in js
+    assert "mode === 'hd'" in js
+    assert "mode === 'crrt'" in js
+    assert 'Không tự chọn dải liều cố định' in js
+    assert 'suggestedRegimen' in gs
+    assert 'liều nạp' in gs

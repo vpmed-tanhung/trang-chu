@@ -11,8 +11,17 @@ Tính năng được mở từ thẻ **Phân tích y lệnh nội trú** trên t
   **tốc độ truyền** (mL/giờ hoặc giọt/phút) cho thuốc đường tĩnh mạch khi y lệnh có đủ dữ liệu.
 - Rà soát **tương tác thuốc** giữa tất cả các thuốc cùng có trong y lệnh đang phân tích, phân loại theo
   3 mức: chống chỉ định, nghiêm trọng cần theo dõi, cần lưu ý.
-- Khi bệnh án có dữ liệu chức năng thận (creatinine, CrCl, eGFR) hoặc tiền sử suy thận: cảnh báo riêng
-  cho từng thuốc cần hiệu chỉnh, kèm **phương pháp hiệu chỉnh tham khảo** (không tự chốt liều cuối).
+- Có khối **Ưu tiên an toàn thận** tinh gọn để dược sĩ nhập tình trạng thận, tuổi, giới tính sinh học,
+  cân nặng, chiều cao và creatinine + đơn vị; hệ thống tự tính CrCl/eGFR.
+- Tính kiểm chứng ngay trên trình duyệt: **CrCl Cockcroft–Gault**, **eGFR CKD-EPI 2021** và eGFR không
+  chuẩn hóa BSA khi có chiều cao. Nếu cân nặng >120% IBW, hiển thị rõ việc dùng AdjBW và cảnh báo phải
+  đối chiếu quy ước của bệnh viện/HDSD thuốc.
+- Chỉ tự chọn dải liều cục bộ khi dược sĩ xác nhận creatinine tương đối ổn định. Với **AKI**, **IHD** hoặc
+  **CRRT**, hệ thống chủ động chặn việc áp một dải CrCl tĩnh và chuyển sang cảnh báo/phác đồ riêng.
+- Sau khi AI nhận diện thuốc, hệ thống đối chiếu thêm với `VPMED_GET_RENAL_DOSE`/cơ sở dữ liệu chỉnh liều
+  thận cục bộ. Vì vậy dải liều có thể hiển thị độc lập với phần diễn giải của AI, kèm nguồn dữ liệu.
+- Dữ liệu thận do dược sĩ nhập được gửi kèm trường `note` mà backend hiện tại đã hỗ trợ; không gửi họ tên
+  hoặc mã người bệnh.
 - Liệt kê rõ phần AI đọc không chắc chắn để dược sĩ xác minh thủ công thay vì suy đoán số liệu.
 
 ## Phạm vi không xử lý (có chủ đích)
@@ -38,13 +47,27 @@ suy luận lâm sàng vượt quá khả năng đối chiếu dữ liệu tĩnh 
 
 ## Nguồn dữ liệu và thứ tự ưu tiên
 
-1. **UpToDate** — ưu tiên cho liều, thận trọng, hiệu chỉnh theo thận.
-2. **Dược thư Quốc gia Việt Nam** hiện hành — ưu tiên cho quy định/khuyến cáo áp dụng trong nước.
-3. **Phác đồ/hướng dẫn điều trị của Bộ Y tế** liên quan đến bệnh lý ghi trong bệnh án.
+1. **HDSD/SPC đã phê duyệt** của đúng hoạt chất, hàm lượng, dạng bào chế và đường dùng.
+2. **Quy trình/phác đồ chỉnh liều đã được bệnh viện phê duyệt**.
+3. **Dược thư Quốc gia Việt Nam** hiện hành và hướng dẫn Bộ Y tế.
+4. Hướng dẫn chuyên ngành phù hợp: KDIGO cho nguyên tắc đánh giá chức năng thận;
+   UpToDate/Sanford/Renal Drug Handbook khi có nội dung phù hợp và đã đối chiếu.
+
+Nguyên tắc thiết kế lớp an toàn thận được rà soát với:
+
+- [KDIGO 2024 CKD Guideline](https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf),
+  mục 4.2: eGFR có thể dùng cho đa số tình huống; cần tăng độ chính xác với thuốc khoảng điều trị hẹp,
+  xem xét eGFR không chuẩn hóa BSA ở thể trạng cực đoan và điều chỉnh khi thông số chưa ở trạng thái ổn định.
+- [NIDDK — Determining Drug Dosing in Adults with CKD](https://www.niddk.nih.gov/research-funding/research-programs/kidney-clinical-research-epidemiology/laboratory/ckd-drug-dosing-providers):
+  không có một công thức duy nhất cho mọi nhãn thuốc; cần đối chiếu đúng ngưỡng dùng trong nguồn liều và
+  cân nhắc bỏ chuẩn hóa BSA khi kích thước cơ thể khác nhiều so với trung bình.
 
 System prompt đầy đủ: [`docs/ai-prompts/y-lenh-noi-tru-system-prompt.md`](docs/ai-prompts/y-lenh-noi-tru-system-prompt.md).
 Backend proxy: [`apps-script/inpatient-order-review.gs`](apps-script/inpatient-order-review.gs).
-`WEB_APP_URL` trong `assets/inpatient-order-review.js` đã được cấu hình tới Apps Script Web App triển khai ngày 19/08/2026.
+`WEB_APP_URL` trong `assets/inpatient-order-review.js` đang trỏ tới Apps Script Web App triển khai ngày
+19/08/2026. Lớp tính/đối chiếu thận cục bộ hoạt động ngay sau khi cập nhật frontend. Để áp dụng system
+prompt và các field JSON mới (`suggestedRegimen`, `loadingDoseNote`, `monitoring`), cần cập nhật file
+`apps-script/inpatient-order-review.gs` trong dự án Apps Script và tạo phiên bản triển khai mới.
 
 ## Giới hạn an toàn
 
@@ -54,3 +77,7 @@ Backend proxy: [`apps-script/inpatient-order-review.gs`](apps-script/inpatient-o
   thời gian chạy — quá nhiều ảnh độ phân giải cao trong một lượt có thể khiến yêu cầu thất bại.
 - AI có thể đọc sai chữ viết tay mờ hoặc thiếu ngữ cảnh; mọi nội dung không chắc chắn phải được liệt kê
   rõ trong kết quả để dược sĩ xác minh, không được tự suy đoán thay.
+- Không dùng CrCl/eGFR tính từ một SCr đơn lẻ để chốt liều khi AKI/SCr đang tăng hoặc giảm. Cần xem xu
+  hướng SCr, lượng nước tiểu, tình trạng dịch, mức thuốc/TDM và đánh giá lại theo diễn biến.
+- IHD/CRRT cần phác đồ riêng theo phương thức, cường độ lọc, lịch lọc, thời điểm dùng thuốc và chức năng
+  thận tồn dư. Không suy diễn liều IHD/CRRT từ dải CrCl của người bệnh không lọc máu.
