@@ -34,7 +34,7 @@ class Element {
 }
 
 const oldBuild = '2026.08.21.32';
-const newBuild = '2026.08.21.34';
+const newBuild = '2026.08.21.35';
 const footer = new Element('span');
 footer.id = 'vpmedLatestVersion';
 footer.textContent = '· v5.0';

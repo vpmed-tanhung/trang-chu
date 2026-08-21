@@ -86,11 +86,15 @@
 .rx-empty-row{padding:26px!important;color:#748b88;text-align:center!important}
 .rx-table-footer{display:flex;justify-content:space-between;gap:10px;padding:10px 18px;color:#718481;background:#fbfdfc;font-size:9px}
 .rx-table-footer span:first-child{color:#0c7168;font-weight:850}
-.rx-check-button{min-height:58px;display:flex;align-items:center;justify-content:center;gap:9px;border:0;border-radius:13px;color:#fff;background:linear-gradient(120deg,#0ea5e9 0%,#0891b2 55%,#14b8a6 100%);box-shadow:0 10px 22px rgba(8,145,178,.22);cursor:pointer}
-.rx-check-button:hover{filter:brightness(1.04);transform:translateY(-1px)}
+.rx-prescription-actions{display:flex;align-items:stretch;justify-content:center;gap:2px;margin:0 auto}
+.rx-check-button{min-width:196px;min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:0 18px;border:0;border-radius:11px;color:#fff;background:linear-gradient(135deg,#0c8fd0 0%,#0ca89e 100%);box-shadow:0 7px 18px rgba(8,145,178,.18);cursor:pointer;transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
+.rx-check-button:hover{filter:brightness(1.04);transform:translateY(-1px);box-shadow:0 9px 20px rgba(8,145,178,.24)}
+.rx-check-button:focus-visible{outline:3px solid rgba(14,165,233,.24);outline-offset:2px}
 .rx-check-button:disabled{opacity:.65;cursor:wait;transform:none}
-.rx-check-button>span{width:30px;height:30px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.35);border-radius:8px;font-size:20px}
-.rx-check-button b{font-size:13px}.rx-check-button small{color:#ddf8f4;font-size:9px}
+.rx-check-button>span{font-size:14px;line-height:1}
+.rx-check-button b{font-size:14px;white-space:nowrap}
+.rx-prescription-actions>.btn-soft{min-width:150px;min-height:46px;border-radius:11px;font-size:13px;white-space:nowrap}
+.rx-prescription-actions>.btn-soft:disabled{opacity:.48;cursor:not-allowed;filter:grayscale(.2)}
 .rx-result-column{position:sticky;top:98px}
 .rx-result-card{overflow:hidden;border:1px solid #b9e2ea;border-radius:18px;background:#fff;box-shadow:0 14px 32px rgba(8,145,178,.12)}
 .rx-result-header{min-height:87px;display:flex;align-items:center;justify-content:space-between;padding:17px 18px;color:#fff;background:linear-gradient(135deg,#0ea5e9 0%,#0891b2 55%,#14b8a6 100%)}
@@ -265,7 +269,8 @@
   .rx-encounter-grid,.rx-import-grid{grid-template-columns:1fr}
   .rx-diagnosis-field{grid-column:auto}.rx-diagnosis-auto-grid{grid-template-columns:1fr}.rx-or{min-height:24px}.rx-or:before{left:12px;right:12px;top:50%;bottom:auto;width:auto;height:1px}.rx-or span{padding:2px 8px}
   .rx-heading{align-items:flex-start;gap:8px}.rx-heading>button{flex:0 0 auto}
-  .rx-check-button{flex-wrap:wrap;padding:11px}.rx-check-button small{width:100%;text-align:center}
+  .rx-prescription-actions{width:min(100%,390px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+  .rx-check-button,.rx-prescription-actions>.btn-soft{width:100%;min-width:0;padding-inline:10px}
   .rx-table-footer{display:block}.rx-table-footer span{display:block}.rx-table-footer span+span{margin-top:4px}
   .rx-file-item{grid-template-columns:30px minmax(0,1fr) 27px}.rx-file-item select{grid-column:2/3;grid-row:2}.rx-file-remove{grid-column:3;grid-row:1/3}
 }
@@ -375,8 +380,7 @@
 .rx-drug-table select{font-size:12.5px}
 .rx-resolve-state{font-size:11px}
 .rx-table-footer{font-size:11.5px;line-height:1.5}
-.rx-check-button b{font-size:15px}
-.rx-check-button small{font-size:11.5px;line-height:1.4}
+.rx-check-button b{font-size:14px}
 .rx-result-header h2{font-size:19px}
 .rx-score b{font-size:19px}
 .rx-score small{font-size:10px}

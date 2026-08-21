@@ -973,7 +973,7 @@
     const score=Math.max(15,100-interactions.length*25-missing.length*12-(missingPrimary?20:0)-(diagnosisConflict?12:0)-unknown.length*4-unclassifiedCount*8);
     state.lastCheck={interactions,missing,unmapped,matched,unknown,unclassifiedFiles,unclassifiedDrugs,noDiagnosis,missingPrimary,diagnosisConflict,score,checkedAt:new Date()};
     rx$('#rxResetPrescription').disabled=false;
-    rx$('#rxResetPrescription').title='Xóa dữ liệu đơn hiện tại để kiểm tra đơn mới';
+    rx$('#rxResetPrescription').title='Xóa dữ liệu đơn hiện tại để phân tích đơn mới';
 
     const title=interactions.length?'Có tương tác chống chỉ định/cần xử trí':unclassifiedCount?'Cần xác nhận loại đơn':icdIssueCount?'Cần bổ sung kiểm tra mã bệnh':'Đơn thuốc đã được rà soát';
     rx$('#rxResultTitle').textContent=title;
@@ -1189,7 +1189,7 @@
     rx$('#rxSummary').innerHTML='<div><b>—</b><span>Tương tác</span></div><div><b>—</b><span>Mã bệnh</span></div><div><b>—</b><span>Đã đối chiếu</span></div>';
     rx$('#rxResultBody').innerHTML='<div class="rx-result-empty"><span>✓</span><b>Sẵn sàng nhận dữ liệu</b><p>Tải các đơn của cùng lượt khám; hệ thống sẽ tự đọc loại đơn, mã bệnh và danh sách thuốc.</p></div>';
     rx$('#rxResetPrescription').disabled=true;
-    rx$('#rxResetPrescription').title='Nút được bật sau khi kiểm tra đơn';
+    rx$('#rxResetPrescription').title='Nút được bật sau khi phân tích đơn';
     renderDiagnosisChips();
     renderFileQueue();
     renderRows();

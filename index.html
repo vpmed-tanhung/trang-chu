@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8">
-<meta name="vpmed-build-version" content="2026.08.21.34">
+<meta name="vpmed-build-version" content="2026.08.21.35">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#075f9f">
   <title>Hệ thống Hỗ trợ Dược lâm sàng | VPMED Tân Hưng</title>
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="assets/system-loader.css?v=20260811-desktop-spin-fix">
   <link rel="stylesheet" href="assets/stock_clinical_tools.css?v=20260814-direct-sources-v6">
   <link rel="stylesheet" href="assets/injectable_guide.css?v=20260814-content-from-original-v2">
-  <link rel="stylesheet" href="assets/prescription-check.css?v=20260818-rx-ui-v8">
+  <link rel="stylesheet" href="assets/prescription-check.css?v=20260821-rx-actions-v9">
   <link rel="stylesheet" href="assets/inpatient-order-review.css?v=20260821-inpatient-file-grid-v4">
   <script>document.documentElement.classList.add('system-loading','vpmed-auth-checking');</script>
   <noscript><style>#systemLoader{display:none!important}</style></noscript>
@@ -183,7 +183,6 @@
             <div class="rx-paste-panel">
               <label>Dán riêng danh sách thuốc từ HIS<textarea id="rxPasteDrugs" rows="6" placeholder="Không dán thông tin người bệnh. Mỗi thuốc một dòng, ví dụ:&#10;Diclofenac | BHYT&#10;Ketorolac-BFS | Dịch vụ&#10;Comiaryl 2mg/500mg | BHYT"></textarea></label>
               <button type="button" class="btn btn-soft full" id="rxApplyPaste">Nhận danh sách thuốc</button>
-              <div class="rx-new-prescription-action"><button type="button" class="btn btn-soft" id="rxResetPrescription" disabled title="Nút được bật sau khi kiểm tra đơn">↻ Đơn mới</button></div>
             </div>
           </div>
         </section>
@@ -200,7 +199,10 @@
           <div class="rx-table-footer"><span id="rxDrugCount">0 thuốc</span><span>Bấm vào tên thuốc để chỉnh sửa trước khi kiểm tra.</span></div>
         </section>
 
-        <button type="button" class="rx-check-button" id="rxCheckPrescription"><span>⌁</span><b>Kiểm tra toàn bộ lượt khám</b><small>Tương tác trong từng đơn và chéo BHYT–dịch vụ · Mã bệnh · Dữ liệu chưa xác minh</small></button>
+        <div class="rx-prescription-actions" aria-label="Thao tác đơn thuốc">
+          <button type="button" class="rx-check-button" id="rxCheckPrescription"><span aria-hidden="true">⌁</span><b>Phân tích đơn thuốc</b></button>
+          <button type="button" class="btn btn-soft" id="rxResetPrescription" disabled title="Nút được bật sau khi phân tích đơn">↻ Đơn mới</button>
+        </div>
       </div>
 
       <aside class="rx-result-column">
