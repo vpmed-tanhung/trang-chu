@@ -1,12 +1,51 @@
 {
-  "generated_at": "2026-08-20T06:22:08+07:00",
+  "generated_at": "2026-08-21T06:25:00+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
-  "newly_fetched_count": 0,
+  "newly_fetched_count": 1,
   "retained_history_count": 0,
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
+    {
+      "id": "auto-73968ff46251f4",
+      "level": "orange",
+      "year": "2026",
+      "date": "20/08/2026",
+      "category": "Quá liều & thuốc nguy cơ cao",
+      "system": "Thần kinh",
+      "interaction": false,
+      "title": "Health Canada: Nguy cơ tiềm ẩn hội chứng cai thuốc khi ngừng đột ngột hoặc giảm liều domperidon",
+      "drugs": "Domperidon",
+      "summary": "Health Canada đã tiến hành đánh giá nguy cơ tiềm ẩn của hội chứng cai thuốc trên tâm thần sau khi ngừng đột ngột hoặc giảm liều nhanh domperidon sau khi sử dụng để kích thích tiết sữa. Quá trình đánh giá được tiến hành sau khi có các báo cáo y văn về nguy cơ trên cũng như thực trạng sử dụng domperidon. Tại Canada, domperidon là thuốc kê đơn được phê duyệt để điều trị các triệu chứng chậm tháo rỗng dạ dày và dự phòng triệu chứng buồn nôn, nôn do một số thuốc điều trị bệnh Parkinson gây ra. Nguy cơ này chủ yếu được ghi nhận ở các bệnh nhân sử dụng domperidon với liều hàng ngày vượt quá liều tối đa được khuyến cáo là 30 mg, tuy nhiên, kết luận này vẫn còn hạn chế do số lượng trường hợp báo cáo còn ít. Tại thời điểm rà soát, Health Canada ghi nhận 9 trường hợp (gồm 4 trường hợp tại Canada và 5 trường hợp quốc tế) mắc hội chứng cai thuốc trên tâm thần sau khi ngừng đột ngột hoặc giảm liều domperidon được sử dụng để kích thích tiết sữa. - Tăng cường cảnh báo này đến nhân viên y tế và cộng động - Khuyến khích nhân viên y tế tích cực giám sát và báo cáo các biến cố bất lợi liên quan domperidon.",
+      "quick": "Health Canada đã tiến hành đánh giá nguy cơ tiềm ẩn của hội chứng cai thuốc trên tâm thần sau khi ngừng đột ngột hoặc giảm liều nhanh domperidon sau khi sử dụng để kích thích tiết sữa.",
+      "risk": [
+        "Quá trình đánh giá được tiến hành sau khi có các báo cáo y văn về nguy cơ trên cũng như thực trạng sử dụng domperidon.",
+        "Nguy cơ này chủ yếu được ghi nhận ở các bệnh nhân sử dụng domperidon với liều hàng ngày vượt quá liều tối đa được khuyến cáo là 30 mg, tuy nhiên, kết luận này vẫn còn hạn chế do số lượng trường hợp báo cáo còn ít."
+      ],
+      "signs": [
+        "Tại Canada, domperidon là thuốc kê đơn được phê duyệt để điều trị các triệu chứng chậm tháo rỗng dạ dày và dự phòng triệu chứng buồn nôn, nôn do một số thuốc điều trị bệnh Parkinson gây ra.",
+        "Health Canada sẽ tiến hành một số biện pháp giảm thiểu nguy cơ: - Phối hợp với các nhà sản xuất để cập nhật chuyên luận sản phẩm của các chế phẩm chứa domperidon nhằm bổ sung thông tin về các trường hợp xuất hiện biến cố tâm thần sau khi ngừng thuốc hoặc giảm liều."
+      ],
+      "action": [
+        "Health Canada đã tiến hành đánh giá nguy cơ tiềm ẩn của hội chứng cai thuốc trên tâm thần sau khi ngừng đột ngột hoặc giảm liều nhanh domperidon sau khi sử dụng để kích thích tiết sữa.",
+        "Tại thời điểm rà soát, Health Canada ghi nhận 9 trường hợp (gồm 4 trường hợp tại Canada và 5 trường hợp quốc tế) mắc hội chứng cai thuốc trên tâm thần sau khi ngừng đột ngột hoặc giảm liều domperidon được sử dụng để kích thích tiết sữa.",
+        "Tất cả các trường hợp đều đã sử dụng domperidon kéo dài hơn 4 tuần trước khi bắt đầu ngừng thuốc hoặc giảm liều.",
+        "Kết luận và động thái từ Health Canada Sau khi hoàn tất đánh giá, Health Canada kết luận có mối liên quan giữa việc ngừng đột ngột hoặc giảm liều nhanh domperidon sau khi sử dụng off-label để kích thích tiết sữa và nguy cơ xuất hiện hội chứng cai thuốc trên tâm thần, với các biểu hiện như trầm cảm, lo âu và mất ngủ."
+      ],
+      "monitor": [
+        "- Tăng cường cảnh báo này đến nhân viên y tế và cộng động - Khuyến khích nhân viên y tế tích cực giám sát và báo cáo các biến cố bất lợi liên quan domperidon.",
+        "Health Canada sẽ tiếp tục theo dõi thông tin về độ an toàn liên quan đến chế phẩm chứa domperidon và đưa ra các biện pháp phù hợp khi phát hiện bất kỳ nguy cơ quan trọng nào gây ảnh hưởng đến sức khỏe người bệnh."
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5857/health-canada-nguy-co-hc-cai-thuoc-lien-quan-domperidon.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5857/health-canada-nguy-co-hc-cai-thuoc-lien-quan-domperidon.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-structured"
+    },
     {
       "id": "auto-910a0cbf8c7f9b",
       "level": "orange",

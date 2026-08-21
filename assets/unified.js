@@ -135,6 +135,7 @@ $('#calc').onclick=()=>{
   const age=+$('#age').value,wt=+$('#wt').value,ht=+$('#ht').value,scru=+$('#scr').value;
   if(!patientCode){alert('Vui lòng nhập mã bệnh nhân trên HIS.');$('#patientCode')?.focus();return}
   if(!age||!wt||!scru){alert('Vui lòng nhập tuổi, cân nặng và creatinine.');return}
+  if(age<18||age>120){alert('Tuổi phải trong khoảng 18–120; CKD-EPI/Cockcroft–Gault trong công cụ này chỉ dành cho người lớn.');$('#age')?.focus();return}
   const selectedId=String($('#drug').value),d=D.find(x=>String(x.id)===selectedId);
   if(!d){alert('Không tìm thấy dữ liệu của kháng sinh đang chọn. Vui lòng chọn lại.');return}
   const scr=scru/88.4;

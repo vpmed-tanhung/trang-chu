@@ -280,7 +280,7 @@
     const hasData = assessment.mode !== 'unknown' || assessment.scrValue !== null
       || assessment.ageYears !== null || assessment.weightKg !== null || assessment.sex;
     if (!hasData) {
-      return 'Chọn tình trạng thận và nhập dữ liệu hiện có. Hệ thống không tự chốt mức liều nếu AKI, IHD/CRRT hoặc thiếu dữ liệu trọng yếu.';
+      return '';
     }
     const priority = renalPriorityMeta(assessment);
     const metrics = [];

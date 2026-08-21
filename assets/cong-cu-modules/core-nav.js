@@ -158,25 +158,23 @@ function setScrUnit(mod, unit) {
 // + IBW (Devine) + ABW. Được module "Chức năng thận CrCl/eGFR/IBW/ABW" VÀ module
 // "Hiệu chỉnh liều KS CrCl" cùng gọi — đảm bảo LUÔN đồng nhất công thức, sửa 1 nơi áp dụng cả 2 module.
 function computeRenalCore(age, sex, ht, wt, scr) {
+  // CKD-EPI 2021 và Cockcroft-Gault trong công cụ này chỉ áp dụng cho người lớn.
+  if(!isFinite(age)||age<18||age>120) return null;
   var htIn=(ht-152.4)/2.54;
   var ibw=sex==='male'?Math.max(49.9,50+2.3*htIn):Math.max(45.5,45.5+2.3*htIn);
   var abw=ibw+0.4*(wt-ibw);
   var bmi=wt/((ht/100)*(ht/100));
+  var bsa=Math.sqrt((ht*wt)/3600);
   var useWt=wt>1.2*ibw?abw:wt;
 
   var crcl = ((140-age)*wt)/(72*scr);
   if(sex==='female') crcl*=0.85;
-  var cgStage,cgColor;
-  if(crcl>=90){cgStage='G1 ≥90 — Bình thường';cgColor='g';}
-  else if(crcl>=60){cgStage='G2 60–89 — Nhẹ';cgColor='g';}
-  else if(crcl>=30){cgStage='G3 30–59 — Vừa';cgColor='w';}
-  else if(crcl>=15){cgStage='G4 15–29 — Nặng';cgColor='r';}
-  else{cgStage='G5 <15 — Suy thận cuối';cgColor='r';}
 
   var k=sex==='female'?0.7:0.9, a=sex==='female'?-0.241:-0.302;
   var sk=scr/k;
   var egfr=142*Math.pow(Math.min(sk,1),a)*Math.pow(Math.max(sk,1),-1.200)*Math.pow(0.9938,age);
   if(sex==='female') egfr*=1.012;
+  var egfrAbsolute=egfr*bsa/1.73;
   var egfrStage,egfrColor;
   if(egfr>=90){egfrStage='G1 — Bình thường/cao';egfrColor='g';}
   else if(egfr>=60){egfrStage='G2 — Giảm nhẹ';egfrColor='g';}
@@ -192,35 +190,22 @@ function computeRenalCore(age, sex, ht, wt, scr) {
   else if(bmi<30){bmiInterp='Béo phì độ I (chuẩn châu Á) — <strong>cân nhắc ABW = '+abw.toFixed(1)+' kg</strong> cho aminoglycoside, vancomycin.';}
   else{bmiInterp='Béo phì độ II–III (chuẩn châu Á) — <strong>dùng ABW = '+abw.toFixed(1)+' kg</strong> cho aminoglycoside, vancomycin; dùng IBW cho phenytoin, digoxin, heparin. TDM thường xuyên.';}
 
-  var worse = Math.min(crcl, egfr);
-  var worseColor;
-  if(worse>=60){worseColor='g';}
-  else if(worse>=30){worseColor='w';}
-  else{worseColor='r';}
-
-  var renalInterp;
-  if(worse>=60) renalInterp='Chức năng thận bình thường đến giảm nhẹ. Không cần hiệu chỉnh liều theo chức năng thận; tiếp tục theo dõi sát diễn tiến lâm sàng.';
-  else if(worse>=30) renalInterp='Cần hiệu chỉnh liều cho: vancomycin, aminoglycoside, colistin, ciprofloxacin, LMWH, digoxin, metformin... Tham khảo hướng dẫn từng thuốc.';
-  else if(worse>=15) renalInterp='Suy thận nặng — Khuyến cáo hiệu chỉnh liều và khoảng cách đưa thuốc; hạn chế tối đa các thuốc có hệ số thanh thải thận lớn; chỉ định giám sát TDM nghiêm ngặt.';
-  else renalInterp='Suy thận giai đoạn cuối — cần xem xét lọc máu. Nhiều thuốc cần bổ sung liều sau lọc.';
-
   return {
-    ibw:ibw, abw:abw, bmi:bmi, useWt:useWt,
-    crcl:crcl, cgStage:cgStage, cgColor:cgColor,
-    egfr:egfr, egfrStage:egfrStage, egfrColor:egfrColor,
-    bmiInterp:bmiInterp, worse:worse, worseColor:worseColor, renalInterp:renalInterp
+    ibw:ibw, abw:abw, bmi:bmi, bsa:bsa, useWt:useWt,
+    crcl:crcl,
+    egfr:egfr, egfrAbsolute:egfrAbsolute, egfrStage:egfrStage, egfrColor:egfrColor,
+    bmiInterp:bmiInterp
   };
 }
 window.computeRenalCore = computeRenalCore;
 
 // Module hợp nhất: CrCl (Cockcroft-Gault) + eGFR (CKD-EPI 2021 race-free) + IBW (Devine) + ABW
-// Toàn bộ công thức và ngưỡng phân loại được giữ NGUYÊN VẸN từ 3 module gốc (calcCG, calcEGFR, calcIBW)
-// — chỉ hợp nhất input/output và diễn giải, không thay đổi logic tính toán.
+// CrCl và eGFR là hai ước tính khác nhau: không lấy min/max và không gán nhóm G cho CrCl.
 function calcRenal() {
   var age=gv('rn-age'),sex=gs('rn-sex'),ht=gv('rn-ht'),wt=gv('rn-wt'),scrRaw=gv('rn-scr');
   hideErr('rn'); hideRes('rn');
   if(!age||!ht||!wt||!scrRaw){showErr('rn','Vui lòng nhập đầy đủ: Tuổi, Chiều cao, Cân nặng, Creatinine');return;}
-  if(age<1||age>120){showErr('rn','Tuổi không hợp lệ (1–120 năm)');return;}
+  if(age<18||age>120){showErr('rn','Tuổi phải trong khoảng 18–120 (công cụ chỉ dành cho người lớn)');return;}
   if(wt<10||wt>300){showErr('rn','Cân nặng không hợp lệ (10–300 kg)');return;}
   if(ht<100||ht>230){showErr('rn','Chiều cao không hợp lệ (100–230 cm)');return;}
   // Convert về mg/dL nếu đang dùng µmol/L
@@ -231,26 +216,27 @@ function calcRenal() {
 
   var m = computeRenalCore(age, sex, ht, wt, scr);
   var ibw=m.ibw, abw=m.abw, bmi=m.bmi, useWt=m.useWt;
-  var crcl=m.crcl, cgStage=m.cgStage;
-  var egfr=m.egfr, egfrStage=m.egfrStage;
-  var bmiInterp=m.bmiInterp, worse=m.worse, worseColor=m.worseColor, renalInterp=m.renalInterp;
+  var crcl=m.crcl;
+  var egfr=m.egfr, egfrAbsolute=m.egfrAbsolute, egfrStage=m.egfrStage;
+  var bmiInterp=m.bmiInterp;
 
-  // ---- Hiển thị kết quả (gộp) ----
+  // ---- Hiển thị riêng CrCl, eGFR chuẩn hóa và eGFR không chuẩn hóa BSA ----
   sv('rn-crcl-val',crcl.toFixed(1));
-  sv('rn-crcl-stage',cgStage);
   sv('rn-egfr-val',egfr.toFixed(1));
+  sv('rn-egfr-absolute-val',egfrAbsolute.toFixed(1));
   sv('rn-egfr-stage',egfrStage);
   sv('rn-ibw-val',ibw.toFixed(1));
   sv('rn-abw-val',abw.toFixed(1));
   sv('rn-bmi-val',bmi.toFixed(1));
   sv('rn-usewt-val',useWt.toFixed(1)+' kg');
 
-  var interp = '<strong>CrCl (Cockcroft-Gault)</strong> = '+crcl.toFixed(1)+' mL/phút — '+cgStage+'.<br>'
-    +'<strong>eGFR (CKD-EPI 2021)</strong> = '+egfr.toFixed(1)+' mL/phút/1.73m² — '+egfrStage+'.<br>'
-    +'<strong>IBW</strong> = '+ibw.toFixed(1)+' kg · <strong>ABW</strong> = '+abw.toFixed(1)+' kg · <strong>BMI</strong> = '+bmi.toFixed(1)+' kg/m² — '+bmiInterp+'<br>'
-    +renalInterp;
+  var interp = '<div class="renal-split-interp">'
+    +'<div><strong>CrCl Cockcroft-Gault</strong><br><b>'+crcl.toFixed(1)+' mL/phút</b><br>Chỉ dùng để đối chiếu ngưỡng hiệu chỉnh liều khi tài liệu của thuốc quy định theo CrCl. Không gán G1–G5 và không dùng CrCl để chẩn đoán hoặc phân giai đoạn CKD.</div>'
+    +'<div><strong>eGFR CKD-EPI 2021</strong><br><b>'+egfr.toFixed(1)+' mL/phút/1,73 m² — '+egfrStage+'</b><br>eGFR không chuẩn hóa theo BSA: <b>'+egfrAbsolute.toFixed(1)+' mL/phút</b>. Nhóm G dựa trên eGFR; một kết quả đơn lẻ không tự xác lập chẩn đoán CKD.</div>'
+    +'</div>'
+    +'<div class="renal-body-metrics"><strong>IBW</strong> = '+ibw.toFixed(1)+' kg · <strong>ABW</strong> = '+abw.toFixed(1)+' kg · <strong>BMI</strong> = '+bmi.toFixed(1)+' kg/m² — '+bmiInterp+'</div>';
 
-  setIB('rn',worseColor,'Diễn giải lâm sàng tổng hợp — CrCl · eGFR · IBW/ABW',interp,
+  setIB('rn','','Kết quả tách biệt — không trộn CrCl với eGFR',interp,
     'Cockcroft DW, Gault MH. Nephron. 1976;16:31-41. · Inker LA et al. N Engl J Med. 2021;385:1737-1749. · Devine BJ. Drug Intell Clin Pharm. 1974. · Winter ME. Basic Clinical Pharmacokinetics. 5th Ed.');
   showRes('rn');
   if(window.ClinpharmAudit){
@@ -259,8 +245,8 @@ function calcRenal() {
       module_name:'Chức năng thận CrCl/eGFR',
       crcl_ml_min:crcl,
       egfr_ml_min_1_73m2:egfr,
-      renal_band:cgStage,
-      result_summary:'CrCl '+crcl.toFixed(1)+' mL/phút; eGFR '+egfr.toFixed(1)+' mL/phút/1,73m²; '+cgStage
+      renal_band:egfrStage.split(' — ')[0],
+      result_summary:'CrCl '+crcl.toFixed(1)+' mL/phút (định liều theo nguồn dùng CrCl); eGFR '+egfr.toFixed(1)+' mL/phút/1,73m² ('+egfrStage+'); eGFR không chuẩn hóa BSA '+egfrAbsolute.toFixed(1)+' mL/phút'
     });
   }
 }
@@ -2767,7 +2753,7 @@ window.abxCalcCrCl=function(){
   var extraEl=document.getElementById("abx-extra-metrics");
   errEl.style.display="none";
   if(extraEl) extraEl.style.display="none";
-  if(isNaN(age)||age<1||age>120){errMsg.textContent="Tuổi không hợp lệ (1–120 năm)";errEl.style.display="flex";return;}
+  if(isNaN(age)||age<18||age>120){errMsg.textContent="Tuổi phải trong khoảng 18–120 (công cụ chỉ dành cho người lớn)";errEl.style.display="flex";return;}
   if(isNaN(ht)||ht<100||ht>230){errMsg.textContent="Chiều cao không hợp lệ (100–230 cm)";errEl.style.display="flex";return;}
   if(isNaN(wt)||wt<5||wt>300){errMsg.textContent="Cân nặng không hợp lệ (5–300 kg)";errEl.style.display="flex";return;}
   if(isNaN(scrRaw)||scrRaw<=0){errMsg.textContent="Creatinine không hợp lệ";errEl.style.display="flex";return;}
@@ -2792,27 +2778,29 @@ window.abxCalcCrCl=function(){
     resEl.style.cssText="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:14px;border-radius:10px;padding:14px 18px;background:linear-gradient(135deg,rgba(22,163,74,.07),rgba(22,163,74,.12));border:1.5px solid rgba(22,163,74,.3);animation:fadeUp .25s ease";
     valEl.style.color="#15803D";
     zoneEl.className="abx-crcl-zone zone-hi";
-    zoneEl.textContent="CrCl >50 mL/phút — Chức năng thận bình thường/nhẹ";
+    zoneEl.textContent="Ngưỡng CrCl >50 mL/phút để đối chiếu liều";
     noteEl.innerHTML="Dùng liều thông thường cho hầu hết kháng sinh.<br>"+metaStr;
   } else if(crcl>=10){
     resEl.style.cssText="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:14px;border-radius:10px;padding:14px 18px;background:linear-gradient(135deg,rgba(217,119,6,.07),rgba(217,119,6,.12));border:1.5px solid rgba(217,119,6,.3);animation:fadeUp .25s ease";
     valEl.style.color="#B45309";
     zoneEl.className="abx-crcl-zone zone-mid";
-    zoneEl.textContent="CrCl 10–50 mL/phút — Suy thận trung bình";
+    zoneEl.textContent="Ngưỡng CrCl 10–50 mL/phút để đối chiếu liều";
     noteEl.innerHTML="Cần hiệu chỉnh liều hầu hết kháng sinh — xem bảng bên dưới.<br>"+metaStr;
   } else {
     resEl.style.cssText="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:14px;border-radius:10px;padding:14px 18px;background:linear-gradient(135deg,rgba(220,38,38,.07),rgba(220,38,38,.12));border:1.5px solid rgba(220,38,38,.3);animation:fadeUp .25s ease";
     valEl.style.color="#B91C1C";
     zoneEl.className="abx-crcl-zone zone-lo";
-    zoneEl.textContent="CrCl <10 mL/phút — Suy thận nặng";
+    zoneEl.textContent="Ngưỡng CrCl <10 mL/phút để đối chiếu liều";
     noteEl.innerHTML="Hiệu chỉnh liều quan trọng. Cân nhắc lọc máu. Tham khảo cột IHD/CRRT.<br>"+metaStr;
   }
   // Hiển thị thêm eGFR / IBW / ABW (từ engine dùng chung)
   if(extraEl){
     var egfrEl=document.getElementById("abx-egfr-val");
+    var egfrAbsoluteEl=document.getElementById("abx-egfr-absolute-val");
     var ibwEl=document.getElementById("abx-ibw-val");
     var abwEl=document.getElementById("abx-abw-val");
     if(egfrEl) egfrEl.textContent=m.egfr.toFixed(1);
+    if(egfrAbsoluteEl) egfrAbsoluteEl.textContent=m.egfrAbsolute.toFixed(1);
     if(ibwEl) ibwEl.textContent=m.ibw.toFixed(1);
     if(abwEl) abwEl.textContent=m.abw.toFixed(1);
     extraEl.style.display="grid";

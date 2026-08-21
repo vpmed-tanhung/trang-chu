@@ -1,7 +1,7 @@
 {
-  "version": "2026.08.20.29",
-  "displayVersion": "5.0",
-  "updatedAt": "2026-08-20T22:22:54+07:00",
-  "note": "Tinh gọn lớp an toàn thận trong phân tích y lệnh nội trú: bỏ thời điểm lấy creatinine và CrCl đã xác minh; hệ thống tự tính CrCl/eGFR từ các dữ liệu cơ bản.",
-  "buildId": "v5.0-inpatient-renal-compact-20260820-29"
+  "version": "2026.08.21.33",
+  "displayVersion": "5.1",
+  "updatedAt": "2026-08-21T08:29:54+07:00",
+  "note": "Phát hành v5.1: tách CrCl/eGFR, tinh gọn xác nhận riêng tư, sửa lưới ảnh và chỉ cập nhật sau khi người dùng bấm nút.",
+  "buildId": "v5.1-manual-update-20260821-33"
 }

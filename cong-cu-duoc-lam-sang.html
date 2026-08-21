@@ -3,7 +3,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="vpmed-build-version" content="2026.08.20.29">
+<meta name="vpmed-build-version" content="2026.08.21.33">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#074691">
 <meta name="mobile-web-app-capable" content="yes">
@@ -146,6 +146,11 @@ button,.ni,.mod-card,.bp,.bs,.btn-ico,#MB-btn{-webkit-tap-highlight-color:transp
 .ib-r .ib-title{color:var(--R)}
 .ib-text{font-size:12.5px;color:var(--T2);line-height:1.7}
 .ib-ref{font-size:10.5px;color:var(--TM);margin-top:7px;font-style:italic;border-top:1px dashed var(--BOR);padding-top:5px}
+.renal-split-interp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.renal-split-interp>div{border:1px solid var(--BOR);border-radius:8px;padding:10px 12px;background:var(--BG)}
+.renal-split-interp strong{color:var(--PD)}
+.renal-body-metrics{margin-top:10px;padding-top:9px;border-top:1px dashed var(--BOR)}
+@media(max-width:700px){.renal-split-interp{grid-template-columns:1fr}}
 
 /* ===== TABS ===== */
 .tab-row{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:18px;background:var(--BG);padding:4px;border-radius:9px;border:1px solid var(--BOR)}
@@ -2121,7 +2126,7 @@ body.authed #AUTH-SCREEN{display:none!important}
 <div class="card">
   <div class="card-h"><div class="ci ci-b">🫘</div><div><div class="card-t">Chức năng thận &amp; IBW/ABW — CrCl / eGFR</div><div class="card-s">Nhập đầy đủ thông tin bệnh nhân — tính đồng thời CrCl (Cockcroft-Gault), eGFR (CKD-EPI 2021 race-free), IBW (Devine) và ABW hiệu chỉnh</div></div></div>
   <div class="fg">
-    <div class="fi"><label>Tuổi (năm)</label><input type="number" id="rn-age" placeholder="65" min="1" max="120"></div>
+    <div class="fi"><label>Tuổi người lớn (năm)</label><input type="number" id="rn-age" placeholder="65" min="18" max="120"></div>
     <div class="fi"><label>Giới tính</label><select id="rn-sex"><option value="male">Nam</option><option value="female">Nữ</option></select></div>
     <div class="fi"><label>Chiều cao (cm)</label><input type="number" id="rn-ht" placeholder="165" step="0.5"></div>
     <div class="fi"><label>Cân nặng thực tế (kg)</label><input type="number" id="rn-wt" placeholder="60" step="0.1"></div>
@@ -2146,9 +2151,10 @@ body.authed #AUTH-SCREEN{display:none!important}
     <div class="result-box">
       <div class="rg">
         <div class="ri"><div class="rv" id="rn-crcl-val">—</div><div class="rl">CrCl Cockcroft-Gault (mL/phút)</div></div>
-        <div class="ri"><div class="rv" id="rn-crcl-stage">—</div><div class="rl">Phân loại CrCl</div></div>
+        <div class="ri"><div class="rv">Không phân độ G</div><div class="rl">CrCl dùng theo ngưỡng liều của từng thuốc</div></div>
         <div class="ri"><div class="rv" id="rn-egfr-val">—</div><div class="rl">eGFR CKD-EPI (mL/ph/1.73m²)</div></div>
-        <div class="ri"><div class="rv" id="rn-egfr-stage">—</div><div class="rl">Giai đoạn CKD (eGFR)</div></div>
+        <div class="ri"><div class="rv" id="rn-egfr-absolute-val">—</div><div class="rl">eGFR không chuẩn hóa BSA (mL/phút)</div></div>
+        <div class="ri"><div class="rv" id="rn-egfr-stage">—</div><div class="rl">Nhóm G theo eGFR (không tự chẩn đoán CKD)</div></div>
         <div class="ri"><div class="rv" id="rn-ibw-val">—</div><div class="rl">IBW (kg)</div></div>
         <div class="ri"><div class="rv" id="rn-abw-val">—</div><div class="rl">ABW (kg)</div></div>
         <div class="ri"><div class="rv" id="rn-bmi-val">—</div><div class="rl">BMI (kg/m²)</div></div>
@@ -2159,21 +2165,11 @@ body.authed #AUTH-SCREEN{display:none!important}
   </div>
 
   <hr class="div">
-  <div class="sec-lbl">📊 Bảng phân loại mức độ suy thận theo CrCl (Cockcroft-Gault)</div>
-  <div class="tw"><table>
-    <thead><tr><th>CrCl (mL/phút)</th><th>Phân loại</th><th>Ý nghĩa lâm sàng</th><th>Hiệu chỉnh liều</th></tr></thead>
-    <tbody>
-      <tr><td><strong>≥ 90</strong></td><td><span style="color:var(--G);font-weight:700">Bình thường</span></td><td>Chức năng thận bình thường</td><td>Liều chuẩn</td></tr>
-      <tr><td><strong>60 – 89</strong></td><td><span style="color:var(--G2,#2EA84F);font-weight:700">Giảm nhẹ</span></td><td>Suy thận nhẹ</td><td>Thường liều chuẩn, theo dõi</td></tr>
-      <tr><td><strong>30 – 59</strong></td><td><span style="color:var(--W);font-weight:700">Giảm vừa</span></td><td>Suy thận vừa — CKD G3</td><td>Hiệu chỉnh liều nhiều thuốc</td></tr>
-      <tr><td><strong>15 – 29</strong></td><td><span style="color:var(--O2,#E05A00);font-weight:700">Giảm nặng</span></td><td>Suy thận nặng — CKD G4</td><td>Hiệu chỉnh liều đáng kể</td></tr>
-      <tr><td><strong>&lt; 15</strong></td><td><span style="color:var(--R);font-weight:700">Suy thận rất nặng</span></td><td>Suy thận giai đoạn cuối — CKD G5</td><td>Tránh hoặc liều rất thấp, xem xét lọc thận</td></tr>
-      <tr><td><strong>HD / CRRT</strong></td><td><span style="color:var(--R);font-weight:700">Lọc máu</span></td><td>Phụ thuộc lọc thận</td><td>Liều đặc biệt theo phương thức lọc</td></tr>
-    </tbody>
-  </table></div>
+  <div class="sec-lbl">💊 Cách sử dụng CrCl Cockcroft-Gault</div>
+  <div class="hl-info"><strong>CrCl không có phân độ G1–G5.</strong> Chỉ đối chiếu CrCl với đúng ngưỡng hiệu chỉnh liều trong tờ HDSD hoặc hướng dẫn của từng thuốc. Không chuyển CrCl thành giai đoạn CKD, không trộn CrCl với eGFR và không lấy giá trị thấp hơn giữa hai kết quả. Khi đang lọc máu, dùng khuyến cáo riêng theo IHD/CRRT và thời điểm dùng thuốc.</div>
 
   <hr class="div">
-  <div class="sec-lbl">📊 Bảng phân độ CKD theo KDIGO 2022 — Giai đoạn eGFR (G1–G5)</div>
+  <div class="sec-lbl">📊 Nhóm G theo eGFR chuẩn hóa (G1–G5)</div>
   <div class="tw"><table>
     <thead><tr><th>Giai đoạn</th><th>eGFR (mL/ph/1.73m²)</th><th>Mô tả</th><th>Theo dõi (lần/năm)</th></tr></thead>
     <tbody>
@@ -2185,7 +2181,7 @@ body.authed #AUTH-SCREEN{display:none!important}
       <tr><td><strong>G5</strong></td><td>&lt; 15</td><td><span style="color:var(--R);font-weight:700">Suy thận giai đoạn cuối (ESRD/KRT)</span></td><td>Tùy thuộc lọc thận</td></tr>
     </tbody>
   </table></div>
-  <div style="font-size:11.5px;color:var(--TM);margin-top:6px;font-style:italic">* Phân loại CKD dựa trên kết hợp giai đoạn eGFR (G) và nhóm albumin niệu (A). Xem bảng albumin niệu bên dưới.</div>
+  <div style="font-size:11.5px;color:var(--TM);margin-top:6px;font-style:italic">* Nhóm G dựa trên eGFR chuẩn hóa mL/phút/1,73 m², không dựa trên CrCl hoặc eGFR không chuẩn hóa BSA. Chẩn đoán/phân loại CKD cần đánh giá tính mạn (ít nhất 3 tháng), nguyên nhân và albumin niệu; G1–G2 đơn độc không xác lập CKD.</div>
 
   <hr class="div">
   <div class="sec-lbl">🔬 Phân nhóm Albumin niệu (A) theo KDIGO 2022</div>
@@ -4853,8 +4849,8 @@ body.authed #AUTH-SCREEN{display:none!important}
   </div>
   <div class="abx-fg">
     <div class="abx-fi">
-      <label>Tuổi (năm)</label>
-      <input type="number" id="abx-age" placeholder="65" min="1" max="120">
+      <label>Tuổi người lớn (năm)</label>
+      <input type="number" id="abx-age" placeholder="65" min="18" max="120">
     </div>
     <div class="abx-fi">
       <label>Giới tính</label>
@@ -4895,7 +4891,11 @@ body.authed #AUTH-SCREEN{display:none!important}
   <div id="abx-extra-metrics" style="display:none;margin-top:12px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px">
     <div style="background:var(--BG);border:1px solid var(--BOR);border-radius:9px;padding:10px 12px;text-align:center">
       <div style="font-size:15px;font-weight:800;color:var(--PD)" id="abx-egfr-val">—</div>
-      <div style="font-size:10.5px;color:var(--T2);margin-top:2px">eGFR (CKD-EPI) mL/phút/1.73m²</div>
+      <div style="font-size:10.5px;color:var(--T2);margin-top:2px">eGFR CKD-EPI 2021 (mL/phút/1,73m²)</div>
+    </div>
+    <div style="background:var(--BG);border:1px solid var(--BOR);border-radius:9px;padding:10px 12px;text-align:center">
+      <div style="font-size:15px;font-weight:800;color:var(--PD)" id="abx-egfr-absolute-val">—</div>
+      <div style="font-size:10.5px;color:var(--T2);margin-top:2px">eGFR không chuẩn hóa BSA (mL/phút)</div>
     </div>
     <div style="background:var(--BG);border:1px solid var(--BOR);border-radius:9px;padding:10px 12px;text-align:center">
       <div style="font-size:15px;font-weight:800;color:var(--PD)" id="abx-ibw-val">—</div>
@@ -5171,6 +5171,6 @@ body.vpmed-frame #pg-inject main{max-width:none;padding:4px 0 60px}
 }
 </style>
 <script src="assets/cong-cu-modules/embed-bootstrap.js"></script>
-<script defer src="assets/update-notifier.js?v=20260819-build21"></script>
+<script defer src="assets/update-notifier.js?v=20260821-manual-update-v2"></script>
 </body>
 </html>

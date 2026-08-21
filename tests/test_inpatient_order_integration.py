@@ -7,10 +7,10 @@ def test_inpatient_order_feature_is_wired_without_regressing_rx_review():
     html = (ROOT / 'index.html').read_text(encoding='utf-8')
     unified = (ROOT / 'assets' / 'unified.js').read_text(encoding='utf-8')
 
-    assert 'assets/inpatient-order-review.css?v=20260820-inpatient-renal-v2' in html
+    assert 'assets/inpatient-order-review.css?v=20260821-inpatient-file-grid-v4' in html
     assert 'data-open="inpatient-order"' in html
     assert 'id="view-inpatient-order"' in html
-    assert 'assets/inpatient-order-review.js?v=20260820-inpatient-renal-v2' in html
+    assert 'assets/inpatient-order-review.js?v=20260821-inpatient-file-grid-v4' in html
     assert "'inpatient-order'" in unified
 
     # Các sửa mới nhất của module rà soát đơn BHYT phải được giữ nguyên khi merge.
@@ -55,6 +55,33 @@ def test_inpatient_order_has_compact_busy_indicator():
     assert 'aria-busy' in js
     assert '.io-spinner' in css
     assert '@keyframes io-spin' in css
+
+
+def test_privacy_confirmation_is_compact_and_below_renal_inputs():
+    html = (ROOT / 'index.html').read_text(encoding='utf-8')
+    js = (ROOT / 'assets' / 'inpatient-order-review.js').read_text(encoding='utf-8')
+    css = (ROOT / 'assets' / 'inpatient-order-review.css').read_text(encoding='utf-8')
+
+    renal_result = html.index('id="ioRenalCalcResult"')
+    consent = html.index('id="ioConsent"')
+    actions = html.index('class="rx-new-prescription-action"', consent)
+    assert renal_result < consent < actions
+    assert 'io-privacy-banner' not in html
+    assert 'io-consent-compact' in html
+    assert 'width:12px;height:12px;min-width:12px' in css
+    assert '.io-renal-calc:empty{display:none}' in css
+    placeholder = 'Chọn tình trạng thận và nhập dữ liệu hiện có. Hệ thống không tự chốt mức liều'
+    assert placeholder not in html
+    assert placeholder not in js
+
+
+def test_uploaded_image_queue_uses_stable_grid_without_mid_row_gaps():
+    css = (ROOT / 'assets' / 'inpatient-order-review.css').read_text(encoding='utf-8')
+
+    assert '.io-file-queue{display:grid;' in css
+    assert 'grid-template-columns:repeat(auto-fill,minmax(132px,1fr))' in css
+    assert '.io-file-queue{display:flex' not in css
+    assert '.io-file-chip{position:relative;display:flex;align-items:center;gap:8px;width:100%;min-width:0;box-sizing:border-box' in css
 
 
 def test_inpatient_order_has_deterministic_renal_safety_layer():

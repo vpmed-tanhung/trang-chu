@@ -1,4 +1,4 @@
-/* VPMED - thông báo phiên bản mới, không can thiệp phiên đăng nhập. */
+/* VPMED - chỉ tải phiên bản mới sau khi người dùng chủ động bấm Cập nhật. */
 (function () {
   'use strict';
 
@@ -153,8 +153,6 @@
     var version = data.version;
     var displayVersion = data.displayVersion || version;
 
-    setFooterLatest(displayVersion);
-
     var box = getNotice();
     box.className = '';
     box.setAttribute('role', 'button');
@@ -162,7 +160,7 @@
     box.setAttribute('title', 'Build đang mở: ' + (loadedVersion || legacySeenVersion || 'không xác định') + ' · Build mới: ' + version);
     box.setAttribute('aria-label', 'Có bản cập nhật mới v' + displayVersion + ', ' + compactBuild(version) + '. Bấm để cập nhật.');
     box.querySelector('.vpmed-update-icon').textContent = '↻';
-    box.querySelector('.vpmed-update-text').textContent = 'Có bản cập nhật mới';
+    box.querySelector('.vpmed-update-text').textContent = 'Có bản v' + displayVersion + ' mới';
     box.querySelector('.vpmed-update-action').textContent = '· Cập nhật';
     box.onclick = function () { reloadForUpdate(version); };
     box.onkeydown = function (event) {

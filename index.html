@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8">
-<meta name="vpmed-build-version" content="2026.08.20.29">
+<meta name="vpmed-build-version" content="2026.08.21.33">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#075f9f">
   <title>Hệ thống Hỗ trợ Dược lâm sàng | VPMED Tân Hưng</title>
@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="assets/stock_clinical_tools.css?v=20260814-direct-sources-v6">
   <link rel="stylesheet" href="assets/injectable_guide.css?v=20260814-content-from-original-v2">
   <link rel="stylesheet" href="assets/prescription-check.css?v=20260818-rx-ui-v8">
-  <link rel="stylesheet" href="assets/inpatient-order-review.css?v=20260820-inpatient-renal-v2">
+  <link rel="stylesheet" href="assets/inpatient-order-review.css?v=20260821-inpatient-file-grid-v4">
   <script>document.documentElement.classList.add('system-loading','vpmed-auth-checking');</script>
   <noscript><style>#systemLoader{display:none!important}</style></noscript>
 </head>
@@ -224,13 +224,6 @@
       <div><h1>Phân tích y lệnh dùng thuốc nội trú</h1></div>
     </div>
 
-    <div class="io-privacy-banner">
-      <span class="io-privacy-icon">⚠️</span>
-      <div>
-        <label class="io-consent-line"><input type="checkbox" id="ioConsent"> Tôi xác nhận đã che/xóa thông tin định danh bệnh nhân trong ảnh trước khi phân tích.</label>
-      </div>
-    </div>
-
     <div class="rx-workspace">
       <div class="rx-main-column">
         <section class="section-card">
@@ -270,9 +263,8 @@
                 <span class="io-scr-input-group"><input id="ioScr" type="number" min="0.1" step="0.1" inputmode="decimal" placeholder="90"><select id="ioScrUnit" aria-label="Đơn vị creatinine"><option value="umol">µmol/L</option><option value="mgdl">mg/dL</option></select></span>
               </label>
             </div>
-            <div class="io-renal-calc" id="ioRenalCalcResult" aria-live="polite">
-              Chọn tình trạng thận và nhập dữ liệu hiện có. Hệ thống không tự chốt mức liều nếu AKI, IHD/CRRT hoặc thiếu dữ liệu trọng yếu.
-            </div>
+            <div class="io-renal-calc" id="ioRenalCalcResult" aria-live="polite"></div>
+            <label class="io-consent-line io-consent-compact"><input type="checkbox" id="ioConsent"><span>Tôi xác nhận đã che/xóa thông tin định danh bệnh nhân trong ảnh trước khi phân tích.</span></label>
           </section>
 
           <div class="rx-new-prescription-action">
@@ -302,7 +294,7 @@
       <aside class="form-card">
         <h3>Thông tin bệnh nhân</h3>
         <label>Mã bệnh nhân trên HIS <small class="optional-note">chỉ nhập mã HIS, không nhập họ tên người bệnh</small><input id="patientCode" type="text" maxlength="30" autocomplete="off" spellcheck="false" placeholder="Nhập mã bệnh nhân" required></label>
-        <div class="form-row"><label>Tuổi<input id="age" type="number" min="18" placeholder="65"></label><label>Cân nặng (kg)<input id="wt" type="number" min="1" step="0.1" placeholder="60"></label></div>
+        <div class="form-row"><label>Tuổi người lớn<input id="age" type="number" min="18" max="120" placeholder="65"></label><label>Cân nặng (kg)<input id="wt" type="number" min="1" step="0.1" placeholder="60"></label></div>
         <label>Chiều cao (cm) <small class="optional-note">không bắt buộc – dùng để quy đổi eGFR về mL/phút khi cần đánh giá liều</small><input id="ht" type="number" min="80" max="250" step="0.1" placeholder="165"></label>
         <div class="form-row"><label>Giới tính<select id="sex"><option value="m">Nam</option><option value="f">Nữ</option></select></label><label>Creatinine (µmol/L)<input id="scr" type="number" min="1" step="0.1" placeholder="90"></label></div>
         <label>Kháng sinh<select id="drug"></select></label>
@@ -1465,7 +1457,7 @@ calc();
 </main>
 
 <footer class="site-footer">
-  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v5.0</span></div>
+  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v5.1</span></div>
   <div><a class="nav-evaluation" href="phieu-danh-gia.html" target="_blank" rel="noopener">Phiếu đánh giá phần mềm</a> · <a href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a> · Công cụ hỗ trợ, không thay thế đánh giá lâm sàng.</div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1487,7 +1479,7 @@ calc();
 <script defer src="assets/icd-clinical-match.js?v=20260817-tt06-2026"></script>
 <script defer src="assets/prescription-diagnosis-ocr.js?v=20260817-exact-icd-v2"></script>
 <script defer src="assets/prescription-check.js?v=20260819-build21"></script>
-<script defer src="assets/inpatient-order-review.js?v=20260820-inpatient-renal-v2"></script>
+<script defer src="assets/inpatient-order-review.js?v=20260821-inpatient-file-grid-v4"></script>
 <script defer src="assets/vpmed-renal-audit.js?v=20260814-module-history-v5"></script>
 <script defer src="assets/antibiotic_consultation.js?v=20260814-short-module-copy-v1"></script>
 <script defer src="assets/dose_24h_summary.js?v=20260802-structure-only"></script>
@@ -1526,12 +1518,12 @@ calc();
 <script defer src="vpmed-approved-data-bridge.js"></script>
 
   <script defer src="assets/pharmacovigilance_alerts_data.js?v=20260711"></script>
-  <script defer src="assets/pharmacovigilance_auto_data.js?v=20260820062208"></script>
+  <script defer src="assets/pharmacovigilance_auto_data.js?v=20260821062500"></script>
   <script defer src="assets/pharmacovigilance_bulletin_76_data.js?v=20260804"></script>
   <script defer src="assets/pharmacovigilance_auto_editor.js?v=20260728-structured"></script>
   <script defer src="assets/pharmacovigilance_integration.js?v=20260815-unified-status-v1"></script>
   <script defer src="assets/professional_icons.js?v=20260715-clinical-cute"></script>
   <script defer src="assets/petct_step_form.js?v=20260713"></script>
-  <script defer src="assets/update-notifier.js?v=20260819-build21"></script>
+  <script defer src="assets/update-notifier.js?v=20260821-manual-update-v2"></script>
 </body>
 </html>
