@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-21T06:25:00+07:00",
+  "generated_at": "2026-08-22T06:23:31+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
   "newly_fetched_count": 1,
@@ -7,6 +7,46 @@
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
+    {
+      "id": "auto-1844287fb2c53c",
+      "level": "red",
+      "year": "2026",
+      "date": "21/08/2026",
+      "category": "Thai kỳ & sức khỏe sinh sản",
+      "system": "Tim mạch · Gan mật · Sản khoa",
+      "interaction": false,
+      "title": "TGA: Nguy cơ tổn thương gan hiếm gặp liên quan đến Sâm Ấn Độ (Withania somnifera)",
+      "drugs": "Thuốc/nhóm thuốc nêu trong tiêu đề; xem bài nguồn để xác định đầy đủ.",
+      "summary": "hay Ashwagandha) là một thành phần thảo dược có trong một số loại thuốc đang lưu hành. Việc sử dụng các thành phần này trong các chế phẩm hiện nay chưa phải tuân theo bất kỳ hạn chế cụ thể nào về liều lượng, nồng độ hay loại chế phẩm. Tuy nhiên, bao bì thuốc bắt buộc phải có thông tin cảnh báo dành cho phụ nữ mang thai đối với một số chế phẩm nhất định chứa thảo dược này. Chuỗi báo cáo bất lợi này ghi nhận trên cả bệnh nhân có bệnh lý gan từ trước và có 3 báo cáo trường hợp tử vong. somnifera TGA đã ghi nhận 01 báo cáo biến cố bất lợi về tình trạng tổn thương gan nghiêm trọng liên quan đến một loại thuốc có chứa W. Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn. Báo cáo từ Chương trình Giám sát Thuốc Quốc tế của Tổ chức Y tế Thế giới (WHO) cũng ghi nhận các ca có thể bị tổn thương gan liên quan đến thuốc đơn thành phần từ các quốc gia khác.",
+      "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
+      "risk": [
+        "Tuy nhiên, bao bì thuốc bắt buộc phải có thông tin cảnh báo dành cho phụ nữ mang thai đối với một số chế phẩm nhất định chứa thảo dược này.",
+        "Chuỗi báo cáo bất lợi này ghi nhận trên cả bệnh nhân có bệnh lý gan từ trước và có 3 báo cáo trường hợp tử vong.",
+        "Tháng 9/2023 & tháng 7/2025 (Hà Lan): Trung tâm Cảnh giác Dược Hà Lan đã công bố cảnh báo vào tháng 9/ 2023 và cập nhật thêm vào tháng 7/ 2025, báo cáo tổng cộng 12 ca tổn thương gan tính đến tháng 6/ 2025 (thời gian khởi phát từ 6 tuần đến 22 tháng) và hầu hết bệnh nhân đã hồi phục sau khi ngừng sử dụng sản phẩm.",
+        "Do vậy, ở Ấn Độ việc sử dụng rễ vẫn được phép nhưng tuân theo các giới hạn quy định, trong khi đó sử dụng lá Kể từ khi công bố năm 2024, TGA đã ghi nhận thêm 4 báo cáo biến cố bất lợi nghi ngờ tổn thương gan do thuốc chứa Trong đó 2 ca có các thành phần phối hợp khác có thể đã góp phần gây ra phản ứng được báo cáo."
+      ],
+      "signs": [
+        "somnifera TGA đã ghi nhận 01 báo cáo biến cố bất lợi về tình trạng tổn thương gan nghiêm trọng liên quan đến một loại thuốc có chứa W.",
+        "somnifera và tình trạng tổn thương gan.",
+        "Các nhà nghiên cứu đã xem xét các hồ sơ bệnh án của các ca tổn thương gan do thảo dược, ghi nhận 8 ca tổn thương gan liên quan đến các chế phẩm W.",
+        ": TGA đã đưa ra cảnh báo an toàn, nhấn mạnh rằng các loại thuốc và thực phẩm chức năng có nguồn gốc thảo dược có chứa có thể liên quan đến tổn thương gan với tần suất rất hiếm gặp."
+      ],
+      "action": [
+        "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn."
+      ],
+      "monitor": [
+        "Báo cáo từ Chương trình Giám sát Thuốc Quốc tế của Tổ chức Y tế Thế giới (WHO) cũng ghi nhận các ca có thể bị tổn thương gan liên quan đến thuốc đơn thành phần từ các quốc gia khác.",
+        "Tăng cường báo cáo ADR về thuốc dược liệu Khả năng giám sát các vấn đề sức khỏe và an toàn đối với thuốc thảo dược phụ thuộc một phần vào báo cáo các biến cố bất lợi từ nhân viên y tế."
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5859/tga-nguy-co-ton-thuong-gan-hiem-gap-lien-quan-sam-an.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5859/tga-nguy-co-ton-thuong-gan-hiem-gap-lien-quan-sam-an.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-structured"
+    },
     {
       "id": "auto-73968ff46251f4",
       "level": "orange",
