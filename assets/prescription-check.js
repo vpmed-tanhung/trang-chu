@@ -636,6 +636,14 @@
     });
   }
 
+  const ICD_RELATED_STOP_WORDS=new Set(['benh','dieu','tri','trieu','chung','khong','xac','dinh','tang','giam','cap','man','tinh','tieu','duong','kem','bien']);
+  function hasRelatedDiagnosis(observedTexts,targetTexts){
+    const words=values=>new Set((values||[]).flatMap(value=>norm(value).split(/\s+/)).filter(word=>word.length>=3&&!ICD_RELATED_STOP_WORDS.has(word)));
+    const observed=words(observedTexts),target=words(targetTexts);
+    for(const word of observed)if(target.has(word))return true;
+    return false;
+  }
+
   function icdReview(codes){
     const missing=[],unmapped=[],matched=[];
     const matcher=window.VPMED_ICD_CLINICAL_MATCH;
@@ -646,13 +654,19 @@
       const match=matcher?.matchAny
         ?matcher.matchAny(codes,allowed)
         :{matched:allowed.some(code=>codes.includes(code)),mode:'exact'};
-      if(match.matched)matched.push({drug,mappings,allowed,match});
-      else{
-        const observedLabels=codes.map(code=>icdName(code)||code);
-        const targetTexts=[...mappings.map(mapping=>mapping.term),...(drug.profile?.indications||[])];
-        const related=Boolean(matcher?.isClinicalTextRelated?.(observedLabels,targetTexts));
-        missing.push({drug,mappings,allowed,related});
-      }
+      // Chấp nhận mã cùng nhóm bệnh khi quy tắc ICD trong hồ sơ thuốc cho phép.
+      // Không bổ sung hay suy diễn dữ liệu thuốc từ nội dung đơn đang rà soát.
+      if(match.matched){matched.push({drug,mappings,allowed,match});return}
+
+      const observedLabels=codes.map(code=>icdName(code)||code);
+      const targetTexts=[...mappings.map(mapping=>mapping.term),...(drug.profile?.indications||[])];
+      const differentSpecificCode=codes.some(observed=>allowed.some(target=>{
+        const current=String(observed).toUpperCase(),expected=String(target).toUpperCase();
+        return current.length>3&&expected.length>3&&current!==expected&&current.slice(0,3)===expected.slice(0,3);
+      }));
+      const isSuboptimal=Boolean(!differentSpecificCode&&hasRelatedDiagnosis(observedLabels,targetTexts));
+      const isMissing=!isSuboptimal;
+      missing.push({drug,mappings,allowed,isMissing,isSuboptimal,related:isSuboptimal});
     });
     return {missing,unmapped,matched};
   }
@@ -728,11 +742,13 @@
       const labels=(mapping.codes||[]).map(icdLabel).join(', ');
       return `${mapping.term}: ${labels}`;
     }).join(' · ');
-    const related=Boolean(item.related);
-    const status=related?'mã bệnh chưa thật sự phù hợp':'thiếu mã bệnh';
-    const eyebrow=related?'Mã bệnh chưa thật sự phù hợp':'Thiếu mã bệnh BHYT';
-    return `<article class="rx-alert rx-alert-warning rx-alert-missing-icd" data-icd-status="${related?'related':'missing'}">
-      <div class="rx-alert-header"><span class="rx-alert-icon">ICD</span><div><small>${eyebrow}</small><h3>${esc(drugName)}: ${status}</h3></div></div>
+    const isMissing=Boolean(item.isMissing);
+    const title=isMissing?'THIẾU MÃ BỆNH':'MÃ BỆNH CHƯA PHÙ HỢP / CẦN ĐỐI CHIẾU';
+    const message=isMissing
+      ?`${drugName}: Thiếu mã bệnh`
+      :`${drugName}: Mã bệnh hiện có chưa phù hợp, cần đối chiếu HDSD/phác đồ điều trị`;
+    return `<article class="rx-alert ${isMissing?'rx-alert-danger':'rx-alert-warning'} rx-alert-missing-icd" data-icd-status="${isMissing?'missing':'suboptimal'}">
+      <div class="rx-alert-header"><span class="rx-alert-icon">ICD</span><div><small>${title}</small><h3>${esc(message)}</h3></div></div>
       <dl><div><dt>Gợi ý</dt><dd>${esc(terms||item.allowed.map(icdLabel).join(', '))}</dd></div></dl>
     </article>`;
   }
@@ -915,8 +931,8 @@
   }
 
   function inpatientBhytHtml(item){
-    const status=item.related?'Mã bệnh chưa thật sự phù hợp':'Thiếu mã bệnh BHYT';
-    return `<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">BHYT</span><div><h3>${esc(item.drug.name)}: ${status}</h3></div></div><p>• <b>Xuất toán BHYT:</b> ${item.related?'Đã có chẩn đoán liên quan nhưng mã hiện tại chưa khớp chỉ định đã đối chiếu.':'Chưa có mã bệnh tương ứng với chỉ định đã đối chiếu.'}</p><p>• <b>Xử trí:</b> Kiểm tra chẩn đoán, hồ sơ bệnh án và điều kiện thanh toán hiện hành.</p></article>`;
+    const status=item.related?'Mã bệnh chưa thật sự phù hợp':'Thiếu mã bệnh';
+    return `<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">BHYT</span><div><h3>${esc(item.drug.name)}: ${status}</h3></div></div><p>• <b>Xuất toán BHYT:</b> ${item.related?'Đã có chẩn đoán liên quan nhưng mã hiện tại chưa khớp chỉ định đã đối chiếu.':'Thiếu mã bệnh.'}</p><p>• <b>Xử trí:</b> Kiểm tra chẩn đoán, hồ sơ bệnh án và điều kiện thanh toán hiện hành.</p></article>`;
   }
 
   function checkInpatientOrder(){
@@ -943,7 +959,7 @@
     interactions.forEach(hit=>blocks.push(inpatientInteractionHtml(hit)));
     duplicates.forEach(group=>blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><h3>Trùng hoạt chất trong y lệnh</h3></div></div><p>• <b>Thuốc:</b> ${esc(group.map(drug=>drug.name).join(' + '))}</p><p>• <b>Xử trí:</b> Kiểm tra trùng điều trị và tổng liều trước khi thực hiện.</p></article>`));
     state.drugs.forEach(drug=>blocks.push(inpatientDrugHtml(drug)));
-    if(state.drugs.some(drug=>drug.payment==='BHYT')&&!codes.length)blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">BHYT</span><div><h3>Thiếu mã bệnh để kiểm tra BHYT</h3></div></div><p>• <b>Xuất toán BHYT:</b> Chưa đủ dữ liệu mã ICD để đối chiếu.</p></article>`);
+    if(state.drugs.some(drug=>drug.payment==='BHYT')&&!codes.length)blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">BHYT</span><div><h3>Thiếu mã bệnh</h3></div></div><p>• <b>Xuất toán BHYT:</b> Thiếu mã bệnh.</p></article>`);
     missing.forEach(item=>blocks.push(inpatientBhytHtml(item)));
     if(unmapped.length)blocks.push(`<article class="rx-alert rx-alert-info"><div class="rx-alert-header"><span class="rx-alert-icon">i</span><div><h3>Chưa đủ dữ liệu BHYT</h3></div></div><p>• <b>Thuốc:</b> ${esc(unmapped.map(drug=>drug.name).join(', '))}</p><p>• <b>Xử trí:</b> Đối chiếu HDSD/SPC Cục QLD, Dược thư QGVN III, phác đồ/hướng dẫn Bộ Y tế và quy định BHYT hiện hành.</p></article>`);
     if(unknown.length)blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">?</span><div><h3>Có thuốc chưa chuẩn hóa</h3></div></div><p>• <b>Thuốc:</b> ${esc(unknown.map(drug=>drug.rawName||drug.name).join(', '))}</p><p>• <b>Xử trí:</b> Xác nhận tên/hàm lượng trước khi kết luận.</p></article>`);

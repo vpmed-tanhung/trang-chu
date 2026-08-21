@@ -1,9 +1,9 @@
 {
   "version": "2026.08.21.35",
-  "displayVersion": "5.1",
+  "displayVersion": "5.3",
   "updatedAt": "2026-08-21T09:24:04+07:00",
-  "note": "Phát hành v5.1: tách CrCl/eGFR, sửa giao diện và cơ chế cập nhật; cụm Phân tích đơn thuốc/Đơn mới được thu gọn.",
-  "buildId": "v5.1-prescription-actions-20260821-35",
-  "previousVersion": "2026.08.21.32",
-  "previousDisplayVersion": "5.0"
+  "note": "Phát hành v5.3: tách CrCl/eGFR, sửa giao diện và cơ chế cập nhật; cụm Phân tích đơn thuốc/Đơn mới được thu gọn.",
+  "buildId": "v5.3-prescription-actions-20260821-35",
+  "previousVersion": "2026.08.21.35",
+  "previousDisplayVersion": "5.3"
 }
