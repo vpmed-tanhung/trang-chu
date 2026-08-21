@@ -6,6 +6,8 @@
 
   var VERSION_URL = 'assets/app-version.json';
   var SEEN_VERSION_KEY = 'vpmed_seen_app_version_v1';
+  var ACCEPTED_VERSION_KEY = 'vpmed_accepted_app_build_v2';
+  var ACCEPTED_DISPLAY_KEY = 'vpmed_accepted_app_display_v2';
   var RELOAD_TARGET_KEY = 'vpmed_update_reload_target_v1';
   var UPDATE_QUERY_KEY = 'vpmed_update';
   var CHECK_INTERVAL_MS = 5 * 60 * 1000;
@@ -65,18 +67,30 @@
     document.head.appendChild(style);
   }
 
-  function setFooterLatest(displayVersion) {
+  function getFooterDisplayVersion() {
     var target = getFooterVersion();
-    if (!target) return false;
+    var match = String(target && target.textContent || '').match(/v([0-9A-Za-z._-]+)/);
+    return validVersion(match && match[1]);
+  }
+
+  function setFooterVersion(displayVersion) {
+    var target = getFooterVersion();
+    displayVersion = validVersion(displayVersion);
+    if (!target || !displayVersion) return false;
     ensureStyle();
     target.className = 'site-version';
     target.textContent = '· v' + displayVersion;
-    target.setAttribute('title', 'Phiên bản mới nhất: v' + displayVersion);
+    target.setAttribute('title', 'Phiên bản đang dùng: v' + displayVersion);
     target.removeAttribute('role');
     target.removeAttribute('tabindex');
     target.onclick = null;
     target.onkeydown = null;
     return true;
+  }
+
+  function hideNotice() {
+    if (notice && notice.parentNode) notice.parentNode.removeChild(notice);
+    notice = null;
   }
 
   function getNotice() {
@@ -119,7 +133,7 @@
   }
 
   function showSuccess(version, displayVersion) {
-    setFooterLatest(displayVersion);
+    setFooterVersion(displayVersion);
     var box = getNotice();
     box.className = 'vpmed-update-success';
     box.removeAttribute('role');
@@ -135,6 +149,14 @@
       if (box.parentNode) box.parentNode.removeChild(box);
       notice = null;
     }, 3500);
+  }
+
+  function acceptVersion(version, displayVersion) {
+    writeStorage(window.localStorage, ACCEPTED_VERSION_KEY, version);
+    writeStorage(window.localStorage, ACCEPTED_DISPLAY_KEY, displayVersion);
+    /* Giữ khóa cũ chỉ để tương thích; tuyệt đối không dùng nó để tự chấp nhận bản mới. */
+    writeStorage(window.localStorage, SEEN_VERSION_KEY, version);
+    legacySeenVersion = version;
   }
 
   function reloadForUpdate(version) {
@@ -157,7 +179,7 @@
     box.className = '';
     box.setAttribute('role', 'button');
     box.setAttribute('tabindex', '0');
-    box.setAttribute('title', 'Build đang mở: ' + (loadedVersion || legacySeenVersion || 'không xác định') + ' · Build mới: ' + version);
+    box.setAttribute('title', 'Phiên bản đang dùng: v' + (data.currentDisplayVersion || 'không xác định') + ' · Bản mới: v' + displayVersion);
     box.setAttribute('aria-label', 'Có bản cập nhật mới v' + displayVersion + ', ' + compactBuild(version) + '. Bấm để cập nhật.');
     box.querySelector('.vpmed-update-icon').textContent = '↻';
     box.querySelector('.vpmed-update-text').textContent = 'Có bản v' + displayVersion + ' mới';
@@ -175,46 +197,52 @@
     var version = validVersion(data && data.version);
     if (!version) return;
     var displayVersion = validVersion(data && data.displayVersion) || version;
+    var previousVersion = validVersion(data && data.previousVersion);
+    var previousDisplayVersion = validVersion(data && data.previousDisplayVersion);
     var reloadTarget = readStorage(window.sessionStorage, RELOAD_TARGET_KEY);
+    var acceptedVersion = validVersion(readStorage(window.localStorage, ACCEPTED_VERSION_KEY));
+    var acceptedDisplayVersion = validVersion(readStorage(window.localStorage, ACCEPTED_DISPLAY_KEY));
 
-    /* Có meta build: đây là nguồn sự thật về code đang chạy. */
-    if (loadedVersion) {
-      if (loadedVersion !== version) {
-        if (reloadTarget) removeStorage(window.sessionStorage, RELOAD_TARGET_KEY);
-        showUpdate({ version: version, displayVersion: displayVersion, note: data.note });
-        return;
-      }
+    /*
+     * Một số bản cũ từng ghi nhầm build mới vào SEEN_VERSION_KEY ngay khi mở
+     * trang. Chỉ di chuyển giá trị cũ nếu nó KHÁC bản đang phát hành.
+     */
+    if (!acceptedVersion && legacySeenVersion && legacySeenVersion !== version) {
+      acceptedVersion = legacySeenVersion;
+    }
+    if (!acceptedDisplayVersion && acceptedVersion && acceptedVersion === previousVersion) {
+      acceptedDisplayVersion = previousDisplayVersion;
+    }
 
-      writeStorage(window.localStorage, SEEN_VERSION_KEY, version);
-      legacySeenVersion = version;
-      if (reloadTarget === version) {
-        removeStorage(window.sessionStorage, RELOAD_TARGET_KEY);
-        cleanUpdateQuery();
-        showSuccess(version, displayVersion);
-        return;
-      }
-      if (reloadTarget) removeStorage(window.sessionStorage, RELOAD_TARGET_KEY);
+    var currentDisplayVersion = acceptedDisplayVersion || previousDisplayVersion || getFooterDisplayVersion();
+
+    /* Chỉ cú bấm Cập nhật mới tạo reloadTarget; lúc đó mới chấp nhận bản mới. */
+    if (reloadTarget === version && (!loadedVersion || loadedVersion === version)) {
+      acceptVersion(version, displayVersion);
+      removeStorage(window.sessionStorage, RELOAD_TARGET_KEY);
       cleanUpdateQuery();
-      setFooterLatest(displayVersion);
+      showSuccess(version, displayVersion);
       return;
     }
+    if (reloadTarget) removeStorage(window.sessionStorage, RELOAD_TARGET_KEY);
 
-    /* Tương thích các HTML cũ chưa có meta build. */
-    if (!legacySeenVersion) {
-      legacySeenVersion = version;
-      writeStorage(window.localStorage, SEEN_VERSION_KEY, version);
+    /* Đã từng bấm cập nhật thành công trên thiết bị này. */
+    if (acceptedVersion === version && (!loadedVersion || loadedVersion === version)) {
       cleanUpdateQuery();
-      setFooterLatest(displayVersion);
+      setFooterVersion(acceptedDisplayVersion || displayVersion);
+      hideNotice();
       return;
     }
 
-    if (legacySeenVersion !== version) {
-      showUpdate({ version: version, displayVersion: displayVersion, note: data.note });
-      return;
-    }
-
+    /* Chưa bấm: luôn giữ nhãn phiên bản cũ và chỉ hiện nút Cập nhật. */
+    if (currentDisplayVersion) setFooterVersion(currentDisplayVersion);
     cleanUpdateQuery();
-    setFooterLatest(displayVersion);
+    showUpdate({
+      version: version,
+      displayVersion: displayVersion,
+      currentDisplayVersion: currentDisplayVersion,
+      note: data.note
+    });
   }
 
   function checkVersion() {

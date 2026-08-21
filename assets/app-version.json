@@ -1,7 +1,9 @@
 {
-  "version": "2026.08.21.33",
+  "version": "2026.08.21.34",
   "displayVersion": "5.1",
-  "updatedAt": "2026-08-21T08:29:54+07:00",
-  "note": "Phát hành v5.1: tách CrCl/eGFR, tinh gọn xác nhận riêng tư, sửa lưới ảnh và chỉ cập nhật sau khi người dùng bấm nút.",
-  "buildId": "v5.1-manual-update-20260821-33"
+  "updatedAt": "2026-08-21T08:50:00+07:00",
+  "note": "Phát hành v5.1: tách CrCl/eGFR, tinh gọn xác nhận riêng tư, sửa lưới ảnh và chỉ kích hoạt phiên bản sau khi người dùng bấm Cập nhật.",
+  "buildId": "v5.1-manual-activation-20260821-34",
+  "previousVersion": "2026.08.21.32",
+  "previousDisplayVersion": "5.0"
 }

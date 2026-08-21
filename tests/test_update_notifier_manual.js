@@ -34,7 +34,7 @@ class Element {
 }
 
 const oldBuild = '2026.08.21.32';
-const newBuild = '2026.08.21.33';
+const newBuild = '2026.08.21.34';
 const footer = new Element('span');
 footer.id = 'vpmedLatestVersion';
 footer.textContent = '· v5.0';
@@ -68,7 +68,8 @@ const documentStub = {
   getElementById(id) { return id === footer.id ? footer : findById(head, id) || findById(body, id); },
   querySelector(selector) {
     if (selector === 'meta[name="vpmed-build-version"]') {
-      return { getAttribute(name) { return name === 'content' ? oldBuild : ''; } };
+      // Tình huống từng gây lỗi: HTML đã mang meta build mới nhưng người dùng chưa bấm.
+      return { getAttribute(name) { return name === 'content' ? newBuild : ''; } };
     }
     return null;
   },
@@ -102,11 +103,19 @@ const windowStub = {
 };
 windowStub.self = windowStub;
 windowStub.top = windowStub;
+// Mô phỏng dữ liệu sai do bản cũ từng tự ghi ngay khi mở trang.
+windowStub.localStorage.setItem('vpmed_seen_app_version_v1', newBuild);
 
 const fetchStub = async () => ({
   ok: true,
   async json() {
-    return { version: newBuild, displayVersion: '5.1', note: 'Bản phát hành mới' };
+    return {
+      version: newBuild,
+      displayVersion: '5.1',
+      previousVersion: oldBuild,
+      previousDisplayVersion: '5.0',
+      note: 'Bản phát hành mới'
+    };
   }
 });
 windowStub.fetch = fetchStub;
@@ -129,6 +138,7 @@ vm.runInContext(code, sandbox);
   await new Promise(resolve => setTimeout(resolve, 0));
 
   assert.strictEqual(footer.textContent, '· v5.0', 'Chưa bấm cập nhật thì footer phải giữ phiên bản đang chạy');
+  assert.strictEqual(windowStub.localStorage.getItem('vpmed_accepted_app_build_v2'), null, 'Không được tự chấp nhận build mới');
   assert.strictEqual(replacedUrl, '', 'Không được tự chuyển trang khi chỉ mới phát hiện bản mới');
 
   const notice = documentStub.getElementById('vpmedUpdateNotice');
@@ -139,6 +149,19 @@ vm.runInContext(code, sandbox);
   notice.onclick();
   assert.strictEqual(windowStub.sessionStorage.getItem('vpmed_update_reload_target_v1'), newBuild);
   assert.ok(replacedUrl.includes('vpmed_update=' + newBuild), 'Chỉ cú bấm Cập nhật mới tải build mới');
+
+  // Mô phỏng trang vừa tải lại sau đúng cú bấm ở trên.
+  body.removeChild(notice);
+  const reloadSandbox = { window: windowStub, document: documentStub, fetch: fetchStub, URL, Date, console };
+  vm.createContext(reloadSandbox);
+  vm.runInContext(code, reloadSandbox);
+  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise(resolve => setTimeout(resolve, 0));
+
+  assert.strictEqual(footer.textContent, '· v5.1', 'Sau cú bấm và tải lại mới được đổi footer lên v5.1');
+  assert.strictEqual(windowStub.localStorage.getItem('vpmed_accepted_app_build_v2'), newBuild);
+  assert.strictEqual(windowStub.localStorage.getItem('vpmed_accepted_app_display_v2'), '5.1');
+  assert.strictEqual(windowStub.sessionStorage.getItem('vpmed_update_reload_target_v1'), null);
   console.log('Update notifier manual-gate tests: OK');
 })().catch(error => {
   console.error(error);
