@@ -95,6 +95,31 @@ calculate();
 assert.match(get('stockPedResult').innerHTML,/500 mg/);
 assert.match(get('stockPedResult').innerHTML,/Mỗi 8 giờ/);
 
+change('stockPedDrug','cefixime','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/80 mg/);
+assert.match(get('stockPedResult').innerHTML,/40 mg/);
+assert.match(get('stockPedResult').innerHTML,/Kho hiện có viên 200 mg/);
+
+change('stockPedDrug','cefpodoxime','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/Viêm tai giữa cấp\/viêm xoang cấp/);
+assert.match(get('stockPedResult').innerHTML,/Viêm họng\/viêm amidan/);
+assert.match(get('stockPedResult').innerHTML,/50 mg/);
+
+change('stockPedDrug','imipenem-cilastatin','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/150 mg/);
+assert.match(get('stockPedResult').innerHTML,/250 mg/);
+assert.match(get('stockPedResult').innerHTML,/Không dùng cho viêm màng não/);
+
+change('stockPedDrug','amikacin','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/225 mg/);
+assert.match(get('stockPedResult').innerHTML,/300 mg/);
+assert.match(get('stockPedResult').innerHTML,/200 mg/);
+assert.match(get('stockPedResult').innerHTML,/Không dùng đồng thời với gentamicin/);
+
 change('stockPedAgeValue',10);
 change('stockPedAgeUnit','day','change');
 change('stockPedPma',34);
@@ -115,6 +140,12 @@ assert.match(get('stockPedResult').innerHTML,/Viêm màng não/);
 assert.match(get('stockPedResult').innerHTML,/Không tự suy ra bệnh cảnh/);
 assert.match(get('stockPedResult').innerHTML,/meronem-1g-sdk-vn-17831-14/,'Phải giữ nguồn đúng chế phẩm và đúng SĐK');
 assert.doesNotMatch(get('stockPedResult').innerHTML,/meronem-iv-vn-17832-14/,'Không hiển thị chế phẩm khác SĐK trong nguồn đúng chế phẩm');
+
+change('stockPedDrug','amikacin','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/36 mg/);
+assert.match(get('stockPedResult').innerHTML,/Mỗi 24 giờ/);
+assert.match(get('stockPedResult').innerHTML,/Không kê đồng thời amikacin với gentamicin/);
 
 for(const [value,unit,expected] of [[14,'day','Sơ sinh'],[2,'week','Sơ sinh'],[1,'month','Nhi khoa'],[1,'year','Nhi khoa']]){
   change('stockPedPma','');

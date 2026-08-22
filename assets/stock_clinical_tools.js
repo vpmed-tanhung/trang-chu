@@ -47,6 +47,8 @@
     bv108Aminoglycoside:{title:'Bệnh viện TWQĐ 108 — Tối ưu hóa chế độ liều aminoglycoside',url:'https://benhvien108.vn/duoc-lam-sang/toi-uu-hoa-che-do-lieu-khang-sinh-aminoglycoside.htm',type:'Dược lâm sàng bệnh viện',scope:'PK/PD, độc tính và yêu cầu theo dõi nồng độ aminoglycoside.'},
     bv108VanTdm:{title:'Tạp chí Y Dược lâm sàng 108 — TDM vancomycin Bayesian ở bệnh nhi tại BVĐK Xanh Pôn',url:'https://tcydls108.benhvien108.vn/index.php/YDLS/article/view/1996',type:'Bằng chứng ứng dụng',scope:'Trang bài báo/abstract trực tiếp: nghiên cứu tiến cứu trên bệnh nhi, đánh giá đạt đích AUC24/MIC 400–600.'},
     bv108VanAuc:{title:'Tạp chí Y Dược lâm sàng 108 — TDM vancomycin AUC/Bayes tại BV Sản Nhi Nghệ An',url:'https://tcydls108.benhvien108.vn/index.php/YDLS/article/view/2292',type:'Bằng chứng ứng dụng',scope:'Trang bài báo/abstract trực tiếp: nghiên cứu tiến cứu trên bệnh nhi và kết quả đạt đích sau hiệu chỉnh liều.'}
+    ,rchAntimicrobial:{title:'Royal Children’s Hospital Melbourne — Antimicrobial guidelines',url:'https://www.rch.org.au/clinicalguide/guideline_index/Antibiotics/',type:'Hướng dẫn bệnh viện',scope:'Liều cefotaxime theo tuổi sau sinh, amikacin trong sốt giảm bạch cầu trung tính và các giới hạn hiệu chỉnh theo tình trạng lâm sàng.'}
+    ,ucsfOralCephalosporin:{title:'UCSF — Oral cephalosporin options for respiratory tract infections',url:'https://idmp.ucsf.edu/content/oral-cephalosporin-options-for-respiratory-tract-infections',type:'Hướng dẫn quản lý kháng sinh',scope:'Vai trò và giới hạn phổ của cefixime/cefpodoxime; không coi cephalosporin uống là tương đương ceftriaxone.'}
   };
 
   const pediatricClinicalProfiles={
@@ -83,8 +85,33 @@
       }
     },
     vancomycin:{default:{indication:'Nhiễm Gram dương xâm lấn nghi hoặc xác định, đặc biệt MRSA; phối hợp theo phác đồ ở nhiễm khuẩn sơ sinh muộn hoặc viêm màng não mủ.',criteria:'Chỉ là liều khởi đầu; bắt buộc hiệu chỉnh theo chức năng thận và TDM/AUC, lấy nồng độ đúng thời điểm.',sources:['nhiMeningitis','bv108Neonatal','bv108VanTdm','bv108VanAuc']}}
+    ,amikacin:{
+      default:{indication:'Nhiễm Gram âm kháng aminoglycoside khác hoặc bệnh cảnh chuyên biệt có chỉ định amikacin.',criteria:'Thuốc hạn chế; xác nhận kháng sinh đồ/phác đồ, chức năng thận, nguy cơ độc tai–độc thận và kế hoạch TDM. Không kê đồng thời gentamicin.',sources:['rchAntimicrobial','bv108Aminoglycoside']},
+      rules:{
+        'febrile-neutropenia-young':{indication:'Sốt giảm bạch cầu trung tính ở trẻ dưới 10 tuổi, khi phác đồ đơn vị yêu cầu bổ sung amikacin.',criteria:'Có suy giảm toàn thân/nguy cơ cao/khởi phát nội viện hoặc căn cứ vi sinh phù hợp; theo dõi nồng độ đáy trước liều thứ 3.',sources:['rchAntimicrobial','bv108Aminoglycoside']},
+        'febrile-neutropenia-older':{indication:'Sốt giảm bạch cầu trung tính ở trẻ từ 10 tuổi, khi phác đồ đơn vị yêu cầu bổ sung amikacin.',criteria:'Có suy giảm toàn thân/nguy cơ cao/khởi phát nội viện hoặc căn cứ vi sinh phù hợp; theo dõi nồng độ đáy trước liều thứ 3.',sources:['rchAntimicrobial','bv108Aminoglycoside']},
+        'cystic-fibrosis':{indication:'Đợt nhiễm khuẩn hô hấp ở bệnh nhân xơ nang cần amikacin theo phác đồ chuyên khoa.',criteria:'Xem lại liều/nồng độ các đợt trước, hội chẩn chuyên khoa và thực hiện TDM/Bayesian.',sources:['bv108Aminoglycoside']},
+        ntm:{indication:'Nhiễm Mycobacteria không lao trong phác đồ phối hợp chuyên khoa.',criteria:'Xác nhận căn nguyên, phác đồ phối hợp và kế hoạch TDM/Bayesian trước khi dùng.',sources:['bv108Aminoglycoside']}
+      }
+    },
+    cefixime:{default:{indication:'Nhiễm khuẩn do vi khuẩn nhạy cảm ở trẻ từ 6 tháng, khi cefixime đường uống là lựa chọn phù hợp.',criteria:'Đối chiếu kháng sinh đồ/dịch tễ và dạng bào chế; kho chỉ có viên 200 mg, không có hỗn dịch Nhi.',sources:['ucsfOralCephalosporin']}},
+    cefotaxime:{
+      default:{indication:'Nhiễm khuẩn vừa đến nặng cần cephalosporin thế hệ 3 đường tiêm và tác nhân nhạy cảm cefotaxime.',criteria:'Đánh giá dị ứng beta-lactam, vị trí nhiễm, kháng sinh đồ và chức năng thận; không dùng đơn trị Pseudomonas.',sources:['rchAntimicrobial']},
+      rules:{meningitis:{indication:'Viêm màng não hoặc nhiễm khuẩn đe dọa tính mạng cần mức liều cao cefotaxime.',criteria:'Chẩn đoán bệnh cảnh nặng/CNS đã xác định; hội chẩn chuyên khoa và đánh giá phối hợp vancomycin khi phù hợp.',sources:['rchAntimicrobial']}}
+    },
+    cefpodoxime:{
+      default:{indication:'Nhiễm khuẩn hô hấp do vi khuẩn nhạy cảm ở trẻ từ 2 tháng đến dưới 12 tuổi.',criteria:'Chọn đúng bệnh cảnh vì liều tối đa mỗi lần khác nhau; đánh giá kháng sinh đồ và lựa chọn phổ hẹp hơn nếu phù hợp.',sources:['ucsfOralCephalosporin']},
+      rules:{
+        'aom-sinusitis':{indication:'Viêm tai giữa cấp hoặc viêm xoang hàm cấp do tác nhân nhạy cảm.',criteria:'Trẻ 2 tháng đến dưới 12 tuổi, chẩn đoán phù hợp và cefpodoxime là lựa chọn theo phác đồ.',sources:['ucsfOralCephalosporin']},
+        'pharyngitis-tonsillitis':{indication:'Viêm họng hoặc viêm amidan do tác nhân nhạy cảm.',criteria:'Trẻ 2 tháng đến dưới 12 tuổi; chỉ dùng mức tối đa 100 mg/lần cho bệnh cảnh này.',sources:['ucsfOralCephalosporin']}
+      }
+    },
+    'imipenem-cilastatin':{
+      default:{indication:'Nhiễm khuẩn ngoài hệ thần kinh trung ương do vi khuẩn nhạy cảm khi cần carbapenem.',criteria:'Lấy bệnh phẩm, đối chiếu kháng sinh đồ, chức năng thận và kế hoạch xuống thang; không dùng cho nhiễm khuẩn CNS ở bệnh nhi.',sources:['nhiPseudomonas']},
+      rules:{severe:{indication:'Nhiễm khuẩn ngoài CNS nặng hoặc tác nhân có độ nhạy trung gian cần mức trên của khoảng liều nhãn.',criteria:'Bệnh cảnh/độ nhạy đã xác định, chức năng thận phù hợp và tổng liều không vượt 4 g/ngày.',sources:['nhiPseudomonas']}}
+    }
   };
-  const conditionalRuleIds=new Set(['high-dose','meningitis','appendicitis','synergy','serious']);
+  const conditionalRuleIds=new Set(['high-dose','meningitis','appendicitis','synergy','serious','febrile-neutropenia-young','febrile-neutropenia-older','cystic-fibrosis','ntm','aom-sinusitis','pharyngitis-tonsillitis','severe']);
 
   function uniqueSources(sources){
     const seen=new Set();
@@ -193,7 +220,7 @@
           </section>
         </div>
       </div>
-      <p class="stock-audit-line stock-audit-compact stock-ped-footnote">Bộ lọc: ${data.meta.counts.pediatricActives} hoạt chất · ${data.meta.counts.pediatricStockProducts} thuốc trong kho · Rà soát ${esc(data.meta.generatedAt.split('-').reverse().join('/'))}. Con số liều lấy từ bảng UCSF; căn cứ bệnh cảnh chỉ trỏ đến trang có nội dung chuyên môn đọc trực tiếp.</p>`;
+      <p class="stock-audit-line stock-audit-compact stock-ped-footnote">Bộ lọc: ${data.meta.counts.pediatricActives} hoạt chất · ${data.meta.counts.pediatricStockProducts} thuốc trong kho · Rà soát ${esc(data.meta.generatedAt.split('-').reverse().join('/'))}. Mỗi kháng sinh hiển thị nguồn tính liều trực tiếp; bệnh cảnh và giới hạn sử dụng được tách rõ trong từng lựa chọn.</p>`;
 
     const drugSelect=root.querySelector('#stockPedDrug');
     const ageInput=root.querySelector('#stockPedAgeValue');
@@ -307,7 +334,7 @@
           <div class="stock-auto-summary">${esc(autoSummary)}</div>
           <div class="stock-regimen-list">${cards}</div>
           ${loading!=null?`<div class="stock-note-box"><strong>Liều nạp:</strong> ${format(loading,1)} mg một lần; ${esc(drug.neonatalNote||'')}</div>`:''}
-          ${drug.contraindicationNote?`<div class="stock-note-box warning"><strong>Lưu ý giới hạn tuổi:</strong> ${esc(drug.contraindicationNote)}</div>`:''}
+          ${drug.contraindicationNote?`<div class="stock-note-box warning"><strong>Cảnh báo/giới hạn sử dụng:</strong> ${esc(drug.contraindicationNote)}</div>`:''}
           ${contextData.mode==='neonate'&&drug.neonatalNote&&loading==null?`<div class="stock-note-box"><strong>Lưu ý Sơ sinh:</strong> ${esc(drug.neonatalNote)}</div>`:''}
           <div class="stock-note-box warning"><strong>Không tự suy ra bệnh cảnh:</strong> tuổi và cân nặng không xác định được viêm màng não, nhiễm khuẩn nặng, liều cao hay mục tiêu hiệp đồng. Chỉ dùng lựa chọn đặc biệt khi chẩn đoán và quy trình điều trị phù hợp.</div>
           <div><h3>Thuốc tương ứng đang có trong kho</h3>${stockList(drug.stock)}</div>
@@ -487,4 +514,3 @@
 
   initPediatric();
 })();
-
