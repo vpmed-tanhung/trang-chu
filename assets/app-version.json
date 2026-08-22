@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.22.40",
-  "displayVersion": "5.4.1",
-  "updatedAt": "2026-08-22T08:55:31+07:00",
-  "note": "Bổ sung Chính sách sử dụng và minh bạch nguồn ở cuối trang; giữ nguyên module liều thận và Tuyên bố trách nhiệm đã duyệt.",
-  "buildId": "v5.4.1-site-policy-20260822-40",
-  "previousVersion": "2026.08.22.39",
-  "previousDisplayVersion": "5.4",
+  "version": "2026.08.22.41",
+  "displayVersion": "5.4.2",
+  "updatedAt": "2026-08-22T10:15:00+07:00",
+  "note": "Tăng tốc mở mô-đun, tự đồng bộ phiên bản dữ liệu đã lưu và ngăn thông báo tải lại dữ liệu lặp sai.",
+  "buildId": "v5.4.2-fast-modules-data-sync-20260822-41",
+  "previousVersion": "2026.08.22.40",
+  "previousDisplayVersion": "5.4.1",
   "clinicalDataVersion": "sha256-e55470b6ef301c7734460d58"
 }

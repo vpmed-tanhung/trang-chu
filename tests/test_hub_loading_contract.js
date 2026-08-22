@@ -36,7 +36,8 @@ const shell = fs.readFileSync(path.join(root, 'assets/platform-shell.js'), 'utf8
 for (const contract of [
   'requestIdleCallback', 'saveData', 'effectiveType', 'beforeinstallprompt',
   'vpmed:shell-ready', 'vpmed:feature-open', 'vpmed:calculation-complete',
-  'vpmed:data-version-changed'
+  'vpmed:data-version-changed', 'resourceLoads',
+  'Promise.all(bundle.scripts.map(loadScript))', "schedulePrefetch('dose')"
 ]) {
   assert(shell.includes(contract), `Platform Shell thiếu contract ${contract}`);
 }

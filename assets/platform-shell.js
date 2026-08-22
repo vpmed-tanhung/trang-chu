@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.08.22.40';
+  const BUILD_VERSION = '2026.08.22.41';
   const EVENT_NAMES = Object.freeze({
     shellReady: 'vpmed:shell-ready',
     featureOpen: 'vpmed:feature-open',
@@ -122,6 +122,7 @@
   });
 
   const loadedResources = new Set();
+  const resourceLoads = new Map();
   const featureLoads = new Map();
   const prefetchedResources = new Set();
   let deferredInstallPrompt = null;
@@ -130,6 +131,8 @@
   let isReloadingForWorker = false;
   let hadServiceWorkerController = Boolean(navigator.serviceWorker?.controller);
   let cachedClinicalState = null;
+  let activeClinicalFeature = false;
+  let announcedDataVersion = '';
 
   function absoluteUrl(url) {
     return new URL(url, document.baseURI).href;
@@ -185,37 +188,51 @@
   function loadStyle(url) {
     const key = resourceKey(url);
     if (loadedResources.has(key)) return Promise.resolve();
-    loadedResources.add(key);
-    return new Promise((resolve, reject) => {
+    if (resourceLoads.has(key)) return resourceLoads.get(key);
+    const promise = new Promise((resolve, reject) => {
       const link = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = absoluteUrl(url);
       link.dataset.vpmedLazy = 'style';
-      link.addEventListener('load', resolve, {once: true});
+      link.addEventListener('load', () => {
+        loadedResources.add(key);
+        resourceLoads.delete(key);
+        resolve();
+      }, {once: true});
       link.addEventListener('error', () => {
-        loadedResources.delete(key);
+        resourceLoads.delete(key);
         reject(new Error(`Không tải được CSS: ${url}`));
       }, {once: true});
       document.head.appendChild(link);
     });
+    resourceLoads.set(key, promise);
+    return promise;
   }
 
   function loadScript(url) {
     const key = resourceKey(url);
     if (loadedResources.has(key)) return Promise.resolve();
-    loadedResources.add(key);
-    return new Promise((resolve, reject) => {
+    if (resourceLoads.has(key)) return resourceLoads.get(key);
+    const promise = new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = absoluteUrl(url);
+      /* Dynamic classic scripts with async=false are fetched in parallel but
+         still execute in insertion order, preserving module dependencies. */
       script.async = false;
       script.dataset.vpmedLazy = 'script';
-      script.addEventListener('load', resolve, {once: true});
+      script.addEventListener('load', () => {
+        loadedResources.add(key);
+        resourceLoads.delete(key);
+        resolve();
+      }, {once: true});
       script.addEventListener('error', () => {
-        loadedResources.delete(key);
+        resourceLoads.delete(key);
         reject(new Error(`Không tải được JavaScript: ${url}`));
       }, {once: true});
       document.body.appendChild(script);
     });
+    resourceLoads.set(key, promise);
+    return promise;
   }
 
   async function loadBundle(name) {
@@ -224,7 +241,7 @@
     if (featureLoads.has(name)) return featureLoads.get(name);
     const promise = (async () => {
       await Promise.all(bundle.styles.map(loadStyle));
-      for (const script of bundle.scripts) await loadScript(script);
+      await Promise.all(bundle.scripts.map(loadScript));
     })();
     featureLoads.set(name, promise);
     try {
@@ -262,6 +279,7 @@
       return;
     }
     setCardLoading(name, true);
+    if (name !== 'home' && name !== 'sources') activeClinicalFeature = true;
     emit(EVENT_NAMES.featureOpen, {feature: name, phase: 'loading', source: options.source || 'navigation'});
     try {
       await loadBundle(name);
@@ -292,7 +310,6 @@
     link.rel = 'prefetch';
     link.as = type;
     link.href = absoluteUrl(url);
-    link.crossOrigin = 'anonymous';
     document.head.appendChild(link);
   }
 
@@ -419,12 +436,24 @@
       toast('Đang dùng bản dữ liệu y khoa ngoại tuyến.', {tone: 'warning', persistent: true});
     }
     if (message.type === 'VPMED_DATA_VERSION_CHANGED') {
+      const nextVersion = String(message.version || '').trim();
+      const previousVersion = String(message.previousVersion || '').trim();
+      if (!nextVersion || nextVersion === previousVersion || nextVersion === announcedDataVersion) return;
+      announcedDataVersion = nextVersion;
       renderConnectivity(navigator.onLine ? 'online' : 'offline');
       emit(EVENT_NAMES.dataVersionChanged, {
         previousVersion: message.previousVersion,
         version: message.version,
         source: 'service-worker'
       });
+      /* Khi người dùng còn ở trang chủ, áp dụng dữ liệu mới ngay bằng đúng một
+         lần tải lại. Nếu đã vào công cụ, chỉ nhắc một lần để tránh làm mất dữ liệu nhập. */
+      const autoReloadKey = 'vpmed_auto_data_reload_version_v1';
+      if (!activeClinicalFeature && navigator.onLine && sessionStorage.getItem(autoReloadKey) !== nextVersion) {
+        sessionStorage.setItem(autoReloadKey, nextVersion);
+        location.reload();
+        return;
+      }
       toast('Dữ liệu y khoa trên máy chủ đã có phiên bản mới. Tải lại trước khi tiếp tục đối chiếu điều trị.', {
         tone: 'warning',
         persistent: true,
@@ -526,6 +555,9 @@
     registerServiceWorker();
     emit(EVENT_NAMES.shellReady, {features: Object.keys(FEATURE_BUNDLES)});
     openFeature(location.hash.slice(1) || 'home', {source: 'initial', fromHistory: true, preserveScroll: true});
+    /* Làm ấm bộ dữ liệu dùng chung của mô-đun liều thận khi mạng đủ nhanh.
+       Việc này diễn ra lúc trình duyệt rảnh, không chặn hiển thị trang chủ. */
+    schedulePrefetch('dose');
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialize, {once: true});

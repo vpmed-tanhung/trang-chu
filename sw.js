@@ -1,10 +1,11 @@
 'use strict';
 
-const APP_VERSION = '2026.08.22.40';
+const APP_VERSION = '2026.08.22.41';
 const APP_SHELL_CACHE = `vpmed-shell-${APP_VERSION}`;
 const RUNTIME_CACHE = `vpmed-runtime-${APP_VERSION}`;
 const CLINICAL_CACHE_PREFIX = 'vpmed-clinical-';
 const META_CACHE = 'vpmed-metadata';
+const DATA_VERSION_CHECK_INTERVAL_MS = 5 * 60 * 1000;
 const VERSION_URL = new URL('assets/app-version.json', self.registration.scope).href;
 const STORED_DATA_VERSION_URL = new URL('__vpmed_data_version__', self.registration.scope).href;
 
@@ -18,7 +19,7 @@ const APP_SHELL = [
   './assets/responsive-polish.css?v=20260712-balanced',
   './assets/platform-shell.css?v=20260822-pwa-v1',
   './assets/vpmed-access.js?v=20260817-admin-delete-v1',
-  './assets/platform-shell.js?v=20260822-site-policy-v1',
+  './assets/platform-shell.js?v=20260822-fast-modules-data-sync-v1',
   './assets/disclaimer-gate.js?v=20260822-disclaimer-gate-v1',
   './assets/update-notifier.js?v=20260822-pwa-v1',
   './assets/logo-vpmed.png',
@@ -30,7 +31,11 @@ const APP_SHELL = [
 
 const CLINICAL_PATH_PATTERN = /(?:^|\/)(?:data|sources)\/|\/assets\/(?:.*(?:data|database|profile|medicine|alert|icd10|disease|contra|renal|infusion|clinical|dosing|interaction|antibiotic|pharmacovigilance|pregnancy|hepatotoxicity|injectable|stock|source).*)\.(?:js|json|csv)$/i;
 const AUTH_PATH_PATTERN = /(?:supabase|auth|token|session|login|logout)/i;
-let currentDataVersion = APP_VERSION;
+let currentDataVersion = '';
+let dataVersionHydrationPromise = null;
+let dataVersionCheckPromise = null;
+let pendingDataVersionNotification = false;
+let lastDataVersionCheckAt = 0;
 
 const OFFLINE_PAGE = `<!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -55,14 +60,14 @@ self.addEventListener('activate', (event) => {
       const isOldRuntime = name.startsWith('vpmed-runtime-') && name !== RUNTIME_CACHE;
       return isOldShell || isOldRuntime ? caches.delete(name) : Promise.resolve(false);
     }));
-    await checkDataVersion({notify: false});
+    await checkDataVersion({notify: false, force: true});
     await self.clients.claim();
   })());
 });
 
 self.addEventListener('message', (event) => {
   if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
-  if (event.data?.type === 'CHECK_DATA_VERSION') event.waitUntil(checkDataVersion({notify: true}));
+  if (event.data?.type === 'CHECK_DATA_VERSION') event.waitUntil(checkDataVersion({notify: true, force: true}));
 });
 
 self.addEventListener('fetch', (event) => {
@@ -76,16 +81,16 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(networkOnlyVersioned(request));
     return;
   }
+  if (request.mode === 'navigate') {
+    event.respondWith(networkFirstNavigation(request));
+    return;
+  }
   if (isAppShellRequest(request, url)) {
     event.respondWith(cacheFirst(request, APP_SHELL_CACHE));
     return;
   }
   if (CLINICAL_PATH_PATTERN.test(url.pathname)) {
     event.respondWith(networkFirstClinical(request));
-    return;
-  }
-  if (request.mode === 'navigate') {
-    event.respondWith(networkFirstNavigation(request));
     return;
   }
   event.respondWith(networkFirstRuntime(request));
@@ -99,11 +104,17 @@ function isAppShellRequest(request, url) {
 
 async function cacheFirst(request, cacheName) {
   const cache = await caches.open(cacheName);
-  const cached = await cache.match(request, {ignoreSearch: true});
+  const cached = await cache.match(request);
   if (cached) return cached;
-  const response = await fetch(request);
-  if (response.ok) await cache.put(request, response.clone());
-  return response;
+  try {
+    const response = await fetch(request);
+    if (response.ok) await cache.put(request, response.clone());
+    return response;
+  } catch (error) {
+    const fallback = await cache.match(request, {ignoreSearch: true});
+    if (fallback) return fallback;
+    throw error;
+  }
 }
 
 async function networkOnlyVersioned(request) {
@@ -112,7 +123,9 @@ async function networkOnlyVersioned(request) {
     const clone = response.clone();
     const payload = await clone.json().catch(() => null);
     const dataVersion = payload?.clinicalDataVersion || payload?.version;
-    if (dataVersion && dataVersion !== currentDataVersion) {
+    await hydrateDataVersion();
+    lastDataVersionCheckAt = Date.now();
+    if (dataVersion && String(dataVersion) !== currentDataVersion) {
       await switchClinicalVersion(String(dataVersion), true);
     }
   }
@@ -128,16 +141,46 @@ async function fetchServerDataVersion() {
   return String(version);
 }
 
-async function checkDataVersion({notify = true} = {}) {
-  const storedVersion = await readStoredDataVersion();
-  if (storedVersion) currentDataVersion = storedVersion;
-  try {
-    const version = await fetchServerDataVersion();
-    if (version !== currentDataVersion) await switchClinicalVersion(version, notify);
-    return version;
-  } catch (error) {
+async function hydrateDataVersion() {
+  if (currentDataVersion) return currentDataVersion;
+  if (!dataVersionHydrationPromise) {
+    dataVersionHydrationPromise = readStoredDataVersion()
+      .then((storedVersion) => {
+        currentDataVersion = storedVersion || APP_VERSION;
+        return currentDataVersion;
+      })
+      .catch(() => {
+        currentDataVersion = APP_VERSION;
+        return currentDataVersion;
+      });
+  }
+  return dataVersionHydrationPromise;
+}
+
+async function checkDataVersion({notify = true, force = false} = {}) {
+  await hydrateDataVersion();
+  pendingDataVersionNotification = pendingDataVersionNotification || notify;
+  if (dataVersionCheckPromise) return dataVersionCheckPromise;
+  if (!force && Date.now() - lastDataVersionCheckAt < DATA_VERSION_CHECK_INTERVAL_MS) {
+    pendingDataVersionNotification = false;
     return currentDataVersion;
   }
+
+  lastDataVersionCheckAt = Date.now();
+  dataVersionCheckPromise = (async () => {
+    try {
+      const version = await fetchServerDataVersion();
+      const shouldNotify = pendingDataVersionNotification;
+      if (version !== currentDataVersion) await switchClinicalVersion(version, shouldNotify);
+      return version;
+    } catch (error) {
+      return currentDataVersion;
+    } finally {
+      pendingDataVersionNotification = false;
+      dataVersionCheckPromise = null;
+    }
+  })();
+  return dataVersionCheckPromise;
 }
 
 async function switchClinicalVersion(version, notify) {
