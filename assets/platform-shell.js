@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.08.22.41';
+  const BUILD_VERSION = '2026.08.22.44';
   const EVENT_NAMES = Object.freeze({
     shellReady: 'vpmed:shell-ready',
     featureOpen: 'vpmed:feature-open',
@@ -70,7 +70,10 @@
       ]
     },
     'inpatient-order': {
-      styles: ['assets/inpatient-order-review.css?v=20260821-inpatient-file-grid-v4'],
+      styles: [
+        'assets/prescription-check.css?v=20260821-rx-actions-v9',
+        'assets/inpatient-order-review.css?v=20260821-inpatient-file-grid-v4'
+      ],
       scripts: [
         'assets/data.js',
         'assets/rx-official-sources.js?v=20260819-rx-official-v1',
@@ -411,19 +414,29 @@
     maybeShowInstallBanner();
   }
 
-  function showWorkerUpdateBanner(registration) {
+  function showWorkerUpdateBanner(registration, detail = {}) {
     let banner = document.getElementById('vpmedUpdateBanner');
     if (!banner) {
       banner = document.createElement('aside');
       banner.id = 'vpmedUpdateBanner';
       banner.className = 'vpmed-shell-banner vpmed-update-banner';
-      banner.innerHTML = '<div><strong>Có phiên bản ứng dụng mới</strong><span>Tải lại để dùng mã nguồn và dữ liệu mới nhất.</span></div><div class="vpmed-shell-banner-actions"><button type="button" data-refresh>Cập nhật ngay</button><button type="button" class="secondary" data-dismiss>Để sau</button></div>';
+      banner.innerHTML = '<div><strong>Có phiên bản ứng dụng mới</strong><span data-update-copy>Tải lại để dùng mã nguồn và dữ liệu mới nhất.</span></div><div class="vpmed-shell-banner-actions"><button type="button" data-refresh>Cập nhật ngay</button><button type="button" class="secondary" data-dismiss>Để sau</button></div>';
       document.body.appendChild(banner);
       banner.querySelector('[data-dismiss]').addEventListener('click', () => { banner.hidden = true; });
     }
+    const version = String(detail.version || '').trim();
+    const displayVersion = String(detail.displayVersion || '').trim();
+    const copy = banner.querySelector('[data-update-copy]');
+    if (copy) copy.textContent = displayVersion
+      ? `Phiên bản v${displayVersion} đã sẵn sàng. Tải lại để sử dụng.`
+      : 'Tải lại để dùng mã nguồn và dữ liệu mới nhất.';
     banner.hidden = false;
     banner.querySelector('[data-refresh]').onclick = () => {
-      const waiting = registration.waiting;
+      if (version && window.VPMED_UPDATE_NOTIFIER?.applyUpdate) {
+        window.VPMED_UPDATE_NOTIFIER.applyUpdate(version);
+        return;
+      }
+      const waiting = registration?.waiting || serviceWorkerRegistration?.waiting;
       if (waiting) waiting.postMessage({type: 'SKIP_WAITING'});
       else location.reload();
     };
@@ -454,12 +467,17 @@
         location.reload();
         return;
       }
-      toast('Dữ liệu y khoa trên máy chủ đã có phiên bản mới. Tải lại trước khi tiếp tục đối chiếu điều trị.', {
-        tone: 'warning',
-        persistent: true,
-        actionLabel: 'Tải lại dữ liệu',
-        onAction: () => location.reload()
-      });
+      /* Chờ notifier chính xử lý trước. Chỉ hiện cảnh báo dữ liệu riêng khi
+         không có bản ứng dụng mới, bảo đảm cùng lúc chỉ có một thông báo cập nhật. */
+      window.setTimeout(() => {
+        if (document.getElementById('vpmedUpdateBanner') || serviceWorkerRegistration?.waiting) return;
+        toast('Dữ liệu y khoa trên máy chủ đã có phiên bản mới. Tải lại trước khi tiếp tục đối chiếu điều trị.', {
+          tone: 'warning',
+          persistent: true,
+          actionLabel: 'Tải lại dữ liệu',
+          onAction: () => location.reload()
+        });
+      }, 350);
     }
   }
 
@@ -512,6 +530,9 @@
   }
 
   function bindLifecycle() {
+    window.addEventListener('vpmed:app-update-available', (event) => {
+      showWorkerUpdateBanner(serviceWorkerRegistration, event.detail || {});
+    });
     window.addEventListener('online', () => {
       renderConnectivity('online');
       toast(cachedClinicalState

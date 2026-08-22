@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.22.41",
-  "displayVersion": "5.4.2",
-  "updatedAt": "2026-08-22T10:15:00+07:00",
-  "note": "Tăng tốc mở mô-đun, tự đồng bộ phiên bản dữ liệu đã lưu và ngăn thông báo tải lại dữ liệu lặp sai.",
-  "buildId": "v5.4.2-fast-modules-data-sync-20260822-41",
-  "previousVersion": "2026.08.22.40",
-  "previousDisplayVersion": "5.4.1",
+  "version": "2026.08.22.44",
+  "displayVersion": "5.4.5",
+  "updatedAt": "2026-08-22T10:27:22+07:00",
+  "note": "Sửa bố cục mô-đun Phân tích y lệnh nội trú ngay lần mở đầu tiên bằng cách nạp đủ stylesheet dùng chung.",
+  "buildId": "v5.4.5-fix-inpatient-first-open-20260822-44",
+  "previousVersion": "2026.08.22.43",
+  "previousDisplayVersion": "5.4.4",
   "clinicalDataVersion": "sha256-e55470b6ef301c7734460d58"
 }

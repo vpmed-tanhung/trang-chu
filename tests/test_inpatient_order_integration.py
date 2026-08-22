@@ -9,6 +9,11 @@ def test_inpatient_order_feature_is_wired_without_regressing_rx_review():
     unified = (ROOT / 'assets' / 'unified.js').read_text(encoding='utf-8')
 
     assert 'assets/inpatient-order-review.css?v=20260821-inpatient-file-grid-v4' in shell
+    inpatient_bundle = shell.split("'inpatient-order': {", 1)[1].split("'petct-dose':", 1)[0]
+    shared_layout_css = 'assets/prescription-check.css?v=20260821-rx-actions-v9'
+    module_css = 'assets/inpatient-order-review.css?v=20260821-inpatient-file-grid-v4'
+    assert shared_layout_css in inpatient_bundle
+    assert inpatient_bundle.index(shared_layout_css) < inpatient_bundle.index(module_css)
     assert 'data-open="inpatient-order"' in html
     assert 'id="view-inpatient-order"' in html
     assert 'assets/inpatient-order-review.js?v=20260822-platform-events-v1' in shell
@@ -109,4 +114,3 @@ def test_inpatient_order_has_deterministic_renal_safety_layer():
     assert 'Không tự chọn dải liều cố định' in js
     assert 'suggestedRegimen' in gs
     assert 'liều nạp' in gs
-

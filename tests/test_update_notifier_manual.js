@@ -86,6 +86,13 @@ function makeStorage() {
 }
 
 let replacedUrl = '';
+const dispatchedEvents = [];
+class CustomEventStub {
+  constructor(type, init = {}) {
+    this.type = type;
+    this.detail = init.detail || {};
+  }
+}
 const windowStub = {
   fetch: null,
   localStorage: makeStorage(),
@@ -98,11 +105,13 @@ const windowStub = {
   history: { replaceState() {} },
   setInterval() {},
   addEventListener() {},
+  dispatchEvent(event) { dispatchedEvents.push(event); },
   setTimeout() { return 1; },
   clearTimeout() {}
 };
 windowStub.self = windowStub;
 windowStub.top = windowStub;
+windowStub.CustomEvent = CustomEventStub;
 // Mô phỏng dữ liệu sai do bản cũ từng tự ghi ngay khi mở trang.
 windowStub.localStorage.setItem('vpmed_seen_app_version_v1', newBuild);
 
@@ -125,6 +134,7 @@ const sandbox = {
   document: documentStub,
   fetch: fetchStub,
   URL,
+  CustomEvent: CustomEventStub,
   Date,
   console
 };
@@ -142,18 +152,18 @@ vm.runInContext(code, sandbox);
   assert.strictEqual(replacedUrl, '', 'Không được tự chuyển trang khi chỉ mới phát hiện bản mới');
 
   const notice = documentStub.getElementById('vpmedUpdateNotice');
-  assert.ok(notice, 'Phải hiện thông báo có bản mới');
-  assert.strictEqual(notice.querySelector('.vpmed-update-text').textContent, 'Có bản v5.1 mới');
-  assert.strictEqual(notice.querySelector('.vpmed-update-action').textContent, '· Cập nhật');
+  assert.strictEqual(notice, null, 'Không được tạo thông báo cập nhật nhỏ ở góc');
+  const updateEvent = dispatchedEvents.find(event => event.type === 'vpmed:app-update-available');
+  assert.ok(updateEvent, 'Phải chuyển phiên bản mới sang banner lớn');
+  assert.strictEqual(updateEvent.detail.displayVersion, '5.1');
 
-  notice.onclick();
+  windowStub.VPMED_UPDATE_NOTIFIER.applyUpdate(newBuild);
   assert.strictEqual(windowStub.sessionStorage.getItem('vpmed_update_reload_target_v1'), newBuild);
   assert.ok(replacedUrl.includes('vpmed_update=' + newBuild), 'Chỉ cú bấm Cập nhật mới tải build mới');
 
   // Mô phỏng trang vừa tải lại sau đúng cú bấm ở trên.
   loadedMetaBuild = newBuild;
-  body.removeChild(notice);
-  const reloadSandbox = { window: windowStub, document: documentStub, fetch: fetchStub, URL, Date, console };
+  const reloadSandbox = { window: windowStub, document: documentStub, fetch: fetchStub, URL, CustomEvent: CustomEventStub, Date, console };
   vm.createContext(reloadSandbox);
   vm.runInContext(code, reloadSandbox);
   await new Promise(resolve => setTimeout(resolve, 0));
@@ -168,4 +178,3 @@ vm.runInContext(code, sandbox);
   console.error(error);
   process.exitCode = 1;
 });
-

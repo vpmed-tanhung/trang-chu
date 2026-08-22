@@ -1,6 +1,6 @@
 'use strict';
 
-const APP_VERSION = '2026.08.22.41';
+const APP_VERSION = '2026.08.22.44';
 const APP_SHELL_CACHE = `vpmed-shell-${APP_VERSION}`;
 const RUNTIME_CACHE = `vpmed-runtime-${APP_VERSION}`;
 const CLINICAL_CACHE_PREFIX = 'vpmed-clinical-';
@@ -19,9 +19,9 @@ const APP_SHELL = [
   './assets/responsive-polish.css?v=20260712-balanced',
   './assets/platform-shell.css?v=20260822-pwa-v1',
   './assets/vpmed-access.js?v=20260817-admin-delete-v1',
-  './assets/platform-shell.js?v=20260822-fast-modules-data-sync-v1',
+  './assets/platform-shell.js?v=20260822-fix-inpatient-first-open-v1',
   './assets/disclaimer-gate.js?v=20260822-disclaimer-gate-v1',
-  './assets/update-notifier.js?v=20260822-pwa-v1',
+  './assets/update-notifier.js?v=20260822-remove-corner-update-v1',
   './assets/logo-vpmed.png',
   './assets/icon-192.png',
   './assets/icon-512.png',

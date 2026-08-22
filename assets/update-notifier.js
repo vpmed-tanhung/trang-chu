@@ -11,9 +11,7 @@
   var RELOAD_TARGET_KEY = 'vpmed_update_reload_target_v1';
   var UPDATE_QUERY_KEY = 'vpmed_update';
   var CHECK_INTERVAL_MS = 5 * 60 * 1000;
-  var notice = null;
   var checking = false;
-  var successTimer = null;
   var announcedDataVersion = '';
 
   function readStorage(storage, key) {
@@ -54,17 +52,7 @@
     if (document.getElementById('vpmedUpdateNotifierStyle')) return;
     var style = document.createElement('style');
     style.id = 'vpmedUpdateNotifierStyle';
-    style.textContent = [
-      '#vpmedLatestVersion{display:inline-flex;align-items:center;margin-left:2px;color:#2f648b;font-size:11px;font-weight:850;white-space:nowrap;vertical-align:baseline;cursor:default;text-decoration:none;user-select:text}',
-      '#vpmedUpdateNotice{position:fixed;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:999999;display:inline-flex;align-items:center;gap:5px;max-width:calc(100vw - 24px);padding:7px 10px;border:1px solid #e7bd69;border-radius:999px;background:rgba(255,250,240,.98);color:#754300;box-shadow:0 8px 24px rgba(25,55,78,.16);font-family:inherit;font-size:11.5px;font-weight:800;line-height:1.15;white-space:nowrap;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}',
-      '#vpmedUpdateNotice:hover{background:#fff5dc;border-color:#dca94d}',
-      '#vpmedUpdateNotice:focus-visible{outline:3px solid rgba(8,116,183,.25);outline-offset:2px}',
-      '#vpmedUpdateNotice .vpmed-update-icon{font-size:13px;line-height:1}',
-      '#vpmedUpdateNotice .vpmed-update-action{color:#0874b7;font-weight:900}',
-      '#vpmedUpdateNotice.vpmed-update-success{cursor:default;border-color:#8ad9ad;background:rgba(241,255,247,.98);color:#08673b}',
-      '@media(max-width:420px){#vpmedLatestVersion{font-size:10.5px}#vpmedUpdateNotice{right:8px;bottom:max(8px,env(safe-area-inset-bottom));max-width:calc(100vw - 16px);padding:6px 8px;font-size:10.8px}}',
-      '@media(prefers-reduced-motion:no-preference){#vpmedUpdateNotice{animation:vpmedUpdateIn .2s ease-out}@keyframes vpmedUpdateIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}}'
-    ].join('');
+    style.textContent = '#vpmedLatestVersion{display:inline-flex;align-items:center;margin-left:2px;color:#2f648b;font-size:11px;font-weight:850;white-space:nowrap;vertical-align:baseline;cursor:default;text-decoration:none;user-select:text}@media(max-width:420px){#vpmedLatestVersion{font-size:10.5px}}';
     document.head.appendChild(style);
   }
 
@@ -89,33 +77,9 @@
     return true;
   }
 
-  function hideNotice() {
-    if (notice && notice.parentNode) notice.parentNode.removeChild(notice);
-    notice = null;
-  }
-
-  function getNotice() {
-    if (notice && document.body.contains(notice)) return notice;
-    ensureStyle();
-    notice = document.createElement('aside');
-    notice.id = 'vpmedUpdateNotice';
-    notice.setAttribute('aria-live', 'polite');
-
-    var icon = document.createElement('span');
-    icon.className = 'vpmed-update-icon';
-    icon.setAttribute('aria-hidden', 'true');
-
-    var text = document.createElement('span');
-    text.className = 'vpmed-update-text';
-
-    var action = document.createElement('span');
-    action.className = 'vpmed-update-action';
-
-    notice.appendChild(icon);
-    notice.appendChild(text);
-    notice.appendChild(action);
-    document.body.appendChild(notice);
-    return notice;
+  function removeLegacyNotice() {
+    var legacyNotice = document.getElementById('vpmedUpdateNotice');
+    if (legacyNotice && legacyNotice.parentNode) legacyNotice.parentNode.removeChild(legacyNotice);
   }
 
   function cleanUpdateQuery() {
@@ -127,29 +91,9 @@
     } catch (error) {}
   }
 
-  function compactBuild(version) {
-    var parts = String(version || '').split('.');
-    if (parts.length >= 4 && /^\d+$/.test(parts[parts.length - 1])) return 'build ' + parts[parts.length - 1];
-    return version;
-  }
-
   function showSuccess(version, displayVersion) {
     setFooterVersion(displayVersion);
-    var box = getNotice();
-    box.className = 'vpmed-update-success';
-    box.removeAttribute('role');
-    box.removeAttribute('tabindex');
-    box.onclick = null;
-    box.onkeydown = null;
-    box.setAttribute('title', 'Đã tải đúng phiên bản ' + version);
-    box.querySelector('.vpmed-update-icon').textContent = '✓';
-    box.querySelector('.vpmed-update-text').textContent = 'Đã cập nhật v' + displayVersion;
-    box.querySelector('.vpmed-update-action').textContent = '· ' + compactBuild(version);
-    window.clearTimeout(successTimer);
-    successTimer = window.setTimeout(function () {
-      if (box.parentNode) box.parentNode.removeChild(box);
-      notice = null;
-    }, 3500);
+    removeLegacyNotice();
   }
 
   function acceptVersion(version, displayVersion) {
@@ -160,9 +104,7 @@
     legacySeenVersion = version;
   }
 
-  function reloadForUpdate(version) {
-    /* Chỉ đánh dấu “đã thấy” sau khi trang mới tự xác nhận meta build khớp. */
-    writeStorage(window.sessionStorage, RELOAD_TARGET_KEY, version);
+  function navigateToVersion(version) {
     try {
       var url = new URL(window.location.href);
       url.searchParams.set(UPDATE_QUERY_KEY, version);
@@ -172,26 +114,52 @@
     }
   }
 
+  function reloadForUpdate(version) {
+    /* Chỉ đánh dấu “đã thấy” sau khi trang mới tự xác nhận meta build khớp. */
+    writeStorage(window.sessionStorage, RELOAD_TARGET_KEY, version);
+
+    /* Nút “Cập nhật ngay” trên banner lớn cũng kích hoạt Service Worker đang
+       chờ; toàn bộ quá trình chỉ dùng một banner và một nút hành động. */
+    var serviceWorker = window.navigator && window.navigator.serviceWorker;
+    if (!serviceWorker || typeof serviceWorker.getRegistration !== 'function') {
+      navigateToVersion(version);
+      return;
+    }
+
+    serviceWorker.getRegistration().then(function (registration) {
+      if (!registration || !registration.waiting) {
+        navigateToVersion(version);
+        return;
+      }
+      var navigated = false;
+      var navigateOnce = function () {
+        if (navigated) return;
+        navigated = true;
+        navigateToVersion(version);
+      };
+      serviceWorker.addEventListener('controllerchange', navigateOnce, {once: true});
+      registration.waiting.postMessage({type: 'SKIP_WAITING'});
+      window.setTimeout(navigateOnce, 1500);
+    }).catch(function () {
+      navigateToVersion(version);
+    });
+  }
+
   function showUpdate(data) {
     var version = data.version;
     var displayVersion = data.displayVersion || version;
 
-    var box = getNotice();
-    box.className = '';
-    box.setAttribute('role', 'button');
-    box.setAttribute('tabindex', '0');
-    box.setAttribute('title', 'Phiên bản đang dùng: v' + (data.currentDisplayVersion || 'không xác định') + ' · Bản mới: v' + displayVersion);
-    box.setAttribute('aria-label', 'Có bản cập nhật mới v' + displayVersion + ', ' + compactBuild(version) + '. Bấm để cập nhật.');
-    box.querySelector('.vpmed-update-icon').textContent = '↻';
-    box.querySelector('.vpmed-update-text').textContent = 'Có bản v' + displayVersion + ' mới';
-    box.querySelector('.vpmed-update-action').textContent = '· Cập nhật';
-    box.onclick = function () { reloadForUpdate(version); };
-    box.onkeydown = function (event) {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        reloadForUpdate(version);
-      }
-    };
+    /* Không tạo #vpmedUpdateNotice. Chỉ chuyển thông tin sang banner lớn của
+       Platform Shell; phần thông báo nhỏ ở góc đã bị loại bỏ hoàn toàn. */
+    removeLegacyNotice();
+    if (typeof window.CustomEvent === 'function' && typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('vpmed:app-update-available', {detail: {
+        version: version,
+        displayVersion: displayVersion,
+        currentDisplayVersion: data.currentDisplayVersion || '',
+        note: data.note || ''
+      }}));
+    }
   }
 
   function applyVersion(data) {
@@ -238,7 +206,7 @@
       acceptVersion(version, displayVersion);
       cleanUpdateQuery();
       setFooterVersion(displayVersion);
-      hideNotice();
+      removeLegacyNotice();
       return;
     }
 
@@ -256,7 +224,7 @@
     if (acceptedVersion === version && (!loadedVersion || loadedVersion === version)) {
       cleanUpdateQuery();
       setFooterVersion(acceptedDisplayVersion || displayVersion);
-      hideNotice();
+      removeLegacyNotice();
       return;
     }
 
@@ -294,7 +262,9 @@
     });
   }
 
+  window.VPMED_UPDATE_NOTIFIER = Object.freeze({applyUpdate: reloadForUpdate});
+  removeLegacyNotice();
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
   else start();
 }());
-

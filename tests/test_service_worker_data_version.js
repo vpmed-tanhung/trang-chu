@@ -53,7 +53,7 @@ const sandbox = {
   self: selfStub,
   caches: cachesStub,
   fetch: async () => new Response(JSON.stringify({
-    version: '2026.08.22.41',
+    version: '2026.08.22.44',
     clinicalDataVersion: clinicalVersion
   }), {status: 200, headers: {'Content-Type': 'application/json'}}),
   URL,
