@@ -17,7 +17,7 @@ def test_all_notifier_pages_are_stamped_with_current_build():
     version = json.loads((ROOT / 'assets' / 'app-version.json').read_text(encoding='utf-8'))['version']
     for page in PAGES:
         html = (ROOT / page).read_text(encoding='utf-8')
-        assert 'assets/update-notifier.js?v=20260822-remove-corner-update-v1' in html, f'{page} thiếu update notifier mới'
+        assert 'assets/update-notifier.js?v=20260822-installed-data-channel-v1' in html, f'{page} thiếu update notifier mới'
         match = re.search(r'<meta\s+name="vpmed-build-version"\s+content="([^"]+)"', html)
         assert match, f'{page} thiếu meta vpmed-build-version'
         assert match.group(1) == version, f'{page} đang đóng dấu build cũ'
@@ -34,6 +34,9 @@ def test_notifier_verifies_loaded_build_before_success():
     assert 'serviceWorker.getRegistration()' in js
     assert "registration.waiting.postMessage({type: 'SKIP_WAITING'})" in js
     assert 'vpmed:app-update-available' in js
+    assert 'INSTALLED_DATA_VERSION_KEY' in js
+    assert 'clinicalDataVersion' in js
+    assert 'applyDataUpdate' in js
     assert "notice.id = 'vpmedUpdateNotice'" not in js
     assert 'function getNotice' not in js
     assert '#vpmedUpdateNotice{' not in js
@@ -65,3 +68,16 @@ def test_changed_prescription_asset_has_current_cache_buster():
     assert 'showWorkerUpdateBanner' in shell
     assert 'vpmedUpdateBanner' in shell
     assert 'vpmed:app-update-available' in shell
+    assert "detail.kind === 'clinical-data'" in shell
+    assert 'REGISTER_CLIENT_MODE' in shell
+
+
+def test_installed_app_has_an_independent_data_update_channel():
+    manifest = json.loads((ROOT / 'manifest.json').read_text(encoding='utf-8'))
+    worker = (ROOT / 'sw.js').read_text(encoding='utf-8')
+    assert 'vpmed_app=installed' in manifest['start_url']
+    assert 'CLINICAL_WEB_CACHE_PREFIX' in worker
+    assert 'CLINICAL_INSTALLED_CACHE_PREFIX' in worker
+    assert 'STORED_INSTALLED_DATA_VERSION_URL' in worker
+    assert 'VPMED_DATA_VERSION_AVAILABLE' in worker
+    assert 'APPLY_DATA_VERSION' in worker

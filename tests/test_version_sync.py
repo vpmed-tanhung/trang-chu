@@ -22,3 +22,10 @@ def test_build_and_display_versions_are_present():
     assert str(version.get("previousDisplayVersion", "")).strip()
     assert str(version.get("updatedAt", "")).strip()
 
+
+def test_service_worker_uses_manifest_clinical_data_version():
+    version = json.loads((ROOT / "assets" / "app-version.json").read_text(encoding="utf-8"))
+    worker = (ROOT / "sw.js").read_text(encoding="utf-8")
+    match = re.search(r"const CLINICAL_DATA_VERSION = '([^']+)'", worker)
+    assert match, "Service worker thiếu mốc phiên bản dữ liệu chuyên môn"
+    assert match.group(1) == version["clinicalDataVersion"]

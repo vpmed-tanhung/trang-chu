@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.22.44",
-  "displayVersion": "5.4.5",
-  "updatedAt": "2026-08-22T10:27:22+07:00",
-  "note": "Sửa bố cục mô-đun Phân tích y lệnh nội trú ngay lần mở đầu tiên bằng cách nạp đủ stylesheet dùng chung.",
-  "buildId": "v5.4.5-fix-inpatient-first-open-20260822-44",
-  "previousVersion": "2026.08.22.43",
-  "previousDisplayVersion": "5.4.4",
+  "version": "2026.08.22.45",
+  "displayVersion": "5.4.6",
+  "updatedAt": "2026-08-22T10:46:00+07:00",
+  "note": "Tách trạng thái cập nhật và bộ nhớ dữ liệu của bản cài khỏi tab web; bản cài chỉ thông báo khi phiên bản nguồn dữ liệu chuyên môn thay đổi.",
+  "buildId": "v5.4.6-installed-data-channel-20260822-45",
+  "previousVersion": "2026.08.22.44",
+  "previousDisplayVersion": "5.4.5",
   "clinicalDataVersion": "sha256-e55470b6ef301c7734460d58"
 }

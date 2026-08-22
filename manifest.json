@@ -5,7 +5,7 @@
   "description": "Tra cứu thuốc, tính liều, kiểm tra tương tác và hỗ trợ an toàn điều trị của Khoa Dược, Bệnh viện VPMED Tân Hưng.",
   "lang": "vi",
   "dir": "ltr",
-  "start_url": "./index.html#home",
+  "start_url": "./index.html?vpmed_app=installed#home",
   "scope": "./",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],

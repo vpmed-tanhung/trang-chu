@@ -1,7 +1,18 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.08.22.44';
+  const BUILD_VERSION = '2026.08.22.45';
+  const IS_INSTALLED_APP = (() => {
+    try {
+      return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
+        Boolean(window.matchMedia?.('(display-mode: standalone)')?.matches) ||
+        window.navigator?.standalone === true;
+    } catch (error) {
+      return Boolean(window.matchMedia?.('(display-mode: standalone)')?.matches) ||
+        window.navigator?.standalone === true;
+    }
+  })();
+  const CLIENT_MODE = IS_INSTALLED_APP ? 'installed' : 'web';
   const EVENT_NAMES = Object.freeze({
     shellReady: 'vpmed:shell-ready',
     featureOpen: 'vpmed:feature-open',
@@ -137,8 +148,22 @@
   let activeClinicalFeature = false;
   let announcedDataVersion = '';
 
-  function absoluteUrl(url) {
-    return new URL(url, document.baseURI).href;
+  function clientAwareUrl(url) {
+    const parsed = new URL(url, document.baseURI);
+    if (IS_INSTALLED_APP && parsed.origin === location.origin) {
+      parsed.searchParams.set('vpmed_client', 'installed');
+    }
+    return parsed.href;
+  }
+
+  function markInstalledContextUrl() {
+    if (!IS_INSTALLED_APP) return;
+    try {
+      const current = new URL(location.href);
+      if (current.searchParams.get('vpmed_app') === 'installed') return;
+      current.searchParams.set('vpmed_app', 'installed');
+      history.replaceState(null, '', current.pathname + current.search + current.hash);
+    } catch (error) {}
   }
 
   function resourceKey(url) {
@@ -195,7 +220,7 @@
     const promise = new Promise((resolve, reject) => {
       const link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = absoluteUrl(url);
+      link.href = clientAwareUrl(url);
       link.dataset.vpmedLazy = 'style';
       link.addEventListener('load', () => {
         loadedResources.add(key);
@@ -218,7 +243,7 @@
     if (resourceLoads.has(key)) return resourceLoads.get(key);
     const promise = new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = absoluteUrl(url);
+      script.src = clientAwareUrl(url);
       /* Dynamic classic scripts with async=false are fetched in parallel but
          still execute in insertion order, preserving module dependencies. */
       script.async = false;
@@ -312,7 +337,7 @@
     const link = document.createElement('link');
     link.rel = 'prefetch';
     link.as = type;
-    link.href = absoluteUrl(url);
+    link.href = clientAwareUrl(url);
     document.head.appendChild(link);
   }
 
@@ -420,18 +445,30 @@
       banner = document.createElement('aside');
       banner.id = 'vpmedUpdateBanner';
       banner.className = 'vpmed-shell-banner vpmed-update-banner';
-      banner.innerHTML = '<div><strong>Có phiên bản ứng dụng mới</strong><span data-update-copy>Tải lại để dùng mã nguồn và dữ liệu mới nhất.</span></div><div class="vpmed-shell-banner-actions"><button type="button" data-refresh>Cập nhật ngay</button><button type="button" class="secondary" data-dismiss>Để sau</button></div>';
+      banner.innerHTML = '<div><strong data-update-title>Có phiên bản ứng dụng mới</strong><span data-update-copy>Tải lại để dùng phiên bản mới nhất.</span></div><div class="vpmed-shell-banner-actions"><button type="button" data-refresh>Cập nhật ngay</button><button type="button" class="secondary" data-dismiss>Để sau</button></div>';
       document.body.appendChild(banner);
       banner.querySelector('[data-dismiss]').addEventListener('click', () => { banner.hidden = true; });
     }
     const version = String(detail.version || '').trim();
+    const dataVersion = String(detail.dataVersion || '').trim();
     const displayVersion = String(detail.displayVersion || '').trim();
+    const isClinicalDataUpdate = detail.kind === 'clinical-data';
+    const title = banner.querySelector('[data-update-title]');
     const copy = banner.querySelector('[data-update-copy]');
-    if (copy) copy.textContent = displayVersion
-      ? `Phiên bản v${displayVersion} đã sẵn sàng. Tải lại để sử dụng.`
-      : 'Tải lại để dùng mã nguồn và dữ liệu mới nhất.';
+    if (title) title.textContent = isClinicalDataUpdate
+      ? 'Nguồn dữ liệu tra cứu có cập nhật'
+      : 'Có phiên bản ứng dụng mới';
+    if (copy) copy.textContent = isClinicalDataUpdate
+      ? 'Cập nhật để ứng dụng dùng cùng nguồn dữ liệu chuyên môn mới như bản web.'
+      : (displayVersion
+        ? `Phiên bản v${displayVersion} đã sẵn sàng. Tải lại để sử dụng.`
+        : 'Tải lại để dùng phiên bản mới nhất.');
     banner.hidden = false;
     banner.querySelector('[data-refresh]').onclick = () => {
+      if (isClinicalDataUpdate && dataVersion && window.VPMED_UPDATE_NOTIFIER?.applyDataUpdate) {
+        window.VPMED_UPDATE_NOTIFIER.applyDataUpdate(dataVersion, version);
+        return;
+      }
       if (version && window.VPMED_UPDATE_NOTIFIER?.applyUpdate) {
         window.VPMED_UPDATE_NOTIFIER.applyUpdate(version);
         return;
@@ -444,9 +481,27 @@
 
   function handleWorkerMessage(event) {
     const message = event.data || {};
+    if (message.targetMode && message.targetMode !== CLIENT_MODE) return;
     if (message.type === 'VPMED_OFFLINE_DATA_FALLBACK') {
       renderConnectivity('cached-data', message);
       toast('Đang dùng bản dữ liệu y khoa ngoại tuyến.', {tone: 'warning', persistent: true});
+    }
+    if (message.type === 'VPMED_DATA_VERSION_AVAILABLE' && IS_INSTALLED_APP) {
+      const nextVersion = String(message.version || '').trim();
+      const previousVersion = String(message.previousVersion || '').trim();
+      if (!nextVersion || nextVersion === previousVersion || nextVersion === announcedDataVersion) return;
+      announcedDataVersion = nextVersion;
+      emit(EVENT_NAMES.dataVersionChanged, {
+        previousVersion,
+        version: nextVersion,
+        source: 'service-worker'
+      });
+      showWorkerUpdateBanner(serviceWorkerRegistration, {
+        kind: 'clinical-data',
+        dataVersion: nextVersion,
+        version: String(message.buildVersion || '').trim()
+      });
+      return;
     }
     if (message.type === 'VPMED_DATA_VERSION_CHANGED') {
       const nextVersion = String(message.version || '').trim();
@@ -487,15 +542,21 @@
     try {
       const registration = await navigator.serviceWorker.register('sw.js', {scope: './'});
       serviceWorkerRegistration = registration;
-      if (registration.waiting && navigator.serviceWorker.controller) showWorkerUpdateBanner(registration);
+      navigator.serviceWorker.controller?.postMessage({type: 'REGISTER_CLIENT_MODE', clientMode: CLIENT_MODE});
+      navigator.serviceWorker.ready.then(() => {
+        navigator.serviceWorker.controller?.postMessage({type: 'REGISTER_CLIENT_MODE', clientMode: CLIENT_MODE});
+      }).catch(() => {});
+      if (!IS_INSTALLED_APP && registration.waiting && navigator.serviceWorker.controller) showWorkerUpdateBanner(registration);
       registration.addEventListener('updatefound', () => {
         const worker = registration.installing;
         worker?.addEventListener('statechange', () => {
-          if (worker.state === 'installed' && navigator.serviceWorker.controller) showWorkerUpdateBanner(registration);
+          if (!IS_INSTALLED_APP && worker.state === 'installed' && navigator.serviceWorker.controller) showWorkerUpdateBanner(registration);
         });
       });
       navigator.serviceWorker.addEventListener('message', handleWorkerMessage);
       navigator.serviceWorker.addEventListener('controllerchange', () => {
+        navigator.serviceWorker.controller?.postMessage({type: 'REGISTER_CLIENT_MODE', clientMode: CLIENT_MODE});
+        if (IS_INSTALLED_APP) return;
         if (!hadServiceWorkerController) {
           hadServiceWorkerController = true;
           return;
@@ -531,7 +592,10 @@
 
   function bindLifecycle() {
     window.addEventListener('vpmed:app-update-available', (event) => {
-      showWorkerUpdateBanner(serviceWorkerRegistration, event.detail || {});
+      const detail = event.detail || {};
+      if (!IS_INSTALLED_APP || detail.kind === 'clinical-data') {
+        showWorkerUpdateBanner(serviceWorkerRegistration, detail);
+      }
     });
     window.addEventListener('online', () => {
       renderConnectivity('online');
@@ -552,13 +616,14 @@
     });
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
-        serviceWorkerRegistration?.update();
-        navigator.serviceWorker?.controller?.postMessage({type: 'CHECK_DATA_VERSION'});
+        if (!IS_INSTALLED_APP) serviceWorkerRegistration?.update();
+        navigator.serviceWorker?.controller?.postMessage({type: 'CHECK_DATA_VERSION', clientMode: CLIENT_MODE});
       }
     });
   }
 
   function initialize() {
+    markInstalledContextUrl();
     markInitialResources();
     calculationCompleted = sessionStorage.getItem('vpmed-calculation-completed') === '1';
     window.VPMED_PLATFORM = Object.freeze({
@@ -568,7 +633,8 @@
       prefetchFeature,
       emit,
       toast,
-      calculationComplete
+      calculationComplete,
+      isInstalledApp: IS_INSTALLED_APP
     });
     bindNavigation();
     bindLifecycle();

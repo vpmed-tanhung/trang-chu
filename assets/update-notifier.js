@@ -5,14 +5,25 @@
   if (window.self !== window.top || !window.fetch) return;
 
   var VERSION_URL = 'assets/app-version.json';
+  var IS_INSTALLED_APP = (function () {
+    try {
+      return new URL(window.location.href).searchParams.get('vpmed_app') === 'installed' ||
+        Boolean(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+        window.navigator?.standalone === true;
+    } catch (error) {
+      return Boolean(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+        window.navigator?.standalone === true;
+    }
+  }());
   var SEEN_VERSION_KEY = 'vpmed_seen_app_version_v1';
   var ACCEPTED_VERSION_KEY = 'vpmed_accepted_app_build_v2';
   var ACCEPTED_DISPLAY_KEY = 'vpmed_accepted_app_display_v2';
   var RELOAD_TARGET_KEY = 'vpmed_update_reload_target_v1';
+  var INSTALLED_DATA_VERSION_KEY = 'vpmed_installed_clinical_data_version_v1';
+  var INSTALLED_DATA_RELOAD_TARGET_KEY = 'vpmed_installed_data_reload_target_v1';
   var UPDATE_QUERY_KEY = 'vpmed_update';
   var CHECK_INTERVAL_MS = 5 * 60 * 1000;
   var checking = false;
-  var announcedDataVersion = '';
 
   function readStorage(storage, key) {
     try { return storage.getItem(key) || ''; } catch (error) { return ''; }
@@ -42,7 +53,7 @@
    * được ghi bởi một tab/trang khác trong cùng website.
    */
   var loadedVersion = getLoadedBuildVersion();
-  var legacySeenVersion = readStorage(window.localStorage, SEEN_VERSION_KEY);
+  var legacySeenVersion = IS_INSTALLED_APP ? '' : readStorage(window.localStorage, SEEN_VERSION_KEY);
 
   function getFooterVersion() {
     return document.getElementById('vpmedLatestVersion');
@@ -145,6 +156,46 @@
     });
   }
 
+  function reloadForDataUpdate(dataVersion, buildVersion) {
+    dataVersion = validVersion(dataVersion);
+    buildVersion = validVersion(buildVersion) || loadedVersion || dataVersion;
+    if (!dataVersion) return;
+    writeStorage(window.sessionStorage, INSTALLED_DATA_RELOAD_TARGET_KEY, dataVersion);
+
+    var serviceWorker = window.navigator && window.navigator.serviceWorker;
+    if (!serviceWorker || typeof serviceWorker.getRegistration !== 'function') {
+      navigateToVersion(buildVersion);
+      return;
+    }
+
+    serviceWorker.getRegistration().then(function (registration) {
+      var navigated = false;
+      var navigateOnce = function () {
+        if (navigated) return;
+        navigated = true;
+        navigateToVersion(buildVersion);
+      };
+      if (serviceWorker.controller) {
+        serviceWorker.controller.postMessage({
+          type: 'APPLY_DATA_VERSION',
+          version: dataVersion,
+          clientMode: 'installed'
+        });
+      }
+      if (registration && registration.waiting) {
+        serviceWorker.addEventListener('controllerchange', navigateOnce, {once: true});
+        window.setTimeout(function () {
+          registration.waiting.postMessage({type: 'SKIP_WAITING'});
+        }, 120);
+        window.setTimeout(navigateOnce, 1500);
+        return;
+      }
+      window.setTimeout(navigateOnce, 180);
+    }).catch(function () {
+      navigateToVersion(buildVersion);
+    });
+  }
+
   function showUpdate(data) {
     var version = data.version;
     var displayVersion = data.displayVersion || version;
@@ -154,7 +205,9 @@
     removeLegacyNotice();
     if (typeof window.CustomEvent === 'function' && typeof window.dispatchEvent === 'function') {
       window.dispatchEvent(new CustomEvent('vpmed:app-update-available', {detail: {
+        kind: data.kind || 'application',
         version: version,
+        dataVersion: data.dataVersion || '',
         displayVersion: displayVersion,
         currentDisplayVersion: data.currentDisplayVersion || '',
         note: data.note || ''
@@ -162,26 +215,57 @@
     }
   }
 
+  function applyInstalledVersion(data, version, displayVersion) {
+    var dataVersion = validVersion(data && data.clinicalDataVersion);
+    if (!dataVersion) return;
+    var acceptedDataVersion = validVersion(readStorage(window.localStorage, INSTALLED_DATA_VERSION_KEY));
+    var reloadTarget = validVersion(readStorage(window.sessionStorage, INSTALLED_DATA_RELOAD_TARGET_KEY));
+
+    /* Lần đầu nhận diện bản cài: ghi mốc nguồn hiện hành, không coi thay đổi
+       giao diện/mã nguồn của website là một bản cập nhật dữ liệu. */
+    if (!acceptedDataVersion) {
+      writeStorage(window.localStorage, INSTALLED_DATA_VERSION_KEY, dataVersion);
+      removeStorage(window.sessionStorage, INSTALLED_DATA_RELOAD_TARGET_KEY);
+      cleanUpdateQuery();
+      removeLegacyNotice();
+      return;
+    }
+
+    /* Chỉ xác nhận mốc nguồn mới sau thao tác Cập nhật của chính bản cài. */
+    if (reloadTarget === dataVersion) {
+      writeStorage(window.localStorage, INSTALLED_DATA_VERSION_KEY, dataVersion);
+      removeStorage(window.sessionStorage, INSTALLED_DATA_RELOAD_TARGET_KEY);
+      cleanUpdateQuery();
+      if (loadedVersion === version) setFooterVersion(displayVersion);
+      removeLegacyNotice();
+      return;
+    }
+    if (reloadTarget) removeStorage(window.sessionStorage, INSTALLED_DATA_RELOAD_TARGET_KEY);
+
+    if (acceptedDataVersion !== dataVersion) {
+      showUpdate({
+        kind: 'clinical-data',
+        version: version,
+        dataVersion: dataVersion,
+        displayVersion: displayVersion,
+        currentDisplayVersion: getFooterDisplayVersion(),
+        note: data.note
+      });
+      return;
+    }
+
+    cleanUpdateQuery();
+    removeLegacyNotice();
+  }
+
   function applyVersion(data) {
     var version = validVersion(data && data.version);
     if (!version) return;
-    if (loadedVersion && version !== loadedVersion && announcedDataVersion !== version) {
-      announcedDataVersion = version;
-      if (window.VPMED_PLATFORM) {
-        window.VPMED_PLATFORM.emit('vpmed:data-version-changed', {
-          previousVersion: loadedVersion,
-          version: version,
-          source: 'app-version-manifest'
-        });
-      } else if (typeof window.CustomEvent === 'function' && typeof window.dispatchEvent === 'function') {
-        window.dispatchEvent(new CustomEvent('vpmed:data-version-changed', {detail: {
-          previousVersion: loadedVersion,
-          version: version,
-          source: 'app-version-manifest'
-        }}));
-      }
-    }
     var displayVersion = validVersion(data && data.displayVersion) || version;
+    if (IS_INSTALLED_APP) {
+      applyInstalledVersion(data, version, displayVersion);
+      return;
+    }
     var previousVersion = validVersion(data && data.previousVersion);
     var previousDisplayVersion = validVersion(data && data.previousDisplayVersion);
     var reloadTarget = readStorage(window.sessionStorage, RELOAD_TARGET_KEY);
@@ -243,7 +327,8 @@
     if (checking) return;
     checking = true;
     var separator = VERSION_URL.indexOf('?') === -1 ? '?' : '&';
-    fetch(VERSION_URL + separator + '_=' + Date.now(), { cache: 'no-store', credentials: 'same-origin' })
+    var clientMode = IS_INSTALLED_APP ? '&vpmed_client=installed' : '&vpmed_client=web';
+    fetch(VERSION_URL + separator + '_=' + Date.now() + clientMode, { cache: 'no-store', credentials: 'same-origin' })
       .then(function (response) {
         if (!response.ok) throw new Error('Không đọc được phiên bản');
         return response.json();
@@ -262,7 +347,11 @@
     });
   }
 
-  window.VPMED_UPDATE_NOTIFIER = Object.freeze({applyUpdate: reloadForUpdate});
+  window.VPMED_UPDATE_NOTIFIER = Object.freeze({
+    applyUpdate: reloadForUpdate,
+    applyDataUpdate: reloadForDataUpdate,
+    isInstalledApp: IS_INSTALLED_APP
+  });
   removeLegacyNotice();
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
