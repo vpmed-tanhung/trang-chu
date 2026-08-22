@@ -475,6 +475,7 @@
       if (!data.ok) throw new Error(data.message || 'AI không trả về kết quả hợp lệ.');
       state.result = data.result;
       renderResult(data.result);
+      window.VPMED_PLATFORM?.calculationComplete({feature:'inpatient-order',files:state.files.length});
     } catch (err) {
       renderError(err && err.message ? err.message : 'Không thể phân tích y lệnh. Vui lòng thử lại.');
     } finally {
@@ -672,3 +673,4 @@
     window.__inpatientOrderReviewTestHooks = { severityMeta, calculateRenalAssessment, renalPriorityMeta, buildRenalNote, getLocalRenalRecommendation };
   }
 })();
+

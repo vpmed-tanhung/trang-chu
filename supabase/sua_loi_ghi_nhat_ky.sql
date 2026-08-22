@@ -100,7 +100,7 @@ create or replace function public.fill_renal_lookup_identity()
 returns trigger
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 declare current_profile public.profiles%rowtype;
 begin
@@ -139,7 +139,7 @@ for each row execute function public.fill_renal_lookup_identity();
 create or replace function public.normalize_renal_lookup_patient_code()
 returns trigger
 language plpgsql
-set search_path = public
+set search_path = ''
 as $$
 begin
   new.patient_code := upper(trim(coalesce(nullif(new.patient_code, ''), 'KHONG_CO_MA')));
@@ -205,3 +205,4 @@ select policyname, cmd, roles
 from pg_policies
 where schemaname = 'public' and tablename = 'renal_lookup_logs'
 order by cmd, policyname;
+

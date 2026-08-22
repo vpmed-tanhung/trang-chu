@@ -17,7 +17,7 @@ def test_all_notifier_pages_are_stamped_with_current_build():
     version = json.loads((ROOT / 'assets' / 'app-version.json').read_text(encoding='utf-8'))['version']
     for page in PAGES:
         html = (ROOT / page).read_text(encoding='utf-8')
-        assert 'assets/update-notifier.js?v=20260821-manual-update-v3' in html, f'{page} thiếu update notifier mới'
+        assert 'assets/update-notifier.js?v=20260822-pwa-v1' in html, f'{page} thiếu update notifier mới'
         match = re.search(r'<meta\s+name="vpmed-build-version"\s+content="([^"]+)"', html)
         assert match, f'{page} thiếu meta vpmed-build-version'
         assert match.group(1) == version, f'{page} đang đóng dấu build cũ'
@@ -45,11 +45,14 @@ def test_notifier_verifies_loaded_build_before_success():
     assert 'location.reload' not in update_block.group(1)
     assert "box.onclick = function () { reloadForUpdate(version); };" in update_block.group(1)
 
-    # Build đang tải đã là build mới cũng chưa đủ: phải có acceptedVersion do cú bấm tạo ra.
+    # Nếu HTML thực tế đã đúng build máy chủ thì không được hiện lời mời cập nhật giả.
+    assert 'loadedVersion === version && !reloadTarget' in js
     assert 'acceptedVersion === version' in js
     assert 'Chưa bấm: luôn giữ nhãn phiên bản cũ' in js
 
 
 def test_changed_prescription_asset_has_current_cache_buster():
-    html = (ROOT / 'index.html').read_text(encoding='utf-8')
-    assert 'assets/prescription-check.js?v=20260819-build21' in html
+    shell = (ROOT / 'assets' / 'platform-shell.js').read_text(encoding='utf-8')
+    assert 'assets/prescription-result-model.js?v=20260822-behavior-tests-v1' in shell
+    assert 'assets/prescription-check.js?v=20260822-behavior-tests-v1' in shell
+

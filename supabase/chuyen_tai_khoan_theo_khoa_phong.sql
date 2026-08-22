@@ -39,7 +39,7 @@ create or replace function public.handle_new_vpmed_user()
 returns trigger
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 declare
   profile_name text;
@@ -104,7 +104,7 @@ create or replace function public.fill_renal_lookup_identity()
 returns trigger
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 declare current_profile public.profiles%rowtype;
 begin
@@ -147,3 +147,4 @@ commit;
 select email, workplace as khoa_phong, account_type, role, status
 from public.profiles
 order by created_at desc;
+

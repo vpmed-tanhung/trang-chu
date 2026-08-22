@@ -20,6 +20,8 @@
     .replace(/đ/g,'d')
     .replace(/[^a-z0-9]+/g,' ')
     .trim();
+  const resultModel=window.VPMED_PRESCRIPTION_RESULT;
+  if(!resultModel)throw new Error('Thiếu prescription-result-model.js');
   const unique=items=>[...new Set((items||[]).filter(Boolean))];
   const state={
     drugs:[],files:[],lastCheck:null,nextId:1,nextFileId:1,
@@ -737,20 +739,7 @@
   }
 
   function missingIcdHtml(item){
-    const drugName=item.drug?.name||item.drug?.rawName||'Thuốc BHYT';
-    const terms=item.mappings.map(mapping=>{
-      const labels=(mapping.codes||[]).map(icdLabel).join(', ');
-      return `${mapping.term}: ${labels}`;
-    }).join(' · ');
-    const isMissing=Boolean(item.isMissing);
-    const title=isMissing?'THIẾU MÃ BỆNH':'MÃ BỆNH CHƯA PHÙ HỢP / CẦN ĐỐI CHIẾU';
-    const message=isMissing
-      ?`${drugName}: Thiếu mã bệnh`
-      :`${drugName}: Mã bệnh hiện có chưa phù hợp, cần đối chiếu HDSD/phác đồ điều trị`;
-    return `<article class="rx-alert ${isMissing?'rx-alert-danger':'rx-alert-warning'} rx-alert-missing-icd" data-icd-status="${isMissing?'missing':'suboptimal'}">
-      <div class="rx-alert-header"><span class="rx-alert-icon">ICD</span><div><small>${title}</small><h3>${esc(message)}</h3></div></div>
-      <dl><div><dt>Gợi ý</dt><dd>${esc(terms||item.allowed.map(icdLabel).join(', '))}</dd></div></dl>
-    </article>`;
+    return resultModel.buildMissingIcdHtml(item,{icdLabel});
   }
 
   function familyMatchesHtml(items){
@@ -931,8 +920,7 @@
   }
 
   function inpatientBhytHtml(item){
-    const status=item.related?'Mã bệnh chưa thật sự phù hợp':'Thiếu mã bệnh';
-    return `<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">BHYT</span><div><h3>${esc(item.drug.name)}: ${status}</h3></div></div><p>• <b>Xuất toán BHYT:</b> ${item.related?'Đã có chẩn đoán liên quan nhưng mã hiện tại chưa khớp chỉ định đã đối chiếu.':'Thiếu mã bệnh.'}</p><p>• <b>Xử trí:</b> Kiểm tra chẩn đoán, hồ sơ bệnh án và điều kiện thanh toán hiện hành.</p></article>`;
+    return resultModel.buildInpatientBhytHtml(item);
   }
 
   function checkInpatientOrder(){
@@ -969,6 +957,7 @@
     blocks.push(`<article class="rx-alert ${conclusionTone}"><div class="rx-alert-header"><span class="rx-alert-icon">${conclusionIcon}</span><div><h3>Kết luận</h3></div></div><p>• <b>Kết luận:</b> ${esc(conclusion)}</p></article>`);
     rx$('#rxResultBody').innerHTML=blocks.join('');
     rx$('#rxResultCard').scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches?'auto':'smooth',block:'start'});
+    window.VPMED_PLATFORM?.calculationComplete({feature:'prescription-check',mode:'inpatient-order',checked:state.drugs.length});
   }
 
   function checkPrescription(){
@@ -994,7 +983,7 @@
     const title=interactions.length?'Có tương tác chống chỉ định/cần xử trí':unclassifiedCount?'Cần xác nhận loại đơn':icdIssueCount?'Cần bổ sung kiểm tra mã bệnh':'Đơn thuốc đã được rà soát';
     rx$('#rxResultTitle').textContent=title;
     rx$('#rxScore').innerHTML=`<b>${score}</b><small>/100</small>`;
-    rx$('#rxSummary').innerHTML=`<div><b>${interactions.length}</b><span>Tương tác</span></div><div><b>${icdIssueCount}</b><span>Mã bệnh</span></div><div><b>${state.drugs.length}</b><span>Đã đối chiếu</span></div>`;
+    rx$('#rxSummary').innerHTML=resultModel.buildResultSummaryHtml({interactions:interactions.length,icdIssues:icdIssueCount,checked:state.drugs.length});
 
     const blocks=[];
     interactions.forEach(hit=>blocks.push(interactionHtml(hit)));
@@ -1009,6 +998,7 @@
     if(!blocks.length)blocks.push('<article class="rx-alert rx-alert-success"><div class="rx-alert-header"><span class="rx-alert-icon">✓</span><div><h3>Chưa ghi nhận tương tác thuốc hoặc thiếu mã bệnh</h3></div></div></article>');
     rx$('#rxResultBody').innerHTML=blocks.join('');
     rx$('#rxResultCard').scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches?'auto':'smooth',block:'start'});
+    window.VPMED_PLATFORM?.calculationComplete({feature:'prescription-check',mode:'prescription',checked:state.drugs.length,score});
   }
 
 
@@ -1325,3 +1315,4 @@
   renderRows();
   if(location.hash==='#prescription-check')ensureData().catch(()=>{});
 })();
+

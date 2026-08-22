@@ -2,9 +2,16 @@ const D=window.VPMED_DRUGS||[],I=window.VPMED_INTERACTIONS||[];
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
-function showView(name){if(name==='icd10-bhyt')name='home';$$('.view').forEach(v=>v.classList.remove('active'));$('#view-'+name)?.classList.add('active');$$('.main-nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));history.replaceState(null,'','#'+name);$('#mainNav').classList.remove('open');window.scrollTo({top:0,behavior:'smooth'})}
-$$('[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));$$('[data-open]').forEach(b=>b.onclick=()=>showView(b.dataset.open));$$('[data-go]').forEach(b=>b.onclick=e=>{e.preventDefault();showView(b.dataset.go)});$('#menuBtn').onclick=()=>$('#mainNav').classList.toggle('open');
-const initial=location.hash.replace('#','');if(['home','dose','petct-dose','antibiotics','diseases','prescription-check','inpatient-order','interactions','hepatotoxicity','pregnancy-lactation','icd10-bhyt','pediatric-dose','injectable-guide','sources'].includes(initial))showView(initial);
+function showView(name){if(name==='icd10-bhyt')name='home';$$('.view').forEach(v=>v.classList.remove('active'));$('#view-'+name)?.classList.add('active');$$('.main-nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));history.replaceState(null,'','#'+name);$('#mainNav')?.classList.remove('open');window.scrollTo({top:0,behavior:'smooth'})}
+window.VPMED_LEGACY_SHOW_VIEW=showView;
+if(!window.VPMED_PLATFORM){
+  $$('[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+  $$('[data-open]').forEach(b=>b.onclick=()=>showView(b.dataset.open));
+  $$('[data-go]').forEach(b=>b.onclick=e=>{e.preventDefault();showView(b.dataset.go)});
+  if($('#menuBtn'))$('#menuBtn').onclick=()=>$('#mainNav')?.classList.toggle('open');
+  const initial=location.hash.replace('#','');
+  if(['home','dose','petct-dose','antibiotics','diseases','prescription-check','inpatient-order','interactions','hepatotoxicity','pregnancy-lactation','icd10-bhyt','pediatric-dose','injectable-guide','pharmacovigilance','sources'].includes(initial))showView(initial);
+}
 const statDrugs=$('#statDrugs'),statInteractions=$('#statInteractions');if(statDrugs)statDrugs.textContent=D.length;if(statInteractions)statInteractions.textContent=I.length;
 
 // Antibiotics
@@ -130,6 +137,34 @@ function administrationListHtml(d){
   if(!items.length)items.push(d.route?`Đường dùng: ${d.route}`:'Đối chiếu cách dùng trong tờ HDSD của đúng chế phẩm.');
   return `<ul class="administration-list">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
 }
+function firstSentence(value,max=150){
+  const text=String(value||'').replace(/\s+/g,' ').trim();
+  if(!text)return '';
+  const sentence=(text.match(/^.*?[.!?](?:\s|$)/)||[])[0]?.trim()||text;
+  return sentence.length>max?sentence.slice(0,max-1).trimEnd()+'…':sentence;
+}
+function orderUsageText(d){
+  const f=d.infusionStructured;
+  const candidates=[f?.administration,...(d.infusionDetails||[]),d.infusion,d.route];
+  const found=candidates.map(x=>firstSentence(x)).find(x=>x&&!norm(x).startsWith('chua co'));
+  return found||'Đối chiếu tờ HDSD của đúng chế phẩm trước khi sử dụng.';
+}
+function copyOrderText(d,displayedDose){
+  return [
+    `Y LỆNH THAM KHẢO — ${d.brand} — ${d.active}`,
+    `Chế phẩm: ${d.brand} ${d.strength||''}`.trim(),
+    `Liều: ${displayedDose||'—'}`,
+    `Đường dùng: ${d.route||'—'}`,
+    `Cách dùng: ${orderUsageText(d)}`,
+    'Lưu ý: Liều cuối cùng cần đối chiếu chỉ định, vi sinh/MIC, tình trạng thận, lọc máu và TDM khi phù hợp.'
+  ].join('\n');
+}
+async function copyTextToClipboard(text){
+  try{
+    if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return true}
+    const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return ok;
+  }catch{return false}
+}
 $('#calc').onclick=()=>{
   const patientCode=String($('#patientCode')?.value||'').trim();
   const age=+$('#age').value,wt=+$('#wt').value,ht=+$('#ht').value,scru=+$('#scr').value;
@@ -146,46 +181,57 @@ $('#calc').onclick=()=>{
   const bsa=calcBsaMosteller(ht,wt),egfrAbsolute=bsa?egfr*bsa/1.73:null;
   const rr=window.VPMED_GET_RENAL_DOSE?window.VPMED_GET_RENAL_DOSE(d.active,crcl):null;
   const chosen=rr?.hit?`${rr.hit.label}: ${rr.hit.text}`:(d.renal||[]).join(' ');
-  const advice=$('#dialysis').checked?`HD: ${d.hd} | CRRT: ${d.crrt}`:chosen;
+  const dialysis=$('#dialysis').checked;
+  const advice=dialysis?`HD: ${d.hd} | CRRT: ${d.crrt}`:chosen;
+  const displayedDose=dialysis?advice:chosen;
   const ddi=conciseDDI(d,4);
   const renalRisk=renalRiskByCrCl(crcl),egfrBand=egfrCategory(egfr);
-  const dialysisNotice=$('#dialysis').checked?`<div class="dialysis-notice"><b>Đang lọc máu:</b> cần đối chiếu riêng lịch HD/CRRT và thời điểm dùng thuốc trước khi chốt liều.</div>`:'';
+  const dialysisNotice=dialysis?`<div class="dialysis-notice"><b>Đang lọc máu:</b> liều hiển thị tách riêng HD/CRRT; cần đối chiếu phương thức, lịch lọc, thời điểm dùng thuốc và TDM trước khi chốt y lệnh.</div>`:'';
   $('#output').className='result-card clinical-result-flow';
   $('#output').innerHTML=`
-    <section class="result-overview">
-      <span class="result-eyebrow">Thuốc</span>
-      <h2>${esc(d.brand)} — ${esc(d.active)}</h2>
-      <p>${esc(d.strength)} · ${esc(d.route)}</p>
+    <div class="result-metric-strip" aria-label="Tóm tắt chức năng thận">
+      <span><b>CrCl</b> ${crcl.toFixed(1)} mL/phút · ${esc(renalRisk.short)}</span>
+      <span><b>eGFR</b> ${egfr.toFixed(1)} mL/phút/1,73 m² · ${esc(egfrBand.stage)}${egfrAbsolute?` · quy đổi ${egfrAbsolute.toFixed(1)} mL/phút`:''}</span>
+    </div>
+    <section class="result-primary-card dose-primary">
+      <span>LIỀU GỢI Ý</span>
+      <div class="result-dose-row"><small>Liều dùng</small><strong>${esc(displayedDose)}</strong></div>
+      <div class="result-dose-row"><small>Đường dùng</small><strong>${esc(d.route||'—')}</strong></div>
+      ${dialysisNotice}
+      <p class="result-dose-caution">Liều cuối cùng cần đối chiếu chỉ định, vi sinh/MIC, diễn biến chức năng thận và TDM khi phù hợp.</p>
     </section>
-    <div class="result-metric-grid">
-      <section class="result-metric"><span>CrCl Cockcroft–Gault</span><div><strong>${crcl.toFixed(1)}</strong> <small>mL/phút</small></div><p>${esc(renalRisk.short)}</p></section>
-      <section class="result-metric"><span>eGFR CKD-EPI 2021</span><div><strong>${egfr.toFixed(1)}</strong> <small>mL/phút/1,73 m²</small></div><p>${esc(egfrBand.stage)} · ${esc(egfrBand.label)}${egfrAbsolute?` · Quy đổi ${egfrAbsolute.toFixed(1)} mL/phút`:''}</p></section>
-    </div>
-    <div class="result-primary-grid">
-      <section class="result-primary-card dose-primary">
-        <span>Liều theo CrCl</span>
-        <strong>${esc(chosen)}</strong>
-        ${dialysisNotice}
-        <details class="result-disclosure"><summary>Liều chi tiết và lọc máu</summary><div class="disclosure-body dose-detail-grid">
-        <div><h4>Liều thường dùng</h4><p>${esc(d.doseDetail||d.standard)}</p><h4>Liều tối đa</h4><p>${esc(d.maxDose)}</p><h4>Các ngưỡng CrCl</h4>${renalDoseTableHtml(d)}</div>
-        <div><h4>HD</h4><p>${esc(d.hd)}</p><h4>CRRT</h4><p>${esc(d.crrt)}</p></div>
-      </div></details>
-      </section>
-      <section class="result-primary-card administration-primary">
-        <span>Pha truyền / cách dùng</span>
-        ${administrationListHtml(d)}
-      </section>
-    </div>
+    <div class="renal-presentation-anchor"></div>
     <div id="dose24Anchor"></div>
-    <details class="result-safety"><summary>Cảnh báo, ADR, theo dõi và tương tác</summary><div class="disclosure-body safety-detail-grid">
-        <div><h4>Chống chỉ định/cảnh báo chính</h4><p>${esc(d.contra)}</p><h4>ADR quan trọng</h4><p>${esc(d.adr)}</p><h4>Theo dõi/TDM</h4><p>${esc(d.tdm)}</p></div>
-        <div><h4>Pha truyền/cách dùng</h4>${infusionSections(d)}<h4>Tương tác thuốc – thuốc</h4>${detailList(ddi)}</div>
-      </div><p class="safety-footnote">Chỉ áp dụng khi creatinin tương đối ổn định. Liều cuối cùng cần đối chiếu chỉ định, vi sinh/MIC, cân nặng, dạng bào chế và tờ HDSD đúng chế phẩm.</p></details>
+    <section class="order-card">
+      <div class="order-card-head"><span>Y LỆNH THAM KHẢO</span><button type="button" class="copy-order-btn">Sao chép</button></div>
+      <div class="order-row"><span>Chế phẩm</span><strong>${esc(d.brand)} ${esc(d.strength||'')}</strong></div>
+      <div class="order-row"><span>Liều</span><strong>${esc(displayedDose)}</strong></div>
+      <div class="order-row"><span>Đường dùng</span><strong>${esc(d.route||'—')}</strong></div>
+      <div class="order-row"><span>Cách dùng</span><strong>${esc(orderUsageText(d))}</strong></div>
+    </section>
+    <section class="result-warning-card">
+      <span class="warning-title">LƯU Ý</span>
+      <ul>
+        <li><b>Chống chỉ định/cảnh báo:</b> ${esc(d.contra||'Đối chiếu HDSD của đúng chế phẩm.')}</li>
+        <li><b>ADR quan trọng:</b> ${esc(d.adr||'Theo dõi ADR theo HDSD và tình trạng lâm sàng.')}</li>
+        <li><b>Theo dõi/TDM:</b> ${esc(d.tdm||'Theo dõi đáp ứng, độc tính và chức năng thận.')}</li>
+        ${ddi.map(x=>`<li><b>Tương tác:</b> ${esc(x)}</li>`).join('')}
+      </ul>
+      <p>Chỉ áp dụng khi creatinin tương đối ổn định. Không dùng một giá trị CrCl tĩnh để chốt liều trong AKI hoặc khi chức năng thận thay đổi nhanh.</p>
+    </section>
     <section class="result-source-row"><span>Nguồn đối chiếu</span>${directDoseSources(d)}</section>`;
+  const copyBtn=$('#output').querySelector('.copy-order-btn');
+  if(copyBtn)copyBtn.onclick=async()=>{
+    const original=copyBtn.textContent;
+    const ok=await copyTextToClipboard(copyOrderText(d,displayedDose));
+    copyBtn.textContent=ok?'Đã sao chép':'Không thể sao chép';
+    setTimeout(()=>{copyBtn.textContent=original},1400);
+  };
   const h=loadHist();
   h.unshift({time:new Date().toLocaleString('vi-VN'),patientCode,crcl:crcl.toFixed(1),egfr:`${egfr.toFixed(1)} (${egfrCategory(egfr).stage})`,drug:`${d.brand} — ${d.active}`,advice});
   saveHist(h);renderHist();
   setTimeout(scrollDoseResultIntoView,80);
+  window.VPMED_PLATFORM?.calculationComplete({feature:'dose',patientCode,drug:d.active});
 };
 
 // Interactions - dữ liệu Bảng 3.1 Quyết định 5948/QĐ-BYT

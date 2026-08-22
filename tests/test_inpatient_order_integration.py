@@ -5,19 +5,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_inpatient_order_feature_is_wired_without_regressing_rx_review():
     html = (ROOT / 'index.html').read_text(encoding='utf-8')
+    shell = (ROOT / 'assets' / 'platform-shell.js').read_text(encoding='utf-8')
     unified = (ROOT / 'assets' / 'unified.js').read_text(encoding='utf-8')
 
-    assert 'assets/inpatient-order-review.css?v=20260821-inpatient-file-grid-v4' in html
+    assert 'assets/inpatient-order-review.css?v=20260821-inpatient-file-grid-v4' in shell
     assert 'data-open="inpatient-order"' in html
     assert 'id="view-inpatient-order"' in html
-    assert 'assets/inpatient-order-review.js?v=20260821-inpatient-file-grid-v4' in html
+    assert 'assets/inpatient-order-review.js?v=20260822-platform-events-v1' in shell
     assert "'inpatient-order'" in unified
 
     # Các sửa mới nhất của module rà soát đơn BHYT phải được giữ nguyên khi merge.
     assert 'phân biệt thiếu mã bệnh với mã bệnh chưa thật sự phù hợp' in html
     assert 'HDSD/SPC Cục QLD · Dược thư QGVN III · Phác đồ/Hướng dẫn BYT' in html
     assert 'TT20/2022 · TT37/2024 · TT01/2025 · NĐ188/2025' in html
-    assert 'assets/prescription-check.js?v=20260819-build21' in html
+    assert 'assets/prescription-check.js?v=20260822-behavior-tests-v1' in shell
 
 
 def test_inpatient_order_artifacts_are_present():
@@ -108,3 +109,4 @@ def test_inpatient_order_has_deterministic_renal_safety_layer():
     assert 'Không tự chọn dải liều cố định' in js
     assert 'suggestedRegimen' in gs
     assert 'liều nạp' in gs
+

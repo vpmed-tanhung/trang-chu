@@ -316,6 +316,7 @@
           <p class="stock-audit-line">Chưa hiệu chỉnh theo suy thận, lọc máu, béo phì, bỏng, ECMO hoặc nồng độ thuốc. Vancomycin/aminoglycoside bắt buộc TDM theo quy trình đơn vị.</p>
         </div>`;
       logPediatricLookup({patientCode,drugName:drug.name,context:`${context} · ${format(weight,2)} kg`,summary:auditSummaries.join(' | ').slice(0,1500)});
+      window.VPMED_PLATFORM?.calculationComplete({feature:'pediatric-dose',drug:drug.name,weight});
     }
 
     function resetCase(){
@@ -486,3 +487,4 @@
 
   initPediatric();
 })();
+

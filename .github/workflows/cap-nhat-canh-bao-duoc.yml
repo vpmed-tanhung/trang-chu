@@ -36,8 +36,8 @@ jobs:
           python -m pip install
           --disable-pip-version-check
           --no-cache-dir
-          "requests>=2.31,<3"
-          "beautifulsoup4>=4.12,<5"
+          "requests==2.34.2"
+          "beautifulsoup4==4.15.0"
 
       - name: Kiểm tra bộ tóm tắt và liên kết nguồn
         run: python -m unittest tests/test_update_pharmacovigilance.py
@@ -90,6 +90,14 @@ jobs:
           print(f"Dữ liệu hợp lệ: {len(alerts)} cảnh báo.")
           PY
 
+      - name: Cập nhật phiên bản dữ liệu lâm sàng
+        run: python scripts/update_clinical_data_version.py
+
+      - name: Cập nhật và kiểm tra SHA256SUMS
+        run: |
+          python scripts/update_sha256sums.py
+          python scripts/update_sha256sums.py --check
+
       - name: Lưu dữ liệu mới vào nhánh chính
         run: |
           git config user.name "github-actions[bot]"
@@ -97,7 +105,9 @@ jobs:
           git add \
             assets/pharmacovigilance_auto.json \
             assets/pharmacovigilance_auto_data.js \
-            index.html
+            assets/app-version.json \
+            assets/platform-shell.js \
+            SHA256SUMS.txt
           if git diff --cached --quiet; then
             echo "Không có thay đổi cần lưu."
             exit 0
@@ -116,5 +126,11 @@ jobs:
             echo "Push bị từ chối (lần $i), đang pull --rebase rồi thử lại..."
             git fetch origin main
             git rebase origin/main
+            python scripts/update_clinical_data_version.py
+            python scripts/update_sha256sums.py
+            git add assets/app-version.json SHA256SUMS.txt
+            if ! git diff --cached --quiet; then
+              git commit --amend --no-edit
+            fi
             sleep $((RANDOM % 5 + 1))
           done

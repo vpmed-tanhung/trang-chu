@@ -10,7 +10,7 @@ returns boolean
 language sql
 stable
 security definer
-set search_path = public
+set search_path = ''
 as $$
   select exists (
     select 1 from public.profiles p
@@ -41,7 +41,7 @@ create or replace function public.admin_delete_user(target_user_id uuid)
 returns void
 language plpgsql
 security definer
-set search_path = public, auth
+set search_path = ''
 as $$
 begin
   if not public.is_vpmed_admin() then raise exception 'Admin required'; end if;
@@ -76,3 +76,4 @@ from pg_proc
 where pronamespace = 'public'::regnamespace
   and proname in ('admin_delete_user', 'is_vpmed_approved_user')
 order by proname;
+

@@ -32,7 +32,7 @@ $$;
 create or replace function public.normalize_renal_lookup_patient_code()
 returns trigger
 language plpgsql
-set search_path = public
+set search_path = ''
 as $$
 begin
   new.patient_code := upper(trim(coalesce(new.patient_code, '')));
@@ -87,7 +87,7 @@ create or replace function public.admin_delete_renal_lookup_log(target_log_id bi
 returns void
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 begin
   if not public.is_vpmed_admin() then raise exception 'Admin required'; end if;
@@ -100,7 +100,7 @@ create or replace function public.admin_clear_renal_lookup_logs()
 returns bigint
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 declare deleted_count bigint;
 begin
@@ -124,3 +124,4 @@ comment on table public.renal_lookup_logs is
 notify pgrst, 'reload schema';
 
 commit;
+

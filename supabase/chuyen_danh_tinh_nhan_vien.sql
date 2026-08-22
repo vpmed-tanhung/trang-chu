@@ -20,7 +20,7 @@ create or replace function public.fill_renal_lookup_identity()
 returns trigger
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 declare current_profile public.profiles%rowtype;
 begin
@@ -48,3 +48,4 @@ comment on column public.renal_lookup_logs.staff_name is 'Họ tên nhân viên 
 comment on column public.renal_lookup_logs.staff_email is 'Email bệnh viện của nhân viên thực hiện tra cứu.';
 
 commit;
+

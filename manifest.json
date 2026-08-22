@@ -1,0 +1,36 @@
+{
+  "id": "./index.html",
+  "name": "Hệ thống Hỗ trợ Dược lâm sàng — VPMED Tân Hưng",
+  "short_name": "VPMED Dược LS",
+  "description": "Tra cứu thuốc, tính liều, kiểm tra tương tác và hỗ trợ an toàn điều trị của Khoa Dược, Bệnh viện VPMED Tân Hưng.",
+  "lang": "vi",
+  "dir": "ltr",
+  "start_url": "./index.html#home",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#f6f8fb",
+  "theme_color": "#075f9f",
+  "categories": ["medical", "productivity"],
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

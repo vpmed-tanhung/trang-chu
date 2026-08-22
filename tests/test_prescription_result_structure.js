@@ -1,32 +1,56 @@
 'use strict';
 
-const assert=require('assert');
-const fs=require('fs');
-const path=require('path');
+const assert = require('assert');
+const {
+  classifyIcdIssue,
+  buildResultSummaryHtml,
+  buildMissingIcdHtml,
+  buildInpatientBhytHtml
+} = require('../assets/prescription-result-model.js');
 
-const root=path.resolve(__dirname,'..');
-const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
-const js=fs.readFileSync(path.join(root,'assets/prescription-check.js'),'utf8');
+const missing = classifyIcdIssue({isMissing: true, related: false});
+assert.deepStrictEqual(
+  {key: missing.key, status: missing.status, eyebrow: missing.eyebrow},
+  {key: 'missing', status: 'Thiếu mã bệnh', eyebrow: 'Thiếu mã bệnh BHYT'},
+  'Ca chưa có chẩn đoán phải được phân loại là thiếu mã bệnh'
+);
 
-// Khóa cấu trúc hiển thị theo yêu cầu: điểm số, đúng 3 thống kê và 4 nhóm nguồn ở cuối.
-assert(/id="rxScore"/.test(html),'Thiếu trường Điểm số kết quả rà soát');
-const initialSummary=html.match(/id="rxSummary">([\s\S]*?)<\/div><\/div>\s*<div class="rx-result-body"/);
-assert(initialSummary,'Không tìm thấy khối thống kê kết quả');
-for(const label of ['Tương tác','Mã bệnh','Đã đối chiếu'])assert(initialSummary[1].includes(`<span>${label}</span>`),`Thiếu thống kê ${label}`);
+const related = classifyIcdIssue({isMissing: false, related: true});
+assert.deepStrictEqual(
+  {key: related.key, status: related.status, eyebrow: related.eyebrow},
+  {key: 'suboptimal', status: 'Mã bệnh chưa thật sự phù hợp', eyebrow: 'Mã bệnh chưa thật sự phù hợp'},
+  'Ca đã có chẩn đoán liên quan phải được phân loại là mã bệnh chưa thật sự phù hợp'
+);
+assert.match(related.explanation, /Đã có chẩn đoán liên quan/i);
 
-const footer=html.match(/id="rxRuleVersion"[\s\S]*?<\/div><div class="rx-result-actions"/);
-assert(footer,'Không tìm thấy danh mục nguồn đối chiếu cuối kết quả');
-for(const label of ['Tương tác','ICD-10','Kê đơn','BHYT'])assert(footer[0].includes(`<b>${label}</b>`),`Thiếu nhóm nguồn ${label}`);
+const summary = buildResultSummaryHtml({interactions: 2, icdIssues: 3, checked: 7});
+const summaryItems = [...summary.matchAll(/<div><b>(\d+)<\/b><span>([^<]+)<\/span><\/div>/g)]
+  .map((match) => ({value: Number(match[1]), label: match[2]}));
+assert.deepStrictEqual(summaryItems, [
+  {value: 2, label: 'Tương tác'},
+  {value: 3, label: 'Mã bệnh'},
+  {value: 7, label: 'Đã đối chiếu'}
+], 'Kết quả phải có đúng ba thống kê hành vi theo đúng thứ tự');
 
-assert(js.includes('<div><b>${interactions.length}</b><span>Tương tác</span></div><div><b>${icdIssueCount}</b><span>Mã bệnh</span></div><div><b>${state.drugs.length}</b><span>Đã đối chiếu</span></div>'),'Renderer đã thay đổi cấu trúc 3 thống kê');
-assert(js.includes('rx-alert-missing-icd'),'Thiếu khung cảnh báo thuốc/mã bệnh gợi ý');
-assert(!js.includes('data-rx-add-code'),'Phần gợi ý không được có thao tác thêm mã bệnh');
-assert(!js.includes('addSuggestedCode'),'Không được tồn tại hàm thêm mã bệnh từ phần gợi ý');
+const missingHtml = buildMissingIcdHtml({
+  isMissing: true,
+  drug: {name: 'Ceftriaxone <tiêm>'},
+  mappings: [{term: 'Viêm phổi', codes: ['J18.9']}],
+  allowed: []
+}, {icdLabel: (code) => `${code} – Viêm phổi`});
+assert.match(missingHtml, /data-icd-status="missing"/);
+assert.match(missingHtml, /Ceftriaxone &lt;tiêm&gt;: Thiếu mã bệnh/);
+assert.match(missingHtml, /J18\.9 – Viêm phổi/);
+assert.doesNotMatch(missingHtml, /<button|data-rx-add-code/i, 'Gợi ý ICD chỉ cung cấp thông tin, không tự thêm mã');
 
-assert(js.includes("const status=related?'mã bệnh chưa thật sự phù hợp':'thiếu mã bệnh'"),'Phải phân biệt thiếu mã bệnh với mã bệnh đã có nhưng chưa thật sự phù hợp');
-assert(js.includes("const eyebrow=related?'Mã bệnh chưa thật sự phù hợp':'Thiếu mã bệnh BHYT'"),'Thiếu nhãn trạng thái ICD phân biệt rõ');
-assert(!js.includes('chưa có mã bệnh phù hợp'),'Không được dùng câu chung chung “chưa có mã bệnh phù hợp”');
-assert(!js.includes('Thuốc cần bổ sung/đối chiếu mã bệnh:'),'Phải bỏ đoạn thừa “Thuốc cần bổ sung/đối chiếu mã bệnh”');
-assert(js.includes('isClinicalTextRelated'),'Phải kiểm tra chẩn đoán liên quan trước khi dùng nhãn “mã bệnh chưa thật sự phù hợp”');
+const inpatientHtml = buildInpatientBhytHtml({
+  related: true,
+  drug: {name: 'Meropenem'}
+});
+assert.match(inpatientHtml, /data-icd-status="suboptimal"/);
+assert.match(inpatientHtml, /Meropenem: Mã bệnh chưa thật sự phù hợp/);
+assert.match(inpatientHtml, /Đã có chẩn đoán liên quan nhưng mã hiện tại chưa khớp/);
+assert.doesNotMatch(inpatientHtml, /Thiếu mã bệnh\.<\/p>/, 'Không được gắn nhãn thiếu mã cho ca đã có chẩn đoán liên quan');
 
-console.log('OK: prescription result structure locked');
+console.log('OK: prescription result behavior verified');
+

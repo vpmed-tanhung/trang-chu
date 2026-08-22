@@ -11,7 +11,7 @@ const initBlock=`  bindEvents();\n  renderDiagnosisChips();\n  renderFileQueue()
 assert(source.includes(initBlock),'Không tìm thấy khối khởi tạo prescription-check.js');
 source=source.replace(initBlock,`  window.__rxPaymentTest={extractPrescriptionTitle,detectPaymentFromTitle,hasHospitalPharmacyServiceMarker,hasBhytPrescriptionMarker};\n})();`);
 
-const context={window:{},document:{querySelector(){return null}},location:{hash:''},console};
+const context={window:{VPMED_PRESCRIPTION_RESULT:{}},document:{querySelector(){return null}},location:{hash:''},console};
 vm.createContext(context);
 vm.runInContext(source,context);
 const detector=context.window.__rxPaymentTest;
@@ -50,3 +50,4 @@ assert.strictEqual(detector.hasBhytPrescriptionMarker('ĐƠN THUỐC BHYT'),true
 assert.strictEqual(detector.hasBhytPrescriptionMarker('Quầy Phát Thuốc Bảo Hiểm'),true);
 assert.strictEqual(detector.hasBhytPrescriptionMarker('Liên hệ: Nhà thuốc Bệnh Viện'),false);
 console.log('Prescription payment detection tests: OK');
+

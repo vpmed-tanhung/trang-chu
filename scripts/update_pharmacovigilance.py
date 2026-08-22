@@ -24,7 +24,7 @@ SOURCE_NAME = "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phả
 OUTPUT_PATH = Path("assets/pharmacovigilance_auto.json")
 OUTPUT_JS_PATH = Path("assets/pharmacovigilance_auto_data.js")
 STATIC_PATH = Path("assets/pharmacovigilance_alerts.json")
-INDEX_PATH = Path("index.html")
+SHELL_PATH = Path("assets/platform-shell.js")
 MAX_ITEMS = 30
 HISTORY_LIMIT = 120
 DETAIL_LINK_RE = re.compile(r"/CanhGiacDuoc/DiemTin/\d+/", re.IGNORECASE)
@@ -630,16 +630,23 @@ def existing_check_is_fresh(now: datetime) -> bool:
         return False
 
 
-def write_payload(payload: dict[str, Any], version: str) -> None:
-    index_text = INDEX_PATH.read_text(encoding="utf-8")
-    index_text, replacements = re.subn(
-        r'(<script\b[^>]*\bsrc=["\']assets/pharmacovigilance_auto_data\.js)(?:\?v=[^"\']*)?(["\'])',
+def update_shell_cache_buster(shell_text: str, version: str) -> str:
+    updated, replacements = re.subn(
+        r'(["\']assets/pharmacovigilance_auto_data\.js)(?:\?v=[^"\']*)?(["\'])',
         rf"\g<1>?v={version}\g<2>",
-        index_text,
+        shell_text,
         count=1,
     )
     if replacements != 1:
-        raise RuntimeError("Không tìm thấy thẻ pharmacovigilance_auto_data.js trong index.html.")
+        raise RuntimeError("Không tìm thấy pharmacovigilance_auto_data.js trong Platform Shell.")
+    return updated
+
+
+def write_payload(payload: dict[str, Any], version: str) -> None:
+    shell_text = update_shell_cache_buster(
+        SHELL_PATH.read_text(encoding="utf-8"),
+        version,
+    )
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(
@@ -652,7 +659,7 @@ def write_payload(payload: dict[str, Any], version: str) -> None:
         + ";\n",
         encoding="utf-8",
     )
-    INDEX_PATH.write_text(index_text, encoding="utf-8")
+    SHELL_PATH.write_text(shell_text, encoding="utf-8")
 
 
 def main(skip_if_fresh: bool = False) -> int:

@@ -14,6 +14,7 @@
   var notice = null;
   var checking = false;
   var successTimer = null;
+  var announcedDataVersion = '';
 
   function readStorage(storage, key) {
     try { return storage.getItem(key) || ''; } catch (error) { return ''; }
@@ -196,6 +197,22 @@
   function applyVersion(data) {
     var version = validVersion(data && data.version);
     if (!version) return;
+    if (loadedVersion && version !== loadedVersion && announcedDataVersion !== version) {
+      announcedDataVersion = version;
+      if (window.VPMED_PLATFORM) {
+        window.VPMED_PLATFORM.emit('vpmed:data-version-changed', {
+          previousVersion: loadedVersion,
+          version: version,
+          source: 'app-version-manifest'
+        });
+      } else if (typeof window.CustomEvent === 'function' && typeof window.dispatchEvent === 'function') {
+        window.dispatchEvent(new CustomEvent('vpmed:data-version-changed', {detail: {
+          previousVersion: loadedVersion,
+          version: version,
+          source: 'app-version-manifest'
+        }}));
+      }
+    }
     var displayVersion = validVersion(data && data.displayVersion) || version;
     var previousVersion = validVersion(data && data.previousVersion);
     var previousDisplayVersion = validVersion(data && data.previousDisplayVersion);
@@ -215,6 +232,15 @@
     }
 
     var currentDisplayVersion = acceptedDisplayVersion || previousDisplayVersion || getFooterDisplayVersion();
+
+    /* HTML đang chạy đã đúng build máy chủ: không hiển thị lời mời cập nhật giả. */
+    if (loadedVersion === version && !reloadTarget) {
+      acceptVersion(version, displayVersion);
+      cleanUpdateQuery();
+      setFooterVersion(displayVersion);
+      hideNotice();
+      return;
+    }
 
     /* Chỉ cú bấm Cập nhật mới tạo reloadTarget; lúc đó mới chấp nhận bản mới. */
     if (reloadTarget === version && (!loadedVersion || loadedVersion === version)) {
@@ -271,3 +297,4 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
   else start();
 }());
+

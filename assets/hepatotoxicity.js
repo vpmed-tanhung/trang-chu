@@ -250,7 +250,7 @@
     if ($("liverResultCount")) $("liverResultCount").textContent = `${filtered.length} kết quả`;
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  function init(){
     $("liverQ")?.addEventListener("input", render);
     $("liverLevel")?.addEventListener("change", render);
     $("liverExpandAll")?.addEventListener("click", () => {
@@ -260,5 +260,9 @@
       $("liverExpandAll").textContent = shouldOpen ? "Thu gọn tất cả" : "Mở tất cả";
     });
     render();
-  });
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
 })();
+

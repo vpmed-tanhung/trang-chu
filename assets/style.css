@@ -1038,3 +1038,75 @@
   #view-home .home-responsibility-note b{margin-bottom:3px;font-size:11.8px}
   #view-home .home-responsibility-text span{margin-top:3px}
 }
+
+/* ===== Site policy — footer disclosure ===== */
+.site-footer .site-policy{
+  width:min(100%,980px);
+  margin:12px auto 0;
+  color:var(--ink);
+  text-align:left;
+}
+.site-footer .site-policy>summary{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:max-content;
+  max-width:100%;
+  margin:0 auto;
+  padding:8px 12px;
+  border:1px solid #c7dce9;
+  border-radius:999px;
+  background:#f7fbfe;
+  color:#245f80;
+  font-size:12.5px;
+  font-weight:850;
+  cursor:pointer;
+  list-style:none;
+}
+.site-footer .site-policy>summary::-webkit-details-marker{display:none}
+.site-footer .site-policy>summary::after{
+  content:'▾';
+  color:#4f7890;
+  font-size:11px;
+  transition:transform .18s ease;
+}
+.site-footer .site-policy[open]>summary::after{transform:rotate(180deg)}
+.site-footer .site-policy>summary:hover,
+.site-footer .site-policy>summary:focus-visible{
+  border-color:#76afd0;
+  background:#edf7fc;
+  outline:none;
+}
+.site-policy-body{
+  margin-top:12px;
+  padding:22px 24px;
+  border:1px solid #d5e3ed;
+  border-radius:16px;
+  background:#f6f8fb;
+  box-shadow:0 8px 24px rgba(31,74,108,.07);
+  color:#17364d;
+  font-size:15px;
+  line-height:1.7;
+}
+.site-policy-body h2{
+  margin:0 0 14px;
+  color:#102d45;
+  font-size:22px;
+  line-height:1.25;
+}
+.site-policy-body p{margin:0 0 13px}
+.site-policy-body p:last-child{margin-bottom:0}
+.site-policy-body strong{color:#102d45;font-weight:850}
+.site-footer .site-policy-body a{
+  color:#075d98;
+  font-weight:800;
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+@media(max-width:720px){
+  .site-footer{padding-inline:12px}
+  .site-footer .site-policy>summary{font-size:12px;text-align:center}
+  .site-policy-body{padding:17px 16px;font-size:14px;line-height:1.65}
+  .site-policy-body h2{font-size:20px}
+}

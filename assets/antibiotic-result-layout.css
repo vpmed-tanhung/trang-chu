@@ -1,78 +1,81 @@
+/* VPMED — bố cục kết quả tính liều kháng sinh suy thận, tối ưu đọc nhanh trên mobile. */
 #view-dose .clinical-result-flow{
-  display:flex;flex-direction:column;gap:12px;padding:18px;
-  background:#fff;border:1px solid #d2e0e8;border-radius:22px;
-  box-shadow:0 10px 28px rgba(24,78,109,.08)
+  display:flex;flex-direction:column;gap:9px;padding:11px;
+  background:#fff;border:1px solid #d7e3ea;border-radius:16px;
+  box-shadow:0 6px 18px rgba(24,78,109,.06)
 }
-#view-dose .result-overview{
-  padding:16px;border:1px solid #c6dce8;border-radius:13px;background:#f6fbfe
+#view-dose .result-metric-strip{
+  display:flex;flex-wrap:wrap;gap:6px 16px;padding:8px 10px;
+  border:1px solid #d9e6ed;border-radius:9px;background:#f8fbfd;
+  color:#55717f;font-size:14px;line-height:1.55
 }
-#view-dose .result-eyebrow,
-#view-dose .result-metric>span,
-#view-dose .result-primary-card>span,
-#view-dose .result-source-row>span{
-  display:block;color:#305c74;font-size:11px;font-weight:850;letter-spacing:.02em
-}
-#view-dose .result-overview h2{margin:6px 0 2px;color:#064f82;font-size:21px;line-height:1.3}
-#view-dose .result-overview p{margin:0;color:#587282;font-size:13px}
-
-#view-dose .result-metric-grid,
-#view-dose .result-primary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-#view-dose .result-metric{
-  min-width:0;padding:15px;border:1px solid #c6dce8;border-radius:13px;background:#fff
-}
-#view-dose .result-metric>div{margin-top:7px;color:#075b91;line-height:1.15}
-#view-dose .result-metric strong{font-size:24px}
-#view-dose .result-metric small{font-size:12px;font-weight:750;color:#4f7184}
-#view-dose .result-metric p{margin:7px 0 0;color:#617786;font-size:12px;line-height:1.4}
+#view-dose .result-metric-strip b{color:#165a7f}
 
 #view-dose .result-primary-card{
-  min-width:0;padding:15px;border:1px solid #86d0aa;border-radius:13px;background:#f0fbf5;color:#075d43
+  min-width:0;padding:13px 14px;border:2px solid #1883c2;border-radius:11px;
+  background:#f3f9fd;color:#0d4f76
 }
-#view-dose .result-primary-card>strong{display:block;margin-top:7px;font-size:16px;line-height:1.45}
-#view-dose .administration-list{margin:7px 0 0;padding-left:19px}
-#view-dose .administration-list li{margin:5px 0;color:#0b664a;font-size:13px;line-height:1.45}
-#view-dose .dialysis-notice{margin-top:9px;padding:9px 10px;border-radius:8px;background:#fff1f1;color:#874343;font-size:12px;line-height:1.4}
+#view-dose .result-primary-card>span,
+#view-dose .result-source-row>span{
+  display:block;color:#2472a0;font-size:13px;font-weight:900;letter-spacing:.045em
+}
+#view-dose .result-dose-row{
+  display:grid;grid-template-columns:92px minmax(0,1fr);gap:10px;align-items:start;
+  margin-top:9px
+}
+#view-dose .result-dose-row small{color:#5c7380;font-size:13.5px;font-weight:750;line-height:1.5}
+#view-dose .result-dose-row strong{color:#075b91;font-size:18px;line-height:1.5;overflow-wrap:anywhere}
+#view-dose .result-dose-caution{
+  margin:10px 0 0;padding-top:8px;border-top:1px dashed #b7d3e3;
+  color:#a2523d;font-size:13px;font-weight:750;line-height:1.55
+}
+#view-dose .dialysis-notice{
+  margin-top:9px;padding:8px 9px;border-radius:8px;background:#fff1f1;
+  color:#874343;font-size:14px;line-height:1.55
+}
+#view-dose .renal-presentation-anchor:empty,#view-dose #dose24Anchor:empty{display:none}
 
-#view-dose .result-disclosure{margin-top:10px;border-top:1px solid rgba(31,113,83,.18)}
-#view-dose .result-disclosure summary,
-#view-dose .result-safety summary{
-  padding-top:9px;color:#17638a;font-size:12px;font-weight:800;cursor:pointer;list-style-position:inside
-}
-#view-dose .disclosure-body{
-  margin-top:10px;padding:13px;background:#fff;border:1px solid #dce7ec;border-radius:9px;color:#274c5f
-}
-#view-dose .disclosure-body h4{margin:0 0 5px;color:#155773;font-size:13px}
-#view-dose .disclosure-body h4:not(:first-child){margin-top:13px}
-#view-dose .disclosure-body p,#view-dose .disclosure-body li{font-size:13px;line-height:1.48}
-#view-dose .disclosure-body p{margin:0 0 7px}
-#view-dose .dose-detail-grid,#view-dose .safety-detail-grid{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px
-}
+/* Tóm tắt tổng liều/24 giờ: chỉ giữ thông tin cần đọc, bỏ phần quy đổi mở rộng. */
+#view-dose .dose24-card{margin:0!important}
 
-#view-dose #dose24Anchor:empty{display:none}
-#view-dose .dose24-card{margin:0!important;order:0}
-#view-dose .result-safety{
-  padding:10px 13px;border:1px solid #d8e3e9;border-radius:10px;background:#fafcfd
+/* Y lệnh tham khảo dạng ngắn, thay cho khối "Pha truyền / cách dùng" dài. */
+#view-dose .order-card{
+  padding:12px 13px;border:1.5px solid #69b95d;border-radius:11px;background:#f6fcf1;color:#245b27
 }
-#view-dose .result-safety summary{padding:0;color:#315f78}
-#view-dose .safety-footnote{margin:10px 0 0;color:#697d88;font-size:11px;line-height:1.4}
+#view-dose .order-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+#view-dose .order-card-head>span{font-size:13px;font-weight:900;letter-spacing:.045em;color:#4b842f}
+#view-dose .copy-order-btn{
+  flex:0 0 auto;padding:5px 8px;border:1px solid #71b462;border-radius:6px;background:#fff;
+  color:#39732d;font-size:12.5px;font-weight:850;cursor:pointer
+}
+#view-dose .order-row{padding:7px 9px;border-radius:7px}
+#view-dose .order-row:nth-child(even){background:#eaf6df}
+#view-dose .order-row>span{display:block;margin-bottom:3px;color:#66815c;font-size:12.5px;font-weight:800;line-height:1.45}
+#view-dose .order-row>strong{display:block;color:#144a2c;font-size:14.5px;line-height:1.55;overflow-wrap:anywhere}
 
-#view-dose .result-source-row{
-  padding:11px 13px;border:1px solid #d8e3e9;border-radius:9px;background:#f6f8fa
+/* Lưu ý luôn hiển thị, không bắt người dùng mở accordion. */
+#view-dose .result-warning-card{
+  padding:12px 13px;border:1.5px solid #ef9797;border-radius:11px;background:#fff8f7;color:#723636
 }
-#view-dose .result-source-row>span{margin-bottom:4px;color:#657c8a}
-#view-dose .direct-dose-sources,#view-antibiotics .direct-dose-sources{
-  display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px
-}
+#view-dose .warning-title{display:block;margin-bottom:8px;color:#c24a45;font-size:13px;font-weight:900;letter-spacing:.045em}
+#view-dose .result-warning-card ul{margin:0;padding-left:18px}
+#view-dose .result-warning-card li{margin:6px 0;font-size:14px;line-height:1.6}
+#view-dose .result-warning-card li::marker{color:#d35b55}
+#view-dose .result-warning-card p{margin:9px 0 0;padding-top:8px;border-top:1px dashed #edc0bd;color:#87504c;font-size:13px;line-height:1.55}
+
+#view-dose .result-source-row{padding:0;border:0;background:transparent}
+#view-dose .direct-dose-sources{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+#view-antibiotics .direct-dose-sources{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
 #view-dose .direct-dose-sources a{
-  padding:0;background:transparent;color:#235f83;font-size:11px;font-weight:700;text-decoration:underline;text-underline-offset:2px
+  padding:0;background:transparent;color:#235f83;font-size:12.5px;font-weight:750;
+  text-decoration:underline;text-underline-offset:2px
 }
 #view-antibiotics .direct-dose-sources{flex-direction:column;align-items:flex-start;gap:8px}
 #view-antibiotics .direct-dose-sources a{
   display:inline-flex;padding:8px 10px;border-radius:9px;background:#eaf6ff;color:#075f91;font-weight:750;text-decoration:none;overflow-wrap:anywhere
 }
 #view-dose .direct-dose-sources a:hover,#view-antibiotics .direct-dose-sources a:hover{text-decoration:underline}
-#view-dose #sharedHistoryStatus{display:block;margin-top:5px;color:#667d90;font-size:12px;line-height:1.45}
+#view-dose #sharedHistoryStatus{display:block;margin-top:6px;color:#667d90;font-size:13px;line-height:1.5}
 
 #view-antibiotics .tabpane h3{font-size:18px}
 #view-antibiotics .tabpane p,#view-antibiotics .tabpane li{font-size:15px;line-height:1.55}
@@ -87,9 +90,13 @@
 }
 
 @media(max-width:760px){
-  #view-dose .clinical-result-flow{padding:10px;border-radius:16px}
-  #view-dose .result-overview{padding:14px}
-  #view-dose .result-overview h2{font-size:18px}
-  #view-dose .result-metric-grid,#view-dose .result-primary-grid{grid-template-columns:1fr}
-  #view-dose .dose-detail-grid,#view-dose .safety-detail-grid{grid-template-columns:1fr}
+  #view-dose .clinical-result-flow{gap:8px;padding:8px;border-radius:13px}
+  #view-dose .result-metric-strip{display:grid;grid-template-columns:1fr;gap:3px;padding:7px 9px}
+  #view-dose .result-primary-card{padding:11px 12px}
+  #view-dose .result-dose-row{grid-template-columns:76px minmax(0,1fr);gap:8px;margin-top:7px}
+  #view-dose .result-dose-row strong{font-size:17px}
+  #view-dose .order-card,#view-dose .result-warning-card{padding:10px 11px}
 }
+
+/* Nguồn đã nằm ngay dưới bảng CrCl; không lặp bảng nguồn ở cuối kết quả. */
+#view-dose .result-source-row{display:none!important}

@@ -35,6 +35,7 @@ class Element {
 
 const oldBuild = '2026.08.21.32';
 const newBuild = '2026.08.21.35';
+let loadedMetaBuild = oldBuild;
 const footer = new Element('span');
 footer.id = 'vpmedLatestVersion';
 footer.textContent = '· v5.0';
@@ -68,8 +69,7 @@ const documentStub = {
   getElementById(id) { return id === footer.id ? footer : findById(head, id) || findById(body, id); },
   querySelector(selector) {
     if (selector === 'meta[name="vpmed-build-version"]') {
-      // Tình huống từng gây lỗi: HTML đã mang meta build mới nhưng người dùng chưa bấm.
-      return { getAttribute(name) { return name === 'content' ? newBuild : ''; } };
+      return { getAttribute(name) { return name === 'content' ? loadedMetaBuild : ''; } };
     }
     return null;
   },
@@ -151,6 +151,7 @@ vm.runInContext(code, sandbox);
   assert.ok(replacedUrl.includes('vpmed_update=' + newBuild), 'Chỉ cú bấm Cập nhật mới tải build mới');
 
   // Mô phỏng trang vừa tải lại sau đúng cú bấm ở trên.
+  loadedMetaBuild = newBuild;
   body.removeChild(notice);
   const reloadSandbox = { window: windowStub, document: documentStub, fetch: fetchStub, URL, Date, console };
   vm.createContext(reloadSandbox);
@@ -167,3 +168,4 @@ vm.runInContext(code, sandbox);
   console.error(error);
   process.exitCode = 1;
 });
+

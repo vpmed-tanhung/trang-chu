@@ -91,6 +91,15 @@ class PharmacovigilanceUpdaterTests(unittest.TestCase):
         self.assertEqual([item["id"] for item in merged], ["auto-new", "auto-old"])
         self.assertEqual(retained, 1)
 
+    def test_updates_lazy_shell_cache_buster_without_depending_on_format(self) -> None:
+        source = "scripts: [\n  'assets/pharmacovigilance_auto_data.js?v=old-build',\n]"
+        updated = updater.update_shell_cache_buster(source, "20260822183000")
+        self.assertIn(
+            "assets/pharmacovigilance_auto_data.js?v=20260822183000",
+            updated,
+        )
+        self.assertNotIn("old-build", updated)
+
 
 if __name__ == "__main__":
     unittest.main()

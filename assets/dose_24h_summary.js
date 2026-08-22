@@ -35,13 +35,9 @@
     const style=document.createElement('style');
     style.id='vpmed-dose24-style';
     style.textContent=`
-      .dose24-card{margin:0;padding:15px;border:1px solid #86d0aa;background:#f0fbf5;border-radius:13px;box-shadow:none}
-      .dose24-summary{display:flex;justify-content:space-between;align-items:flex-end;gap:18px}.dose24-total span{display:block;color:#305c53;font-size:11px;font-weight:850}.dose24-total strong{display:block;margin-top:7px;color:#006c45;font-size:21px;line-height:1.25}.dose24-total small{display:block;margin-top:3px;color:#547368;font-size:11px}.dose24-summary label{min-width:240px;color:#305c53;font-size:11px;font-weight:850}.dose24-summary select{width:100%;margin-top:5px;background:#fff;border:1px solid #bad8c9;border-radius:9px;padding:8px 10px}
-      .dose24-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.dose24-metric{display:flex;flex-direction:column;gap:4px;min-height:92px;padding:11px;border:1px solid #d9e6df;background:#fafcfb;border-radius:10px}.dose24-metric span{font-size:11px;font-weight:800;color:#4c6f62}.dose24-metric strong{font-size:15px;line-height:1.35;color:#123d31;overflow-wrap:anywhere}.dose24-metric small{color:#587367;line-height:1.35}.dose24-metric.total{background:#edf9f3;border-color:#b9dfcd}.dose24-metric.total strong{font-size:19px;color:#006c45}
-      .dose24-components{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}.dose24-component{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 13px;border:1px solid #d9e9e1;background:#f9fffc;border-radius:11px}.dose24-component span{font-size:13px;color:#355f50}.dose24-component strong{color:#075d4a;white-space:nowrap}
-      .dose24-loading,.dose24-note{margin-top:9px;padding:10px 12px;border-radius:9px;line-height:1.45}.dose24-loading{background:#fff8e8;border:1px solid #efd08a;color:#6c5318}.dose24-note{background:#f3f7f9;border:1px solid #dce7ec;color:#315d79}.dose24-detail{margin-top:10px;border-top:1px solid rgba(31,113,83,.18)}.dose24-detail summary{padding-top:9px;color:#17638a;font-size:12px;font-weight:800;cursor:pointer}.dose24-detail-body{margin-top:9px}.dose24-disclaimer{margin:8px 0 0;color:#63776d;font-size:11px;line-height:1.4}
-      @media(max-width:1000px){.dose24-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-      @media(max-width:720px){.dose24-card{padding:14px}.dose24-summary{align-items:stretch;flex-direction:column;gap:10px}.dose24-summary label{min-width:0}.dose24-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dose24-components{grid-template-columns:1fr}.dose24-metric{min-height:auto}.dose24-component{align-items:flex-start;flex-direction:column;gap:4px}.dose24-component strong{white-space:normal}}
+      .dose24-card{margin:0;padding:10px 12px;border:1px solid #cbdde7;background:#f8fbfd;border-radius:10px;box-shadow:none}
+      .dose24-summary{display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,280px);align-items:end;gap:14px}.dose24-total span{display:block;color:#4d6f82;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.03em}.dose24-total strong{display:block;margin-top:4px;color:#075f91;font-size:22px;line-height:1.25}.dose24-total small{display:block;margin-top:3px;color:#6b7f89;font-size:13px;line-height:1.5}.dose24-summary label{min-width:0;color:#4d6f82;font-size:13px;font-weight:900}.dose24-summary select{width:100%;margin-top:5px;background:#fff;border:1px solid #cbdde7;border-radius:8px;padding:9px 10px;font-size:14px;font-weight:700;color:#214d66}
+      @media(max-width:720px){.dose24-card{padding:10px 11px}.dose24-summary{grid-template-columns:1fr;gap:9px}.dose24-total strong{font-size:21px}.dose24-summary select{font-size:14px}}
     `;
     document.head.appendChild(style);
   }
@@ -249,14 +245,13 @@
     host.id='vpmedDose24Summary';host.className='dose24-card';
     const options=scenarios.map((s,i)=>`<option value="${i}">${esc(s.label)}</option>`).join('');
     const initialTotal=scenarioTotal(scenarios[0]);
-    host.innerHTML=`<div class="dose24-summary"><div class="dose24-total"><span>Tổng liều trong 24 giờ</span><strong id="vpmedDose24Total">${esc(initialTotal.value)}</strong><small id="vpmedDose24TotalNote">${esc(initialTotal.note)}</small></div><label>Phác đồ<select id="vpmedDose24Scenario">${options}</select></label></div><details class="dose24-detail"><summary>Xem cách quy đổi</summary><div class="dose24-detail-body" id="vpmedDose24Body">${scenarioHtml(scenarios[0])}</div></details><p class="dose24-disclaimer">Không tự suy diễn tổng liều khi cần TDM, HD/CRRT, lịch dùng cách ngày hoặc dữ liệu chưa đủ.</p>`;
+    host.innerHTML=`<div class="dose24-summary"><div class="dose24-total"><span>Tổng liều trong 24 giờ</span><strong id="vpmedDose24Total">${esc(initialTotal.value)}</strong><small id="vpmedDose24TotalNote">${esc(initialTotal.note)}</small></div><label>Phác đồ<select id="vpmedDose24Scenario">${options}</select></label></div>`;
     const anchor=output.querySelector('#dose24Anchor');
     if(anchor)anchor.replaceWith(host);else output.append(host);
     host.querySelector('#vpmedDose24Scenario')?.addEventListener('change',e=>{
       const scenario=scenarios[+e.target.value],total=scenarioTotal(scenario);
       host.querySelector('#vpmedDose24Total').textContent=total.value;
       host.querySelector('#vpmedDose24TotalNote').textContent=total.note;
-      host.querySelector('#vpmedDose24Body').innerHTML=scenarioHtml(scenario);
     });
   }
 

@@ -1,9 +1,12 @@
+Warning: truncated output (original token count: 81853)
+Total output lines: 5176
+
 
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="vpmed-build-version" content="2026.08.21.35">
+  <meta name="vpmed-build-version" content="2026.08.22.40">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#074691">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1685,7 +1688,7 @@ body.authed #AUTH-SCREEN{display:none!important}
 @media(max-width:640px){.auth-user-name{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3" integrity="sha384-l8ah+VgaWtk1mvOe9VC+OirC6qHFF4yH7l7mKRidV9MSti3E9F463bMp6ZVN4kuC" crossorigin="anonymous"></script>
 </head>
 <body>
 <div id="OVL"></div>
@@ -2726,138 +2729,7 @@ body.authed #AUTH-SCREEN{display:none!important}
     <div id="ib-ei" class="ib"></div>
   </div>
     <div class="ref-box">
-    <div class="ref-hdr">📚 Tài liệu tham khảo</div>
-    <ol class="ref-ol">
-      <li>Hartford Nomogram — Nicolau DP. <em>Once-daily aminoglycoside dosing.</em> Pharmacotherapy. 1997;17(6):1255–1262.</li>
-    </ol>
-  </div>
-</div>
-</div>
-</div>
-
-<!-- ====================== COLISTIN ====================== -->
-<div id="pg-colistin" class="pg">
-<div class="st">🧪 Colistin (CMS) Calculator</div>
-<div class="ss">Liều nạp &amp; Liều duy trì · CrCl Cockcroft-Gault · IHD · SLED · CRRT · Tsuji 2019 · Stanford HC 2022</div>
-<div class="vcl-root">
-<div class="vcl-container" style="max-width:100%;margin:0;padding:16px 0 48px">
-<div class="vcl-card">
-    <h2><span class="vcl-step-num">1</span>Chức năng thận</h2>
-    <div class="vcl-toggle-mode">
-      <button type="button" class="active" id="vcl-mode-normal" onclick="VCL.setMode('normal')">Bình thường / suy thận</button>
-      <button type="button" id="vcl-mode-ihd" onclick="VCL.setMode('ihd')">IHD (lọc máu ngắt quãng)</button>
-      <button type="button" id="vcl-mode-sled" onclick="VCL.setMode('sled')">SLED (lọc máu kéo dài hiệu suất thấp)</button>
-      <button type="button" id="vcl-mode-crrt" onclick="VCL.setMode('crrt')">CRRT (liệu pháp thay thế thận liên tục)</button>
-    </div>
-
-    <div id="vcl-normal-fields">
-      <div class="vcl-field-row vcl-cols-3">
-        <div class="vcl-field"><label>Tuổi (năm)</label><input type="number" id="vcl-age" value="55" min="18" max="110" step="1"></div>
-        <div class="vcl-field"><label>Giới tính</label>
-          <select id="vcl-sex"><option value="male">Nam</option><option value="female">Nữ</option></select>
-        </div>
-        <div class="vcl-field"><label>Chiều cao (cm)</label><input type="number" id="vcl-height" value="165" min="120" max="220" step="0.1"></div>
-      </div>
-      <div class="vcl-field-row">
-        <div class="vcl-field"><label>Cân nặng thực tế (kg)</label><input type="number" id="vcl-weight" value="65" min="20" max="300" step="0.1"></div>
-        <div class="vcl-field">
-          <label>Creatinine huyết thanh</label>
-          <div style="display:flex; gap:6px;">
-            <input type="number" id="vcl-scr" value="1.0" min="0.1" max="20" step="0.01" style="flex:1;">
-            <div class="vcl-unit-toggle" style="width:120px;">
-              <button type="button" class="active" data-unit="mgdl" onclick="VCL.toggleScrUnit('mgdl')">mg/dL</button>
-              <button type="button" data-unit="umol" onclick="VCL.toggleScrUnit('umol')">µmol/L</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="vcl-bw-info" class="vcl-bw-info" style="display:none;"></div>
-    </div>
-
-    <div id="vcl-ihd-fields" style="display:none;">
-      <div class="vcl-field-row">
-        <div class="vcl-field"><label>Số giờ mỗi lần lọc máu (IHD)</label><input type="number" id="vcl-ihd-hours" value="4" min="1" max="6" step="0.5"></div>
-      </div>
-      <div class="vcl-warn-block" style="margin-top:8px;">
-        ℹ Theo R12: ngày không lọc máu dùng liều baseline 130mg CBA/ngày; ngày lọc máu bổ sung 40mg (lọc 3h) hoặc 50mg (lọc 4h).
-      </div>
-    </div>
-
-    <div id="vcl-sled-fields" style="display:none;">
-      <div class="vcl-field-row">
-        <div class="vcl-field"><label>Số giờ mỗi lần SLED</label><input type="number" id="vcl-sled-hours" value="10" min="1" max="24" step="0.5"></div>
-      </div>
-      <div class="vcl-warn-block" style="margin-top:8px;">
-        ℹ Theo R13: thêm 10% liều baseline (130mg) cho mỗi 1 giờ SLED.
-      </div>
-    </div>
-
-    <div id="vcl-crrt-fields" style="display:none;">
-      <div class="vcl-warn-block" style="margin-top:8px;">
-        ℹ Theo R14: liều cố định 440mg CBA/ngày (~13,3 triệu IU/ngày), chia 220mg mỗi 12 giờ. Không cần CrCl.
-      </div>
-    </div>
-  </div>
-
-  <div class="br">
-    <button type="button" class="bp" onclick="VCL.calculate()">⚡ Tính liều Colistin</button>
-    <button type="button" class="bs" onclick="VCL.reset()">🗑️ Xoá</button>
-  </div>
-
-  <div id="vcl-results" class="vcl-results" style="margin-top:20px;">
-
-    <div class="vcl-result-hero" id="vcl-hero"></div>
-
-    <div id="vcl-alerts"></div>
-
-    <div class="vcl-card">
-      <h2>Phác đồ đề xuất</h2>
-      <div id="vcl-regimen-content"></div>
-    </div>
-
-    <div class="vcl-card" id="vcl-table-card">
-      <h2>Bảng liều theo CrCl</h2>
-      <table class="vcl-table" id="vcl-dose-table"></table>
-    </div>
-
-    <div class="vcl-card">
-      <h2>Quy đổi đơn vị</h2>
-      <table class="vcl-table" id="vcl-convert-table"></table>
-      <div class="vcl-method-note">
-        Theo R8: 1 triệu IU ≈ 33 mg CBA. mg CMS theo Li 2006: ~12.500 IU/mg CMS, ~0,4mg CBA/mg CMS
-        (≈2,5mg CMS/mg CBA). <strong>Quan trọng:</strong> liều KHÔNG được kê theo mg CMS — chỉ dùng IU hoặc mg CBA
-        theo quy ước ghi nhãn của quốc gia (R8).
-      </div>
-    </div>
-
-    <div class="vcl-card">
-      <h2>Thông số tính toán</h2>
-      <div id="vcl-calc-detail"></div>
-      <div class="vcl-method-note" id="vcl-method-note"></div>
-    </div>
-
-    <div class="ib" style="margin-top:0"><strong style="font-size:11.5px;color:var(--P)">⚠ Giới hạn của công cụ</strong><ul class="ref-ol" style="list-style:disc;margin-top:6px">
-        <li>Chỉ áp dụng cho bệnh nhân ≥18 tuổi. Không có khuyến cáo riêng cho nhi/sơ sinh.</li>
-        <li>Liều nạp 300mg CBA cố định cho mọi bệnh nhân theo R9 — dữ liệu PK không hỗ trợ điều chỉnh theo cân nặng.</li>
-        <li>Bảng liều duy trì là bảng tra cứu rời rạc (không phải hàm liên tục chính thức trong bài báo gốc) — áp dụng theo khoảng CrCl đã công bố.</li>
-        <li>Liều tối đa 360mg CBA/ngày dù CrCl rất cao — giới hạn an toàn do thiếu kinh nghiệm lâm sàng ở liều cao hơn (R10).</li>
-        <li>Therapeutic Drug Monitoring (TDM) được khuyến cáo mạnh khi có thể (R19).</li>
-        <li>Không thay thế đánh giá của dược sĩ lâm sàng/bác sĩ điều trị.</li>
-      </ul></div>
-
-    <div class="ref-box" style="margin-top:0">
-      <div class="ref-hdr">📚 Tài liệu tham khảo</div>
-      <ol class="ref-ol">
-        <li>Bùi Thị Hương Quỳnh, Lê Đình Thanh (Chủ biên) (2024). <em>Hướng dẫn sử dụng kháng sinh 2024</em>,
-        Nhà xuất bản Y học, Hà Nội.</li>
-        <li>Bệnh viện Bệnh Nhiệt đới TP. Hồ Chí Minh (2026). "Liều lượng kháng sinh Colistin", <em>Sổ tay
-        Hướng dẫn Sử dụng Kháng sinh</em> - Cổng tra cứu y học lâm sàng eMedHTD. Truy cập tại:
-        <a href="https://emed.bvbnd.vn/wiki/duoc/khang-sinh/" target="_blank" rel="noopener noreferrer">emed.bvbnd.vn/wiki/duoc/khang-sinh</a>
-        (Truy cập ngày 26/06/2026).</li>
-        <li>Tsuji BT, Pogue JM, Zavascki AP, et al. International Consensus Guidelines for the
-        Optimal Use of the Polymyxins. <em>Pharmacotherapy</em>. 2019;39(1):10-39.
-        doi:<a href="https://doi.org/10.1002/phar.2209" target="_blank" rel="noopener noreferrer">10.1002/phar.2209</a></li>
-        <li>Stanford Health Care (SHC System ASP Steering). Dosing Recommendations for Polymyxin B and
+    <div class=…1853 tokens truncated…Polymyxin B and
         Colistin. Antimicrobial Stewardship Program. Cập nhật 04/2022.</li>
       </ol>
     
@@ -5171,6 +5043,6 @@ body.vpmed-frame #pg-inject main{max-width:none;padding:4px 0 60px}
 }
 </style>
 <script src="assets/cong-cu-modules/embed-bootstrap.js"></script>
-<script defer src="assets/update-notifier.js?v=20260821-manual-update-v3"></script>
+<script defer src="assets/update-notifier.js?v=20260822-pwa-v1"></script>
 </body>
 </html>
