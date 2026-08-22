@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.22.46",
-  "displayVersion": "5.4.7",
-  "updatedAt": "2026-08-22T11:23:11+07:00",
-  "note": "Bổ sung 5 kháng sinh Nhi theo danh mục kho: amikacin, cefixime, cefotaxime, cefpodoxime và imipenem/cilastatin; thêm liều theo tuổi/PMA, liều tối đa, cảnh báo và nguồn trực tiếp.",
-  "buildId": "v5.4.7-pediatric-antibiotic-expansion-20260822-46",
-  "previousVersion": "2026.08.22.45",
-  "previousDisplayVersion": "5.4.6",
+  "version": "2026.08.22.48",
+  "displayVersion": "5.4.9",
+  "updatedAt": "2026-08-22T14:22:04+07:00",
+  "note": "Gỡ bỏ toàn bộ công cụ tính liều Colistin độc lập vì bệnh viện chưa triển khai lọc máu và theo dõi nồng độ thuốc trong máu.",
+  "buildId": "v5.4.9-remove-colistin-calculator-20260822-48",
+  "previousVersion": "2026.08.22.47",
+  "previousDisplayVersion": "5.4.8",
   "clinicalDataVersion": "sha256-1041b55d328332ea4be8a662"
 }
