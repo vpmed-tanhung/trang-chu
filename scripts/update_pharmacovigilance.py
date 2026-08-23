@@ -30,6 +30,22 @@ HISTORY_LIMIT = 120
 DETAIL_LINK_RE = re.compile(r"/CanhGiacDuoc/DiemTin/\d+/", re.IGNORECASE)
 DATE_RE = re.compile(r"\b(\d{1,2})/(\d{1,2})/(\d{4})\b")
 
+# Ranh giới câu: dấu kết câu + khoảng trắng, CHỈ khi ký tự tiếp theo là chữ
+# hoa/số/dấu ngoặc mở hoặc hết chuỗi. Nếu không có điều kiện lookahead này,
+# các từ viết tắt dạng "W. somnifera", "TS. Nguyễn..." sẽ bị hiểu nhầm là hết
+# câu (vì "W." cũng kết thúc bằng dấu chấm), làm rơi mất từ theo sau và ghép
+# nhầm các câu không liên quan với nhau trong bản tóm tắt.
+SENTENCE_BOUNDARY_RE = re.compile(r"(?<=[.!?…])\s+(?=[A-ZÀ-ỸĐ0-9\"'“(]|$)")
+
+# Giới hạn ký tự cho đoạn tóm tắt chính hiển thị cho người dùng. Bản tin
+# Cảnh giác dược thường có nhiều mốc thời gian/quốc gia (có khi tới ~5000 ký
+# tự nội dung, ví dụ bài về Sâm Ấn Độ ngày 21/08/2026 có 33 câu ~4700 ký
+# tự); giới hạn cũ (1400) quá thấp nên phần cập nhật mới nhất và khuyến cáo
+# cuối bài (thường nằm cuối bài) bị cắt mất hoàn toàn. Nâng lên đủ rộng để
+# hầu hết các bản tin không bị cắt; những bài dài bất thường vẫn được giới
+# hạn để tránh thẻ tóm tắt phình to vô hạn.
+SUMMARY_CHAR_LIMIT = 5200
+
 
 def clean_text(value: str) -> str:
     return re.sub(r"\s+", " ", value or "").strip()
@@ -69,7 +85,7 @@ def smart_truncate(value: str, limit: int = 650) -> str:
     if len(text) <= limit:
         return text if text.endswith((".", "!", "?", "…")) else text + "."
 
-    sentences = re.split(r"(?<=[.!?…])\s+", text)
+    sentences = SENTENCE_BOUNDARY_RE.split(text)
     selected: list[str] = []
     current_length = 0
 
@@ -108,7 +124,7 @@ def split_sentences(value: str) -> list[str]:
         clean_text(value),
     )
 
-    for sentence in re.split(r"(?<=[.!?…])\s+", normalized_text):
+    for sentence in SENTENCE_BOUNDARY_RE.split(normalized_text):
         sentence = clean_text(sentence)
         key = normalize_key(sentence)
         if len(sentence) < 35 or not key or key in seen:
@@ -123,7 +139,7 @@ def select_sentences(
     sentences: list[str],
     keywords: tuple[str, ...],
     *,
-    limit: int = 4,
+    limit: int = 6,
     used: set[str] | None = None,
 ) -> list[str]:
     selected: list[str] = []
@@ -337,12 +353,22 @@ def build_structured_summary(sentences: list[str], title: str) -> dict[str, Any]
     if not monitor:
         monitor = ["Theo dõi đáp ứng và phản ứng có hại; đối chiếu yêu cầu giám sát trong bài nguồn."]
 
+    # Trước đây đoạn tóm tắt chỉ lấy 3 câu đầu bài + vài câu khớp từ khóa
+    # (tối đa ~9 câu). Với các bản tin nhiều mục/nhiều mốc thời gian, cách
+    # này khiến nhiều đoạn quan trọng - đặc biệt là phần cập nhật số liệu
+    # mới nhất, thường nằm ở cuối bài - bị loại bỏ hoàn toàn khỏi tóm tắt dù
+    # vẫn còn trong danh sách "sentences". Nay giữ lại TOÀN BỘ câu đã trích
+    # xuất, theo đúng thứ tự xuất hiện trong bài, chỉ khử trùng lặp; phần bị
+    # cắt (nếu bài quá dài) sẽ do smart_truncate xử lý ở cuối câu gần giới
+    # hạn ký tự thay vì bị loại bỏ tùy tiện theo từ khóa.
     summary_candidates: list[str] = []
-    for sentence in [*sentences[:3], *risk[:2], *signs[:1], *action[:2], *monitor[:1]]:
+    seen_summary_keys: set[str] = set()
+    for sentence in sentences:
         key = normalize_key(sentence)
-        if key and key not in {normalize_key(item) for item in summary_candidates}:
+        if key and key not in seen_summary_keys:
+            seen_summary_keys.add(key)
             summary_candidates.append(sentence)
-    summary = smart_truncate(" ".join(summary_candidates), 1400)
+    summary = smart_truncate(" ".join(summary_candidates), SUMMARY_CHAR_LIMIT)
 
     quick = action[0] if action else risk[0]
     return {
@@ -457,7 +483,10 @@ def extract_detail(html: str, fallback_title: str) -> dict[str, Any]:
             continue
         if any(lower.startswith(prefix) for prefix in excluded_prefixes):
             continue
-        if len(line) < 25:
+        # Ngưỡng cũ (25 ký tự) loại bỏ luôn các tiêu đề mục ngắn nhưng có
+        # nghĩa như "Đánh giá của TGA", "Dữ liệu quốc tế" — hạ xuống 12 để
+        # giữ lại các nhãn mục này, giúp tóm tắt bám sát cấu trúc bài gốc.
+        if len(line) < 12:
             continue
 
         body_lines.append(line)

@@ -66,6 +66,42 @@ class PharmacovigilanceUpdaterTests(unittest.TestCase):
         normalized = [updater.normalize_key(item) for item in structured]
         self.assertEqual(len(normalized), len(set(normalized)))
 
+    def test_does_not_split_sentences_on_species_abbreviation(self) -> None:
+        # Hồi quy cho lỗi thực tế: "W. somnifera" (viết tắt Withania) bị bộ
+        # tách câu hiểu nhầm là hết câu vì có dấu chấm, khiến chữ "somnifera"
+        # bị rơi mất và các câu không liên quan bị ghép lại với nhau trong
+        # bản tóm tắt hiển thị cho người dùng (bản tin Sâm Ấn Độ 21/08/2026).
+        sentences = updater.split_sentences(
+            "TGA đã ghi nhận 01 báo cáo biến cố bất lợi về tình trạng tổn "
+            "thương gan nghiêm trọng liên quan đến một loại thuốc có chứa "
+            "W. somnifera. Sau đó, TGA đã tiến hành một đánh giá về mối "
+            "liên quan giữa W. somnifera và tình trạng tổn thương gan."
+        )
+
+        self.assertEqual(len(sentences), 2)
+        self.assertTrue(sentences[0].endswith("có chứa W. somnifera."))
+        self.assertTrue(sentences[1].startswith("Sau đó,"))
+        for sentence in sentences:
+            self.assertNotIn(" W.", sentence[-3:])  # câu không được cụt tại "W."
+
+    def test_summary_keeps_late_sections_of_long_bulletins(self) -> None:
+        # Hồi quy: build_structured_summary trước đây chỉ lấy 3 câu đầu +
+        # vài câu khớp từ khóa (~9 câu), nên các mục nằm cuối bài dài nhiều
+        # mốc thời gian (ví dụ số liệu cập nhật mới nhất) bị loại bỏ hoàn
+        # toàn khỏi tóm tắt dù vẫn còn trong "sentences".
+        title = "Bản tin nhiều mục"
+        sentences = [
+            f"Đây là câu mở đầu số {i} mô tả bối cảnh chung của bản tin thử nghiệm này."
+            for i in range(1, 6)
+        ] + [
+            "Tính đến nay, cơ quan quản lý đã ghi nhận tổng số 11 ca nghi ngờ "
+            "tổn thương gan liên quan đến hoạt chất này trên toàn quốc."
+        ]
+
+        structured = updater.build_structured_summary(sentences, title)
+
+        self.assertIn("tổng số 11 ca nghi ngờ", structured["summary"])
+
     def test_retains_history_without_duplicates(self) -> None:
         current = {
             "id": "auto-new",
