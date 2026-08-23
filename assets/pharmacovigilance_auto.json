@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-23T06:20:30+07:00",
+  "generated_at": "2026-08-24T06:20:27+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
   "newly_fetched_count": 0,
   "retained_history_count": 0,
   "detail_error_count": 0,
-  "review_status": "Bản tin được tự động trích xuất thành tóm tắt ngắn; nội dung đầy đủ được giữ tại liên kết nguồn để kiểm chứng trước khi áp dụng lâm sàng.",
+  "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
     {
       "id": "auto-1844287fb2c53c",
@@ -22,14 +22,14 @@
       "risk": [
         "Tuy nhiên, bao bì thuốc bắt buộc phải có thông tin cảnh báo dành cho phụ nữ mang thai đối với một số chế phẩm nhất định chứa thảo dược này.",
         "Chuỗi báo cáo bất lợi này ghi nhận trên cả bệnh nhân có bệnh lý gan từ trước và có 3 báo cáo trường hợp tử vong.",
-        "Tháng 9/2023 & tháng 7/2025 (Hà Lan): Trung tâm Cảnh giác Dược Hà Lan đã công bố cảnh báo vào tháng 9/2023 và cập nhật thêm vào tháng 7/2025, báo cáo tổng cộng 12 ca tổn thương gan tính đến tháng 6/2025 (thời gian khởi phát từ 6 tuần đến 22 tháng) và hầu hết bệnh nhân đã hồi phục sau khi ngừng sử dụng sản phẩm.",
+        "Tháng 9/2023 & tháng 7/2025 (Hà Lan): Trung tâm Cảnh giác Dược Hà Lan đã công bố cảnh báo vào tháng 9/ 2023 và cập nhật thêm vào tháng 7/ 2025, báo cáo tổng cộng 12 ca tổn thương gan tính đến tháng 6/ 2025 (thời gian khởi phát từ 6 tuần đến 22 tháng) và hầu hết bệnh nhân đã hồi phục sau khi ngừng sử dụng sản phẩm.",
         "Trong đó 2 ca có các thành phần phối hợp khác có thể đã góp phần gây ra phản ứng được báo cáo.",
         "Dựa trên bằng chứng hiện tại nguy cơ dường như là rất hiếm gặp, nhưng có nguy cơ tổn thương gan liên quan đến việc sử dụng thành phần thảo dược này.",
-        "Khuyến cáo dành cho nhân viên y tế Khai thác kỹ tiền sử dùng thuốc: khi đánh giá bệnh nhân có biểu hiện tổn thương gan, cần xem xét đến khả năng liên quan của các loại thuốc/ thực phẩm chức năng mà bệnh nhân đang sử dụng."
+        "Các báo cáo đóng vai trò quan trọng trong việc: - Xác định các nguy cơ tiềm ẩn liên quan đến thuốc thảo dược. - Cung cấp cơ sở dữ liệu cho các động thái quản lý trong tương lai giúp giảm thiểu nguy cơ cho người bệnh."
       ],
       "signs": [
         "Biến cố bất lợi liên quan đến W. somnifera Dữ liệu quốc tế Năm 2021 (TGA): TGA đã ghi nhận 01 báo cáo biến cố bất lợi về tình trạng tổn thương gan nghiêm trọng liên quan đến một loại thuốc có chứa W. somnifera.",
-        "Sau đó, TGA đã tiến hành một đánh giá về mối liên quan giữa W. somnifera và tình trạng tổn thương gan.",
+        "Sau đó, TGA đã tiến hành mộtđánh giá về mối liên quan giữa W. somnifera và tình trạng tổn thương gan.",
         "Năm 2023 (Ấn Độ): Các nhà nghiên cứu đã xem xét các hồ sơ bệnh án của các ca tổn thương gan do thảo dược, ghi nhận 8 ca tổn thương gan liên quan đến các chế phẩm W. somnifera đơn thành phần ở nhiều dạng bào chế khác nhau, bao gồm bột rễ, siro, viên nén và trà thảo mộc.",
         "Năm 2024 (TGA): TGA đã đưa ra cảnh báo an toàn, nhấn mạnh rằng các loại thuốc và thực phẩm chức năng có nguồn gốc thảo dược có chứa W. somnifera có thể liên quan đến tổn thương gan với tần suất rất hiếm gặp.",
         "Cảnh báo này được đưa ra dựa trên bằng chứng từ y khoa và sự gia tăng số lượng các biến cố bất lợi được báo cáo.",
@@ -39,6 +39,8 @@
         "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn."
       ],
       "monitor": [
+        "Việc sử dụng các thành phần này trong các chế phẩm hiện nay chưa phải tuân theo bất kỳ hạn chế cụ thể nào về liều lượng, nồng độ hay loại chế phẩm.",
+        "Sự hiện diện và nồng độ của các withanolide này có thể thay đổi tùy thuộc vào bộ phân sử dụng (phần lá hay phần rễ), kỹ thuật chiết xuất.",
         "Báo cáo từ Chương trình Giám sát Thuốc Quốc tế của Tổ chức Y tế Thế giới (WHO) cũng ghi nhận các ca có thể bị tổn thương gan liên quan đến thuốc W. somnifera đơn thành phần từ các quốc gia khác.",
         "Tăng cường báo cáo ADR về thuốc dược liệu Khả năng giám sát các vấn đề sức khỏe và an toàn đối với thuốc thảo dược phụ thuộc một phần vào báo cáo các biến cố bất lợi từ nhân viên y tế."
       ],
@@ -61,24 +63,24 @@
       "interaction": false,
       "title": "Health Canada: Nguy cơ tiềm ẩn hội chứng cai thuốc khi ngừng đột ngột hoặc giảm liều domperidon",
       "drugs": "Domperidon",
-      "summary": "Nguy cơ này chủ yếu được ghi nhận ở các bệnh nhân sử dụng domperidon với liều hàng ngày vượt quá liều tối đa được khuyến cáo là 30 mg, tuy nhiên, kết luận này vẫn còn hạn chế do số lượng trường hợp báo cáo còn ít. Tăng cường cảnh báo này đến nhân viên y tế và cộng động - Khuyến khích nhân viên y tế tích cực giám sát và báo cáo các biến cố bất lợi liên quan domperidon.",
-      "quick": "Health Canada đã tiến hành đánh giá nguy cơ tiềm ẩn của hội chứng cai thuốc trên tâm thần sau khi ngừng đột ngột hoặc giảm liều nhanh domperidon sau khi sử dụng để kích thích tiết sữa.",
+      "summary": "Tất cả các trường hợp đều đã sử dụng domperidon kéo dài hơn 4 tuần trước khi bắt đầu ngừng thuốc hoặc giảm liều. Nguy cơ này chủ yếu được ghi nhận ở các bệnh nhân sử dụng domperidon với liều hàng ngày vượt quá liều tối đa được khuyến cáo là 30 mg, tuy nhiên, kết luận này vẫn còn hạn chế do số lượng trường hợp báo cáo còn ít.",
+      "quick": "20/08/2026 12:00:00 SA Health Canada đã tiến hành đánh giá nguy cơ tiềm ẩn của hội chứng cai thuốc trên tâm thần sau khi ngừng đột ngột hoặc giảm liều nhanh domperidon sau khi sử dụng để kích thích tiết sữa.",
       "risk": [
-        "Quá trình đánh giá được tiến hành sau khi có các báo cáo y văn về nguy cơ trên cũng như thực trạng sử dụng domperidon.",
-        "Nguy cơ này chủ yếu được ghi nhận ở các bệnh nhân sử dụng domperidon với liều hàng ngày vượt quá liều tối đa được khuyến cáo là 30 mg, tuy nhiên, kết luận này vẫn còn hạn chế do số lượng trường hợp báo cáo còn ít."
+        "Quá trình đánh giá được tiến hành sau khi có các báo cáo y văn về nguy cơ trên cũng như thực trạng sử dụng domperidon."
       ],
       "signs": [
-        "Tại Canada, domperidon là thuốc kê đơn được phê duyệt để điều trị các triệu chứng chậm tháo rỗng dạ dày và dự phòng triệu chứng buồn nôn, nôn do một số thuốc điều trị bệnh Parkinson gây ra.",
-        "Health Canada sẽ tiến hành một số biện pháp giảm thiểu nguy cơ: - Phối hợp với các nhà sản xuất để cập nhật chuyên luận sản phẩm của các chế phẩm chứa domperidon nhằm bổ sung thông tin về các trường hợp xuất hiện biến cố tâm thần sau khi ngừng thuốc hoặc giảm liều."
+        "Tại Canada, domperidon là thuốc kê đơn được phê duyệt để điều trị các triệu chứng chậm tháo rỗng dạ dày và dự phòng triệu chứng buồn nôn, nôn do một số thuốc điều trị bệnh Parkinson gây ra."
       ],
       "action": [
-        "Health Canada đã tiến hành đánh giá nguy cơ tiềm ẩn của hội chứng cai thuốc trên tâm thần sau khi ngừng đột ngột hoặc giảm liều nhanh domperidon sau khi sử dụng để kích thích tiết sữa.",
+        "20/08/2026 12:00:00 SA Health Canada đã tiến hành đánh giá nguy cơ tiềm ẩn của hội chứng cai thuốc trên tâm thần sau khi ngừng đột ngột hoặc giảm liều nhanh domperidon sau khi sử dụng để kích thích tiết sữa.",
+        "Mức liều tối đa được khuyến cáo đối với tất cả các chỉ định được phê duyệt là 30 mg/ngày.",
         "Tại thời điểm rà soát, Health Canada ghi nhận 9 trường hợp (gồm 4 trường hợp tại Canada và 5 trường hợp quốc tế) mắc hội chứng cai thuốc trên tâm thần sau khi ngừng đột ngột hoặc giảm liều domperidon được sử dụng để kích thích tiết sữa.",
         "Tất cả các trường hợp đều đã sử dụng domperidon kéo dài hơn 4 tuần trước khi bắt đầu ngừng thuốc hoặc giảm liều.",
-        "Kết luận và động thái từ Health Canada Sau khi hoàn tất đánh giá, Health Canada kết luận có mối liên quan giữa việc ngừng đột ngột hoặc giảm liều nhanh domperidon sau khi sử dụng off-label để kích thích tiết sữa và nguy cơ xuất hiện hội chứng cai thuốc trên tâm thần, với các biểu hiện như trầm cảm, lo âu và mất ngủ."
+        "Kết luận và động thái từ Health Canada Sau khi hoàn tất đánh giá, Health Canada kết luận có mối liên quan giữa việc ngừng đột ngột hoặc giảm liều nhanh domperidon sau khi sử dụng off-label để kích thích tiết sữa và nguy cơ xuất hiện hội chứng cai thuốc trên tâm thần, với các biểu hiện như trầm cảm, lo âu và mất ngủ.",
+        "Nguy cơ này chủ yếu được ghi nhận ở các bệnh nhân sử dụng domperidon với liều hàng ngày vượt quá liều tối đa được khuyến cáo là 30 mg, tuy nhiên, kết luận này vẫn còn hạn chế do số lượng trường hợp báo cáo còn ít."
       ],
       "monitor": [
-        "- Tăng cường cảnh báo này đến nhân viên y tế và cộng động - Khuyến khích nhân viên y tế tích cực giám sát và báo cáo các biến cố bất lợi liên quan domperidon.",
+        "Health Canada sẽ tiến hành một số biện pháp giảm thiểu nguy cơ: - Phối hợp với các nhà sản xuất để cập nhật chuyên luận sản phẩm của các chế phẩm chứa domperidon nhằm bổ sung thông tin về các trường hợp xuất hiện biến cố tâm thần sau khi ngừng thuốc hoặc giảm liều. - Tăng cường cảnh báo này đến nhân viên y tế và cộng động - Khuyến khích nhân viên y tế…",
         "Health Canada sẽ tiếp tục theo dõi thông tin về độ an toàn liên quan đến chế phẩm chứa domperidon và đưa ra các biện pháp phù hợp khi phát hiện bất kỳ nguy cơ quan trọng nào gây ảnh hưởng đến sức khỏe người bệnh."
       ],
       "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
@@ -92,7 +94,7 @@
     },
     {
       "id": "auto-910a0cbf8c7f9b",
-      "level": "orange",
+      "level": "red",
       "year": "2026",
       "date": "18/08/2026",
       "category": "Thai kỳ & sức khỏe sinh sản",
@@ -100,16 +102,18 @@
       "interaction": false,
       "title": "HSA: Kéo dài thời gian sử dụng biện pháp tránh thai từ 6 tuần lên 6 tháng sau khi ngừng mycophenolat mofetil ở nữ giới đang trong độ tuổi sinh sản",
       "drugs": "Corticosteroid",
-      "summary": "Mycophenolate mofetil thường được phối hợp điều trị với cyclosporin và corticosteroid. Mycophenolate mofetil chống chỉ định cho phụ nữ có thai, phụ nữ cho con bú, phụ nữ trong độ tuổi sinh sản và không sử dụng các biện pháp tránh thai an toàn.",
+      "summary": "Mycophenolate mofetil chống chỉ định cho phụ nữ có thai, phụ nữ cho con bú, phụ nữ trong độ tuổi sinh sản và không sử dụng các biện pháp tránh thai an toàn. Cập nhật này nhằm mục đích đảm bảo giảm thiểu nguy cơ phơi nhiễm phôi - thai tiềm tàng, đồng thời thống nhất thông tin kê đơn của mycophenolate mofetil với các tiêu chuẩn toàn cầu hiện hành.",
       "quick": "Mycophenolate mofetil chống chỉ định cho phụ nữ có thai, phụ nữ cho con bú, phụ nữ trong độ tuổi sinh sản và không sử dụng các biện pháp tránh thai an toàn.",
       "risk": [
-        "Mycophenolate mofetil được chỉ định trong dự phòng thải ghép cấp và điều trị thải ghép kháng trị ở bệnh nhân ghép thận đồng loài.",
+        "18/08/2026 12:00:00 SA Mycophenolate mofetil được chỉ định trong dự phòng thải ghép cấp và điều trị thải ghép kháng trị ở bệnh nhân ghép thận đồng loài.",
         "Thuốc cho thấy khả năng cải thiện tỷ lệ sống sót của mô ghép và bệnh nhân ở những người ghép tim đồng loài.",
         "Mycophenolate mofetil thường được phối hợp điều trị với cyclosporin và corticosteroid.",
-        "Ngoài ra, mycophenolate mofetil được chỉ định trong điều trị dẫn nhập và điều trị duy trì ở bệnh nhân viêm thận lupus Nhóm III–V."
+        "Ngoài ra, mycophenolate mofetil được chỉ định trong điều trị dẫn nhập và điều trị duy trì ở bệnh nhân viêm thận lupus Nhóm III–V.",
+        "Khuyến cáo mới từ HSA Dựa trên đánh giá toàn diện các hướng dẫn hiện hành và các bằng chứng khoa học đến hiện tại, thời gian khuyến cáo duy trì biện pháp tránh thai sau ngừng thuốc ở phụ nữ trong độ tuổi sinh sản kéo dài từ 6 tuần lên 6 tháng.",
+        "Khuyến cáo này xem xét đến cả quá trình thải trừ thuốc và chu kỳ phát triển noãn ở người, đem lại một phương pháp tiếp cận thận trọng và thống nhất nhằm giảm thiểu nguy cơ tiềm ẩn về phơi nhiễm phôi - thai từ các noãn bị ảnh hưởng trong quá trình điều trị."
       ],
       "signs": [
-        "Theo dõi các dấu hiệu hoặc biến cố bất thường được mô tả trong bài nguồn."
+        "Thời hạn 6 tháng này được xác định dựa trên các khuyến cáo cập nhật từ Ủy ban công tác An toàn (SWP) / Ủy ban công tác Phi lâm sàng (NcWP) thuộc Cơ quan Quản lý Dược phẩm Châu Âu (EMA) đối với các dược phẩm có tiềm năng gây độc tính trên di truyền."
       ],
       "action": [
         "Mycophenolate mofetil chống chỉ định cho phụ nữ có thai, phụ nữ cho con bú, phụ nữ trong độ tuổi sinh sản và không sử dụng các biện pháp tránh thai an toàn."
@@ -136,10 +140,10 @@
       "interaction": false,
       "title": "Nguy cơ thuyên tắc vi mạch phổi khi tiêm bắp các chế phẩm Testosterone dạng dầu: Thông tin từ Bản tin BIP Occitanie số 02/2026",
       "drugs": "Thuốc/nhóm thuốc nêu trong tiêu đề; xem bài nguồn để xác định đầy đủ.",
-      "summary": "Đây là một tác dụng không mong muốn (ADR) hiếm gặp nhưng đã được ghi nhận trong y văn. Cơ chế gây ra thuyên tắc vi mạch phổi Biến cố này xảy ra do một lượng nhỏ dung dịch dầu vô tình đi vào trong lòng mạch, gây ra thuyên tắc vi mạch phổi.",
+      "summary": "Do đó, nguyên nhân chủ yếu liên quan đến thao tác, kỹ thuật tiêm hơn là bản chất hoạt chất và không cần thiết chống chỉ định việc tiếp tục sử dụng thuốc. Tuy nhiên, một số trường hợp nghiêm trọng đòi hỏi phải xử trí cấp cứu hoặc nhập viện đã được báo cáo đối với testosterone undecanoate.",
       "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
       "risk": [
-        "Các chế phẩm testosterone dạng dung dịch dầu (dầu thầu dầu) được chỉ định tiêm bắp trong điều trị suy giảm nội tiết tố nam."
+        "Do đó, nguyên nhân chủ yếu liên quan đến thao tác, kỹ thuật tiêm hơn là bản chất hoạt chất và không cần thiết chống chỉ định việc tiếp tục sử dụng thuốc."
       ],
       "signs": [
         "Biến cố thuyên tắc vi mạch phổi sau tiêm Sự xuất hiện của triệu chứng ho, khó thở, đôi khi kèm theo tăng tiết mồ hôi, đau ngực hoặc ngất trong hoặc ngay sau khi tiêm, có thể là dấu hiệu của tình trạng thuyên tắc vi mạch phổi do dầu (POME - Pulmonary oil microembolism).",
@@ -151,7 +155,7 @@
         "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn."
       ],
       "monitor": [
-        "Khuyến cáo dành cho nhân viên y tế khuyến cáo nhân viên y tế chủ động thực hiện các biện pháp thận trọng nhằm giảm thiểu nguy cơ liên quan biến cố này: Thực hiện tiêm chậm và tiêm đúng vị trí vào cơ mông Thực hiện thao tác hút ngược để kiểm tra xem đầu kim có lỡ đâm vào mạch máu hay không trước khi bơm thuốc nhằm hạn chế nguy cơ vô tình tiêm vào lòng mạch."
+        "Khuyến cáo dành cho nhân viên y tế BIP Occitanie khuyến cáo nhân viên y tế chủ động thực hiện các biện pháp thận trọng nhằm giảm thiểu nguy cơ liên quan biến cố này: Thực hiện tiêm chậm và tiêm đúng vị trí vào cơ mông Thực hiện thao tác hút ngược để kiểm tra xem đầu kim có lỡ đâm vào mạch máu hay không trước khi bơm thuốc nhằm hạn chế nguy cơ vô tình tiêm…"
       ],
       "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
       "source_note": "",
@@ -172,13 +176,15 @@
       "interaction": false,
       "title": "EMA: Cảnh báo nguy cơ u màng não sử dụng kéo dài các biện pháp tránh thai chứa desogestrel và etonogestrel",
       "drugs": "kéo dài các biện pháp tránh thai chứa desogestrel và etonogestrel",
-      "summary": "Mới đây, Ủy ban Đánh giá Nguy cơ Cảnh giác Dược (PRAC) đã thống nhất ban hành Thư gửi nhân viên y tế (DHPC) nhằm cảnh báo về nguy cơ mắc u màng não liên quan đến việc sử dụng các thuốc tránh thai chứa desogestrel hoặc etonogestrel kéo dài (trên 1 năm). Theo kết quả nghiên cứu, phụ nữ sử dụng desogestrel từ 1 năm trở lên sẽ tăng nguy cơ mắc u màng não nội sọ, nguy cơ càng tăng khi thời gian sử dụng càng kéo dài.",
+      "summary": "03/08/2026 12:00:00 SA Mới đây, Ủy ban Đánh giá Nguy cơ Cảnh giác Dược (PRAC) đã thống nhất ban hành Thư gửi nhân viên y tế (DHPC) nhằm cảnh báo về nguy cơ mắc u màng não liên quan đến việc sử dụng các thuốc tránh thai chứa desogestrel hoặc etonogestrel kéo dài (trên 1 năm). Hiện tại các thuốc chứa desogestrel hoặc etonogestrel chống chỉ định ở phụ nữ đang mắc hoặc có tiền sử u màng não.",
       "quick": "Vì vậy, PRAC khuyến cáo nhân viên y tế cần xem xét tiền sử sử dụng các thuốc progestogen trước khi khởi trị bằng desogestrel hoặc etonogestrel.",
       "risk": [
-        "Mới đây, Ủy ban Đánh giá Nguy cơ Cảnh giác Dược (PRAC) đã thống nhất ban hành Thư gửi nhân viên y tế (DHPC) nhằm cảnh báo về nguy cơ mắc u màng não liên quan đến việc sử dụng các thuốc tránh thai chứa desogestrel hoặc etonogestrel kéo dài (trên 1 năm).",
+        "03/08/2026 12:00:00 SA Mới đây, Ủy ban Đánh giá Nguy cơ Cảnh giác Dược (PRAC) đã thống nhất ban hành Thư gửi nhân viên y tế (DHPC) nhằm cảnh báo về nguy cơ mắc u màng não liên quan đến việc sử dụng các thuốc tránh thai chứa desogestrel hoặc etonogestrel kéo dài (trên 1 năm).",
         "Mặc dù ghi nhận có sự gia tăng của nguy cơ mắc u màng nào ở phụ nữ đang sử dụng các thuốc tránh thai này, tuy nhiên nguy cơ gia tăng nhìn chung rất thấp.",
+        "Hiện tại các thuốc chứa desogestrel hoặc etonogestrel chống chỉ định ở phụ nữ đang mắc hoặc có tiền sử u màng não.",
         "Theo kết quả nghiên cứu, phụ nữ sử dụng desogestrel từ 1 năm trở lên sẽ tăng nguy cơ mắc u màng não nội sọ, nguy cơ càng tăng khi thời gian sử dụng càng kéo dài.",
-        "Nguy cơ này có thể cao hơn ở những phụ nữ đã từng sử dụng các progestogen vốn đã được xác định là có liên quan đến u màng não (như cyproteron, nomegestrol, medroxyprogesteron và chlormadinon)."
+        "Nguy cơ này có thể cao hơn ở những phụ nữ đã từng sử dụng các progestogen vốn đã được xác định là có liên quan đến u màng não (như cyproteron, nomegestrol, medroxyprogesteron và chlormadinon).",
+        "Các thuốc chứa desogestrel thường được bào chế dưới dạng viên uống, trong khi etonogestrel có dạng que cấy hoặc vòng âm đạo khi phối hợp với ethinylestradiol."
       ],
       "signs": [
         "Theo dõi các dấu hiệu hoặc biến cố bất thường được mô tả trong bài nguồn."
@@ -209,28 +215,27 @@
       "interaction": false,
       "title": "MHRA: Bổ sung chống chỉ định sử dụng domperidon trên bệnh nhân u tủy thượng thận do nguy cơ tăng huyết áp nặng",
       "drugs": "Domperidon",
-      "summary": "Do đó, Cơ quan Quản lý Dược phẩm và Sản phẩm Y tế Anh (MHRA) đã yêu cầu các nhà sản xuất cập nhật bổ sung thông tin về chống chỉ định sử dụng domperidon trên bệnh nhân u tủy thượng thận do nguy cơ tăng huyết áp nghiêm trọng. Chống chỉ định domperidon trên những bệnh nhân đang sử dụng các thuốc khác có khả năng kéo dài khoảng QT hoặc các chất ức chế CYP3A4 mạnh.",
-      "quick": "Nhắc lại các khuyến cáo hiện nay về domperidon - Domperidon nên được sử dụng với liều thấp nhất trong thời gian ngắn nhất có hiệu quả và thời gian điều trị tối đa không nên vượt quá 1 tuần.",
+      "summary": "Do đó, Cơ quan Quản lý Dược phẩm và Sản phẩm Y tế Anh (MHRA) đã yêu cầu các nhà sản xuất cập nhật bổ sung thông tin về chống chỉ định sử dụng domperidon trên bệnh nhân u tủy thượng thận do nguy cơ tăng huyết áp nghiêm trọng. MHRA chưa ghi nhận bất kỳ báo cáo tại Anh về biến cố tăng huyết áp nghiêm trọng do domperidon trên bệnh nhân u tuyến thượng thận.",
+      "quick": "Nhắc lại các khuyến cáo hiện nay về domperidon - Domperidon nên được sử dụng với liều thấp nhất trong thời gian ngắn nhất có hiệu quả và thời gian điều trị tối đa không nên vượt quá 1 tuần. - Domperidon chỉ được cấp phép để điều trị triệu chứng nôn và buồn nôn ở người lớn và…",
       "risk": [
-        "Domperidon là thuốc đối kháng dopamin, được chỉ định trong điều trị buồn nôn, nôn trên người lớn và trẻ em từ 12 tuổi trở lên.",
+        "29/07/2026 12:00:00 SA Domperidon là thuốc đối kháng dopamin, được chỉ định trong điều trị buồn nôn, nôn trên người lớn và trẻ em từ 12 tuổi trở lên.",
         "Do đó, Cơ quan Quản lý Dược phẩm và Sản phẩm Y tế Anh (MHRA) đã yêu cầu các nhà sản xuất cập nhật bổ sung thông tin về chống chỉ định sử dụng domperidon trên bệnh nhân u tủy thượng thận do nguy cơ tăng huyết áp nghiêm trọng.",
         "Domperidon và chống chỉ định trên bệnh nhân u tuyến thượng thận Kết quả đánh giá tại Châu Âu đã được Uỷ ban Cố vấn chuyên gia về Cảnh giác Dược (PEAG) thuộc Ủy ban về thuốc sử dụng cho người (CHM) xem xét.",
+        "PEAG đã thống nhất với kết quả của cuộc đánh giá này và đề xuất MHRA thông báo đến các cán bộ y tế cùng người bệnh về chống chỉ định mới này.",
         "Khuyến cáo mới khi chỉ định domperidon - Chống chỉ định domperidon cho bệnh nhân đã được chẩn đoán hoặc nghi ngờ mắc u tủy thượng thận."
       ],
       "signs": [
         "Một đánh giá gần đây dựa trên dữ liệu an toàn của domperidon tại Châu Âu đã ghi nhận được mối liên quan giữa việc sử dụng thuốc này với biến cố tăng huyết áp nghiêm trọng trên các bệnh nhân mắc u tủy thượng thận.",
         "MHRA chưa ghi nhận bất kỳ báo cáo tại Anh về biến cố tăng huyết áp nghiêm trọng do domperidon trên bệnh nhân u tuyến thượng thận.",
-        "- Domperidon chỉ được cấp phép để điều trị triệu chứng nôn và buồn nôn ở người lớn và trẻ vị thành niên từ 12 tuổi trở lên hoặc có cân nặng từ 35 kg trở lên.",
-        "- Chống chỉ định domperidon trên những bệnh nhân đang sử dụng các thuốc khác có khả năng kéo dài khoảng QT hoặc các chất ức chế CYP3A4 mạnh."
+        "Một số triệu chứng có thể kể đến như: đau đầu kéo dài, nhìn mờ, khó thở và đau ngực. - Đối với bệnh nhân đang được chăm sóc giảm nhẹ, quyết định điều trị cần được cân nhắc dựa trên lợi ích - nguy cơ trên từng cá thể bệnh nhân cũng như thông qua trao đổi, thống nhất với bệnh nhân.",
+        "Khuyến cáo dành cho nhân viên y tế - Chống chỉ định sử dụng domperidon trên bệnh nhân được chẩn đoán hoặc nghi ngờ mắc u tủy thượng thận. - Ngừng domperidon ngay lập tức khi bệnh nhân có chẩn đoán hoặc nghi ngờ mắc u tủy thượng thận và chuyển liệu pháp điều trị thay thế phù hợp. - Lưu ý rằng domperidon có thể vô tình bộc lộ các triệu chứng của u tuyến…"
       ],
       "action": [
-        "Nhắc lại các khuyến cáo hiện nay về domperidon - Domperidon nên được sử dụng với liều thấp nhất trong thời gian ngắn nhất có hiệu quả và thời gian điều trị tối đa không nên vượt quá 1 tuần.",
-        "Nếu bệnh nhân được chẩn đoán hoặc nghi ngờ mắc u tủy thượng thận khi đang sử dụng domperidon, cần ngừng điều trị ngay lập tức và chuyển sang liệu pháp thay thế phù hợp.",
-        "- Cần tư vấn cho người bệnh nếu bệnh nhân có các triệu chứng của tăng huyết áp nghiêm trọng.",
-        "- Chỉ định domperidon với liều thấp nhất trong thời gian ngắn nhất có hiệu quả, thời gian điều trị tối đa không nên vượt quá 1 tuần."
+        "Nhắc lại các khuyến cáo hiện nay về domperidon - Domperidon nên được sử dụng với liều thấp nhất trong thời gian ngắn nhất có hiệu quả và thời gian điều trị tối đa không nên vượt quá 1 tuần. - Domperidon chỉ được cấp phép để điều trị triệu chứng nôn và buồn nôn ở người lớn và trẻ vị thành niên từ 12 tuổi trở lên hoặc có cân nặng từ 35 kg trở lên. - Đối với…",
+        "Nếu bệnh nhân được chẩn đoán hoặc nghi ngờ mắc u tủy thượng thận khi đang sử dụng domperidon, cần ngừng điều trị ngay lập tức và chuyển sang liệu pháp thay thế phù hợp. - Cần tư vấn cho người bệnh nếu bệnh nhân có các triệu chứng của tăng huyết áp nghiêm trọng."
       ],
       "monitor": [
-        "Cân nhắc tiến hành các xét nghiệm tầm soát u tuyến thượng thận khi bệnh nhân xuất hiện tăng huyết áp trong quá trình sử dụng domperidon."
+        "Cân nhắc tiến hành các xét nghiệm tầm soát u tuyến thượng thận khi bệnh nhân xuất hiện tăng huyết áp trong quá trình sử dụng domperidon. - Chỉ định domperidon với liều thấp nhất trong thời gian ngắn nhất có hiệu quả, thời gian điều trị tối đa không nên vượt quá 1 tuần. - Đối với bệnh nhân đang được chăm sóc giảm nhẹ, cân nhắc lợi ích - nguy cơ đối với…"
       ],
       "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
       "source_note": "",
@@ -251,13 +256,11 @@
       "interaction": false,
       "title": "Nguy cơ biến cố tim mạch khi sử dụng domperidon: Thông tin từ Bản tin BIP Occitanie số 02/2026",
       "drugs": "Domperidon",
-      "summary": "Thuốc có liên quan đến tình trạng kéo dài khoảng QT, dẫn đến nguy cơ loạn nhịp thất nghiêm trọng, thậm chí đột tử. Biến cố bất lợi ở người lớn đã được ghi nhận rõ ràng và đôi khi cực kỳ nghiêm trọng, điển hình là các biến cố tim mạch (kéo dài khoảng QT, loạn nhịp thất) và trên thần kinh, đặc biệt khi dùng liều cao, kéo dài hoặc khi ngưng thuốc đột ngột.",
+      "summary": "Nguy cơ này tăng lên ở bệnh nhân sử dụng liều trên 30mg/ngày, điều trị kéo dài, có các yếu tố nguy cơ tim mạch, hoặc khi phối hợp với các thuốc gây kéo dài khoảng QT hay các thuốc ức chế CYP3A4. Dựa trên các phân tích về lợi ích và nguy cơ, domperidon không được khuyến cáo cho chỉ định kích thích tiết sữa, đặc biệt là khi dùng liều cao và kéo dài.",
       "quick": "Theo khuyến cáo, domperidon chỉ được phê duyệt ở liều 10 mg, tối đa 3 lần/ngày, dùng không quá 7 ngày và chỉ có chỉ định điều trị buồn nôn và nôn.",
       "risk": [
         "Tuy nhiên, khi dùng để kích thích tiết sữa, mức liều 60 mg/ngày hoặc cao hơn đôi khi vẫn được chỉ định và dùng kéo dài trong nhiều tuần.",
-        "Đối với trẻ bú mẹ, các dữ liệu hiện tại cho thấy thuốc bài tiết rất ít vào sữa mẹ (tỷ lệ nồng độ sữa/huyết tương khoảng 0,25) và liều tương đối domperoidon ở trẻ sơ sinh (RID) chiếm 0,01% đến 0,5% so với liều dùng hiệu chỉnh theo cân nặng của người mẹ, thấp hơn rất nhiều so với ngưỡng 10% có ý nghĩa lâm sàng.",
-        "Hơn nữa, domperidon được chuyển hóa qua CYP3A4 – hệ enzyme chưa phát triển hoàn thiện ở trẻ sơ sinh.",
-        "Dựa trên các phân tích về lợi ích và nguy cơ, domperidon không được khuyến cáo cho chỉ định kích thích tiết sữa, đặc biệt là khi dùng liều cao và kéo dài."
+        "Hơn nữa, domperidon được chuyển hóa qua CYP3A4 – hệ enzyme chưa phát triển hoàn thiện ở trẻ sơ sinh."
       ],
       "signs": [
         "Domperidon gây gia tăng đáng kể nguy cơ xuất hiện một số biến cố tim mạch.",
@@ -267,10 +270,11 @@
       ],
       "action": [
         "Theo khuyến cáo, domperidon chỉ được phê duyệt ở liều 10 mg, tối đa 3 lần/ngày, dùng không quá 7 ngày và chỉ có chỉ định điều trị buồn nôn và nôn.",
-        "Dù vậy, vẫn cần lưu ý thuốc có thời gian bán thải khá dài (7-9 giờ) và phải mất từ 1,5 đến 2,5 ngày để thải trừ hoàn toàn."
+        "Dù vậy, vẫn cần lưu ý thuốc có thời gian bán thải khá dài (7-9 giờ) và phải mất từ 1,5 đến 2,5 ngày để thải trừ hoàn toàn.",
+        "Dựa trên các phân tích về lợi ích và nguy cơ, domperidon không được khuyến cáo cho chỉ định kích thích tiết sữa, đặc biệt là khi dùng liều cao và kéo dài."
       ],
       "monitor": [
-        "Theo dõi đáp ứng và phản ứng có hại; đối chiếu yêu cầu giám sát trong bài nguồn."
+        "Đối với trẻ bú mẹ, các dữ liệu hiện tại cho thấy thuốc bài tiết rất ít vào sữa mẹ (tỷ lệ nồng độ sữa/huyết tương khoảng 0,25) và liều tương đối domperoidon ở trẻ sơ sinh (RID) chiếm 0,01% đến 0,5% so với liều dùng hiệu chỉnh theo cân nặng của người mẹ, thấp hơn rất nhiều so với ngưỡng 10% có ý nghĩa lâm sàng."
       ],
       "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
       "source_note": "",
@@ -291,13 +295,14 @@
       "interaction": false,
       "title": "Health Canada: Nguy cơ nấc cụt kéo dài, dai dẳng hoặc tái phát khi sử dụng tramadol",
       "drugs": "Tramadol",
-      "summary": "Kết luận và động thái từ Health Canada Sau khi hoàn tất đánh giá, Health Canada kết luận có mối liên quan giữa sử dụng tramadol và nguy cơ nấc cụt kéo dài, dai dẳng hoặc tái phát. Tuy nhiên, tình trạng nấc cụt kéo dài (dưới 48 giờ), dai dẳng (kéo dài lớn hơn 48 giờ đến 1 tháng) hoặc tái phát (xuất hiện nhiều đợt, lặp đi lặp lại) có thể ảnh hưởng đáng kể đến chất lượng cuộc sống của người bệnh.",
+      "summary": "Mặc dù có nhiều yếu tố gây nhiễu, như bệnh lý nền hoặc việc sử dụng đồng thời các thuốc kê đơn khác, cả 8 trường hợp đều được đánh giá có mối liên quan thuốc và ADR với mức độ “Có thể”.. Kết luận và động thái từ Health Canada Sau khi hoàn tất đánh giá, Health Canada kết luận có mối liên quan giữa sử dụng tramadol và nguy cơ nấc cụt kéo dài, dai dẳng hoặc tái phát.",
       "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
       "risk": [
-        "Health Canada đã tiến hành đánh giá nguy cơ nấc cụt kéo dài, dai dẳng hoặc tái phát liên quan đến việc sử dụng tramadol.",
+        "21/07/2026 12:00:00 SA Health Canada đã tiến hành đánh giá nguy cơ nấc cụt kéo dài, dai dẳng hoặc tái phát liên quan đến việc sử dụng tramadol.",
         "Các cơn nấc cụt kéo dài trong nhiều giờ, nhiều ngày hoặc nhiều tháng có thể ảnh hưởng đến khả năng ăn uống, ngủ nghỉ và giao tiếp của người bệnh.",
-        "Health Canada đã tiến hành đánh giá dựa trên cơ sở dữ liệu từ hệ thống báo cáo về phản ứng có hại của Canada và các tài liệu y văn hiện có, cụ thể: Về CSDL trong nước và quốc tế: Tại thời điểm rà soát, Health Canada ghi nhận 8 trường hợp nấc cụt kéo dài, dai dẳng hoặc tái phát ở bệnh nhân sử dụng tramadol, bao gồm 2 trường hợp tại Canada và 6 trường hợp…",
-        "Kết luận và động thái từ Health Canada Sau khi hoàn tất đánh giá, Health Canada kết luận có mối liên quan giữa sử dụng tramadol và nguy cơ nấc cụt kéo dài, dai dẳng hoặc tái phát."
+        "Kết quả đánh giá an toàn Health Canada đã tiến hành đánh giá dựa trên cơ sở dữ liệu từ hệ thống báo cáo về phản ứng có hại của Canada (Canada Vigilance) và các tài liệu y văn hiện có, cụ thể: Về CSDL trong nước và quốc tế: Tại thời điểm rà soát, Health Canada ghi nhận 8 trường hợp nấc cụt kéo dài, dai dẳng hoặc tái phát ở bệnh nhân sử dụng tramadol, bao…",
+        "Kết luận và động thái từ Health Canada Sau khi hoàn tất đánh giá, Health Canada kết luận có mối liên quan giữa sử dụng tramadol và nguy cơ nấc cụt kéo dài, dai dẳng hoặc tái phát.",
+        "Đồng thời, đưa ra các biện pháp giảm thiểu nguy cơ phù hợp và kịp thời khi phát hiện bất kỳ nguy cơ quan trọng nào gây ảnh hưởng đến sức khỏe cộng đồng."
       ],
       "signs": [
         "Quá trình đánh giá khởi đầu ngay khi Health Canada ghi nhận được các báo cáo ca về biến cố này tại Canada và trên thế giới.",
@@ -307,7 +312,7 @@
         "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn."
       ],
       "monitor": [
-        "- Khuyến khích nhân viên y tế tích cực giám sát các biến cố bất lợi liên quan đến việc sử dụng tramadol Health Canada sẽ tiếp tục theo dõi thông tin về độ an toàn liên quan đến chế phẩm chứa tramadol, để phát hiện và đánh giá các nguy cơ tiềm ẩn mới."
+        "Theo đó, Health Canada sẽ tiến hành một số biện pháp giảm thiểu nguy cơ như sau: - Phối hợp với các nhà sản xuất để cập nhật chuyên luận sản phẩm của tất cả các chế phẩm chứa tramadol nhằm bổ sung thông tin về nguy cơ nấc cụt kéo dài, dai dẳng hoặc tái phát. - Khuyến khích nhân viên y tế tích cực giám sát các biến cố bất lợi liên quan đến việc sử dụng…"
       ],
       "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
       "source_note": "",
@@ -328,8 +333,8 @@
       "interaction": false,
       "title": "WHO: Cảnh báo về thuốc giả DARZALEX (daratumumab) ở khu vực Châu Mỹ và Đông Nam Á",
       "drugs": "Daratumumab (DARZALEX)",
-      "summary": "Nguy cơ khi sử dụng thuốc DARZALEX giả Thuốc DARZALEX (daratumumab) giả mạo không an toàn cho người bệnh, tiềm ẩn nguy cơ biến cố nghiêm trọng. Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp.",
-      "quick": "Khuyến cáo dành cho nhân viên y tế - WHO khuyến cáo các nhân viên y tế báo cáo bất kỳ trường hợp nào về các TDKMM, thiếu hiệu quả của thuốc hoặc nghi ngờ thuốc giả DARZALEX cho Cơ quan Quản lý Dược Quốc gia hoặc Trung tâm Cảnh giác Dược Quốc gia.",
+      "summary": "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp. Nguy cơ khi sử dụng thuốc DARZALEX giả Thuốc DARZALEX (daratumumab) giả mạo không an toàn cho người bệnh, tiềm ẩn nguy cơ biến cố nghiêm trọng.",
+      "quick": "Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo.",
       "risk": [
         "Người bệnh sử dụng DARZALEX giả sẽ không được điều trị đúng phác đồ đối với tình trạng bệnh lý của mình, dẫn đến nguy cơ tiến triển bệnh, làm tăng tỷ lệ mắc bệnh và tử vong."
       ],
@@ -338,11 +343,10 @@
         "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp."
       ],
       "action": [
-        "Khuyến cáo dành cho nhân viên y tế - WHO khuyến cáo các nhân viên y tế báo cáo bất kỳ trường hợp nào về các TDKMM, thiếu hiệu quả của thuốc hoặc nghi ngờ thuốc giả DARZALEX cho Cơ quan Quản lý Dược Quốc gia hoặc Trung tâm Cảnh giác Dược Quốc gia.",
-        "- WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo."
+        "Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo."
       ],
       "monitor": [
-        "- WHO khuyến cáo các quốc gia và khu vực có nguy cơ bị ảnh hưởng bởi các lô thuốc giả này cần tăng cường giám sát và kiểm soát trong chuỗi cung ứng; đặc biệt, cần lưu ý tại các thị trường không chính thức."
+        "Khuyến cáo dành cho nhân viên y tế - WHO khuyến cáo các nhân viên y tế báo cáo bất kỳ trường hợp nào về các TDKMM, thiếu hiệu quả của thuốc hoặc nghi ngờ thuốc giả DARZALEX cho Cơ quan Quản lý Dược Quốc gia hoặc Trung tâm Cảnh giác Dược Quốc gia. - WHO khuyến cáo các quốc gia và khu vực có nguy cơ bị ảnh hưởng bởi các lô thuốc giả này cần tăng cường giám…"
       ],
       "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
       "source_note": "",
@@ -363,23 +367,27 @@
       "interaction": true,
       "title": "PMDA: Nguy cơ hạ carnitin máu và hạ đường huyết nghiêm trọng ở trẻ em khi sử dụng các kháng sinh dạng tiền chất ester pivoxil",
       "drugs": "Kháng sinh chứa ester pivoxil",
-      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Chống chỉ định sử dụng trên bệnh nhân có tiền sử rối loạn chuyển hóa bẩm sinh dẫn đến thiếu hụt carnitin máu.",
-      "quick": "Theo đó, PMDA cảnh báo nhắc lại và khuyến cáo nhân viên y tế lưu ý thực hiện một số biện pháp phòng ngừa và quản lý vấn đề này như sau: - Thận trọng khi điều trị cho trẻ em (đặc biệt là trẻ sơ sinh và trẻ nhỏ) bằng thuốc kháng sinh chứa nhóm pivoxil, cân nhắc tính cần thiết…",
+      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Khi nhập viện cấp cứu, nồng độ đường huyết giảm sâu xuống còn 17 mg/dL và xác nhận có tình trạng giảm nồng độ carnitin máu.",
+      "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
       "risk": [
         "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai.",
-        "Tình trạng thiếu hụt carnitin có nguy cơ xảy ra cao hơn ở trẻ em do khả năng tự tổng hợp carnitin ở trẻ còn hạn chế và khối lượng cơ (nơi dự trữ carnitin chính) còn thấp, trong khi, kháng sinh ở dạng này cần tiêu tốn carnitin trong quá trình thải trừ qua nước tiểu, do đó gây ra tình trạng thiếu hụt carnitin ngay cả khi chỉ sử dụng trong thời gian ngắn."
+        "Tình trạng thiếu hụt carnitin có nguy cơ xảy ra cao hơn ở trẻ em do khả năng tự tổng hợp carnitin ở trẻ còn hạn chế và khối lượng cơ (nơi dự trữ carnitin chính) còn thấp, trong khi, kháng sinh ở dạng này cần tiêu tốn carnitin trong quá trình thải trừ qua nước tiểu, do đó gây ra tình trạng thiếu hụt carnitin ngay cả khi chỉ sử dụng trong thời gian ngắn.",
+        "Một trường hợp khác, bệnh nhi nam, 1 tuổi, bị viêm tai giữa, không có tiền sử bệnh lý đặc biệt."
       ],
       "signs": [
-        "Các cảnh báo đối với các kháng sinh có chứa nhóm pivoxil đã từng được Cơ quan Quản lý Dược phẩm và Thiết bị Y tế Nhật Bản (PMDA) đề cập trong Bản tin \"Cảnh báo của PMDA về việc sử dụng thuốc hợp lý\" (Số 8, tháng 4/2012) khi PMDA ghi nhận được một số trường hợp trẻ em xuất hiện tình trạng hạ carnitin máu, hạ đường huyết nghiêm trọng, co giật, bệnh não…",
-        "Tình trạng hạ đường huyết nghiêm trọng do hạ carnitin máu có thể xuất hiện ngay trong ngày bắt đầu điều trị.",
-        "- Chống chỉ định sử dụng trên bệnh nhân có tiền sử rối loạn chuyển hóa bẩm sinh dẫn đến thiếu hụt carnitin máu.",
-        "- Hướng dẫn người nhà, người chăm sóc trẻ đưa trẻ đến cơ sở y tế ngay lập tức khi trẻ xuất hiện các triệu chứng hạ đường huyết nghiêm trọng (như suy giảm nhận thức, co giật)."
+        "Sau khi dùng thuốc, trẻ xuất hiện triệu chứng quấy khóc đêm liên tục, mất khả năng tương tác qua ánh mắt, co giật và hôn mê vào buổi sáng.",
+        "Trẻ tử vong sau 4 ngày do tổn thương hệ thần kinh trung ương nghiêm trọng và loạn nhịp tim."
       ],
       "action": [
-        "Theo đó, PMDA cảnh báo nhắc lại và khuyến cáo nhân viên y tế lưu ý thực hiện một số biện pháp phòng ngừa và quản lý vấn đề này như sau: - Thận trọng khi điều trị cho trẻ em (đặc biệt là trẻ sơ sinh và trẻ nhỏ) bằng thuốc kháng sinh chứa nhóm pivoxil, cân nhắc tính cần thiết của chỉ định và thời gian điều trị phù hợp."
+        "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn."
       ],
       "monitor": [
-        "Sau khi được xử trí truyền glucose cấp cứu và điều trị tích cực tại ICU nhi khoa, xét nghiệm xác nhận giảm nồng độ carnitine máu."
+        "15/07/2026 12:00:00 SA Các cảnh báo đối với các kháng sinh có chứa nhóm pivoxil đã từng được Cơ quan Quản lý Dược phẩm và Thiết bị Y tế Nhật Bản (PMDA) đề cập trong Bản tin \"Cảnh báo của PMDA về việc sử dụng thuốc hợp lý\" (Số 8, tháng 4/2012) khi PMDA ghi nhận được một số trường hợp trẻ em xuất hiện tình trạng hạ carnitin máu, hạ đường huyết nghiêm trọng…",
+        "Tình trạng hạ đường huyết nghiêm trọng do hạ carnitin máu có thể xuất hiện ngay trong ngày bắt đầu điều trị.",
+        "Thiếu hụt carnitin gây cản trở quá trình chuyển hóa chất béo thành năng lượng, dẫn đến giảm khả năng duy trì đường huyết trong trạng thái nhịn ăn hoặc đói, từ đó gây hạ đường huyết nghiêm trọng.",
+        "Theo đó, PMDA cảnh báo nhắc lại và khuyến cáo nhân viên y tế lưu ý thực hiện một số biện pháp phòng ngừa và quản lý vấn đề này như sau: - Thận trọng khi điều trị cho trẻ em (đặc biệt là trẻ sơ sinh và trẻ nhỏ) bằng thuốc kháng sinh chứa nhóm pivoxil, cân nhắc tính cần thiết của chỉ định và thời gian điều trị phù hợp. - Chống chỉ định sử dụng trên bệnh…",
+        "Khi nhập viện cấp cứu, nồng độ đường huyết giảm sâu xuống còn 17 mg/dL và xác nhận có tình trạng giảm nồng độ carnitin máu.",
+        "Vào ngày khởi phát, trẻ bị tiêu chảy, lơ mơ, co giật với nồng độ đường huyết đạt 11mg/dL."
       ],
       "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
       "source_note": "",
@@ -400,31 +408,38 @@
       "interaction": false,
       "title": "Cân bằng giữa lợi ích - nguy cơ khi sử dụng valproat: Thông tin từ tạp chí Australian Prescriber",
       "drugs": "Valproat (natri valproat/acid valproic)",
-      "summary": "Trước những lo ngại gần đây về sự an toàn khi sử dụng valproat ở nam giới trong độ tuổi sinh sản, vai trò của valproat trong thực hành; đồng thời cân bằng giữa lợi ích và nguy cơ khi kê đơn người bệnh trong độ tuổi sinh sản đang được quan tâm thảo luận. Buồng trứng đa nang (PCOS): Phụ nữ điều trị động kinh bằng valproat có nguy cơ mắc PCOS cao gần gấp đôi so với các thuốc khác.",
-      "quick": "Các biểu hiện này có thể thuyên giảm khi giảm liều hoặc ngừng sử dụng thuốc.",
+      "summary": "PRAC cũng nhấn mạnh rằng các nghiên cứu tiếp tục được tiến hành, dự kiến hoàn thành vào năm 2028, trước khi có thể đưa ra kết luận chắc chắn hơn về nguy cơ này. Giảm bạch cầu hoặc thiếu máu bất sản rất hiếm gặp. - Độc tính trên gan: Hiếm gặp (tỉ lệ 1/20.000) nhưng có thể gây tử vong; 95% số ca khởi phát trong 6 tháng đầu điều trị.",
+      "quick": "Trong điều trị rối loạn lưỡng cực, vaproat được khuyến cáo dùng bổ trợ cho thuốc chống loạn thần để điều trị hưng cảm cấp tính, và là một lựa chọn điều trị duy trì khi không thể sử dụng lithium.",
       "risk": [
         "Trong 15 năm qua, mô hình kê đơn tại Úc đã có sự thay đổi đáng kể; trước đây từng là thuốc chống động kinh phổ biến nhất, tuy nhiên hiện nay tần suất chỉ định valproat đã giảm dần do nguy cơ gây dị tật bẩm sinh và sự sẵn có của thuốc thay thế khác an toàn hơn.",
         "Trước những lo ngại gần đây về sự an toàn khi sử dụng valproat ở nam giới trong độ tuổi sinh sản, vai trò của valproat trong thực hành; đồng thời cân bằng giữa lợi ích và nguy cơ khi kê đơn người bệnh trong độ tuổi sinh sản đang được quan tâm thảo luận.",
-        "- Buồng trứng đa nang (PCOS): Phụ nữ điều trị động kinh bằng valproat có nguy cơ mắc PCOS cao gần gấp đôi so với các thuốc khác.",
-        "Do đó, thận trọng khi chỉ định cho bệnh nhân suy gan, hoặc ở nhóm nguy cơ cao: trẻ em < 3 tuổi, rối loạn chuyển hóa bẩm sinh (thiếu hụt carnitin, rối loạn chu trình urê, đột biến gen POLG), bệnh thoái hóa thần kinh, tổn thương não thực thể, chậm phát triển trí tuệ hoặc đang phối hợp nhiều thuốc chống động kinh."
+        "Thuốc không làm tăng GGT như carbamazepin hay phenytoin. - Hội chứng Stevens-Johnson (SJS): Phản ứng da hiếm gặp nhưng có nguy cơ tử vong, thường liên quan đến phối hợp đồng thời với lamotrigin.",
+        "Nguy cơ gây dị tật bẩm sinh và rối loạn phát triển thần kinh Sử dụng valproat ở phụ nữ có thai (PNCT) Điều trị bằng valproat ở PNCT làm tăng nguy cơ dị tật bẩm sinh, đặc biệt nguy cơ tăng từ 3,3% (với liều < 1100 mg/ngày) lên tới 30,2% (liều ≥1100 mg/ngày), điển hình là khuyết tật ống thần kinh (nứt đốt sống, thai vô não), dị tật sọ mặt, tim mạch, chi và…",
+        "Valproat có thể ảnh hưởng đến sự phát triển hệ thần kinh của thai nhi, tăng nguy cơ chậm phát triển trí tuệ (OR 2,4-4,5), tăng động giảm chú ý (OR 1,4-1,8) và rối loạn phổ tự kỷ (OR 1,7-4,4), trong khi chưa xác định được mức liều valproat nào hoàn toàn không có nguy cơ.",
+        "PNCT đang dùng valproat nên cân nhắc chuyển đổi; nếu cần duy trì valproat thì dùng liều thấp nhất có thể và bổ sung acid folic (≥ 0,4mg/ngày) trước khi mang thai và trong suốt thai kỳ (tuy chưa được chứng minh có thể làm giảm nguy cơ dị tật bẩm sinh do valproat)."
       ],
       "signs": [
-        "Natri valproat (valproat) được chỉ định trong điều trị động kinh, rối loạn lưỡng cực.",
-        "Valproat được phê duyệt là lựa chọn đầu tay trong điều trị các hội chứng động kinh toàn thể do di truyền, bao gồm cơn vắng ý thức, cơn giật cơ và cơn co cứng - co giật tại Úc.",
-        "Trong điều trị rối loạn lưỡng cực, vaproat được khuyến cáo dùng bổ trợ cho thuốc chống loạn thần để điều trị hưng cảm cấp tính, và là một lựa chọn điều trị duy trì khi không thể sử dụng lithium.",
-        "Valproat không được khuyến cáo để kiểm soát các triệu chứng rối loạn hành vi và tâm lý trong hội chứng sa sút trí tuệ do thuốc không đem lại hiệu quả cải thiện mà còn làm gia tăng biến cố bất lợi nghiêm trọng."
+        "13/07/2026 12:00:00 SA Natri valproat (valproat) được chỉ định trong điều trị động kinh, rối loạn lưỡng cực.",
+        "Chỉ định lâm sàng Valproat được phê duyệt là lựa chọn đầu tay trong điều trị các hội chứng động kinh toàn thể do di truyền, bao gồm cơn vắng ý thức, cơn giật cơ và cơn co cứng - co giật tại Úc.",
+        "Tác dụng không mong muốn - Một số tác dụng không mong muốn thường gặp (≥ 1%): Tăng cảm giác thèm ăn (dẫn đến tăng cân), run, buồn ngủ, rụng tóc và triệu chứng dị cảm thoáng qua.",
+        "Giảm bạch cầu hoặc thiếu máu bất sản rất hiếm gặp. - Độc tính trên gan: Hiếm gặp (tỉ lệ 1/20.000) nhưng có thể gây tử vong; 95% số ca khởi phát trong 6 tháng đầu điều trị.",
+        "Do đó, thận trọng khi chỉ định cho bệnh nhân suy gan, hoặc ở nhóm nguy cơ cao: trẻ em < 3 tuổi, rối loạn chuyển hóa bẩm sinh (thiếu hụt carnitin, rối loạn chu trình urê, đột biến gen POLG), bệnh thoái hóa thần kinh, tổn thương não thực thể, chậm phát triển trí tuệ hoặc đang phối hợp nhiều thuốc chống động kinh.",
+        "Biểu hiện bao gồm phát ban lan nhanh, sốt, đau họng (thường trong 8 tuần đầu)."
       ],
       "action": [
-        "Các biểu hiện này có thể thuyên giảm khi giảm liều hoặc ngừng sử dụng thuốc.",
-        "Bác sĩ cần cân nhắc đổi liệu pháp và chuyển khám chuyên khoa nếu nghi ngờ.",
-        "Cần tư vấn bệnh nhân ngừng thuốc và báo bác sĩ ngay khi phát ban.",
-        "Do vậy, và các CQQL khuyến cáo không nên chỉ định valproat cho phụ nữ trong độ tuổi sinh sản, trừ khi các thuốc khác không có hiệu quả hoặc không dung nạp."
+        "Trong điều trị rối loạn lưỡng cực, vaproat được khuyến cáo dùng bổ trợ cho thuốc chống loạn thần để điều trị hưng cảm cấp tính, và là một lựa chọn điều trị duy trì khi không thể sử dụng lithium.",
+        "Valproat không được khuyến cáo để kiểm soát các triệu chứng rối loạn hành vi và tâm lý trong hội chứng sa sút trí tuệ do thuốc không đem lại hiệu quả cải thiện mà còn làm gia tăng biến cố bất lợi nghiêm trọng.",
+        "Các biểu hiện này có thể thuyên giảm khi giảm liều hoặc ngừng sử dụng thuốc. - Buồng trứng đa nang (PCOS): Phụ nữ điều trị động kinh bằng valproat có nguy cơ mắc PCOS cao gần gấp đôi so với các thuốc khác.",
+        "Bác sĩ cần cân nhắc đổi liệu pháp và chuyển khám chuyên khoa nếu nghi ngờ. - Huyết học: Phổ biến nhất là giảm tiểu cầu nhẹ, không triệu chứng (tỉ lệ 12–18%).",
+        "Cần tư vấn bệnh nhân ngừng thuốc và báo bác sĩ ngay khi phát ban. - Cơ, xương, khớp: Điều trị trên 10 năm làm giảm mật độ khoáng của xương, tăng nguy cơ loãng xương.",
+        "Do vậy, CQQL Dược phẩm Úc (TGA) và các CQQL khuyến cáo không nên chỉ định valproat cho phụ nữ trong độ tuổi sinh sản, trừ khi các thuốc khác không có hiệu quả hoặc không dung nạp."
       ],
       "monitor": [
         "Khoảng 10% bệnh nhân tăng men gan không triệu chứng, cần cân nhắc giảm liều và kiểm tra lại sau 1 tháng.",
-        "Việc theo dõi lâm sàng cần tập trung vào khả năng dung nạp thuốc, mức độ tỉnh táo, tình trạng tăng cân và triệu chứng run của người bệnh.",
-        "- Các xét nghiệm cơ bản ban đầu (công thức máu, sinh hóa máu) được đề xuất, thì hiện chưa có đồng thuận chung về việc làm xét nghiệm thường quy để dự phòng độc tính gan do valproat.",
-        "- Các xét nghiệm máu chuyên sâu hơn chỉ được thực hiện nếu có các triệu chứng lâm sàng nghiêm trọng (như chán ăn, nôn, mệt mỏi, mất kiểm soát cơn động kinh, phù, vàng da), bệnh nhân phải ngừng thuốc và báo ngay cho nhân viên y tế."
+        "Cân nhắc đánh giá nồng độ vitamin D theo yếu tố nguy cơ cá nhân. - Ngộ độc cấp tính (quá liều): Biểu hiện phụ thuộc liều bao gồm buồn ngủ, run, lú lẫn và mất điều hòa vận động.",
+        "Việc theo dõi lâm sàng cần tập trung vào khả năng dung nạp thuốc, mức độ tỉnh táo, tình trạng tăng cân và triệu chứng run của người bệnh. - Các xét nghiệm cơ bản ban đầu (công thức máu, sinh hóa máu) được đề xuất, thì hiện chưa có đồng thuận chung về việc làm xét nghiệm thường quy để dự phòng độc tính gan do valproat. - Các xét nghiệm máu chuyên sâu hơn…",
+        "Thuốc tránh thai chứa estrogen có thể làm tăng thanh thải và giảm nồng độ valproat trong máu.",
+        "Valproat là thuốc điều trị hiệu quả cao cho bệnh động kinh và rối loạn lưỡng cực, nhưng đi kèm nhiều tác dụng không mong muốn cần được theo dõi và có thể làm hạn chế việc sử dụng thuốc."
       ],
       "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
       "source_note": "",
