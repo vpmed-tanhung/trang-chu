@@ -12,6 +12,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
 VERSION_FILE = ASSETS / "app-version.json"
+SERVICE_WORKER_FILE = ROOT / "sw.js"
+CLINICAL_DATA_VERSION_RE = re.compile(
+    r"(const CLINICAL_DATA_VERSION = ')[^']+(';)",
+)
 CLINICAL_NAME = re.compile(
     r"(?:data|database|profile|medicine|alert|icd10|disease|contra|renal|infusion|"
     r"clinical|dosing|interaction|antibiotic|pharmacovigilance|pregnancy|"
@@ -54,10 +58,21 @@ def main() -> int:
         encoding="utf-8",
         newline="\n",
     )
-    print(f"Đã cập nhật clinicalDataVersion từ {len(files)} file lâm sàng.")
+    worker = SERVICE_WORKER_FILE.read_text(encoding="utf-8")
+    updated_worker, replacements = CLINICAL_DATA_VERSION_RE.subn(
+        rf"\g<1>{payload['clinicalDataVersion']}\g<2>",
+        worker,
+        count=1,
+    )
+    if replacements != 1:
+        raise RuntimeError("Không tìm thấy CLINICAL_DATA_VERSION trong sw.js.")
+    SERVICE_WORKER_FILE.write_text(updated_worker, encoding="utf-8", newline="\n")
+    print(
+        f"Đã cập nhật clinicalDataVersion từ {len(files)} file lâm sàng "
+        "và đồng bộ service worker."
+    )
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

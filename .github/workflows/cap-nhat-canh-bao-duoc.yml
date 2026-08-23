@@ -75,6 +75,8 @@ jobs:
                       raise SystemExit(f"{label} thiếu trường {field}.")
               if len(str(alert["summary"]).strip()) < 120:
                   raise SystemExit(f"{label} có tóm tắt quá ngắn.")
+              if len(str(alert["summary"]).strip()) > 420:
+                  raise SystemExit(f"{label} có tóm tắt quá dài; phải để nội dung đầy đủ ở liên kết Nguồn.")
               if not str(alert["url"]).startswith(
                   "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/"
               ):

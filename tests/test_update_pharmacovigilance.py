@@ -84,11 +84,9 @@ class PharmacovigilanceUpdaterTests(unittest.TestCase):
         for sentence in sentences:
             self.assertNotIn(" W.", sentence[-3:])  # câu không được cụt tại "W."
 
-    def test_summary_keeps_late_sections_of_long_bulletins(self) -> None:
-        # Hồi quy: build_structured_summary trước đây chỉ lấy 3 câu đầu +
-        # vài câu khớp từ khóa (~9 câu), nên các mục nằm cuối bài dài nhiều
-        # mốc thời gian (ví dụ số liệu cập nhật mới nhất) bị loại bỏ hoàn
-        # toàn khỏi tóm tắt dù vẫn còn trong "sentences".
+    def test_summary_is_concise_but_keeps_late_key_evidence(self) -> None:
+        # Hồi quy kép: không sao chép nguyên bài vào thẻ, đồng thời vẫn nhận
+        # diện được số liệu/kết luận quan trọng nằm cuối một bản tin dài.
         title = "Bản tin nhiều mục"
         sentences = [
             f"Đây là câu mở đầu số {i} mô tả bối cảnh chung của bản tin thử nghiệm này."
@@ -101,6 +99,39 @@ class PharmacovigilanceUpdaterTests(unittest.TestCase):
         structured = updater.build_structured_summary(sentences, title)
 
         self.assertIn("tổng số 11 ca nghi ngờ", structured["summary"])
+        self.assertLessEqual(len(structured["summary"]), updater.SUMMARY_CHAR_LIMIT)
+        self.assertLessEqual(
+            len(updater.split_sentences(structured["summary"])),
+            updater.SUMMARY_SENTENCE_LIMIT,
+        )
+        self.assertNotIn("câu mở đầu số 1", structured["summary"])
+
+    def test_compacts_existing_long_article_summary(self) -> None:
+        item = {
+            "id": "auto-long",
+            "title": "Cảnh báo tổn thương gan liên quan thuốc thử nghiệm",
+            "summary": " ".join(
+                [
+                    "Thuốc thử nghiệm là một sản phẩm đã được sử dụng trong nhiều năm.",
+                    "Bài nguồn trình bày lịch sử phát triển và nhiều thông tin nền khác.",
+                    "Cơ quan quản lý kết luận có nguy cơ tổn thương gan hiếm gặp liên quan đến thuốc thử nghiệm.",
+                    "Tính đến nay đã ghi nhận tổng số 11 ca nghi ngờ, trong đó 2 ca phải nhập viện.",
+                    "Khuyến cáo ngừng thuốc và đánh giá chức năng gan khi xuất hiện triệu chứng nghi ngờ.",
+                ]
+            ),
+            "quick": "Khuyến cáo ngừng thuốc khi nghi ngờ tổn thương gan.",
+            "risk": ["Nguy cơ tổn thương gan hiếm gặp."],
+            "signs": ["Theo dõi vàng da và nước tiểu sẫm màu."],
+            "action": ["Ngừng thuốc khi nghi ngờ tổn thương gan."],
+            "monitor": ["Kiểm tra chức năng gan."],
+        }
+
+        compacted = updater.compact_existing_alert(item)
+
+        self.assertLessEqual(len(compacted["summary"]), updater.SUMMARY_CHAR_LIMIT)
+        self.assertIn("11 ca nghi ngờ", compacted["summary"])
+        self.assertNotIn("lịch sử phát triển", compacted["summary"])
+        self.assertEqual(compacted["editorialStatus"], "auto-concise-v2")
 
     def test_retains_history_without_duplicates(self) -> None:
         current = {

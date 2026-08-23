@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.22.48",
-  "displayVersion": "5.4.9",
-  "updatedAt": "2026-08-22T14:22:04+07:00",
-  "note": "Gỡ bỏ toàn bộ công cụ tính liều Colistin độc lập vì bệnh viện chưa triển khai lọc máu và theo dõi nồng độ thuốc trong máu.",
-  "buildId": "v5.4.9-remove-colistin-calculator-20260822-48",
-  "previousVersion": "2026.08.22.47",
-  "previousDisplayVersion": "5.4.8",
-  "clinicalDataVersion": "sha256-d3de9f4f743cea700dd5b3b9"
+  "version": "2026.08.23.49",
+  "displayVersion": "5.5.0",
+  "updatedAt": "2026-08-23T07:56:18+07:00",
+  "note": "Rút gọn bản tin cảnh giác dược thành ý chính; giữ nội dung đầy đủ tại liên kết Nguồn.",
+  "buildId": "v5.5.0-pharmacovigilance-concise-summary-20260823-49",
+  "previousVersion": "2026.08.22.48",
+  "previousDisplayVersion": "5.4.9",
+  "clinicalDataVersion": "sha256-d7f7b3694bcc355e81906113"
 }

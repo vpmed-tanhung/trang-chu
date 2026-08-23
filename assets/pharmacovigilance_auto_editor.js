@@ -2,11 +2,64 @@
   'use strict';
 
   const clean=value=>String(value||'').replace(/\s+/g,' ').trim();
-  const norm=value=>clean(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const norm=value=>clean(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/đ/g,'d');
   const clip=(value,limit=230)=>{const text=clean(value);if(text.length<=limit)return text;const cut=text.slice(0,limit-1);return `${cut.slice(0,Math.max(cut.lastIndexOf(' '),120)).replace(/[,;:]$/,'')}…`};
-  const unique=items=>[...new Set(items.map(clean).filter(Boolean))].slice(0,4);
-  const sentences=value=>unique(clean(value).split(/(?<=[.!?…])\s+/).map(x=>clip(x)));
+  const unique=(items,limit=4)=>[...new Set(items.map(clean).filter(Boolean))].slice(0,limit);
+  const allSentences=value=>unique(clean(value).split(/(?<=[.!?…])\s+(?=[A-ZÀ-ỸĐ0-9"'“(]|$)/).map(item=>item.replace(/^[-•]\s*/,'')),40);
+  const sentences=value=>allSentences(value).map(x=>clip(x)).slice(0,4);
   const pick=(items,pattern)=>unique(items.filter(item=>pattern.test(norm(item))));
+  const summaryScore=(sentence,index,total,title='')=>{
+    const value=` ${norm(sentence)} `;
+    let score=0;
+    const signals=[
+      [10,/ ket luan | canh bao | chong chi dinh | thuoc gia /],
+      [8,/ nguy co | moi lien quan | co the gay | lien quan den /],
+      [7,/ tinh den | tong so | ghi nhan | bao cao | truong hop /],
+      [2,/ khuyen cao | khong su dung | can ngung | nen ngung | nen tranh /],
+      [5,/ tu vong | nhap vien | nghiem trong | hiem gap | rat hiem /]
+    ];
+    signals.forEach(([weight,pattern])=>{if(pattern.test(value))score+=weight});
+    if(/ tinh den nay /.test(value))score+=15;
+    if(/ tai thoi diem ra soat | sau khi hoan tat danh gia /.test(value))score+=8;
+    if(/\b\d+(?:[.,]\d+)?\s*(?:%|ca|trường hợp|mg|ngày|tuần|tháng|năm)\b/i.test(sentence))score+=4;
+    const ignored=new Set(['nguy','canh','bao','lien','quan','dung','thuoc']);
+    const titleTerms=new Set(norm(title).split(/\s+/).filter(word=>word.length>=4&&!ignored.has(word)));
+    const sentenceTerms=new Set(norm(sentence).split(/\s+/));
+    score+=Math.min(6,[...titleTerms].filter(word=>sentenceTerms.has(word)).length);
+    if(/ la thuoc | duoc chi dinh | thong tin chung /.test(value))score-=5;
+    if(/^(?:khuyen cao|who khuyen cao|pmda khuyen cao)/.test(value.trim()))score-=12;
+    if(sentence.length>280)score-=8;
+    if(sentence.length>420)score-=4;
+    if(total>1)score+=Math.round(index*2/(total-1));
+    return score;
+  };
+  const overlap=(left,right)=>{
+    const a=new Set(norm(left).split(/\s+/).filter(Boolean));
+    const b=new Set(norm(right).split(/\s+/).filter(Boolean));
+    if(!a.size||!b.size)return 0;
+    return [...a].filter(word=>b.has(word)).length/Math.min(a.size,b.size);
+  };
+  const concise=(value,title='')=>{
+    const items=allSentences(value).filter(item=>item.length>=35);
+    if(!items.length)return clip(value,420);
+    const indexed=items.map((item,index)=>({item,index}));
+    const short=indexed.filter(entry=>entry.item.length<=300);
+    const pool=short.length>=2?short:indexed;
+    const ranked=pool.map(entry=>({...entry,score:summaryScore(entry.item,entry.index,items.length,title)}))
+      .sort((a,b)=>b.score-a.score||b.index-a.index);
+    const selected=[];
+    let selectedLength=0;
+    for(const entry of ranked){
+      const item=clip(entry.item,300);
+      if(selected.some(existing=>overlap(item,existing.item)>=.68))continue;
+      const added=item.length+(selected.length?1:0);
+      if(selected.length&&selectedLength+added>420)continue;
+      selected.push({item,index:entry.index});
+      selectedLength+=added;
+      if(selected.length===2)break;
+    }
+    return clip(selected.sort((a,b)=>a.index-b.index).map(entry=>entry.item).join(' '),420);
+  };
 
   const DRUG_RULES=[
     [/pivoxil/,'Kháng sinh chứa ester pivoxil'],[/valproat|valproic/,'Valproat (natri valproat/acid valproic)'],[/methadon/,'Methadon'],
@@ -61,13 +114,13 @@
     const hasStructuredContent=['risk','signs','action','monitor']
       .every(key=>Array.isArray(item[key])&&item[key].length);
     if(item.autoEdited&&hasStructuredContent&&clean(item.summary)&&clean(item.url)){
-      return {...item,source_url:item.source_url||item.url,reviewed:false};
+      return {...item,summary:concise(item.summary,item.title),quick:clip(item.quick,280),source_url:item.source_url||item.url,reviewed:false};
     }
     const rawDetail=clean(detailText),baseSummary=clean(item.summary);
     const sourceSentences=sentences(rawDetail||baseSummary||item.title);
     const summary=/ban tin moi duoc kiem tra|ban tin moi:/i.test(norm(baseSummary))&&rawDetail
-      ? clip(sourceSentences.slice(0,3).join(' '),650)
-      : clip(baseSummary||sourceSentences.slice(0,3).join(' '),650);
+      ? concise(rawDetail,item.title)
+      : concise(baseSummary||sourceSentences.join(' '),item.title);
     const allText=`${item.title}. ${summary}. ${rawDetail}`;
     const drugs=inferDrugs(item,allText);
     const risk=pick(sourceSentences,/nguy co|dac biet|tre em|tre so sinh|nguoi cao tuoi|suy than|suy gan|mang thai|tuoi sinh san|lieu cao|keo dai|phoi hop|benh nhan/);

@@ -106,6 +106,22 @@
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[character]));
 
+  const DISPLAY_SUMMARY_LIMIT = 420;
+  function clipDisplayText(value, limit) {
+    const text = String(value || '').replace(/\s+/g, ' ').trim();
+    if (text.length <= limit) return text;
+    const cut = text.slice(0, limit - 1);
+    const lastSpace = cut.lastIndexOf(' ');
+    return `${cut.slice(0, lastSpace >= 160 ? lastSpace : cut.length).replace(/[,;:]$/, '')}…`;
+  }
+
+  function conciseDisplaySummary(value) {
+    const text = String(value || '').replace(/\s+/g, ' ').trim();
+    if (text.length <= DISPLAY_SUMMARY_LIMIT) return text;
+    const sentences = text.split(/(?<=[.!?…])\s+(?=[A-ZÀ-ỸĐ0-9"'“(]|$)/).slice(0, 2);
+    return clipDisplayText(sentences.join(' '), DISPLAY_SUMMARY_LIMIT);
+  }
+
   function unwrapAlerts(payload) {
     if (Array.isArray(payload)) return payload;
     if (payload && Array.isArray(payload.alerts)) return payload.alerts;
@@ -152,6 +168,8 @@
     item.signs = Array.isArray(item.signs) ? item.signs : [];
     item.action = Array.isArray(item.action) ? item.action : [];
     item.monitor = Array.isArray(item.monitor) ? item.monitor : [];
+    item.summary = conciseDisplaySummary(item.summary);
+    item.quick = clipDisplayText(item.quick, 280);
     item.auto = Boolean(forceAuto || item.auto || item.reviewed === false);
     if (BULLETIN_76_ALERT_IDS.has(String(item.id || '').trim())) {
       item.source_url = BULLETIN_76_SOURCE_URL;

@@ -127,10 +127,10 @@
       styles: [],
       scripts: [
         'assets/pharmacovigilance_alerts_data.js?v=20260711',
-        'assets/pharmacovigilance_auto_data.js?v=20260823062030',
+        'assets/pharmacovigilance_auto_data.js?v=20260823075701',
         'assets/pharmacovigilance_bulletin_76_data.js?v=20260804',
-        'assets/pharmacovigilance_auto_editor.js?v=20260728-structured',
-        'assets/pharmacovigilance_integration.js?v=20260822-platform-shell-v1'
+        'assets/pharmacovigilance_auto_editor.js?v=20260823-concise-summary-v2',
+        'assets/pharmacovigilance_integration.js?v=20260823-concise-summary-v2'
       ]
     }
   });

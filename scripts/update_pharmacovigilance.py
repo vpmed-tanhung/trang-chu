@@ -37,14 +37,11 @@ DATE_RE = re.compile(r"\b(\d{1,2})/(\d{1,2})/(\d{4})\b")
 # nhầm các câu không liên quan với nhau trong bản tóm tắt.
 SENTENCE_BOUNDARY_RE = re.compile(r"(?<=[.!?…])\s+(?=[A-ZÀ-ỸĐ0-9\"'“(]|$)")
 
-# Giới hạn ký tự cho đoạn tóm tắt chính hiển thị cho người dùng. Bản tin
-# Cảnh giác dược thường có nhiều mốc thời gian/quốc gia (có khi tới ~5000 ký
-# tự nội dung, ví dụ bài về Sâm Ấn Độ ngày 21/08/2026 có 33 câu ~4700 ký
-# tự); giới hạn cũ (1400) quá thấp nên phần cập nhật mới nhất và khuyến cáo
-# cuối bài (thường nằm cuối bài) bị cắt mất hoàn toàn. Nâng lên đủ rộng để
-# hầu hết các bản tin không bị cắt; những bài dài bất thường vẫn được giới
-# hạn để tránh thẻ tóm tắt phình to vô hạn.
-SUMMARY_CHAR_LIMIT = 5200
+# Thẻ cảnh báo chỉ hiển thị ý chính; bài đầy đủ luôn nằm ở liên kết "Nguồn".
+# Hai câu và khoảng 420 ký tự đủ để nêu nguy cơ + bằng chứng/kết luận quan
+# trọng mà không sao chép nguyên bài nguồn vào giao diện.
+SUMMARY_CHAR_LIMIT = 420
+SUMMARY_SENTENCE_LIMIT = 2
 
 
 def clean_text(value: str) -> str:
@@ -52,7 +49,8 @@ def clean_text(value: str) -> str:
 
 
 def normalize_key(value: str) -> str:
-    text = unicodedata.normalize("NFD", clean_text(value))
+    text = clean_text(value).replace("Đ", "D").replace("đ", "d")
+    text = unicodedata.normalize("NFD", text)
     text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")
     return re.sub(r"[^a-z0-9]+", " ", text.lower()).strip()
 
@@ -161,6 +159,102 @@ def select_sentences(
             break
 
     return selected
+
+
+def summary_sentence_score(sentence: str, index: int, total: int, title: str = "") -> int:
+    """Chấm điểm câu có giá trị tóm tắt thay vì mặc định lấy phần mở bài."""
+    key = f" {normalize_key(sentence)} "
+    score = 0
+    weighted_signals = (
+        (10, (" ket luan ", " canh bao ", " chong chi dinh ", " thuoc gia ")),
+        (8, (" nguy co ", " moi lien quan ", " co the gay ", " lien quan den ")),
+        (7, (" tinh den ", " tong so ", " ghi nhan ", " bao cao ", " truong hop ")),
+        (2, (" khuyen cao ", " khong su dung ", " can ngung ", " nen ngung ", " nen tranh ")),
+        (5, (" tu vong ", " nhap vien ", " nghiem trong ", " hiem gap ", " rat hiem ")),
+        (4, (" lieu cao ", " keo dai ", " phoi hop ", " mang thai ", " tre em ", " nguoi cao tuoi ")),
+    )
+    for weight, signals in weighted_signals:
+        if any(signal in key for signal in signals):
+            score += weight
+
+    if " tinh den nay " in key:
+        score += 15
+    if " tai thoi diem ra soat " in key or " sau khi hoan tat danh gia " in key:
+        score += 8
+    if re.search(r"\b\d+(?:[.,]\d+)?\s*(?:%|ca|trường hợp|mg|ngày|tuần|tháng|năm)\b", sentence, re.IGNORECASE):
+        score += 4
+    title_terms = {
+        word
+        for word in normalize_key(title).split()
+        if len(word) >= 4 and word not in {"nguy", "canh", "bao", "lien", "quan", "dung", "thuoc"}
+    }
+    sentence_terms = set(normalize_key(sentence).split())
+    score += min(6, len(title_terms & sentence_terms))
+    if any(marker in key for marker in (" la thuoc ", " duoc chi dinh ", " thong tin chung ")):
+        score -= 5
+    if key.strip().startswith(("khuyen cao", "who khuyen cao", "pmda khuyen cao")):
+        score -= 12
+    if len(sentence) > 280:
+        score -= 8
+    if len(sentence) > 420:
+        score -= 4
+
+    # Cho phần kết luận/cập nhật ở cuối bài một ưu tiên nhỏ, nhưng không đủ để
+    # lấn át các tín hiệu nguy cơ và khuyến cáo chuyên môn.
+    if total > 1:
+        score += round(index * 2 / (total - 1))
+    return score
+
+
+def sentence_overlap(left: str, right: str) -> float:
+    left_words = set(normalize_key(left).split())
+    right_words = set(normalize_key(right).split())
+    if not left_words or not right_words:
+        return 0.0
+    return len(left_words & right_words) / min(len(left_words), len(right_words))
+
+
+def build_concise_summary(sentences: list[str], title: str) -> str:
+    """Chọn tối đa hai câu giàu thông tin, ưu tiên nguy cơ và kết luận mới."""
+    candidates: list[tuple[int, str]] = []
+    seen: set[str] = set()
+    for index, sentence in enumerate(sentences):
+        cleaned = clean_text(sentence).lstrip("-• ")
+        key = normalize_key(cleaned)
+        if len(cleaned) < 35 or not key or key in seen:
+            continue
+        seen.add(key)
+        candidates.append((index, cleaned))
+
+    if not candidates:
+        return smart_truncate(f"Bản tin mới từ nguồn chính thức: {title}.", SUMMARY_CHAR_LIMIT)
+
+    short_candidates = [entry for entry in candidates if len(entry[1]) <= 300]
+    ranking_pool = short_candidates if len(short_candidates) >= SUMMARY_SENTENCE_LIMIT else candidates
+    ranked = sorted(
+        ranking_pool,
+        key=lambda entry: (
+            summary_sentence_score(entry[1], entry[0], len(candidates), title),
+            entry[0],
+        ),
+        reverse=True,
+    )
+    selected: list[tuple[int, str]] = []
+    selected_length = 0
+    for index, sentence in ranked:
+        clipped = smart_truncate(sentence, 300)
+        if any(sentence_overlap(clipped, existing) >= 0.68 for _, existing in selected):
+            continue
+        added_length = len(clipped) + (1 if selected else 0)
+        if selected and selected_length + added_length > SUMMARY_CHAR_LIMIT:
+            continue
+        selected.append((index, clipped))
+        selected_length += added_length
+        if len(selected) >= SUMMARY_SENTENCE_LIMIT:
+            break
+
+    selected.sort(key=lambda entry: entry[0])
+    return smart_truncate(" ".join(sentence for _, sentence in selected), SUMMARY_CHAR_LIMIT)
 
 
 def infer_drugs(title: str, body_text: str) -> str:
@@ -353,22 +447,7 @@ def build_structured_summary(sentences: list[str], title: str) -> dict[str, Any]
     if not monitor:
         monitor = ["Theo dõi đáp ứng và phản ứng có hại; đối chiếu yêu cầu giám sát trong bài nguồn."]
 
-    # Trước đây đoạn tóm tắt chỉ lấy 3 câu đầu bài + vài câu khớp từ khóa
-    # (tối đa ~9 câu). Với các bản tin nhiều mục/nhiều mốc thời gian, cách
-    # này khiến nhiều đoạn quan trọng - đặc biệt là phần cập nhật số liệu
-    # mới nhất, thường nằm ở cuối bài - bị loại bỏ hoàn toàn khỏi tóm tắt dù
-    # vẫn còn trong danh sách "sentences". Nay giữ lại TOÀN BỘ câu đã trích
-    # xuất, theo đúng thứ tự xuất hiện trong bài, chỉ khử trùng lặp; phần bị
-    # cắt (nếu bài quá dài) sẽ do smart_truncate xử lý ở cuối câu gần giới
-    # hạn ký tự thay vì bị loại bỏ tùy tiện theo từ khóa.
-    summary_candidates: list[str] = []
-    seen_summary_keys: set[str] = set()
-    for sentence in sentences:
-        key = normalize_key(sentence)
-        if key and key not in seen_summary_keys:
-            seen_summary_keys.add(key)
-            summary_candidates.append(sentence)
-    summary = smart_truncate(" ".join(summary_candidates), SUMMARY_CHAR_LIMIT)
+    summary = build_concise_summary(sentences, title)
 
     quick = action[0] if action else risk[0]
     return {
@@ -379,6 +458,34 @@ def build_structured_summary(sentences: list[str], title: str) -> dict[str, Any]
         "action": action,
         "monitor": monitor,
     }
+
+
+def compact_existing_alert(item: dict[str, Any]) -> dict[str, Any]:
+    """Rút gọn cả bản tin lịch sử để dữ liệu cũ không mang nguyên bài lên web."""
+    normalized = dict(item)
+    candidates: list[str] = []
+    candidates.extend(split_sentences(str(item.get("summary", ""))))
+    for field in ("risk", "signs", "action", "monitor"):
+        values = item.get(field)
+        if isinstance(values, list):
+            for value in values:
+                candidates.extend(split_sentences(str(value)))
+
+    normalized["summary"] = build_concise_summary(
+        candidates,
+        clean_text(str(item.get("title", ""))),
+    )
+    quick_source = clean_text(str(item.get("quick", "")))
+    if not quick_source:
+        action = item.get("action")
+        if isinstance(action, list) and action:
+            quick_source = clean_text(str(action[0]))
+    normalized["quick"] = smart_truncate(
+        quick_source or "Mở nguồn để kiểm tra khuyến cáo và áp dụng theo đánh giá lâm sàng.",
+        280,
+    )
+    normalized["editorialStatus"] = "auto-concise-v2"
+    return normalized
 
 
 def make_session() -> requests.Session:
@@ -576,7 +683,7 @@ def merge_auto_history(
         ):
             continue
 
-        normalized = dict(item)
+        normalized = compact_existing_alert(item)
         normalized["url"] = normalize_source_url(str(item.get("url", "")))
         normalized["source_url"] = normalized["url"]
         normalized["source"] = clean_text(str(item.get("source", ""))) or SOURCE_NAME
@@ -691,6 +798,30 @@ def write_payload(payload: dict[str, Any], version: str) -> None:
     SHELL_PATH.write_text(shell_text, encoding="utf-8")
 
 
+def compact_existing_payload() -> int:
+    """Áp dụng chính sách tóm tắt mới cho dữ liệu hiện có mà không gọi mạng."""
+    if not OUTPUT_PATH.exists():
+        raise RuntimeError(f"Không tìm thấy dữ liệu tại {OUTPUT_PATH}.")
+    payload = json.loads(OUTPUT_PATH.read_text(encoding="utf-8"))
+    alerts = payload.get("alerts")
+    if not isinstance(alerts, list):
+        raise RuntimeError("Trường alerts không phải danh sách.")
+
+    payload["alerts"] = [
+        compact_existing_alert(item)
+        for item in alerts
+        if isinstance(item, dict)
+    ]
+    payload["review_status"] = (
+        "Bản tin được tự động trích xuất thành tóm tắt ngắn; nội dung đầy đủ "
+        "được giữ tại liên kết nguồn để kiểm chứng trước khi áp dụng lâm sàng."
+    )
+    now = datetime.now(ZoneInfo("Asia/Ho_Chi_Minh"))
+    write_payload(payload, now.strftime("%Y%m%d%H%M%S"))
+    print(f"Đã rút gọn {len(payload['alerts'])} bản tin hiện có.")
+    return 0
+
+
 def main(skip_if_fresh: bool = False) -> int:
     now = datetime.now(ZoneInfo("Asia/Ho_Chi_Minh"))
     if skip_if_fresh and existing_check_is_fresh(now):
@@ -784,5 +915,12 @@ if __name__ == "__main__":
         action="store_true",
         help="Bỏ qua nếu dữ liệu đã được kiểm tra trong ngày hiện tại.",
     )
+    parser.add_argument(
+        "--compact-existing",
+        action="store_true",
+        help="Rút gọn dữ liệu hiện có mà không tải lại nguồn.",
+    )
     args = parser.parse_args()
+    if args.compact_existing:
+        raise SystemExit(compact_existing_payload())
     raise SystemExit(main(skip_if_fresh=args.skip_if_fresh))
