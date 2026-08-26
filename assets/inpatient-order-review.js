@@ -1,7 +1,7 @@
 /*
  * Phân tích y lệnh dùng thuốc nội trú
  * - Tải ảnh y lệnh/bệnh án không giới hạn số lượng
- * - Gửi tới AI (OpenAI/Claude) qua Apps Script proxy (apps-script/inpatient-order-review.gs)
+ * - Gửi tới Gemini qua Apps Script proxy (apps-script/inpatient-order-review.gs)
  *   — proxy giữ API key server-side, client không bao giờ có key.
  * - Phạm vi phân tích: liều dùng, cách dùng, tốc độ truyền (không pha chế),
  *   tương tác thuốc trong y lệnh, cảnh báo + phương pháp hiệu chỉnh khi suy thận.

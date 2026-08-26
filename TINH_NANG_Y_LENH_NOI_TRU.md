@@ -5,7 +5,7 @@ Tính năng được mở từ thẻ **Phân tích y lệnh nội trú** trên t
 ## Chức năng đã có
 
 - Tải ảnh y lệnh/bệnh án của cùng một bệnh nhân, cùng một đợt y lệnh — **không giới hạn số lượng ảnh**.
-- Gửi ảnh tới AI (mặc định OpenAI, có thể đổi sang Claude) qua proxy Apps Script để phân tích, thay vì
+- Gửi ảnh tới Gemini qua proxy Apps Script để phân tích, thay vì
   OCR cục bộ như module Rà soát đơn thuốc BHYT.
 - Với mỗi thuốc trong y lệnh: đối chiếu **liều dùng** với liều khuyến cáo, mô tả **cách dùng**, tính
   **tốc độ truyền** (mL/giờ hoặc giọt/phút) cho thuốc đường tĩnh mạch khi y lệnh có đủ dữ liệu.
@@ -37,7 +37,7 @@ Tính năng được mở từ thẻ **Phân tích y lệnh nội trú** trên t
 khác trong hệ thống, vì việc tính liều/tốc độ truyền/tương tác dựa trên UpToDate và Dược thư Quốc gia cần
 suy luận lâm sàng vượt quá khả năng đối chiếu dữ liệu tĩnh cục bộ.
 
-- Ảnh y lệnh được gửi tới AI (OpenAI/Claude) qua proxy Apps Script để phân tích. Giao diện bắt buộc người
+- Ảnh y lệnh được gửi tới Gemini qua proxy Apps Script để phân tích. Giao diện bắt buộc người
   dùng tick xác nhận **đã che/xóa thông tin định danh bệnh nhân** (họ tên, số thẻ BHYT, địa chỉ, số điện
   thoại) trước khi cho phép bấm phân tích.
 - API key AI chỉ lưu trong Script Properties phía Apps Script, không bao giờ xuất hiện trong code client.
@@ -71,10 +71,10 @@ prompt và các field JSON mới (`suggestedRegimen`, `loadingDoseNote`, `monito
 
 ### Cấu hình AI hiện tại
 
-- Nhà cung cấp mặc định: OpenAI Responses API.
-- Model mặc định: `gpt-5.6-terra` (nhận ảnh và trả văn bản có cấu trúc).
+- Nhà cung cấp: Gemini Developer API Free Tier.
+- Model chính: `gemini-3.6-flash`; tự chuyển sang `gemini-3.5-flash-lite` khi model chính quá tải.
 - Trong Apps Script → Project Settings → Script Properties, thêm
-  `OPENAI_API_KEY` với API key của dự án OpenAI.
+  `GEMINI_API_KEY` với API key lấy từ Google AI Studio.
 - Sau khi thay file `.gs`, phải tạo deployment version mới; frontend vẫn dùng URL `/exec` hiện tại nếu
   cập nhật trên cùng Apps Script Web App.
 

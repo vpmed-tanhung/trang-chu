@@ -2,7 +2,7 @@
  * Phân tích y lệnh dùng thuốc nội trú — Apps Script proxy
  * ----------------------------------------------------------------
  * MỤC ĐÍCH
- * Nhận ảnh y lệnh (base64) từ trình duyệt, gọi OpenAI kèm
+ * Nhận ảnh y lệnh (base64) từ trình duyệt, gọi Gemini kèm
  * system prompt cố định, trả kết quả JSON đã phân tích về cho client.
  * API key KHÔNG BAO GIỜ nằm trong code client — chỉ lưu trong
  * Script Properties của dự án Apps Script này.
@@ -12,9 +12,8 @@
  *    clinical-update-secure-client.js / vpmed-history-sync.js), tạo thêm
  *    file .gs mới, dán toàn bộ nội dung này vào.
  * 2. Project Settings → Script Properties → thêm khóa:
- *      OPENAI_API_KEY = <API key OpenAI của bạn>
- *    Có thể đổi sang Claude dự phòng bằng cách đặt AI_PROVIDER = 'claude'
- *    và thêm ANTHROPIC_API_KEY.
+ *      GEMINI_API_KEY = <API key Gemini của bạn>
+ *    Proxy tự thử Gemini 3.5 Flash-Lite khi Gemini 3.6 Flash quá tải.
  * 3. Trong hàm doPost(e) hiện có của dự án (nếu đã có action router chung),
  *    thêm nhánh: if (action === 'analyzeInpatientOrder') return
  *    handleAnalyzeInpatientOrder(payload); Nếu dự án chưa có router, hàm
@@ -32,9 +31,7 @@
  *   nơi lưu trữ lâu dài; chỉ xử lý trong bộ nhớ của request rồi trả về.
  */
 
-var AI_PROVIDER = 'openai'; // 'openai' | 'claude'
-var OPENAI_MODEL = 'gpt-5.6-terra';
-var CLAUDE_MODEL = 'claude-sonnet-5';
+var GEMINI_MODELS = ['gemini-3.6-flash', 'gemini-3.5-flash-lite'];
 
 var BHYT_TEXT_PROMPT = [
   'VAI TRÒ: Dược sĩ kiểm tra đơn thuốc ngoại trú BHYT tại Việt Nam.',
@@ -85,9 +82,7 @@ function handleAnalyzeInpatientOrder(payload) {
   }
 
   try {
-    var resultText = (AI_PROVIDER === 'claude')
-      ? callClaude(images, payload.note)
-      : callOpenAI(images, payload.note);
+    var resultText = callGemini(images, payload.note);
 
     var parsed = parseModelJson(resultText);
     if (!parsed) {
@@ -105,7 +100,7 @@ function handleAnalyzeBhytPrescriptionText(payload) {
   if (!text) return { ok: false, message: 'Chưa nhận được văn bản OCR.' };
   if (text.length > 60000) return { ok: false, message: 'Văn bản OCR vượt giới hạn 60.000 ký tự.' };
   try {
-    var resultText = callOpenAIText(BHYT_TEXT_PROMPT, text);
+    var resultText = callGeminiText(BHYT_TEXT_PROMPT, text);
     var parsed = parseModelJson(resultText);
     if (!parsed) return { ok: false, message: 'AI trả về định dạng không hợp lệ. Vui lòng thử lại.' };
     return { ok: true, result: parsed };
@@ -114,134 +109,86 @@ function handleAnalyzeBhytPrescriptionText(payload) {
   }
 }
 
-function callOpenAI(images, note) {
-  var apiKey = PropertiesService.getScriptProperties().getProperty('OPENAI_API_KEY');
-  if (!apiKey) throw new Error('Chưa cấu hình OPENAI_API_KEY trong Script Properties.');
-
-  var content = [{
-    type: 'input_text',
-    text: 'Phân tích y lệnh trong (các) ảnh theo đúng hướng dẫn. Định dạng bắt buộc: json_object; chỉ trả về một json object hợp lệ.' +
+function callGemini(images, note) {
+  var parts = [{
+    text: 'Phân tích y lệnh trong (các) ảnh theo đúng hướng dẫn và chỉ trả về một object JSON hợp lệ.' +
       (note ? ('\n\nGhi chú thêm từ dược sĩ: ' + note) : '')
   }];
   images.forEach(function (img) {
-    content.push({
-      type: 'input_image',
-      image_url: 'data:' + (img.mimeType || 'image/jpeg') + ';base64,' + img.base64,
-      detail: 'high'
+    parts.push({
+      inlineData: {
+        mimeType: img.mimeType || 'image/jpeg',
+        data: img.base64
+      }
     });
   });
-
-  var request = {
-    model: OPENAI_MODEL,
-    instructions: SYSTEM_PROMPT,
-    input: [{ role: 'user', content: content }],
-    text: { format: { type: 'json_object' } },
-    reasoning: { effort: 'low' },
-    max_output_tokens: 8192
-  };
-  var res;
-  var code;
-  for (var attempt = 0; attempt < 3; attempt++) {
-    res = UrlFetchApp.fetch('https://api.openai.com/v1/responses', {
-      method: 'post',
-      contentType: 'application/json',
-      muteHttpExceptions: true,
-      headers: { Authorization: 'Bearer ' + apiKey },
-      payload: JSON.stringify(request)
-    });
-    code = res.getResponseCode();
-    if (code !== 429 && code < 500) break;
-    if (attempt < 2) Utilities.sleep(Math.pow(2, attempt) * 1000);
-  }
-
-  var raw = res.getContentText();
-  var body;
-  try { body = JSON.parse(raw); } catch (e) { body = {}; }
-  if (code < 200 || code >= 300) {
-    throw new Error((body.error && body.error.message) || ('OpenAI API lỗi HTTP ' + code));
-  }
-  var text = extractOpenAIText(body);
-  if (!text) throw new Error('OpenAI không trả về nội dung phân tích.');
-  return text;
+  return requestGemini(SYSTEM_PROMPT, parts, 8192);
 }
 
-function extractOpenAIText(body) {
+function callGeminiText(instructions, inputText) {
+  return requestGemini(instructions, [{
+    text: 'Phân tích văn bản OCR sau đây theo đúng cấu trúc đã yêu cầu và chỉ trả về một object JSON hợp lệ.\n\n' + inputText
+  }], 4096);
+}
+
+function requestGemini(instructions, parts, maxOutputTokens) {
+  var apiKey = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
+  if (!apiKey) throw new Error('Chưa cấu hình GEMINI_API_KEY trong Script Properties.');
+
+  var request = {
+    systemInstruction: { parts: [{ text: instructions }] },
+    contents: [{ role: 'user', parts: parts }],
+    generationConfig: {
+      responseMimeType: 'application/json',
+      temperature: 0.1,
+      maxOutputTokens: maxOutputTokens
+    }
+  };
+  var errors = [];
+
+  for (var modelIndex = 0; modelIndex < GEMINI_MODELS.length; modelIndex++) {
+    var model = GEMINI_MODELS[modelIndex];
+    for (var attempt = 0; attempt < 3; attempt++) {
+      var url = 'https://generativelanguage.googleapis.com/v1beta/models/' +
+        encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(apiKey);
+      var res = UrlFetchApp.fetch(url, {
+        method: 'post',
+        contentType: 'application/json',
+        muteHttpExceptions: true,
+        payload: JSON.stringify(request)
+      });
+      var code = res.getResponseCode();
+      var body;
+      try { body = JSON.parse(res.getContentText()); } catch (e) { body = {}; }
+
+      if (code >= 200 && code < 300) {
+        var text = extractGeminiText(body);
+        if (text) return text;
+        errors.push(model + ': không có nội dung trả về');
+        break;
+      }
+
+      var detail = (body.error && body.error.message) || ('HTTP ' + code);
+      var retryable = code === 429 || code >= 500;
+      if (!retryable || attempt === 2) {
+        errors.push(model + ': ' + detail);
+        break;
+      }
+      Utilities.sleep(Math.pow(2, attempt) * 1000);
+    }
+  }
+
+  throw new Error('Gemini không khả dụng sau khi đã thử model chính và dự phòng. ' + errors.join(' | '));
+}
+
+function extractGeminiText(body) {
   var chunks = [];
-  (body.output || []).forEach(function (item) {
-    (item.content || []).forEach(function (part) {
-      if ((part.type === 'output_text' || part.type === 'text') && part.text) chunks.push(part.text);
+  (body.candidates || []).forEach(function (candidate) {
+    (((candidate || {}).content || {}).parts || []).forEach(function (part) {
+      if (part && part.text) chunks.push(part.text);
     });
   });
   return chunks.join('');
-}
-
-function callOpenAIText(instructions, inputText) {
-  var apiKey = PropertiesService.getScriptProperties().getProperty('OPENAI_API_KEY');
-  if (!apiKey) throw new Error('Chưa cấu hình OPENAI_API_KEY trong Script Properties.');
-  var res;
-  var code;
-  var request = {
-    model: OPENAI_MODEL,
-    instructions: instructions,
-    input: [{
-      role: 'user',
-      content: [{
-        type: 'input_text',
-        text: 'Phân tích văn bản OCR sau đây theo đúng cấu trúc đã yêu cầu. Định dạng bắt buộc: json_object; chỉ trả về một json object hợp lệ.\n\n' + inputText
-      }]
-    }],
-    text: { format: { type: 'json_object' } },
-    reasoning: { effort: 'low' },
-    max_output_tokens: 4096
-  };
-  for (var attempt = 0; attempt < 3; attempt++) {
-    res = UrlFetchApp.fetch('https://api.openai.com/v1/responses', {
-      method: 'post', contentType: 'application/json', muteHttpExceptions: true,
-      headers: { Authorization: 'Bearer ' + apiKey }, payload: JSON.stringify(request)
-    });
-    code = res.getResponseCode();
-    if (code !== 429 && code < 500) break;
-    if (attempt < 2) Utilities.sleep(Math.pow(2, attempt) * 1000);
-  }
-  var body;
-  try { body = JSON.parse(res.getContentText()); } catch (e) { body = {}; }
-  if (code < 200 || code >= 300) throw new Error((body.error && body.error.message) || ('OpenAI API lỗi HTTP ' + code));
-  var text = extractOpenAIText(body);
-  if (!text) throw new Error('OpenAI không trả về nội dung phân tích.');
-  return text;
-}
-
-/** Phương án thay thế nếu đặt AI_PROVIDER = 'claude'. */
-function callClaude(images, note) {
-  var apiKey = PropertiesService.getScriptProperties().getProperty('ANTHROPIC_API_KEY');
-  if (!apiKey) throw new Error('Chưa cấu hình ANTHROPIC_API_KEY trong Script Properties.');
-
-  var content = images.map(function (img) {
-    return { type: 'image', source: { type: 'base64', media_type: img.mimeType || 'image/jpeg', data: img.base64 } };
-  });
-  content.push({ type: 'text', text: 'Phân tích y lệnh trong (các) ảnh trên.' + (note ? (' Ghi chú thêm: ' + note) : '') });
-
-  var res = UrlFetchApp.fetch('https://api.anthropic.com/v1/messages', {
-    method: 'post',
-    contentType: 'application/json',
-    muteHttpExceptions: true,
-    headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-    payload: JSON.stringify({
-      model: CLAUDE_MODEL,
-      max_tokens: 4096,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: content }]
-    })
-  });
-
-  var code = res.getResponseCode();
-  var body = JSON.parse(res.getContentText());
-  if (code !== 200) {
-    throw new Error((body && body.error && body.error.message) || ('Claude API lỗi HTTP ' + code));
-  }
-  var text = (body.content || []).map(function (c) { return c.text || ''; }).join('');
-  if (!text) throw new Error('Claude không trả về nội dung phân tích.');
-  return text;
 }
 
 /** Gỡ markdown code fence nếu model lỡ bọc, rồi parse JSON an toàn. */

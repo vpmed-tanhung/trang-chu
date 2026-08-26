@@ -47,13 +47,13 @@ def test_inpatient_order_web_app_endpoint_is_configured():
     assert '/exec' in js
 
 
-def test_bundled_apps_script_uses_openai_vision_model():
+def test_bundled_apps_script_uses_gemini_free_vision_with_fallback():
     gs = (ROOT / 'apps-script' / 'inpatient-order-review.gs').read_text(encoding='utf-8')
-    assert "var AI_PROVIDER = 'openai'" in gs
-    assert "var OPENAI_MODEL = 'gpt-5.6-terra'" in gs
-    assert "https://api.openai.com/v1/responses" in gs
-    assert "getProperty('OPENAI_API_KEY')" in gs
-    assert 'generativelanguage.googleapis.com' not in gs
+    assert "var GEMINI_MODELS = ['gemini-3.6-flash', 'gemini-3.5-flash-lite']" in gs
+    assert 'https://generativelanguage.googleapis.com/v1beta/models/' in gs
+    assert "getProperty('GEMINI_API_KEY')" in gs
+    assert "responseMimeType: 'application/json'" in gs
+    assert 'https://api.openai.com' not in gs
 
 
 def test_bhyt_ocr_text_has_optional_ai_review_without_uploading_images():
@@ -66,8 +66,8 @@ def test_bhyt_ocr_text_has_optional_ai_review_without_uploading_images():
     assert 'images:' not in js
     assert 'handleAnalyzeBhytPrescriptionText' in gs
     assert "payload.action === 'analyzeBhytPrescriptionText'" in gs
-    assert gs.count('Định dạng bắt buộc: json_object') == 2
-    assert gs.count('chỉ trả về một json object hợp lệ') == 2
+    assert 'callGeminiText(BHYT_TEXT_PROMPT, text)' in gs
+    assert 'requestGemini(instructions' in gs
 
 
 def test_inpatient_order_has_compact_busy_indicator():
