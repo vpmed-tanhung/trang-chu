@@ -109,6 +109,7 @@ jobs:
             assets/pharmacovigilance_auto_data.js \
             assets/app-version.json \
             assets/platform-shell.js \
+            sw.js \
             SHA256SUMS.txt
           if git diff --cached --quiet; then
             echo "Không có thay đổi cần lưu."
@@ -130,7 +131,7 @@ jobs:
             git rebase origin/main
             python scripts/update_clinical_data_version.py
             python scripts/update_sha256sums.py
-            git add assets/app-version.json SHA256SUMS.txt
+            git add assets/app-version.json sw.js SHA256SUMS.txt
             if ! git diff --cached --quiet; then
               git commit --amend --no-edit
             fi

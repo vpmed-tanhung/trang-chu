@@ -1,7 +1,13 @@
 'use strict';
 
 const assert=require('assert');
-const catalog=require('../data/icd10_byt2026_min.json').map(item=>item.code);
+const fs=require('fs');
+const path=require('path');
+
+const icdSource=fs.readFileSync(path.join(__dirname,'../assets/icd10_byt2026_data.js'),'utf8').trim();
+const icdPrefix='window.VPMED_ICD10_BYT2026=';
+assert.ok(icdSource.startsWith(icdPrefix)&&icdSource.endsWith(';'),'ICD-10 runtime data must remain a direct window assignment');
+const catalog=JSON.parse(icdSource.slice(icdPrefix.length,-1)).map(item=>item.code);
 const ocr=require('../assets/prescription-diagnosis-ocr.js');
 
 const printedPrescription=`

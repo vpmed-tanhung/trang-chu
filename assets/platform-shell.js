@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.08.22.46';
+  const BUILD_VERSION = '2026.08.23.49';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -127,10 +127,22 @@
       styles: [],
       scripts: [
         'assets/pharmacovigilance_alerts_data.js?v=20260711',
-        'assets/pharmacovigilance_auto_data.js?v=20260826062453',
+        'assets/pharmacovigilance_auto_data.js?v=20260823075701',
         'assets/pharmacovigilance_bulletin_76_data.js?v=20260804',
         'assets/pharmacovigilance_auto_editor.js?v=20260823-concise-summary-v2',
         'assets/pharmacovigilance_integration.js?v=20260823-concise-summary-v2'
+      ]
+    },
+    'icd10-bhyt': {
+      styles: [],
+      scripts: [
+        'assets/data.js',
+        'assets/inpatient_medicines_20260707.js',
+        'assets/drug_profiles_305_vpmed_20260710.js',
+        'assets/icd10_verified_profiles_20260710.js',
+        'assets/infusion_guide_update_20260709.js',
+        'assets/icd10_byt2026_data.js?v=20260824-icd10-bhyt-enable-v1',
+        'assets/icd10_bhyt_lookup.js?v=20260824-icd10-bhyt-enable-v1'
       ]
     }
   });
@@ -301,7 +313,7 @@
   }
 
   async function openFeature(requestedName, options = {}) {
-    const name = requestedName === 'icd10-bhyt' ? 'home' : requestedName;
+    const name = requestedName;
     if (!FEATURE_BUNDLES[name]) {
       toast('Công cụ này chưa sẵn sàng.', {tone: 'warning'});
       return;

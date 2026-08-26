@@ -22,6 +22,21 @@ CLINICAL_NAME = re.compile(
     r"hepatotoxicity|injectable|stock|source)",
     re.IGNORECASE,
 )
+PHARMACOVIGILANCE_AUTO_FILES = {
+    "pharmacovigilance_auto.json",
+    "pharmacovigilance_auto_data.js",
+}
+NON_CLINICAL_METADATA_FIELDS = {
+    "generated_at",
+    "source_listing_count",
+    "newly_fetched_count",
+    "retained_history_count",
+    "detail_error_count",
+}
+AUTO_DATA_ASSIGNMENT_RE = re.compile(
+    r"\s*window\.VPMED_PHARMACOVIGILANCE_AUTO_DATA\s*=\s*(\{.*\});\s*",
+    re.DOTALL,
+)
 
 
 def clinical_files() -> list[Path]:
@@ -38,13 +53,39 @@ def clinical_files() -> list[Path]:
     )
 
 
+def clinical_file_bytes(path: Path) -> bytes:
+    if path.name not in PHARMACOVIGILANCE_AUTO_FILES:
+        return path.read_bytes()
+
+    if path.suffix.lower() == ".json":
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    else:
+        source = path.read_text(encoding="utf-8")
+        match = AUTO_DATA_ASSIGNMENT_RE.fullmatch(source)
+        if not match:
+            raise RuntimeError(f"Không đọc được dữ liệu cảnh báo dược trong {path}.")
+        payload = json.loads(match.group(1))
+
+    if not isinstance(payload, dict):
+        raise RuntimeError(f"Dữ liệu cảnh báo dược trong {path} không phải object.")
+    normalized_payload = dict(payload)
+    for field in NON_CLINICAL_METADATA_FIELDS:
+        normalized_payload.pop(field, None)
+    return json.dumps(
+        normalized_payload,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+
 def clinical_digest(paths: list[Path]) -> str:
     digest = hashlib.sha256()
     for path in paths:
         relative = path.relative_to(ROOT).as_posix().encode("utf-8")
         digest.update(relative)
         digest.update(b"\0")
-        digest.update(path.read_bytes())
+        digest.update(clinical_file_bytes(path))
         digest.update(b"\0")
     return digest.hexdigest()
 

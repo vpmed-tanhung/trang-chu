@@ -25,6 +25,16 @@ begin
     end if;
   end loop;
 
+  -- Event trigger nội bộ không phải RPC công khai. Giữ nguyên cấu hình hàm,
+  -- chỉ thu hồi quyền thực thi công khai để anon không thể gọi qua Data API.
+  function_signature := 'public.rls_auto_enable()';
+  if to_regprocedure(function_signature) is not null then
+    execute format(
+      'revoke all on function %s from public, anon',
+      function_signature
+    );
+  end if;
+
   -- RPC được client gọi. Mặc định thu hồi mọi quyền, sau đó chỉ cấp lại cho
   -- authenticated; từng hàm vẫn tự kiểm tra auth.uid(), status và role admin.
   foreach function_signature in array array[
@@ -52,13 +62,15 @@ notify pgrst, 'reload schema';
 
 commit;
 
--- Kiểm tra: proconfig phải chứa search_path="" cho các hàm đã tồn tại.
+-- Kiểm tra: các hàm nội bộ phải có anon_can_execute = false; các hàm được
+-- harden ở trên phải giữ cấu hình search_path mong đợi.
 select
   n.nspname as schema_name,
   p.proname as function_name,
   pg_get_function_identity_arguments(p.oid) as arguments,
   p.prosecdef as security_definer,
-  p.proconfig as function_config
+  p.proconfig as function_config,
+  has_function_privilege('anon', p.oid, 'EXECUTE') as anon_can_execute
 from pg_proc p
 join pg_namespace n on n.oid = p.pronamespace
 where n.nspname = 'public'
@@ -67,6 +79,7 @@ where n.nspname = 'public'
     'handle_new_vpmed_user',
     'fill_renal_lookup_identity',
     'normalize_renal_lookup_patient_code',
+    'rls_auto_enable',
     'is_vpmed_admin',
     'is_vpmed_approved_user',
     'touch_my_last_login',

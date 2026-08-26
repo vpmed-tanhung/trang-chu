@@ -23,6 +23,14 @@ def test_all_notifier_pages_are_stamped_with_current_build():
         assert match.group(1) == version, f'{page} đang đóng dấu build cũ'
 
 
+def test_platform_shell_uses_current_build():
+    version = json.loads((ROOT / 'assets' / 'app-version.json').read_text(encoding='utf-8'))['version']
+    shell = (ROOT / 'assets' / 'platform-shell.js').read_text(encoding='utf-8')
+    match = re.search(r"const BUILD_VERSION = '([^']+)'", shell)
+    assert match, 'platform-shell.js thiếu BUILD_VERSION'
+    assert match.group(1) == version, 'platform-shell.js đang dùng build cũ'
+
+
 def test_notifier_verifies_loaded_build_before_success():
     js = (ROOT / 'assets' / 'update-notifier.js').read_text(encoding='utf-8')
     assert 'getLoadedBuildVersion' in js

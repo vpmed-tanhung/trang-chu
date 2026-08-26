@@ -11,7 +11,9 @@ ROOT = Path(__file__).resolve().parents[1]
 VERSION_FILE = ROOT / "assets" / "app-version.json"
 INDEX_FILE = ROOT / "index.html"
 SERVICE_WORKER_FILE = ROOT / "sw.js"
+PLATFORM_SHELL_FILE = ROOT / "assets" / "platform-shell.js"
 APP_VERSION_RE = re.compile(r"(const APP_VERSION = ')[^']+(';)")
+PLATFORM_BUILD_VERSION_RE = re.compile(r"(const BUILD_VERSION = ')[^']+(';)")
 BUILD_META_RE = re.compile(
     r'(<meta\s+name="vpmed-build-version"\s+content=")[^"]+("\s*/?>)',
 )
@@ -88,6 +90,16 @@ def main():
     if worker_count != 1:
         raise SystemExit("Không cập nhật được APP_VERSION trong sw.js")
     SERVICE_WORKER_FILE.write_text(worker2, encoding="utf-8", newline="\n")
+
+    platform_shell = PLATFORM_SHELL_FILE.read_text(encoding="utf-8")
+    platform_shell2, platform_shell_count = PLATFORM_BUILD_VERSION_RE.subn(
+        rf"\g<1>{args.build}\g<2>",
+        platform_shell,
+        count=1,
+    )
+    if platform_shell_count != 1:
+        raise SystemExit("Không cập nhật được BUILD_VERSION trong assets/platform-shell.js")
+    PLATFORM_SHELL_FILE.write_text(platform_shell2, encoding="utf-8", newline="\n")
     print(f"Đã đồng bộ bản phát hành v{args.display} / build {args.build}; footer v{footer_display}")
 
 

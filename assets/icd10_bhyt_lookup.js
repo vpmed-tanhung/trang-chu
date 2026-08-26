@@ -173,7 +173,7 @@
     {term:'Rối loạn lipid máu', re:/tăng cholesterol|rối loạn lipid|tăng triglycerid/i, codes:['E78.5']},
     {term:'Viêm mũi dị ứng', re:/viêm mũi dị ứng/i, codes:['J30.4']},
     {term:'Mày đay', re:/mày đay/i, codes:['L50.9']},
-    {term:'Hen phế quản', re:/hen|hen phế quản/i, codes:['J45.9']},
+    {term:'Hen phế quản', re:/\bhen\b|hen phế quản/i, codes:['J45.9']},
     {term:'Bệnh phổi tắc nghẽn mạn tính', re:/COPD|phổi tắc nghẽn mạn/i, codes:['J44.9']},
     {term:'Tiêu chảy/viêm dạ dày–ruột', re:/tiêu chảy cấp|viêm dạ dày.*ruột/i, codes:['A09']},
     {term:'Táo bón', re:/táo bón/i, codes:['K59.0']},

@@ -136,7 +136,7 @@
         <button class="feature-card" data-open="injectable-guide"><span class="feature-icon">💉</span><b>Pha &amp; Bảo quản Thuốc Tiêm</b><small>Tra cứu cách pha, bảo quản và tương kỵ thuốc tiêm.</small><em>Đang hoạt động</em></button>
         <button class="feature-card pharmacovigilance-feature" data-open="pharmacovigilance"><span class="feature-icon">🛡️</span><b>Cảnh giác dược</b><small>Tra cứu cảnh báo an toàn thuốc và khuyến nghị theo dõi mới nhất.</small><em>Đang hoạt động</em></button>
 
-        <button type="button" class="feature-card icd10-feature" data-open="icd10-bhyt" disabled aria-disabled="true" title="Chức năng đang cập nhật"><span class="feature-icon">🧾</span><b>ICD-10 & BHYT theo thuốc nội trú</b><small>Tra cứu mã ICD-10 và điều kiện BHYT theo thuốc.</small><em>Đang cập nhật</em></button>
+        <button type="button" class="feature-card icd10-feature" data-open="icd10-bhyt"><span class="feature-icon">🧾</span><b>ICD-10 & BHYT theo thuốc nội trú</b><small>Tra cứu mã ICD-10 và điều kiện BHYT theo thuốc.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="sources" data-intro-exclude="true"><span class="feature-icon">📚</span><b>Nguồn dữ liệu hệ thống</b><small>Xem tài liệu nguồn và nguyên tắc ưu tiên dữ liệu.</small><em>Đang hoạt động</em></button>
       </div>
     </section>
@@ -944,6 +944,13 @@ Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối
       <div class="section-heading"><div><span class="kicker">Tra cứu ICD-10 trực tiếp</span><h2>Tìm theo chẩn đoán thực tế</h2></div></div>
       <label class="icd-direct-label">Nhập mã ICD, tên bệnh hoặc từ khóa chẩn đoán<input id="icdDirectQ" placeholder="Ví dụ: viêm phổi, viêm bàng quang, nhiễm khuẩn huyết, K83.0..."></label>
       <div id="icdDirectResults" class="icd-direct-results"></div>
+    </section>
+    <section class="section-card compact icd10-card">
+      <div class="section-heading"><div><span class="kicker">Căn cứ pháp lý</span><h2>Nguồn dữ liệu ICD-10</h2></div></div>
+      <div class="source-grid">
+        <article class="source-card"><div>📄</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/4/06-byt.pdf">Thông tư 06/2026/TT-BYT – Mã hóa bệnh tật, nguyên nhân tử vong theo ICD-10 <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Cổng Thông tin điện tử Chính phủ. Hiệu lực từ 01/07/2026; khoản 2, khoản 3 Điều 5 hiệu lực từ 01/06/2026.</p></article>
+        <article class="source-card"><div>🧾</div><h3><a class="source-title-link" target="_blank" rel="noopener noreferrer" href="https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/4/06-byt-kem.pdf">Phụ lục – Danh mục mã ICD-10 (15.844 mã) <span class="source-link-icon" aria-hidden="true">↗</span></a></h3><p>Mở trực tiếp bản PDF gốc do Bộ Y tế ban hành kèm theo Thông tư. Dữ liệu tra cứu bên trên được đối chiếu đầy đủ với phụ lục này.</p></article>
+      </div>
     </section>
   </section>
 

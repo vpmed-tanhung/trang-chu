@@ -2464,9 +2464,9 @@ function hl(s,q){
 function injNormalizeText(t){
   if(!t) return t;
   // Fix space before colon: "TTM :" → "TTM:"
-  t=t.replace(/(TTM|TM|TB|TDD|NKQ)\s+:/g,"$1:");
+  t=t.replace(/\b(TTM|TM|TB|TDD|NKQ)\s+:/g,"$1:");
   // Fix missing space after colon: "TM:word" → "TM: word"
-  t=t.replace(/(PHÒNG PHA TIÊM|TTM|TM|TB|TDD|NKQ):([^\s])/g,"$1: $2");
+  t=t.replace(/\b(PHÒNG PHA TIÊM|TTM|TM|TB|TDD|NKQ):([^\s])/g,"$1: $2");
   return t;
 }
 

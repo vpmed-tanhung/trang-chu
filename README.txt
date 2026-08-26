@@ -1,4 +1,4 @@
-VPMED — GHI CHÚ CẬP NHẬT HỆ THỐNG (cập nhật gần nhất: 20/08/2026, bản 5.0)
+VPMED — GHI CHÚ CẬP NHẬT HỆ THỐNG (cập nhật gần nhất: 23/08/2026, bản 5.5.0)
 
 Tài liệu này tóm tắt các thay đổi đang có hiệu lực trên website, viết theo đúng
 những gì mã nguồn hiện triển khai. Xem chi tiết kỹ thuật/lịch sử đầy đủ trong
