@@ -77,7 +77,7 @@
         'assets/icd-clinical-match.js?v=20260817-tt06-2026',
         'assets/prescription-diagnosis-ocr.js?v=20260817-exact-icd-v2',
         'assets/prescription-result-model.js?v=20260822-behavior-tests-v1',
-        'assets/prescription-check.js?v=20260822-behavior-tests-v1'
+        'assets/prescription-check.js?v=20260826-bhyt-ai-text-v1'
       ]
     },
     'inpatient-order': {

@@ -4,7 +4,8 @@
  * - Bổ sung lớp cảnh giác dược quốc gia VPMED_RX_INTERACTION_SUPPLEMENTAL
  *   nhưng không tự động quy cảnh báo bổ sung thành chống chỉ định pháp lý
  * - Phân biệt thuốc BHYT thiếu mã bệnh với trường hợp đã có chẩn đoán liên quan nhưng mã chưa thật sự phù hợp
- * - OCR ảnh chỉ hỗ trợ nhập liệu; nhân viên y tế phải xác nhận tên thuốc
+ * - OCR ảnh chạy cục bộ; chỉ văn bản OCR đã lọc định danh được gửi tới AI
+ * - AI bổ sung lớp rà soát, không thay thế kết luận từ dữ liệu/quy tắc cục bộ
  */
 (function prescriptionCheckModule(){
   'use strict';
@@ -22,9 +23,10 @@
     .trim();
   const resultModel=window.VPMED_PRESCRIPTION_RESULT;
   if(!resultModel)throw new Error('Thiếu prescription-result-model.js');
+  const BHYT_AI_WEB_APP_URL='https://script.google.com/macros/s/AKfycbyeLZslT5IKRwePrRY3m-k2zlcFLJwsSjDh6etvbihNwQY9UqjgM3BPgN5hRJX9GAX7hg/exec';
   const unique=items=>[...new Set((items||[]).filter(Boolean))];
   const state={
-    drugs:[],files:[],lastCheck:null,nextId:1,nextFileId:1,
+    drugs:[],files:[],lastCheck:null,aiReview:null,aiReviewError:'',nextId:1,nextFileId:1,
     diagnosis:{primary:[],secondary:[],source:'Chờ OCR',conflicts:[],manual:false}
   };
   let dataPromise=null;
@@ -42,6 +44,50 @@
 
   function ocrRunIsCurrent(token){
     return token===ocrRunToken;
+  }
+
+  function deidentifyOcrText(value){
+    const sensitiveFields=['ho ten','ten benh nhan','dia chi','dien thoai','so the bhyt','ma benh nhan','cccd','cmnd'];
+    return String(value||'')
+      .split(/\r?\n/)
+      .filter(line=>!sensitiveFields.some(field=>norm(line).includes(field)))
+      .join('\n')
+      .replace(/\b(?:\+?84|0)(?:[ .-]?\d){9,10}\b/g,'[ĐÃ XÓA SỐ ĐIỆN THOẠI]')
+      .replace(/\b[A-Z]{2}\d{13}\b/gi,'[ĐÃ XÓA MÃ BHYT]')
+      .replace(/\b(?:\d{9}|\d{12})\b/g,'[ĐÃ XÓA MÃ ĐỊNH DANH]')
+      .replace(/\n{3,}/g,'\n\n')
+      .trim()
+      .slice(0,60000);
+  }
+
+  async function requestBhytAiReview(ocrTexts,runToken){
+    const text=deidentifyOcrText((ocrTexts||[]).join('\n\n--- ĐƠN TIẾP THEO ---\n\n'));
+    state.aiReview=null;
+    state.aiReviewError='';
+    if(!text||!BHYT_AI_WEB_APP_URL)return;
+    setOcrProgress(97,'Đang gửi văn bản OCR đã lọc định danh để AI rà soát…');
+    try{
+      const response=await fetch(BHYT_AI_WEB_APP_URL,{
+        method:'POST',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({action:'analyzeBhytPrescriptionText',ocrText:text})
+      });
+      const data=await response.json();
+      if(!response.ok||!data.ok)throw new Error(data.message||`AI lỗi HTTP ${response.status}`);
+      if(!ocrRunIsCurrent(runToken))return;
+      state.aiReview=data.result;
+    }catch(error){
+      if(!ocrRunIsCurrent(runToken))return;
+      state.aiReviewError=error?.message||'Không thể gọi AI; phần rà soát cục bộ vẫn hoạt động.';
+    }
+  }
+
+  function aiReviewHtml(){
+    if(state.aiReviewError)return `<article class="rx-alert rx-alert-info"><div class="rx-alert-header"><span class="rx-alert-icon">AI</span><div><small>Phân tích bổ sung</small><h3>AI tạm thời không khả dụng</h3></div></div><p>${esc(state.aiReviewError)}</p><p>Kết quả đối chiếu cục bộ bên dưới vẫn có hiệu lực.</p></article>`;
+    const review=state.aiReview;
+    if(!review)return '';
+    const issues=Array.isArray(review.issues)?review.issues:[];
+    return `<article class="rx-alert rx-alert-info"><div class="rx-alert-header"><span class="rx-alert-icon">AI</span><div><small>Phân tích bổ sung từ văn bản OCR đã lọc định danh</small><h3>${esc(review.summary||'Kết quả rà soát AI')}</h3></div></div>${issues.map(item=>`<p>• <b>${esc(item.category||'Cần lưu ý')}:</b> ${esc(item.finding||'')} ${item.recommendation?`<br>• <b>Đề nghị:</b> ${esc(item.recommendation)}`:''}</p>`).join('')}<p><b>Độ tin cậy:</b> ${esc(review.confidence||'chưa xác định')}</p><p>${esc(review.disclaimer||'Kết quả AI chỉ hỗ trợ rà soát; nhân viên y tế phải xác minh trên đơn gốc và nguồn chính thức.')}</p></article>`;
   }
 
   function normalizePayment(value){
@@ -986,6 +1032,8 @@
     rx$('#rxSummary').innerHTML=resultModel.buildResultSummaryHtml({interactions:interactions.length,icdIssues:icdIssueCount,checked:state.drugs.length});
 
     const blocks=[];
+    const aiBlock=aiReviewHtml();
+    if(aiBlock)blocks.push(aiBlock);
     interactions.forEach(hit=>blocks.push(interactionHtml(hit)));
     if(missingPrimary)blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><small>OCR chẩn đoán chưa hoàn tất</small><h3>${noDiagnosis?'Chưa nhận diện được mã bệnh trên các đơn':'Đã thấy mã bệnh kèm theo nhưng chưa xác định được mã bệnh chính'}</h3></div></div><p>Hệ thống đã tự tìm vùng chẩn đoán nhưng chưa xác định chắc MA_BENH_CHINH. Hãy kiểm tra chất lượng ảnh hoặc dùng mục “Chỉnh lại nếu OCR đọc sai”; không tự thêm mã khi hồ sơ không có chẩn đoán tương ứng.</p></article>`);
     if(diagnosisConflict)blocks.push(`<article class="rx-alert rx-alert-warning"><div class="rx-alert-header"><span class="rx-alert-icon">!</span><div><small>Nhiều ứng viên mã bệnh chính</small><h3>${esc(state.diagnosis.conflicts.map(icdLabel).join(' · '))}</h3></div></div><p>Các đơn trong cùng lượt có mã bệnh chính OCR khác nhau. Cần xác nhận đúng mã chính trước khi gửi dữ liệu giám định.</p></article>`);
@@ -1071,6 +1119,7 @@
       state.drugs=state.drugs.filter(drug=>!sourceIds.has(drug.sourceId));
       state.diagnosis={primary:[],secondary:[],source:'Đang OCR chẩn đoán',conflicts:[],manual:false};
       let currentIndex=0,ocrPass=0;
+      const aiTexts=[];
       const ocrPassCount=3;
       setOcrProgress(8,'Đang nạp bộ OCR cục bộ…');
       const Tesseract=await loadTesseract();
@@ -1113,6 +1162,7 @@
           enhancedImage=null;
           if(!ocrRunIsCurrent(runToken))break;
           const text=[pagePass.data?.text||'',densePass.data?.text||'',sparsePass.data?.text||''].join('\n');
+          aiTexts.push(text);
           const drugs=applyRecognizedText(entry,text);
           if(!ocrRunIsCurrent(runToken))break;
           state.drugs.push(...drugs);
@@ -1131,6 +1181,8 @@
         renderRows();
         mergeDiagnosisFromFiles();
       }
+      if(!ocrRunIsCurrent(runToken))return;
+      await requestBhytAiReview(aiTexts,runToken);
       if(!ocrRunIsCurrent(runToken))return;
       markStale();
       rx$('#rxOcrProgress').hidden=true;
@@ -1173,6 +1225,8 @@
     state.drugs=[];
     state.files=[];
     state.lastCheck=null;
+    state.aiReview=null;
+    state.aiReviewError='';
     state.nextId=1;
     state.nextFileId=1;
     state.diagnosis={primary:[],secondary:[],source:'Chờ OCR',conflicts:[],manual:false};
@@ -1315,4 +1369,3 @@
   renderRows();
   if(location.hash==='#prescription-check')ensureData().catch(()=>{});
 })();
-

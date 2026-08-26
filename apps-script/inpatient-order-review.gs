@@ -36,6 +36,15 @@ var AI_PROVIDER = 'openai'; // 'openai' | 'claude'
 var OPENAI_MODEL = 'gpt-5.6-terra';
 var CLAUDE_MODEL = 'claude-sonnet-5';
 
+var BHYT_TEXT_PROMPT = [
+  'VAI TRÒ: Dược sĩ kiểm tra đơn thuốc ngoại trú BHYT tại Việt Nam.',
+  'INPUT chỉ là văn bản OCR đã được lọc thông tin định danh; có thể sai, thiếu hoặc lặp do OCR nhiều lượt.',
+  'NHIỆM VỤ: phát hiện điểm cần xác minh về tên thuốc, hàm lượng, liều/cách dùng, trùng hoạt chất, tương tác, mã ICD và dấu hiệu phân loại BHYT/dịch vụ.',
+  'Không tự kết luận thanh toán, xuất toán hay tính hợp lệ pháp lý. Không bịa dữ liệu bị thiếu. Mọi nhận định phải yêu cầu đối chiếu đơn gốc, HDSD/SPC, phác đồ Bộ Y tế và quy định BHYT hiện hành.',
+  'Chỉ trả một JSON object hợp lệ, không markdown, đúng cấu trúc:',
+  '{"summary":"string","issues":[{"category":"OCR|thuốc|liều-cách dùng|tương tác|ICD-BHYT","severity":"cao|vừa|thấp","finding":"string","recommendation":"string"}],"confidence":"cao|trung bình|thấp","disclaimer":"string"}'
+].join('\n');
+
 var SYSTEM_PROMPT = [
   'VAI TRÒ: Bạn là Dược sĩ lâm sàng cấp cao (Senior Clinical Pharmacist), chuyên sâu Dược lâm sàng nội trú tại bệnh viện Việt Nam, dày kinh nghiệm đọc và rà soát y lệnh dùng thuốc trong bệnh án.',
   '',
@@ -88,6 +97,20 @@ function handleAnalyzeInpatientOrder(payload) {
   } catch (err) {
     var detail = err && err.message ? err.message : String(err);
     return { ok: false, message: 'Không thể phân tích lúc này. Vui lòng thử lại sau. Chi tiết: ' + detail };
+  }
+}
+
+function handleAnalyzeBhytPrescriptionText(payload) {
+  var text = String(payload && payload.ocrText || '').trim();
+  if (!text) return { ok: false, message: 'Chưa nhận được văn bản OCR.' };
+  if (text.length > 60000) return { ok: false, message: 'Văn bản OCR vượt giới hạn 60.000 ký tự.' };
+  try {
+    var resultText = callOpenAIText(BHYT_TEXT_PROMPT, text);
+    var parsed = parseModelJson(resultText);
+    if (!parsed) return { ok: false, message: 'AI trả về định dạng không hợp lệ. Vui lòng thử lại.' };
+    return { ok: true, result: parsed };
+  } catch (err) {
+    return { ok: false, message: 'Không thể phân tích văn bản OCR lúc này. Chi tiết: ' + (err && err.message ? err.message : err) };
   }
 }
 
@@ -152,6 +175,36 @@ function extractOpenAIText(body) {
   return chunks.join('');
 }
 
+function callOpenAIText(instructions, inputText) {
+  var apiKey = PropertiesService.getScriptProperties().getProperty('OPENAI_API_KEY');
+  if (!apiKey) throw new Error('Chưa cấu hình OPENAI_API_KEY trong Script Properties.');
+  var res;
+  var code;
+  var request = {
+    model: OPENAI_MODEL,
+    instructions: instructions,
+    input: [{ role: 'user', content: [{ type: 'input_text', text: inputText }] }],
+    text: { format: { type: 'json_object' } },
+    reasoning: { effort: 'low' },
+    max_output_tokens: 4096
+  };
+  for (var attempt = 0; attempt < 3; attempt++) {
+    res = UrlFetchApp.fetch('https://api.openai.com/v1/responses', {
+      method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+      headers: { Authorization: 'Bearer ' + apiKey }, payload: JSON.stringify(request)
+    });
+    code = res.getResponseCode();
+    if (code !== 429 && code < 500) break;
+    if (attempt < 2) Utilities.sleep(Math.pow(2, attempt) * 1000);
+  }
+  var body;
+  try { body = JSON.parse(res.getContentText()); } catch (e) { body = {}; }
+  if (code < 200 || code >= 300) throw new Error((body.error && body.error.message) || ('OpenAI API lỗi HTTP ' + code));
+  var text = extractOpenAIText(body);
+  if (!text) throw new Error('OpenAI không trả về nội dung phân tích.');
+  return text;
+}
+
 /** Phương án thay thế nếu đặt AI_PROVIDER = 'claude'. */
 function callClaude(images, note) {
   var apiKey = PropertiesService.getScriptProperties().getProperty('ANTHROPIC_API_KEY');
@@ -203,7 +256,9 @@ function parseModelJson(text) {
  */
 function doPost(e) {
   var payload = JSON.parse(e.postData.contents);
-  var result = handleAnalyzeInpatientOrder(payload);
+  var result = payload.action === 'analyzeBhytPrescriptionText'
+    ? handleAnalyzeBhytPrescriptionText(payload)
+    : handleAnalyzeInpatientOrder(payload);
   return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
 }
 

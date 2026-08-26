@@ -23,7 +23,7 @@ def test_inpatient_order_feature_is_wired_without_regressing_rx_review():
     assert 'phân biệt thiếu mã bệnh với mã bệnh chưa thật sự phù hợp' in html
     assert 'HDSD/SPC Cục QLD · Dược thư QGVN III · Phác đồ/Hướng dẫn BYT' in html
     assert 'TT20/2022 · TT37/2024 · TT01/2025 · NĐ188/2025' in html
-    assert 'assets/prescription-check.js?v=20260822-behavior-tests-v1' in shell
+    assert 'assets/prescription-check.js?v=20260826-bhyt-ai-text-v1' in shell
 
 
 def test_inpatient_order_artifacts_are_present():
@@ -54,6 +54,18 @@ def test_bundled_apps_script_uses_openai_vision_model():
     assert "https://api.openai.com/v1/responses" in gs
     assert "getProperty('OPENAI_API_KEY')" in gs
     assert 'generativelanguage.googleapis.com' not in gs
+
+
+def test_bhyt_ocr_text_has_optional_ai_review_without_uploading_images():
+    js = (ROOT / 'assets' / 'prescription-check.js').read_text(encoding='utf-8')
+    gs = (ROOT / 'apps-script' / 'inpatient-order-review.gs').read_text(encoding='utf-8')
+
+    assert 'deidentifyOcrText' in js
+    assert "action:'analyzeBhytPrescriptionText'" in js
+    assert 'ocrText:text' in js
+    assert 'images:' not in js
+    assert 'handleAnalyzeBhytPrescriptionText' in gs
+    assert "payload.action === 'analyzeBhytPrescriptionText'" in gs
 
 
 def test_inpatient_order_has_compact_busy_indicator():

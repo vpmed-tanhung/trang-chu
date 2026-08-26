@@ -59,13 +59,13 @@ Nút **Đơn mới** chỉ được bật sau khi đã kiểm tra đơn. Khi b�
 - Kê đơn ngoại trú: Thông tư 26/2025/TT-BYT, đồng thời đối chiếu HDSD/SPC và hướng dẫn chuyên môn theo bệnh khi đánh giá chỉ định, liều và cách dùng.
 - Tương tác chống chỉ định: Quyết định 5948/QĐ-BYT; lớp cảnh giác dược bổ sung được phân tầng theo QĐ 29/QĐ-BYT/Trung tâm DI&ADR Quốc gia và không tự động nâng thành chống chỉ định nếu văn bản không quy định.
 - Khi một thuốc có hồ sơ kiểm chứng tăng cường theo đúng hoạt chất hoặc số đăng ký, hồ sơ này được ưu tiên hơn bản đồ ICD tổng hợp. Hồ sơ phải giữ nguồn dẫn chứng và không được dùng ảnh đơn thuốc của người dùng để mở rộng dữ liệu.
-- Website không gửi ảnh đơn, toàn văn OCR hoặc mã bệnh của người dùng ra ngoài để tra cứu. Việc mở rộng nguồn áp dụng cho kho tài liệu chuyên môn/căn cứ được quản trị và các cổng chính thức, không làm thay đổi nguyên tắc tối thiểu hóa dữ liệu người bệnh.
+- Website không gửi ảnh đơn ra ngoài. Sau OCR cục bộ, văn bản được tự động loại các dòng/trường định danh phổ biến rồi mới gửi tới AI để rà soát bổ sung; kết luận chính vẫn dựa trên dữ liệu và quy tắc cục bộ.
 
 ## Quy tắc riêng tư và tối thiểu dữ liệu
 
 - Chỉ nhận tệp ảnh; không có chế độ gửi ảnh lên OCR/Vision máy chủ.
-- Tesseract.js chạy trong trình duyệt. Ảnh không được tải lên website hoặc dịch vụ bên ngoài.
-- Toàn văn OCR chỉ tồn tại tạm trong biến xử lý và không được ghi vào giao diện, `localStorage`, cơ sở dữ liệu hoặc nhật ký.
+- Tesseract.js chạy trong trình duyệt. Ảnh không được tải lên website hoặc dịch vụ bên ngoài; chỉ văn bản OCR đã lọc định danh được gửi qua Apps Script tới AI.
+- Toàn văn OCR chỉ tồn tại tạm trong biến xử lý, được lọc định danh trước khi gửi AI và không được ghi vào `localStorage`, cơ sở dữ liệu hoặc nhật ký.
 - Tên tệp thật không được đọc hoặc hiển thị; hàng đợi chỉ dùng nhãn trung tính `Đơn 01`, `Đơn 02`.
 - Sau mỗi ảnh, tham chiếu tới tệp được xóa; sau cả lô, OCR worker được kết thúc để giải phóng dữ liệu ảnh và văn bản thô.
 - Chỉ giữ trong phiên: loại đơn, MA_BENH_CHINH, các mã bệnh kèm theo và thuốc đã chuẩn hóa.
@@ -73,7 +73,7 @@ Nút **Đơn mới** chỉ được bật sau khi đã kiểm tra đơn. Khi b�
 - Ảnh và nội dung OCR không được sử dụng để xây dựng dữ liệu nguồn hoặc huấn luyện.
 - Ảnh người dùng cung cấp để báo lỗi chỉ được dùng để xác định đường đi gây lỗi; không trích nội dung của ảnh để sửa, mở rộng hay hard-code hồ sơ thuốc/ICD.
 
-Do yêu cầu riêng tư này, PDF và OCR máy chủ không được hỗ trợ. Khả năng nhận chữ viết tay hoặc ảnh mờ có giới hạn.
+PDF và OCR máy chủ không được hỗ trợ. Khả năng nhận chữ viết tay hoặc ảnh mờ có giới hạn; bộ lọc định danh tự động không thay thế việc người dùng kiểm tra dữ liệu trước khi xử lý.
 
 ## Giới hạn an toàn
 

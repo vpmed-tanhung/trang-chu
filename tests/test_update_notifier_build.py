@@ -72,7 +72,7 @@ def test_notifier_verifies_loaded_build_before_success():
 def test_changed_prescription_asset_has_current_cache_buster():
     shell = (ROOT / 'assets' / 'platform-shell.js').read_text(encoding='utf-8')
     assert 'assets/prescription-result-model.js?v=20260822-behavior-tests-v1' in shell
-    assert 'assets/prescription-check.js?v=20260822-behavior-tests-v1' in shell
+    assert 'assets/prescription-check.js?v=20260826-bhyt-ai-text-v1' in shell
     assert 'showWorkerUpdateBanner' in shell
     assert 'vpmedUpdateBanner' in shell
     assert 'vpmed:app-update-available' in shell
