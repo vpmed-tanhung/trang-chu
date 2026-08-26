@@ -66,6 +66,8 @@ def test_bhyt_ocr_text_has_optional_ai_review_without_uploading_images():
     assert 'images:' not in js
     assert 'handleAnalyzeBhytPrescriptionText' in gs
     assert "payload.action === 'analyzeBhytPrescriptionText'" in gs
+    assert gs.count('Định dạng bắt buộc: json_object') == 2
+    assert gs.count('chỉ trả về một json object hợp lệ') == 2
 
 
 def test_inpatient_order_has_compact_busy_indicator():

@@ -120,7 +120,7 @@ function callOpenAI(images, note) {
 
   var content = [{
     type: 'input_text',
-    text: 'Phân tích y lệnh trong (các) ảnh theo đúng hướng dẫn.' +
+    text: 'Phân tích y lệnh trong (các) ảnh theo đúng hướng dẫn. Định dạng bắt buộc: json_object; chỉ trả về một json object hợp lệ.' +
       (note ? ('\n\nGhi chú thêm từ dược sĩ: ' + note) : '')
   }];
   images.forEach(function (img) {
@@ -183,7 +183,13 @@ function callOpenAIText(instructions, inputText) {
   var request = {
     model: OPENAI_MODEL,
     instructions: instructions,
-    input: [{ role: 'user', content: [{ type: 'input_text', text: inputText }] }],
+    input: [{
+      role: 'user',
+      content: [{
+        type: 'input_text',
+        text: 'Phân tích văn bản OCR sau đây theo đúng cấu trúc đã yêu cầu. Định dạng bắt buộc: json_object; chỉ trả về một json object hợp lệ.\n\n' + inputText
+      }]
+    }],
     text: { format: { type: 'json_object' } },
     reasoning: { effort: 'low' },
     max_output_tokens: 4096
