@@ -2,7 +2,7 @@
  * Phân tích y lệnh dùng thuốc nội trú — Apps Script proxy
  * ----------------------------------------------------------------
  * MỤC ĐÍCH
- * Nhận ảnh y lệnh (base64) từ trình duyệt, gọi AI (mặc định Gemini) kèm
+ * Nhận ảnh y lệnh (base64) từ trình duyệt, gọi OpenAI kèm
  * system prompt cố định, trả kết quả JSON đã phân tích về cho client.
  * API key KHÔNG BAO GIỜ nằm trong code client — chỉ lưu trong
  * Script Properties của dự án Apps Script này.
@@ -12,9 +12,9 @@
  *    clinical-update-secure-client.js / vpmed-history-sync.js), tạo thêm
  *    file .gs mới, dán toàn bộ nội dung này vào.
  * 2. Project Settings → Script Properties → thêm khóa:
- *      GEMINI_API_KEY = <API key Gemini của bạn>
- *    (Muốn dùng Claude thay Gemini: xem hàm callClaude() ở cuối file và
- *     đổi AI_PROVIDER bên dưới thành 'claude', thêm ANTHROPIC_API_KEY.)
+ *      OPENAI_API_KEY = <API key OpenAI của bạn>
+ *    Có thể đổi sang Claude dự phòng bằng cách đặt AI_PROVIDER = 'claude'
+ *    và thêm ANTHROPIC_API_KEY.
  * 3. Trong hàm doPost(e) hiện có của dự án (nếu đã có action router chung),
  *    thêm nhánh: if (action === 'analyzeInpatientOrder') return
  *    handleAnalyzeInpatientOrder(payload); Nếu dự án chưa có router, hàm
@@ -32,8 +32,8 @@
  *   nơi lưu trữ lâu dài; chỉ xử lý trong bộ nhớ của request rồi trả về.
  */
 
-var AI_PROVIDER = 'gemini'; // 'gemini' | 'claude'
-var GEMINI_MODEL = 'gemini-3.6-flash'; // model đã kiểm tra kết nối thành công với deployment hiện tại
+var AI_PROVIDER = 'openai'; // 'openai' | 'claude'
+var OPENAI_MODEL = 'gpt-5.6-terra';
 var CLAUDE_MODEL = 'claude-sonnet-5';
 
 var SYSTEM_PROMPT = [
@@ -78,7 +78,7 @@ function handleAnalyzeInpatientOrder(payload) {
   try {
     var resultText = (AI_PROVIDER === 'claude')
       ? callClaude(images, payload.note)
-      : callGemini(images, payload.note);
+      : callOpenAI(images, payload.note);
 
     var parsed = parseModelJson(resultText);
     if (!parsed) {
@@ -86,41 +86,70 @@ function handleAnalyzeInpatientOrder(payload) {
     }
     return { ok: true, result: parsed };
   } catch (err) {
-    return { ok: false, message: 'Lỗi khi gọi AI: ' + (err && err.message ? err.message : err) };
+    var detail = err && err.message ? err.message : String(err);
+    return { ok: false, message: 'Không thể phân tích lúc này. Vui lòng thử lại sau. Chi tiết: ' + detail };
   }
 }
 
-function callGemini(images, note) {
-  var apiKey = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
-  if (!apiKey) throw new Error('Chưa cấu hình GEMINI_API_KEY trong Script Properties.');
+function callOpenAI(images, note) {
+  var apiKey = PropertiesService.getScriptProperties().getProperty('OPENAI_API_KEY');
+  if (!apiKey) throw new Error('Chưa cấu hình OPENAI_API_KEY trong Script Properties.');
 
-  var parts = [{ text: SYSTEM_PROMPT + (note ? ('\n\nGhi chú thêm từ dược sĩ: ' + note) : '') }];
+  var content = [{
+    type: 'input_text',
+    text: 'Phân tích y lệnh trong (các) ảnh theo đúng hướng dẫn.' +
+      (note ? ('\n\nGhi chú thêm từ dược sĩ: ' + note) : '')
+  }];
   images.forEach(function (img) {
-    parts.push({ inline_data: { mime_type: img.mimeType || 'image/jpeg', data: img.base64 } });
+    content.push({
+      type: 'input_image',
+      image_url: 'data:' + (img.mimeType || 'image/jpeg') + ';base64,' + img.base64,
+      detail: 'high'
+    });
   });
 
-  var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + GEMINI_MODEL + ':generateContent?key=' + apiKey;
-  var res = UrlFetchApp.fetch(url, {
-    method: 'post',
-    contentType: 'application/json',
-    muteHttpExceptions: true,
-    payload: JSON.stringify({
-      contents: [{ role: 'user', parts: parts }],
-      generationConfig: { responseMimeType: 'application/json', temperature: 0.1 }
-    })
-  });
-
-  var code = res.getResponseCode();
-  var body = JSON.parse(res.getContentText());
-  if (code !== 200) {
-    throw new Error((body && body.error && body.error.message) || ('Gemini API lỗi HTTP ' + code));
+  var request = {
+    model: OPENAI_MODEL,
+    instructions: SYSTEM_PROMPT,
+    input: [{ role: 'user', content: content }],
+    text: { format: { type: 'json_object' } },
+    reasoning: { effort: 'low' },
+    max_output_tokens: 8192
+  };
+  var res;
+  var code;
+  for (var attempt = 0; attempt < 3; attempt++) {
+    res = UrlFetchApp.fetch('https://api.openai.com/v1/responses', {
+      method: 'post',
+      contentType: 'application/json',
+      muteHttpExceptions: true,
+      headers: { Authorization: 'Bearer ' + apiKey },
+      payload: JSON.stringify(request)
+    });
+    code = res.getResponseCode();
+    if (code !== 429 && code < 500) break;
+    if (attempt < 2) Utilities.sleep(Math.pow(2, attempt) * 1000);
   }
-  var candidates = body.candidates || [];
-  var text = candidates.length && candidates[0].content && candidates[0].content.parts
-    ? candidates[0].content.parts.map(function (p) { return p.text || ''; }).join('')
-    : '';
-  if (!text) throw new Error('Gemini không trả về nội dung phân tích.');
+
+  var raw = res.getContentText();
+  var body;
+  try { body = JSON.parse(raw); } catch (e) { body = {}; }
+  if (code < 200 || code >= 300) {
+    throw new Error((body.error && body.error.message) || ('OpenAI API lỗi HTTP ' + code));
+  }
+  var text = extractOpenAIText(body);
+  if (!text) throw new Error('OpenAI không trả về nội dung phân tích.');
   return text;
+}
+
+function extractOpenAIText(body) {
+  var chunks = [];
+  (body.output || []).forEach(function (item) {
+    (item.content || []).forEach(function (part) {
+      if ((part.type === 'output_text' || part.type === 'text') && part.text) chunks.push(part.text);
+    });
+  });
+  return chunks.join('');
 }
 
 /** Phương án thay thế nếu đặt AI_PROVIDER = 'claude'. */

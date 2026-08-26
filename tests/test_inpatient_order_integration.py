@@ -47,9 +47,13 @@ def test_inpatient_order_web_app_endpoint_is_configured():
     assert '/exec' in js
 
 
-def test_bundled_apps_script_uses_connected_gemini_model():
+def test_bundled_apps_script_uses_openai_vision_model():
     gs = (ROOT / 'apps-script' / 'inpatient-order-review.gs').read_text(encoding='utf-8')
-    assert "var GEMINI_MODEL = 'gemini-3.6-flash'" in gs
+    assert "var AI_PROVIDER = 'openai'" in gs
+    assert "var OPENAI_MODEL = 'gpt-5.6-terra'" in gs
+    assert "https://api.openai.com/v1/responses" in gs
+    assert "getProperty('OPENAI_API_KEY')" in gs
+    assert 'generativelanguage.googleapis.com' not in gs
 
 
 def test_inpatient_order_has_compact_busy_indicator():
