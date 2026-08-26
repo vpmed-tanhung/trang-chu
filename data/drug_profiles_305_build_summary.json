@@ -1,0 +1,18 @@
+{
+  "profiles": 305,
+  "inventoryItems": 309,
+  "matched": 309,
+  "unmatched": [],
+  "correctedMasterItems": [
+    "Daphazyl",
+    "Daphazyl",
+    "Lactated Ringer's TTKN -25",
+    "Lignospan standard",
+    "Mydrin-P 10ml",
+    "Noradrenalin 1 mg/ml",
+    "Oresol new",
+    "Theresol",
+    "Vincain"
+  ],
+  "qualityCorrections": 12
+}

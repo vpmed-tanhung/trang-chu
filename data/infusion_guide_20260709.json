@@ -1,0 +1,597 @@
+{
+  "metadata": {
+    "title": "Cập nhật dữ liệu pha/truyền kháng sinh",
+    "hospital_page": "https://vpmed-tanhung.github.io/trang-chu-khoa-duoc/#home",
+    "extracted_from": "7 ảnh người dùng cung cấp trong cuộc trò chuyện",
+    "created_at": "2026-07-09T07:30:56",
+    "review_note": "Dữ liệu cần được dược sĩ lâm sàng/HĐT&ĐT đối chiếu tờ hướng dẫn sử dụng của đúng chế phẩm trước khi dùng chính thức.",
+    "integrated_into": "assets/infusion_guide_update_20260709.js",
+    "note": "Bản dữ liệu chuẩn hóa từ ảnh; ưu tiên đối chiếu tờ HDSD đúng chế phẩm khi áp dụng chính thức."
+  },
+  "fields": [
+    "active",
+    "brand_names",
+    "compatible_solutions",
+    "im",
+    "iv_direct",
+    "iv_infusion",
+    "interval",
+    "stability",
+    "adverse_effects",
+    "warnings"
+  ],
+  "infusion_data": [
+    {
+      "stt": 1,
+      "group": "Aminoglycoside",
+      "active": "Amikacin",
+      "brand_names": [
+        "Chemacin 500mg/2ml",
+        "Selemycin 500mg/2ml"
+      ],
+      "compatible_solutions": [
+        "Nước cất",
+        "NaCl 0,9%",
+        "Dextrose 5%"
+      ],
+      "im": "Nước cất 8 ml + 1 lọ hoặc không pha; tiêm trong khối cơ lớn.",
+      "iv_direct": "Không tiêm tĩnh mạch trực tiếp.",
+      "iv_infusion": "500 mg pha trong NaCl 0,9% hoặc Dextrose 5% 100–200 ml; truyền 30–60 phút.",
+      "interval": "8 giờ, 12 giờ hoặc 24 giờ tùy phác đồ/chức năng thận.",
+      "stability": "24 giờ ở nhiệt độ phòng.",
+      "adverse_effects": "Độc thần kinh, độc thận, độc thính giác 1–10%.",
+      "warnings": [
+        "Theo dõi chức năng thận và thính giác; cân nhắc TDM khi dùng kéo dài/nguy cơ cao."
+      ]
+    },
+    {
+      "stt": 12,
+      "group": "Aminoglycoside",
+      "active": "Gentamicin",
+      "brand_names": [
+        "Gentamicin 80mg/2ml"
+      ],
+      "compatible_solutions": [
+        "NaCl 0,9%",
+        "Dextrose 5%"
+      ],
+      "im": "Không cần pha; tiêm sâu vào khối cơ lớn.",
+      "iv_direct": "Không tiêm tĩnh mạch trực tiếp.",
+      "iv_infusion": "Pha trong 50–200 ml; truyền 30–120 phút.",
+      "interval": "8 giờ, 12 giờ hoặc 24 giờ tùy phác đồ/chức năng thận.",
+      "stability": "24 giờ ở nhiệt độ phòng.",
+      "adverse_effects": "Phù, tăng huyết áp, viêm tĩnh mạch, huyết khối, giảm calci/kali/natri, tăng creatinin, đa niệu, suy thận.",
+      "warnings": [
+        "Theo dõi chức năng thận; cân nhắc TDM."
+      ]
+    },
+    {
+      "stt": 2,
+      "group": "Penicillin & phối hợp",
+      "active": "Ampicillin/Sulbactam",
+      "brand_names": [
+        "Unasyn 1g + 0,5g"
+      ],
+      "compatible_solutions": [
+        "Nước cất",
+        "NaCl 0,9%",
+        "Dextrose 5%"
+      ],
+      "im": "Nước cất: 3,2 ml + 1,5 g hoặc 6,4 ml + 3 g; tiêm sâu khối cơ lớn.",
+      "iv_direct": "Nước cất hoặc NaCl 0,9%: 33 ml + 1,5 g; tiêm tĩnh mạch chậm 10–15 phút.",
+      "iv_infusion": "NaCl 0,9%: 1,5 g pha trong 33–500 ml, truyền 15–30 phút. Dextrose 5%: 1,5 g pha trong 50–100 ml.",
+      "interval": "6 giờ, 12 giờ hoặc 24 giờ tùy phác đồ/chức năng thận.",
+      "stability": "8 giờ ở nhiệt độ phòng; 48 giờ ở 4°C.",
+      "adverse_effects": "Đau tại chỗ 16%, huyết khối 3%, viêm tĩnh mạch 1%, phát ban <2%.",
+      "warnings": []
+    },
+    {
+      "stt": 19,
+      "group": "Penicillin & phối hợp",
+      "active": "Piperacillin/Tazobactam",
+      "brand_names": [
+        "Tazocin 4g + 0,5g"
+      ],
+      "compatible_solutions": [
+        "NaCl 0,9%",
+        "Dextrose 5%"
+      ],
+      "im": "Không áp dụng.",
+      "iv_direct": "Không áp dụng/không ưu tiên tiêm tĩnh mạch trực tiếp theo bảng gốc.",
+      "iv_infusion": "Hoàn nguyên 20 ml + 4,5 g; pha loãng trong 50–150 ml; truyền 30–60 phút.",
+      "interval": "6 giờ, 8 giờ hoặc 12 giờ tùy phác đồ/chức năng thận.",
+      "stability": "24 giờ ở nhiệt độ phòng; 48 giờ ở 4°C khi pha trong Dextrose 5%.",
+      "adverse_effects": "Tiêu chảy 11%, nhức đầu 8%, mất ngủ 7%, phát ban 4%, ngứa 3%.",
+      "warnings": []
+    },
+    {
+      "stt": 3,
+      "group": "Cephalosporin",
+      "active": "Cefoperazone/Sulbactam",
+      "brand_names": [
+        "Sulperazone",
+        "Basultam"
+      ],
+      "compatible_solutions": [
+        "Nước cất",
+        "NaCl 0,9%",
+        "Dextrose 5%"
+      ],
+      "im": "Bước 1: nước cất 2,3 ml + 1 g hoặc 4,7 ml + 2 g. Bước 2: thêm 1 ml/2 ml lidocain 2%; tiêm sâu cơ lớn.",
+      "iv_direct": "Nước cất hoặc NaCl 0,9%: 6,7 ml + 2 g, sau đó pha loãng thành 20 ml; tiêm 3–5 phút.",
+      "iv_infusion": "Nước cất hoặc NaCl 0,9%: 6,7 ml + 2 g, pha loãng thành 200 ml; truyền 15–60 phút.",
+      "interval": "12 giờ.",
+      "stability": "8 giờ ở nhiệt độ phòng.",
+      "adverse_effects": "Phát ban, sốt, tăng bạch cầu ái toan.",
+      "warnings": []
+    },
+    {
+      "stt": 4,
+      "group": "Cephalosporin",
+      "active": "Cefoperazone",
+      "brand_names": [
+        "Bifopezon",
+        "Cefobid",
+        "Medocef"
+      ],
+      "compatible_solutions": [
+        "NaCl 0,9%",
+        "Dextrose 5%",
+        "Dextrose 10%"
+      ],
+      "im": "Bước 1: nước cất 2,6 ml + 1 g. Bước 2: thêm 0,9 ml lidocain 2%.",
+      "iv_direct": "NaCl 0,9%, Dextrose 5% hoặc Dextrose 10%: 5 ml + 1 g, sau đó pha loãng thành 10 ml; tiêm 3–5 phút.",
+      "iv_infusion": "5 ml + 1 g; pha loãng trong 50–500 ml; truyền 60 phút.",
+      "interval": "12 giờ.",
+      "stability": "24 giờ ở nhiệt độ phòng.",
+      "adverse_effects": "Giảm hemoglobin/hồng cầu; giảm bạch cầu ưa acid/tiểu cầu; giảm prothrombin huyết.",
+      "warnings": [
+        "Theo dõi nguy cơ rối loạn đông máu/chảy máu ở bệnh nhân nguy cơ cao."
+      ]
+    },
+    {
+      "stt": 5,
+      "group": "Cephalosporin",
+      "active": "Ceftriaxone",
+      "brand_names": [
+        "Rocephin 1g",
+        "Ceftriaxon 1g"
+      ],
+      "compatible_solutions": [
+        "Nước cất",
+        "NaCl 0,9%",
+        "Dextrose 5%",
+        "Lidocain 1% cho tiêm bắp"
+      ],
+      "im": "Nước cất/NaCl/Lidocain 1%: 0,9 ml + 250 mg; 1,8 ml + 500 mg; 3,6 ml + 1 g; 7,2 ml + 2 g. Lưu ý tiêm bắp: có thể dùng 1 ml + 500 mg; 2,1 ml + 1 g; 4,2 ml + 2 g theo bảng gốc.",
+      "iv_direct": "NaCl 0,9% hoặc Dextrose 5%: 2,4 ml + 250 mg; 4,8 ml + 500 mg; 9,6 ml + 1 g; tiêm 3–5 phút.",
+      "iv_infusion": "NaCl 0,9% hoặc Dextrose 5%: 9,6 ml + 1 g hoặc 19,2 ml + 2 g; pha loãng trong 50–100 ml; truyền 30 phút.",
+      "interval": "12 giờ hoặc 24 giờ.",
+      "stability": "72 giờ ở nhiệt độ phòng.",
+      "adverse_effects": "Tăng bạch cầu ái toan 6%, giảm tiểu cầu 5%, giảm bạch cầu 2%, tăng transaminase 3%.",
+      "warnings": []
+    },
+    {
+      "stt": 6,
+      "group": "Cephalosporin",
+      "active": "Ceftazidime",
+      "brand_names": [
+        "Fortum 1g",
+        "Ceftazidime 1g"
+      ],
+      "compatible_solutions": [
+        "Nước cất",
+        "NaCl 0,9%",
+        "Dextrose 5%"
+      ],
+      "im": "",
+      "iv_direct": "Nước cất: 5,3 ml + 500 mg; 10 ml + 1 g; 10 ml + 2 g; tiêm 3–5 phút.",
+      "iv_infusion": "Nước cất/NaCl 0,9%/Dextrose 5%: 1 g hoặc 2 g pha trong 100 ml; truyền 30 phút.",
+      "interval": "",
+      "stability": "12 giờ ở nhiệt độ phòng.",
+      "adverse_effects": "",
+      "warnings": []
+    },
+    {
+      "stt": 7,
+      "group": "Cephalosporin",
+      "active": "Cefuroxime",
+      "brand_names": [
+        "Cefurofast 750mg",
+        "Zinacef 750mg"
+      ],
+      "compatible_solutions": [
+        "Nước cất",
+        "NaCl 0,9%",
+        "Dextrose 5%"
+      ],
+      "im": "",
+      "iv_direct": "Nước cất: 8 ml + 750 mg hoặc 16 ml + 1,5 g; tiêm 3–5 phút.",
+      "iv_infusion": "NaCl 0,9% hoặc Dextrose 5%: 50 ml + 750 mg hoặc 100 ml + 1,5 g; truyền 15–60 phút.",
+      "interval": "",
+      "stability": "24 giờ ở nhiệt độ phòng; 48 giờ ở 5°C.",
+      "adverse_effects": "",
+      "warnings": []
+    },
+    {
+      "stt": 10,
+      "group": "Carbapenem",
+      "active": "Ertapenem",
+      "brand_names": [
+        "Invanz 1g"
+      ],
+      "compatible_solutions": [
+        "Nước cất",
+        "NaCl 0,9%",
+        "Lidocain 1% cho tiêm bắp"
+      ],
+      "im": "Nước cất/NaCl/Lidocain 1%: 3,2 ml + 1 g; tiêm sâu.",
+      "iv_direct": "",
+      "iv_infusion": "Nước cất/NaCl 0,9%: 50 ml + 1 g; truyền 30 phút.",
+      "interval": "24 giờ.",
+      "stability": "Chỉ 6 giờ ở nhiệt độ phòng.",
+      "adverse_effects": "Tiêu chảy 6–12%, tăng tiểu cầu 4–7%, giảm bạch cầu trung tính 6%.",
+      "warnings": [
+        "Độ ổn định ngắn: ưu tiên truyền sớm sau pha."
+      ]
+    },
+    {
+      "stt": 13,
+      "group": "Carbapenem",
+      "active": "Imipenem/Cilastatin",
+      "brand_names": [
+        "Tienam",
+        "Raxadin"
+      ],
+      "compatible_solutions": [],
+      "im": "Không tiêm bắp theo bảng gốc.",
+      "iv_direct": "Không tiêm tĩnh mạch trực tiếp.",
+      "iv_infusion": "Duy nhất truyền tĩnh mạch: 1 g pha trong 100–500 ml. Liều ≤500 mg truyền 20–30 phút; liều 1 g truyền 40–60 phút.",
+      "interval": "6 giờ, 8 giờ hoặc 12 giờ.",
+      "stability": "Chỉ 4 giờ ở nhiệt độ phòng.",
+      "adverse_effects": "",
+      "warnings": [
+        "Độ ổn định ngắn: truyền sớm sau pha."
+      ]
+    },
+    {
+      "stt": 16,
+      "group": "Carbapenem",
+      "active": "Meropenem",
+      "brand_names": [
+        "Meronem 1g",
+        "Meronem 500mg"
+      ],
+      "compatible_solutions": [
+        "Nước cất",
+        "NaCl 0,9%",
+        "Dextrose 5%"
+      ],
+      "im": "",
+      "iv_direct": "Nước cất: 10 ml + 500 mg hoặc 20 ml + 1 g; tiêm 3–5 phút.",
+      "iv_infusion": "500 mg pha trong 10–200 ml; 1 g pha trong 20–400 ml; truyền 60–120 phút theo bảng gốc.",
+      "interval": "6 giờ, 8 giờ, 12 giờ hoặc 24 giờ.",
+      "stability": "Chỉ 2 giờ ở nhiệt độ phòng.",
+      "adverse_effects": "",
+      "warnings": [
+        "Độ ổn định rất ngắn: ưu tiên dùng ngay sau pha."
+      ]
+    },
+    {
+      "stt": 8,
+      "group": "Quinolone",
+      "active": "Ciprofloxacin",
+      "brand_names": [
+        "Ciprobay 400mg/200ml",
+        "Ciprobay 200mg/100ml"
+      ],
+      "compatible_solutions": [
+        "NaCl 0,9%",
+        "Dextrose 5%",
+        "Dextrose 10%"
+      ],
+      "im": "Không áp dụng.",
+      "iv_direct": "Không áp dụng.",
+      "iv_infusion": "Chế phẩm truyền pha sẵn: không cần pha loãng thêm, dùng trực tiếp để truyền tĩnh mạch; truyền 60 phút.",
+      "interval": "12 giờ, 18 giờ hoặc 24 giờ.",
+      "stability": "",
+      "adverse_effects": "Phát ban 1–2%, tiêu chảy 2–5%, buồn nôn 3–4%.",
+      "warnings": []
+    },
+    {
+      "stt": 14,
+      "group": "Quinolone",
+      "active": "Levofloxacin",
+      "brand_names": [
+        "Tavanic",
+        "Levofloxacin 500mg/100ml"
+      ],
+      "compatible_solutions": [
+        "NaCl 0,9%",
+        "Dextrose 5%"
+      ],
+      "im": "Không áp dụng.",
+      "iv_direct": "Không áp dụng.",
+      "iv_infusion": "Chế phẩm truyền pha sẵn: 500 mg truyền 60 phút; 750 mg truyền 90 phút.",
+      "interval": "24 giờ.",
+      "stability": "72 giờ ở nhiệt độ phòng; 14 ngày ở 5°C.",
+      "adverse_effects": "Nhức đầu 6%, mất ngủ 4%, chóng mặt 3%, buồn nôn 7%.",
+      "warnings": []
+    },
+    {
+      "stt": 18,
+      "group": "Quinolone",
+      "active": "Moxifloxacin",
+      "brand_names": [
+        "Avelox 400mg/250ml"
+      ],
+      "compatible_solutions": [],
+      "im": "Không áp dụng.",
+      "iv_direct": "Không áp dụng.",
+      "iv_infusion": "Chế phẩm truyền pha sẵn: truyền 60 phút.",
+      "interval": "24 giờ.",
+      "stability": "Không giữ lạnh.",
+      "adverse_effects": "Nhức đầu 4%, tăng natri máu ≥2%, tăng albumin ≥2%.",
+      "warnings": [
+        "Không bảo quản lạnh."
+      ]
+    },
+    {
+      "stt": 22,
+      "group": "Glycopeptide/Lipopeptide & khác",
+      "active": "Vancomycin",
+      "brand_names": [
+        "Vancomycin 0,5g",
+        "Vancomycin 1g"
+      ],
+      "compatible_solutions": [
+        "Nước cất",
+        "NaCl 0,9%",
+        "Dextrose 5%"
+      ],
+      "im": "Không áp dụng.",
+      "iv_direct": "Tuyệt đối không tiêm tĩnh mạch trực tiếp.",
+      "iv_infusion": "Pha cốt với nước cất 10 ml/20 ml, sau đó pha loãng vào NaCl 0,9% hoặc Dextrose 5% 100 ml/200 ml; truyền tối thiểu 60 phút.",
+      "interval": "8 giờ, 12 giờ hoặc 24 giờ tùy phác đồ/chức năng thận.",
+      "stability": "24 giờ.",
+      "adverse_effects": "Hạ huyết áp >10%, đỏ bừng mặt 1–10%, viêm tĩnh mạch.",
+      "warnings": [
+        "Không tiêm tĩnh mạch trực tiếp.",
+        "Truyền chậm tối thiểu 60 phút để giảm nguy cơ Red Man Syndrome.",
+        "Cân nhắc TDM."
+      ]
+    },
+    {
+      "stt": 15,
+      "group": "Glycopeptide/Lipopeptide & khác",
+      "active": "Linezolid",
+      "brand_names": [
+        "Zyvox",
+        "Linzolid 600mg/300ml"
+      ],
+      "compatible_solutions": [
+        "NaCl 0,9%",
+        "Dextrose 5%",
+        "Ringer Lactat"
+      ],
+      "im": "Không áp dụng.",
+      "iv_direct": "Không áp dụng.",
+      "iv_infusion": "Không pha loãng; truyền 30–120 phút.",
+      "interval": "",
+      "stability": "",
+      "adverse_effects": "Giảm tiểu cầu ≤10%, tăng ALT/AST.",
+      "warnings": [
+        "Theo dõi công thức máu khi dùng kéo dài/nguy cơ giảm tiểu cầu."
+      ]
+    },
+    {
+      "stt": 24,
+      "group": "Glycopeptide/Lipopeptide & khác",
+      "active": "Colistin",
+      "brand_names": [
+        "Colistin 1 MIU"
+      ],
+      "compatible_solutions": [
+        "Nước cất"
+      ],
+      "im": "Nước cất 2 ml + 150 mg.",
+      "iv_direct": "Nước cất 2 ml + 150 mg; tiêm 3–5 phút.",
+      "iv_infusion": "Pha loãng trong 50–100 ml; truyền 30–60 phút.",
+      "interval": "",
+      "stability": "",
+      "adverse_effects": "Độc thận 18–26%, suy thận cấp 3–60%, độc thần kinh 7%.",
+      "warnings": [
+        "Theo dõi chức năng thận sát; chỉnh liều theo chức năng thận."
+      ]
+    },
+    {
+      "stt": 23,
+      "group": "Kháng nấm",
+      "active": "Voriconazole",
+      "brand_names": [
+        "Vorzole 200mg"
+      ],
+      "compatible_solutions": [
+        "NaCl 0,9%",
+        "Dextrose 5%"
+      ],
+      "im": "Không áp dụng.",
+      "iv_direct": "Không tiêm tĩnh mạch trực tiếp.",
+      "iv_infusion": "Hoàn nguyên với nước cất 19 ml + 200 mg; pha loãng vào NaCl 0,9% hoặc Dextrose 5% trong 40–200 ml; truyền 60–120 phút. Tốc độ truyền tuyệt đối ≤3 mg/kg/giờ.",
+      "interval": "12 giờ.",
+      "stability": "24 giờ ở 2–8°C.",
+      "adverse_effects": "Tăng huyết áp >10%, giảm kali máu ≤17%, tăng creatinin <21%.",
+      "warnings": [
+        "Không tiêm tĩnh mạch trực tiếp.",
+        "Bắt buộc kiểm soát tốc độ truyền theo cân nặng: ≤3 mg/kg/giờ."
+      ]
+    },
+    {
+      "stt": 25,
+      "group": "Kháng nấm",
+      "active": "Caspofungin",
+      "brand_names": [
+        "Cancidas 70mg",
+        "Cancidas 50mg"
+      ],
+      "compatible_solutions": [
+        "NaCl 0,9%",
+        "NaCl 0,45%",
+        "Ringer Lactat"
+      ],
+      "im": "Không áp dụng.",
+      "iv_direct": "Không tiêm tĩnh mạch trực tiếp.",
+      "iv_infusion": "Pha cốt 10,8 ml + 50 mg/70 mg, sau đó pha loãng thêm 250 ml; truyền 60 phút.",
+      "interval": "24 giờ.",
+      "stability": "",
+      "adverse_effects": "Giảm huyết áp 3–20%, tăng AST/ALT/bilirubin.",
+      "warnings": [
+        "Không tiêm tĩnh mạch trực tiếp."
+      ]
+    },
+    {
+      "stt": 9,
+      "group": "Kháng sinh khác",
+      "active": "Clindamycin",
+      "brand_names": [
+        "Dalacin C 300mg/2ml",
+        "Dalacin C 600mg/4ml"
+      ],
+      "compatible_solutions": [],
+      "im": "Không pha loãng; tối đa 600 mg/lần.",
+      "iv_direct": "Không áp dụng/không ưu tiên.",
+      "iv_infusion": "300 mg pha trong 50 ml truyền 10 phút; 600 mg pha trong 50 ml truyền 20 phút; 900 mg pha trong 50–100 ml truyền 30 phút; 1,2 g pha trong 100 ml truyền 40 phút.",
+      "interval": "",
+      "stability": "14 ngày.",
+      "adverse_effects": "Hội chứng DRESS, giảm bạch cầu trung tính, giảm tiểu cầu.",
+      "warnings": []
+    },
+    {
+      "stt": 17,
+      "group": "Kháng sinh khác",
+      "active": "Metronidazole",
+      "brand_names": [
+        "Metrogyl 500mg/100ml"
+      ],
+      "compatible_solutions": [
+        "NaCl 0,9%",
+        "Dextrose 5%"
+      ],
+      "im": "Không áp dụng.",
+      "iv_direct": "Không áp dụng.",
+      "iv_infusion": "Không pha loãng; truyền 60 phút.",
+      "interval": "6 giờ, 8 giờ, 12 giờ hoặc 24 giờ.",
+      "stability": "Tránh ánh sáng tuyệt đối; không giữ lạnh.",
+      "adverse_effects": "Vị kim loại 9%, chóng mặt.",
+      "warnings": [
+        "Tránh ánh sáng tuyệt đối.",
+        "Không bảo quản lạnh."
+      ]
+    },
+    {
+      "stt": 11,
+      "group": "Kháng sinh khác",
+      "active": "Fosfomycin",
+      "brand_names": [
+        "Fosmicin 1g"
+      ],
+      "compatible_solutions": [
+        "Nước cất",
+        "Dextrose 5%",
+        "NaCl 0,9%"
+      ],
+      "im": "",
+      "iv_direct": "Nước cất hoặc Dextrose 5%: 20 ml + 1 g; tiêm 5 phút.",
+      "iv_infusion": "NaCl 0,9% hoặc Dextrose 5%: 1 g pha trong 100–500 ml; truyền 60–120 phút.",
+      "interval": "",
+      "stability": "",
+      "adverse_effects": "Tiêu chảy 9–10%, viêm âm đạo 6–8%.",
+      "warnings": []
+    },
+    {
+      "stt": 20,
+      "group": "Kháng sinh khác",
+      "active": "Sulfamethoxazole/Trimethoprim",
+      "brand_names": [
+        "Sulfamethoxazole 400mg/Trimethoprim 80mg"
+      ],
+      "compatible_solutions": [
+        "Dextrose 5%"
+      ],
+      "im": "Không áp dụng.",
+      "iv_direct": "Không áp dụng.",
+      "iv_infusion": "Chỉ pha với Dextrose 5%; thêm 125 ml hoặc 75 ml nếu hạn chế dịch; truyền 60–90 phút.",
+      "interval": "",
+      "stability": "Chỉ 2 giờ ở nhiệt độ phòng.",
+      "adverse_effects": "Tăng kali máu, giảm natri máu, tăng creatinin.",
+      "warnings": [
+        "Chỉ dùng Dextrose 5% để pha theo bảng gốc.",
+        "Độ ổn định rất ngắn: dùng trong 2 giờ sau pha."
+      ]
+    },
+    {
+      "stt": 21,
+      "group": "Kháng sinh khác",
+      "active": "Tigecycline",
+      "brand_names": [
+        "Tygacil 50mg"
+      ],
+      "compatible_solutions": [],
+      "im": "Không áp dụng.",
+      "iv_direct": "Không áp dụng.",
+      "iv_infusion": "Hoàn nguyên 5,3 ml + 50 mg, sau đó pha loãng trong 100 ml; truyền 30–60 phút.",
+      "interval": "",
+      "stability": "24 giờ ở nhiệt độ phòng.",
+      "adverse_effects": "",
+      "warnings": []
+    }
+  ],
+  "clinical_alert_summary": {
+    "short_stability_room_temp": [
+      {
+        "active": "Meropenem",
+        "stability": "Chỉ 2 giờ ở nhiệt độ phòng"
+      },
+      {
+        "active": "Sulfamethoxazole/Trimethoprim",
+        "stability": "Chỉ 2 giờ ở nhiệt độ phòng"
+      },
+      {
+        "active": "Imipenem/Cilastatin",
+        "stability": "Chỉ 4 giờ ở nhiệt độ phòng"
+      },
+      {
+        "active": "Ertapenem",
+        "stability": "Chỉ 6 giờ ở nhiệt độ phòng"
+      }
+    ],
+    "special_storage": [
+      {
+        "active": "Metronidazole",
+        "note": "Tránh ánh sáng tuyệt đối; không giữ lạnh"
+      },
+      {
+        "active": "Moxifloxacin",
+        "note": "Không giữ lạnh"
+      }
+    ],
+    "no_iv_direct": [
+      "Vancomycin",
+      "Caspofungin",
+      "Voriconazole",
+      "Amikacin",
+      "Gentamicin",
+      "Imipenem/Cilastatin"
+    ],
+    "strict_rate": [
+      {
+        "active": "Vancomycin",
+        "note": "Truyền chậm tối thiểu 60 phút; tránh Red Man Syndrome/hạ HA"
+      },
+      {
+        "active": "Voriconazole",
+        "note": "Tốc độ truyền tuyệt đối ≤3 mg/kg/giờ"
+      }
+    ]
+  }
+}

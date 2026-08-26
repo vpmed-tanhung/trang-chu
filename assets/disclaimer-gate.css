@@ -1,0 +1,101 @@
+/* =============================================================
+   VPMED — Cổng xác nhận "Tuyên bố trách nhiệm" trước khi dùng công cụ.
+   Thay cho đoạn text tĩnh cũ ở #view-home .home-responsibility-note —
+   giờ khối đó chỉ còn là thanh nhắc gọn + nút "Xem lại", nội dung đầy đủ
+   chuyển vào modal #disclaimerGate (chặn tương tác cho tới khi xác nhận).
+   ============================================================= */
+
+.disclaimer-gate{
+  position:fixed;inset:0;z-index:999500;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;font-family:inherit;
+}
+.disclaimer-gate[hidden]{display:none!important}
+
+.disclaimer-gate-backdrop{
+  position:absolute;inset:0;
+  background:rgba(6,32,54,.6);
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+}
+
+.disclaimer-gate-card{
+  position:relative;z-index:1;
+  width:min(560px,100%);
+  max-height:calc(100vh - 40px);overflow:auto;
+  padding:28px 26px 24px;
+  border:1px solid var(--line,#d5e3ed);
+  border-radius:20px;
+  background:#fff;
+  box-shadow:0 24px 70px rgba(4,35,58,.32);
+}
+
+.disclaimer-gate-close{
+  position:absolute;top:12px;right:14px;
+  width:36px;height:36px;border:0;border-radius:50%;
+  background:#edf6fb;color:#075f9f;font-size:22px;line-height:1;cursor:pointer;
+}
+.disclaimer-gate-close:hover{background:#dff0f9}
+.disclaimer-gate-close[hidden]{display:none!important}
+
+.disclaimer-gate-icon{
+  width:52px;height:52px;display:grid;place-items:center;margin-bottom:12px;
+  border:1px solid #efc4c8;border-radius:14px;background:#fff5f5;font-size:24px;
+}
+
+.disclaimer-gate-eyebrow{
+  font-size:11px;text-transform:uppercase;letter-spacing:1.2px;
+  font-weight:900;color:#b64242;margin-bottom:6px;
+}
+
+.disclaimer-gate-card h2{
+  margin:0 0 14px;color:var(--navy,#063b67);font-size:21px;line-height:1.3;
+}
+
+.disclaimer-gate-body p{margin:0 0 12px;line-height:1.6;font-size:14px;color:#233246}
+.disclaimer-gate-body ul{margin:0 0 4px;padding-left:20px}
+.disclaimer-gate-body li{margin-bottom:8px;line-height:1.55;font-size:13.5px;color:#344055}
+.disclaimer-gate-body strong{color:#0a2f4d}
+
+.disclaimer-gate-checks{
+  margin-top:16px;padding-top:16px;border-top:1px solid var(--line,#d5e3ed);
+}
+.disclaimer-gate-checks[hidden]{display:none!important}
+
+.disclaimer-gate-check{
+  display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;
+  cursor:pointer;user-select:none;font-size:13.5px;line-height:1.5;
+  font-weight:700;color:#1c2b3f;
+}
+.disclaimer-gate-check input{
+  width:18px;height:18px;flex:0 0 auto;margin-top:2px;
+  accent-color:var(--blue,#0767a8);
+}
+.disclaimer-gate-check--muted{font-weight:600;color:#667d90;font-size:12.5px}
+
+.disclaimer-gate-continue{
+  width:100%;margin-top:6px;padding:13px 16px;border:0;border-radius:12px;
+  background:linear-gradient(135deg,#0871b4,#0a83c8);color:#fff;
+  font-weight:850;font-size:14px;cursor:pointer;
+}
+.disclaimer-gate-continue:disabled{opacity:.45;cursor:not-allowed}
+.disclaimer-gate-continue:not(:disabled):hover{filter:brightness(1.05)}
+
+body.disclaimer-gate-open{overflow:hidden}
+
+/* Thanh nhắc gọn thay cho khối text tĩnh cũ */
+.home-responsibility-note--compact{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px 14px;
+}
+.home-responsibility-note--compact span{font-weight:700}
+.home-responsibility-reopen{
+  border:1px solid #e7b3b8;background:#fff;color:#a81722;
+  border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:850;
+  white-space:nowrap;cursor:pointer;
+}
+.home-responsibility-reopen:hover{background:#fff0f0}
+
+@media(max-width:720px){
+  .disclaimer-gate-card{padding:22px 18px 20px}
+  .disclaimer-gate-card h2{font-size:18.5px}
+}

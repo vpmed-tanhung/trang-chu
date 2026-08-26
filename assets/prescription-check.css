@@ -1,0 +1,435 @@
+/* Rà soát đơn thuốc BHYT & dịch vụ — 17/08/2026 */
+.prescription-feature{
+  border-color:#9fd7d2;
+  background:linear-gradient(155deg,#fff 50%,#effbf8);
+}
+.prescription-feature b{color:#08766f}
+.prescription-feature em{color:#0b6e61;background:#e5faf3;border-color:#9de2cf}
+.rx-page-title{align-items:center}
+.rx-page-title>div:first-child{max-width:900px}
+.rx-data-state{display:flex;align-items:center;gap:10px;min-width:245px;padding:12px 14px;border:1px solid #bbd7d2;border-radius:14px;background:#fff;box-shadow:0 8px 22px rgba(24,83,78,.06)}
+.rx-data-state .rx-data-dot{width:10px;height:10px;flex:0 0 auto;border-radius:50%;background:#d69224;box-shadow:0 0 0 5px #fff3dd}
+.rx-data-state.ready .rx-data-dot{background:#22a06b;box-shadow:0 0 0 5px #e2f7ec}
+.rx-data-state.error .rx-data-dot{background:#c8454f;box-shadow:0 0 0 5px #fde9eb}
+.rx-data-state b,.rx-data-state small{display:block}
+.rx-data-state b{font-size:12px;color:#174b4b}
+.rx-data-state small{margin-top:3px;color:#728b89;font-size:10px}
+.rx-workspace{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(390px,.8fr);gap:18px;align-items:start}
+.rx-main-column{display:grid;gap:14px;min-width:0}
+.rx-card{margin-top:0;padding:0;overflow:hidden;border-radius:18px}
+.rx-heading{align-items:center;padding:16px 18px 13px;border-bottom:1px solid #e2ece9}
+.rx-heading>div{display:flex;align-items:center;gap:11px}
+.rx-heading h2{margin:3px 0 0;font-size:18px;color:#0f4f55}
+.rx-heading .btn:disabled{opacity:.48;cursor:not-allowed;filter:grayscale(.2)}
+.rx-step{width:31px;height:31px;display:grid;place-items:center;flex:0 0 auto;border-radius:9px;color:#fff;background:linear-gradient(135deg,#0ea5e9 0%,#0891b2 55%,#14b8a6 100%);font-size:12px;font-weight:900}
+.rx-encounter-grid{display:grid;grid-template-columns:1fr 190px;gap:12px;padding:16px 18px 12px}
+.rx-encounter-grid label small{margin-left:5px;color:#809391;font-weight:500}
+.rx-diagnosis-field{grid-column:1/-1}
+.rx-diagnosis-auto-grid{display:grid;grid-template-columns:minmax(210px,.7fr) 1.3fr;gap:9px;margin-top:7px}
+.rx-diagnosis-auto-grid article{min-height:77px;padding:11px 12px;border:1px solid #cfe0dc;border-radius:11px;background:#f9fcfb}
+.rx-diagnosis-auto-grid article>span{display:block;color:#6d827f;font-size:8px;font-weight:850;text-transform:uppercase;letter-spacing:.45px}
+.rx-diagnosis-auto-grid article>b{display:block;margin-top:6px;color:#087268;font-size:17px}.rx-diagnosis-auto-grid article>small{display:block;margin-top:4px;color:#718683;font-size:8px;font-weight:600}
+.rx-diagnosis-auto-grid article div{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.rx-diagnosis-auto-grid article div span{padding:5px 7px;border-radius:7px;color:#765312;background:#fff1cf;font-size:9px;font-weight:900}.rx-diagnosis-auto-grid article div em{color:#849391;font-size:9px;font-style:normal;font-weight:600}
+.rx-diagnosis-edit-toggle{margin-top:8px;padding:0;border:0;color:#44766f;background:transparent;font-size:8px;font-weight:800;text-decoration:underline;text-underline-offset:2px}
+.rx-diagnosis-edit{margin-top:7px!important;padding:8px 9px!important;font-size:10px}.rx-diagnosis-edit[hidden]{display:none}
+.rx-diagnosis-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 18px 16px}
+.rx-diagnosis-chips span{padding:6px 9px;border:1px solid #d0dfdc;border-radius:999px;color:#56706d;background:#f8fbfa;font-size:10px;font-weight:800}
+.rx-diagnosis-chips span.is-code{color:#08736a;border-color:#a8d9cf;background:#eaf8f4}
+.rx-import-grid{display:grid;grid-template-columns:1fr 46px 1fr;gap:12px;padding:17px 18px 13px;align-items:stretch}
+.rx-upload-panel,.rx-paste-panel{min-width:0}
+.rx-upload-zone{min-height:173px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;border:1.5px dashed #9bc7c2;border-radius:15px;background:#f8fcfb;text-align:center;cursor:pointer;transition:.18s}
+.rx-upload-zone:hover{border-color:#0a8b7f;background:#f1fbf8}
+.rx-upload-zone input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.rx-upload-icon{width:38px;height:38px;display:grid;place-items:center;margin-bottom:8px;border-radius:11px;color:#08756c;background:#def4ee;font-size:22px;font-weight:800}
+.rx-upload-zone b{color:#174f50;font-size:13px}
+.rx-upload-zone small{max-width:420px;margin-top:5px;color:#718987;font-size:10px;line-height:1.5;font-weight:500}
+.rx-upload-zone em{margin-top:9px;padding:5px 10px;border-radius:999px;color:#08776d;background:#e3f7f1;font-size:10px;font-style:normal;font-weight:850}
+.rx-or{display:grid;place-items:center;position:relative}
+.rx-or:before{content:"";position:absolute;top:8px;bottom:8px;width:1px;background:#dce7e4}
+.rx-or span{position:relative;padding:5px 0;color:#91a09f;background:#fff;font-size:9px;text-transform:uppercase}
+.rx-paste-panel textarea{width:100%;min-height:130px;resize:vertical;border:1px solid #c9dbe8;background:#fbfdff;border-radius:11px;padding:11px 12px;margin:6px 0 8px;outline:none;line-height:1.5}
+.rx-file-state{display:flex;align-items:center;gap:9px;margin-top:9px;padding:9px 10px;border:1px solid #cce0dc;border-radius:10px;background:#fff}
+.rx-file-state>span{width:29px;height:29px;display:grid;place-items:center;border-radius:8px;color:#08766c;background:#e3f6f1}
+.rx-file-state div{min-width:0;flex:1}
+.rx-file-state b,.rx-file-state small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rx-file-state b{font-size:10px}.rx-file-state small{margin-top:2px;color:#748987;font-size:9px}
+.rx-file-state button{border:1px solid #9ccfc5;border-radius:7px;padding:6px 8px;color:#087368;background:#eff9f6;font-size:9px;font-weight:800;cursor:pointer}
+.rx-file-queue{display:grid;gap:7px;margin-top:8px}
+.rx-file-queue[hidden]{display:none}
+.rx-file-item{display:grid;grid-template-columns:30px minmax(0,1fr) 122px 27px;gap:8px;align-items:center;padding:8px;border:1px solid #d6e4e1;border-radius:10px;background:#fff}
+.rx-file-item.is-review{border-color:#e5c277;background:#fffdf7}.rx-file-item.is-error{border-color:#e4a8ad;background:#fffafa}.rx-file-item.is-done{border-color:#abd8c6;background:#fbfffd}
+.rx-file-item-icon{width:28px;height:28px;display:grid;place-items:center;border-radius:8px;color:#08766c;background:#e7f6f2;font-size:9px;font-weight:900}
+.rx-file-item-main{min-width:0}.rx-file-item-main b,.rx-file-item-main small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rx-file-item-main b{color:#245b58;font-size:9px}.rx-file-item-main small{margin-top:3px;color:#718683;font-size:8px}
+.rx-file-item select{margin:0;padding:6px 7px;border-radius:7px;font-size:8px}.rx-file-item select.rx-payment-unknown{border-color:#dda84b;background:#fff5dc;color:#865b0d;font-weight:850}
+.rx-file-remove{width:26px;height:26px;border:0;border-radius:7px;color:#889c99;background:transparent;font-size:16px;cursor:pointer}.rx-file-remove:hover{color:#a72e38;background:#fff0f1}
+.rx-ocr-progress{padding:9px 2px 0}
+.rx-ocr-progress>span{display:block;height:5px;overflow:hidden;border-radius:5px;background:#dfeae7}
+.rx-ocr-progress i{display:block;width:5%;height:100%;border-radius:5px;background:linear-gradient(90deg,#0ea5e9 0%,#14b8a6 100%);transition:width .2s}
+.rx-ocr-progress small{display:block;margin-top:5px;color:#657d79;font-size:9px}
+.rx-drug-table-wrap{overflow:auto}
+.rx-drug-table{width:100%;border-collapse:collapse;min-width:760px}
+.rx-drug-table th,.rx-drug-table td{padding:10px 9px;border-bottom:1px solid #e5eeeb;text-align:left;vertical-align:middle;font-size:11px}
+.rx-drug-table th{color:#51736e;background:#f0f7f5;font-size:9px;text-transform:uppercase;letter-spacing:.45px}
+.rx-drug-table th:first-child,.rx-drug-table td:first-child{padding-left:18px;min-width:240px}
+.rx-drug-table th:last-child,.rx-drug-table td:last-child{padding-right:14px}
+.rx-drug-name-input{margin:0!important;padding:8px 9px!important;border-radius:8px!important;font-weight:800;color:#144e51;background:#fff!important}
+.rx-active-name{display:block;margin-top:4px;color:#69827f;font-size:9px}
+.rx-drug-table select{margin:0;padding:7px 8px;border-radius:8px;font-size:10px}
+.rx-payment-bhyt{color:#076b60;background:#eaf8f4!important;border-color:#a7d9cf!important;font-weight:850}
+.rx-payment-service{color:#73529a;background:#f5effb!important;border-color:#d5c6e8!important;font-weight:850}
+.rx-payment-unknown{color:#8a5d0b;background:#fff4d9!important;border-color:#dfb65f!important;font-weight:850}
+.rx-resolve-state{display:inline-flex;align-items:center;gap:5px;padding:5px 7px;border-radius:999px;font-size:8px;font-weight:850;white-space:nowrap}
+.rx-resolve-state.ok{color:#0d7456;background:#e8f7ef}
+.rx-resolve-state.review{color:#96600a;background:#fff3d9}
+.rx-remove-drug{width:27px;height:27px;border:0;border-radius:7px;color:#809694;background:transparent;font-size:18px;cursor:pointer}
+.rx-remove-drug:hover{color:#a72e38;background:#fff0f1}
+.rx-empty-row{padding:26px!important;color:#748b88;text-align:center!important}
+.rx-table-footer{display:flex;justify-content:space-between;gap:10px;padding:10px 18px;color:#718481;background:#fbfdfc;font-size:9px}
+.rx-table-footer span:first-child{color:#0c7168;font-weight:850}
+.rx-prescription-actions{display:flex;align-items:stretch;justify-content:center;gap:2px;margin:0 auto}
+.rx-check-button{min-width:196px;min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:0 18px;border:0;border-radius:11px;color:#fff;background:linear-gradient(135deg,#0c8fd0 0%,#0ca89e 100%);box-shadow:0 7px 18px rgba(8,145,178,.18);cursor:pointer;transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
+.rx-check-button:hover{filter:brightness(1.04);transform:translateY(-1px);box-shadow:0 9px 20px rgba(8,145,178,.24)}
+.rx-check-button:focus-visible{outline:3px solid rgba(14,165,233,.24);outline-offset:2px}
+.rx-check-button:disabled{opacity:.65;cursor:wait;transform:none}
+.rx-check-button>span{font-size:14px;line-height:1}
+.rx-check-button b{font-size:14px;white-space:nowrap}
+.rx-prescription-actions>.btn-soft{min-width:150px;min-height:46px;border-radius:11px;font-size:13px;white-space:nowrap}
+.rx-prescription-actions>.btn-soft:disabled{opacity:.48;cursor:not-allowed;filter:grayscale(.2)}
+.rx-result-column{position:sticky;top:98px}
+.rx-result-card{overflow:hidden;border:1px solid #b9e2ea;border-radius:18px;background:#fff;box-shadow:0 14px 32px rgba(8,145,178,.12)}
+.rx-result-header{min-height:87px;display:flex;align-items:center;justify-content:space-between;padding:17px 18px;color:#fff;background:linear-gradient(135deg,#0ea5e9 0%,#0891b2 55%,#14b8a6 100%)}
+.rx-result-header .kicker{color:#d9fbf7}
+.rx-result-header h2{margin:6px 0 0;font-size:17px}
+.rx-score{width:57px;height:57px;display:grid;place-content:center;border:4px solid rgba(255,255,255,.28);border-top-color:#92f0dd;border-radius:50%;text-align:center}
+.rx-score b{font-size:17px;line-height:1}.rx-score small{margin-top:2px;color:#e2faf6;font-size:8px}
+.rx-summary{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #dce8e5}
+.rx-summary div{padding:12px;text-align:center}.rx-summary div+div{border-left:1px solid #dce8e5}
+.rx-summary b,.rx-summary span{display:block}.rx-summary b{font-size:19px}.rx-summary span{margin-top:2px;color:#6d8481;font-size:8px}
+.rx-summary div:nth-child(1) b{color:#c83844}.rx-summary div:nth-child(2) b{color:#b1710e}.rx-summary div:nth-child(3) b{color:#23805d}
+.rx-result-body{max-height:750px;overflow:auto;padding:12px;background:#f9fbfa}
+.rx-result-empty{padding:52px 18px;text-align:center;color:#6f8481}
+.rx-result-empty>span{width:46px;height:46px;display:grid;place-items:center;margin:0 auto 10px;border-radius:50%;color:#fff;background:#14b8a6;font-weight:900}
+.rx-result-empty b{display:block;color:#2e5e5b}.rx-result-empty p{margin:6px 0 0;font-size:10px;line-height:1.5}
+.rx-alert{padding:13px;border:1px solid;border-left-width:4px;border-radius:12px;background:#fff}
+.rx-alert+.rx-alert{margin-top:10px}
+.rx-alert-header{display:flex;align-items:flex-start;gap:9px}
+.rx-alert-icon{width:26px;height:26px;display:grid;place-items:center;flex:0 0 auto;border-radius:50%;font-size:11px;font-weight:900}
+.rx-alert small{display:block;margin-bottom:3px;font-size:8px;font-weight:900;letter-spacing:.45px;text-transform:uppercase}
+.rx-alert h3{margin:0;font-size:13px;line-height:1.35}
+.rx-alert p{margin:8px 0 0 35px;color:#5f7572;font-size:10px;line-height:1.55}
+.rx-alert dl{margin:9px 0 0 35px}.rx-alert dl div{display:grid;grid-template-columns:58px 1fr;gap:7px;padding:6px 0;border-top:1px solid}
+.rx-alert dt{font-size:9px;font-weight:850}.rx-alert dd{margin:0;color:#607370;font-size:9px;line-height:1.45}
+.rx-alert-danger{border-color:#efbec2;border-left-color:#c83844;background:#fffafa}
+.rx-alert-danger .rx-alert-icon{color:#fff;background:#c83844}.rx-alert-danger small,.rx-alert-danger h3,.rx-alert-danger dt{color:#a62b36}.rx-alert-danger dl div{border-color:#f0dcde}
+.rx-cross-payment{display:flex;align-items:center;gap:5px;margin:9px 0 0 35px}.rx-cross-payment span{padding:3px 6px;border-radius:5px;font-size:8px;font-weight:900}.rx-cross-payment .bhyt{color:#07695f;background:#dcf3ed}.rx-cross-payment .service{color:#6d4e96;background:#f0e8fa}.rx-cross-payment em{color:#8b6b70;font-size:8px;font-style:normal}
+.rx-cross-payment .unknown{color:#865b0d;background:#fff0c9}
+.rx-alert-warning{border-color:#ead39e;border-left-color:#d89622;background:#fffdf8}
+.rx-alert-warning .rx-alert-icon{color:#7c4d00;background:#ffe0a2}.rx-alert-warning small,.rx-alert-warning h3,.rx-alert-warning dt{color:#8a5909}.rx-alert-warning dl div{border-color:#efe2c7}
+.rx-alert-info{border-color:#bfd9e8;border-left-color:#3f8bb2;background:#fbfeff}
+.rx-alert-info .rx-alert-icon{color:#fff;background:#3f8bb2}.rx-alert-info small,.rx-alert-info h3{color:#2a6f92}
+.rx-alert-success{border-color:#c8e2d5;border-left-color:#4ba37a;background:#fbfffc}
+.rx-alert-success .rx-alert-icon{color:#fff;background:#4ba37a}.rx-alert-success small,.rx-alert-success h3{color:#2b7657}
+.rx-result-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-top:1px solid #9fd0ee;color:#075d98;background:linear-gradient(180deg,#f4fbff 0%,#e8f6ff 100%);font-size:12px;font-weight:800;line-height:1.45}
+.rx-result-footer span{min-width:0;text-shadow:0 1px 0 #fff}
+.rx-result-footer button{flex:0 0 auto;padding:6px 10px;border:1px solid #bcd5d0;border-radius:7px;color:#2e6d66;background:#f4faf8;font-size:10px;font-weight:850;cursor:pointer}
+.rx-scope-note{margin-top:18px;color:#5c7470;background:#f8fbfa;font-size:11px;line-height:1.65}
+
+/* ==========================================================
+   Cảnh báo TƯƠNG TÁC THUỐC theo mức độ
+   Chỉ áp dụng bên trong module Rà soát đơn thuốc BHYT & dịch vụ.
+   Không tác động tới chấm/trạng thái các module trên Trang chủ.
+   ========================================================== */
+.rx-alert-interaction{
+  position:relative;
+  isolation:isolate;
+  transition:border-color .2s ease,background-color .2s ease,box-shadow .2s ease;
+}
+.rx-alert-interaction .rx-alert-icon{
+  position:relative;
+  z-index:1;
+}
+.rx-alert-interaction small,
+.rx-alert-interaction h3,
+.rx-alert-interaction dt{
+  font-weight:900;
+}
+
+/* Mức rất cao: chống chỉ định -> đỏ, nháy nhanh và rõ nhất. */
+.rx-interaction-critical{
+  border-color:#f0a5ad;
+  border-left-color:#c92335;
+  background:#fff7f8;
+  animation:rxInteractionCriticalCard .68s ease-in-out infinite;
+}
+.rx-interaction-critical .rx-alert-icon{
+  color:#fff;
+  background:#c92335;
+  animation:rxInteractionCriticalIcon .68s steps(2,end) infinite;
+}
+.rx-interaction-critical small,
+.rx-interaction-critical h3,
+.rx-interaction-critical dt{color:#a51728}
+.rx-interaction-critical dl div{border-color:#f1d8db}
+
+/* Mức cao: chống chỉ định có điều kiện / ưu tiên tránh -> cam, nháy vừa. */
+.rx-interaction-high{
+  border-color:#f1c18f;
+  border-left-color:#e36d13;
+  background:#fffaf5;
+  animation:rxInteractionHighCard .95s ease-in-out infinite;
+}
+.rx-interaction-high .rx-alert-icon{
+  color:#fff;
+  background:#e36d13;
+  animation:rxInteractionHighIcon .95s ease-in-out infinite;
+}
+.rx-interaction-high small,
+.rx-interaction-high h3,
+.rx-interaction-high dt{color:#a94d08}
+.rx-interaction-high dl div{border-color:#f1dfcd}
+
+/* Mức trung bình (dự phòng cho dữ liệu mở rộng) -> vàng, nháy chậm. */
+.rx-interaction-moderate{
+  border-color:#ead28d;
+  border-left-color:#c99612;
+  background:#fffdf5;
+  animation:rxInteractionModerateCard 1.35s ease-in-out infinite;
+}
+.rx-interaction-moderate .rx-alert-icon{
+  color:#5f4300;
+  background:#f5cf5b;
+  animation:rxInteractionModerateIcon 1.35s ease-in-out infinite;
+}
+.rx-interaction-moderate small,
+.rx-interaction-moderate h3,
+.rx-interaction-moderate dt{color:#80600a}
+.rx-interaction-moderate dl div{border-color:#eee2bf}
+
+/* Mức thấp/thông tin (dự phòng) -> xanh, chỉ nháy nhẹ. */
+.rx-interaction-low{
+  border-color:#bfd9e8;
+  border-left-color:#3f8bb2;
+  background:#fbfeff;
+  animation:rxInteractionLowCard 1.8s ease-in-out infinite;
+}
+.rx-interaction-low .rx-alert-icon{
+  color:#fff;
+  background:#3f8bb2;
+  animation:rxInteractionLowIcon 1.8s ease-in-out infinite;
+}
+.rx-interaction-low small,
+.rx-interaction-low h3,
+.rx-interaction-low dt{color:#2a6f92}
+.rx-interaction-low dl div{border-color:#d9e8f0}
+
+@keyframes rxInteractionCriticalCard{
+  0%,100%{box-shadow:0 0 0 0 rgba(201,35,53,0);background:#fff7f8}
+  50%{box-shadow:0 0 0 4px rgba(201,35,53,.18),0 7px 20px rgba(201,35,53,.14);background:#ffedef}
+}
+@keyframes rxInteractionCriticalIcon{
+  0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(201,35,53,.15)}
+  50%{opacity:.32;transform:scale(.88);box-shadow:0 0 0 7px rgba(201,35,53,.16)}
+}
+@keyframes rxInteractionHighCard{
+  0%,100%{box-shadow:0 0 0 0 rgba(227,109,19,0);background:#fffaf5}
+  50%{box-shadow:0 0 0 3px rgba(227,109,19,.15),0 5px 16px rgba(227,109,19,.10);background:#fff2e7}
+}
+@keyframes rxInteractionHighIcon{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.48;transform:scale(.92)}
+}
+@keyframes rxInteractionModerateCard{
+  0%,100%{box-shadow:0 0 0 0 rgba(201,150,18,0);background:#fffdf5}
+  50%{box-shadow:0 0 0 2px rgba(201,150,18,.12);background:#fff8dc}
+}
+@keyframes rxInteractionModerateIcon{
+  0%,100%{opacity:1}
+  50%{opacity:.58}
+}
+@keyframes rxInteractionLowCard{
+  0%,100%{box-shadow:none;background:#fbfeff}
+  50%{box-shadow:0 0 0 2px rgba(63,139,178,.08);background:#f1f9fd}
+}
+@keyframes rxInteractionLowIcon{
+  0%,100%{opacity:1}
+  50%{opacity:.68}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .rx-alert-interaction,
+  .rx-alert-interaction .rx-alert-icon{animation:none!important}
+}
+
+@media(max-width:1120px){
+  .rx-workspace{grid-template-columns:1fr}
+  .rx-result-column{position:static}
+}
+@media(max-width:760px){
+  .rx-page-title{display:block}.rx-data-state{min-width:0;margin-top:12px}
+  .rx-encounter-grid,.rx-import-grid{grid-template-columns:1fr}
+  .rx-diagnosis-field{grid-column:auto}.rx-diagnosis-auto-grid{grid-template-columns:1fr}.rx-or{min-height:24px}.rx-or:before{left:12px;right:12px;top:50%;bottom:auto;width:auto;height:1px}.rx-or span{padding:2px 8px}
+  .rx-heading{align-items:flex-start;gap:8px}.rx-heading>button{flex:0 0 auto}
+  .rx-prescription-actions{width:min(100%,390px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+  .rx-check-button,.rx-prescription-actions>.btn-soft{width:100%;min-width:0;padding-inline:10px}
+  .rx-table-footer{display:block}.rx-table-footer span{display:block}.rx-table-footer span+span{margin-top:4px}
+  .rx-file-item{grid-template-columns:30px minmax(0,1fr) 27px}.rx-file-item select{grid-column:2/3;grid-row:2}.rx-file-remove{grid-column:3;grid-row:1/3}
+}
+@media print{
+  body *{visibility:hidden}
+  #view-prescription-check,#view-prescription-check *{visibility:visible}
+  #view-prescription-check{position:absolute;inset:0;display:block!important;padding:0;background:#fff}
+  .back-home-wrap,.rx-page-title,.rx-main-column,.rx-scope-note,.rx-result-footer button{display:none!important}
+  .rx-workspace{display:block}.rx-result-column{position:static}.rx-result-card{box-shadow:none}.rx-result-body{max-height:none;overflow:visible}
+}
+
+/* Phân tầng nguồn cảnh báo trong module rà soát đơn. */
+.rx-source-tier{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:0 0 9px;padding:6px 9px;border:1px solid #d7e4ea;border-radius:8px;background:#f8fbfc;font-size:10px;line-height:1.35}
+.rx-source-tier b{font-size:10px;font-weight:950;letter-spacing:.02em}
+.rx-source-tier span{font-weight:750;color:#61747d}
+.rx-source-tier-moh{border-color:#efb8bf;background:#fff2f4}
+.rx-source-tier-moh b{color:#a51728}
+.rx-source-tier-diadr{border-color:#f0cf9f;background:#fff8ec}
+.rx-source-tier-diadr b{color:#9c5909}
+.rx-source-tier-other{border-color:#c8dce6;background:#f5fbfe}
+.rx-source-tier-other b{color:#2a6f92}
+.rx-source-link{color:inherit;font-weight:850;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+.rx-source-link:hover{text-decoration-thickness:2px}
+
+/* Nhãn nguồn không nhấp nháy: chỉ phần cảnh báo theo mức độ mới có chuyển động. */
+.rx-alert-interaction .rx-source-tier{animation:none!important;box-shadow:none!important}
+
+/* Tinh chỉnh giao diện soát đơn BHYT — 18/08/2026 */
+.rx-upload-zone{
+  min-height:205px;
+  padding:24px 20px;
+  border:2px dashed #79bcb5;
+  border-radius:16px;
+  background:linear-gradient(155deg,#fbfffe 0%,#eef9f7 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.8);
+}
+.rx-upload-zone:hover{border-color:#087c73;background:linear-gradient(155deg,#f8fffd 0%,#e5f7f3 100%);box-shadow:0 10px 24px rgba(13,115,105,.08)}
+.rx-upload-icon{width:48px;height:48px;margin-bottom:11px;border-radius:14px;color:#076f68;background:#d8f1eb;font-size:27px}
+.rx-upload-zone b{color:#174f50;font-size:16px;line-height:1.35}
+.rx-upload-zone small{max-width:460px;margin-top:7px;color:#607b78;font-size:12px;line-height:1.55;font-weight:600}
+.rx-upload-zone em{margin-top:12px;padding:8px 14px;border:1px solid #a9d9d1;border-radius:999px;color:#076f68;background:#fff;font-size:12px;font-weight:900;box-shadow:0 4px 12px rgba(13,115,105,.06)}
+.rx-paste-panel label{font-size:12px}
+.rx-paste-panel textarea{min-height:154px;padding:13px 14px;border-color:#b8d3df;background:#fbfdff;font-size:12px;line-height:1.6}
+.rx-file-state{gap:11px;margin-top:11px;padding:11px 12px;border-color:#bddbd6;border-radius:11px}
+.rx-file-state>span{width:34px;height:34px;border-radius:9px;font-size:14px}
+.rx-file-state b{font-size:12px}.rx-file-state small{margin-top:3px;font-size:10px;line-height:1.4}
+.rx-file-state button{padding:8px 11px;border-color:#8fc9bf;font-size:11px}
+.rx-file-queue{gap:8px;margin-top:10px}
+.rx-file-item{grid-template-columns:34px minmax(0,1fr) 138px 30px;gap:9px;padding:10px;border-radius:11px}
+.rx-file-item-icon{width:32px;height:32px;font-size:10px}
+.rx-file-item-main b{font-size:11px}.rx-file-item-main small{margin-top:4px;font-size:10px;line-height:1.35}
+.rx-file-item select{padding:8px 9px;font-size:10px}
+.rx-file-remove{width:29px;height:29px;font-size:17px}
+.rx-ocr-progress small{font-size:10px}
+.rx-diagnosis-auto-grid article>b{font-size:15px;line-height:1.45}
+.rx-diagnosis-auto-grid article div span{font-size:10px;line-height:1.4}
+.rx-diagnosis-chips span{font-size:10px;line-height:1.4}
+.rx-alert-missing-icd h3{font-size:14px}
+.rx-alert-missing-icd p{font-size:11px}
+.rx-scope-note{color:#185f68;background:#f1f9fb;border-color:#b9dce6;font-size:12px;line-height:1.65}
+@media(max-width:760px){
+  .rx-upload-zone{min-height:185px;padding:21px 16px}
+  .rx-upload-zone b{font-size:15px}.rx-upload-zone small,.rx-upload-zone em{font-size:11px}
+  .rx-file-item{grid-template-columns:34px minmax(0,1fr) 30px}
+}
+
+/* Readability pass — 18/08/2026 */
+#view-prescription-check{font-size:15px}
+#view-prescription-check .kicker{font-size:12px;line-height:1.4}
+#view-prescription-check label{font-size:14px;line-height:1.45}
+#view-prescription-check input,
+#view-prescription-check select,
+#view-prescription-check textarea,
+#view-prescription-check button{font-size:14px}
+.rx-data-state b{font-size:14px}
+.rx-data-state small{font-size:12px;line-height:1.4}
+.rx-heading h2{font-size:20px;line-height:1.3}
+.rx-heading .btn{font-size:13px}
+.rx-step{font-size:14px}
+.rx-encounter-grid label small{font-size:12px}
+.rx-diagnosis-auto-grid article>span{font-size:11px;line-height:1.4}
+.rx-diagnosis-auto-grid article>b{font-size:17px;line-height:1.5}
+.rx-diagnosis-auto-grid article>small{font-size:11px;line-height:1.45}
+.rx-diagnosis-auto-grid article div span,
+.rx-diagnosis-auto-grid article div em{font-size:11.5px;line-height:1.45}
+.rx-diagnosis-edit-toggle{font-size:12px;line-height:1.4}
+.rx-diagnosis-edit{font-size:14px!important}
+.rx-diagnosis-chips span{font-size:12px;line-height:1.45}
+.rx-upload-zone b{font-size:18px;line-height:1.4}
+.rx-upload-zone small{font-size:13.5px;line-height:1.6}
+.rx-upload-zone em{font-size:13px;line-height:1.4}
+.rx-or span{font-size:11px}
+.rx-paste-panel label{font-size:14px}
+.rx-paste-panel textarea{font-size:14px;line-height:1.65}
+.rx-file-state b{font-size:13px}
+.rx-file-state small{font-size:11.5px;line-height:1.45}
+.rx-file-state button{font-size:12.5px}
+.rx-file-item-icon{font-size:11px}
+.rx-file-item-main b{font-size:12.5px}
+.rx-file-item-main small{font-size:11px;line-height:1.4}
+.rx-file-item select{font-size:12px}
+.rx-ocr-progress small{font-size:11.5px}
+.rx-drug-table th,.rx-drug-table td{font-size:13px;line-height:1.45}
+.rx-drug-table th{font-size:11px}
+.rx-drug-name-input{font-size:13.5px!important}
+.rx-active-name{font-size:11px;line-height:1.4}
+.rx-drug-table select{font-size:12.5px}
+.rx-resolve-state{font-size:11px}
+.rx-table-footer{font-size:11.5px;line-height:1.5}
+.rx-check-button b{font-size:14px}
+.rx-result-header h2{font-size:19px}
+.rx-score b{font-size:19px}
+.rx-score small{font-size:10px}
+.rx-summary span{font-size:11px;line-height:1.35}
+.rx-result-empty b{font-size:15px}
+.rx-result-empty p{font-size:12.5px;line-height:1.6}
+.rx-alert small{font-size:10.5px;line-height:1.4}
+.rx-alert h3{font-size:15px;line-height:1.45}
+.rx-alert p{font-size:12.5px;line-height:1.65}
+.rx-alert dt,.rx-alert dd{font-size:11.5px;line-height:1.5}
+.rx-cross-payment span,.rx-cross-payment em{font-size:10.5px}
+.rx-result-footer{font-size:13px;line-height:1.55}
+.rx-result-footer button{font-size:12px}
+.rx-scope-note{font-size:13px;line-height:1.7}
+.rx-source-tier{font-size:11.5px;line-height:1.5}
+.rx-source-tier b{font-size:11.5px}
+.rx-source-tier span{font-size:11.5px}
+@media(max-width:760px){
+  #view-prescription-check{font-size:14px}
+  #view-prescription-check label{font-size:13.5px}
+  .rx-heading h2{font-size:18px}
+  .rx-upload-zone b{font-size:17px}
+  .rx-upload-zone small{font-size:13px}
+  .rx-upload-zone em{font-size:12.5px}
+  .rx-result-footer{font-size:12px}
+}
+
+
+/* Bố cục rà soát đơn — 18/08/2026, v4.8 */
+.rx-new-prescription-action{display:flex;justify-content:center;padding-top:10px}
+.rx-new-prescription-action .btn{min-width:155px}
+.rx-new-prescription-action .btn:disabled{opacity:.48;cursor:not-allowed;filter:grayscale(.2)}
+.rx-result-footer{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:12px 14px 11px}
+.rx-rule-version{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 8px;min-width:0;color:#075d98;font-size:10px;line-height:1.35;text-shadow:0 1px 0 #fff}
+.rx-rule-item{display:grid;grid-template-columns:52px minmax(0,1fr);align-items:start;gap:7px;min-width:0;padding:6px 8px;border:1px solid rgba(7,93,152,.12);border-radius:7px;background:rgba(255,255,255,.58);text-align:left}
+.rx-rule-item.rx-rule-wide{grid-column:1/-1}
+.rx-rule-item b{font-weight:900;white-space:nowrap}
+.rx-rule-item span{min-width:0;overflow-wrap:anywhere;font-weight:720}
+.rx-result-actions{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding-top:1px}
+.rx-result-footer .rx-result-actions button{min-height:36px;font-size:10.5px}
+.rx-result-footer .rx-clear-session{padding-inline:12px}
+.rx-toast{position:fixed;right:18px;bottom:18px;z-index:10000;max-width:min(360px,calc(100vw - 32px));padding:10px 14px;border:1px solid #b9ded3;border-radius:10px;background:#f3fbf8;color:#17695d;box-shadow:0 10px 28px rgba(23,70,64,.16);font-size:12px;font-weight:850;line-height:1.4;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .18s ease,transform .18s ease}
+.rx-toast.is-visible{opacity:1;transform:translateY(0)}
+@media(max-width:760px){
+  .rx-new-prescription-action{padding-top:8px}
+  .rx-new-prescription-action .btn{width:100%;min-width:0}
+  .rx-rule-version{grid-template-columns:1fr;font-size:9.5px}
+  .rx-rule-item,.rx-rule-item.rx-rule-wide{grid-column:auto;grid-template-columns:48px minmax(0,1fr)}
+  .rx-result-actions{flex-wrap:wrap}
+  .rx-result-actions button{flex:1 1 auto}
+  .rx-toast{right:12px;bottom:12px;max-width:calc(100vw - 24px)}
+}

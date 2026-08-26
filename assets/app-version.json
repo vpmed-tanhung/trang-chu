@@ -1,0 +1,10 @@
+{
+  "version": "2026.08.23.49",
+  "displayVersion": "5.5.0",
+  "updatedAt": "2026-08-23T07:56:18+07:00",
+  "note": "Rút gọn bản tin cảnh giác dược thành ý chính; giữ nội dung đầy đủ tại liên kết Nguồn.",
+  "buildId": "v5.5.0-pharmacovigilance-concise-summary-20260823-49",
+  "previousVersion": "2026.08.22.48",
+  "previousDisplayVersion": "5.4.9",
+  "clinicalDataVersion": "sha256-01e39685143099a07d3bce8c"
+}
