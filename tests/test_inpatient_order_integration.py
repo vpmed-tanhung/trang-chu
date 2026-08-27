@@ -23,7 +23,7 @@ def test_inpatient_order_feature_is_wired_without_regressing_rx_review():
     assert 'phân biệt thiếu mã bệnh với mã bệnh chưa thật sự phù hợp' in html
     assert 'HDSD/SPC Cục QLD · Dược thư QGVN III · Phác đồ/Hướng dẫn BYT' in html
     assert 'TT20/2022 · TT37/2024 · TT01/2025 · NĐ188/2025' in html
-    assert 'assets/prescription-check.js?v=20260826-bhyt-ai-text-v1' in shell
+    assert 'assets/prescription-check.js?v=20260827-ocr-complete-v1' in shell
 
 
 def test_inpatient_order_artifacts_are_present():
