@@ -1,11 +1,15 @@
 name: Cập nhật dữ liệu Cảnh báo dược
+run-name: >-
+  Cập nhật Cảnh báo dược •
+  ${{ github.event_name == 'schedule' && 'Tự động buổi sáng' || 'Chạy thủ công' }}
 
 on:
   schedule:
-    # GitHub Actions dùng UTC: 23:00 UTC = 06:00 sáng hôm sau tại Việt Nam.
-    - cron: "0 23 * * *"
-    # Lượt dự phòng 06:30 chỉ chạy lại khi lượt 06:00 chưa cập nhật thành công.
-    - cron: "30 23 * * *"
+    # GitHub Actions dùng UTC. Tránh phút 00 vì lịch dễ bị trì hoãn khi hệ thống đông.
+    # 23:07 UTC = 06:07 sáng hôm sau tại Việt Nam.
+    - cron: "7 23 * * *"
+    # Lượt dự phòng 06:37 chỉ chạy lại khi lượt 06:07 chưa cập nhật thành công.
+    - cron: "37 23 * * *"
   workflow_dispatch: {}
 
 permissions:

@@ -29,6 +29,10 @@ def test_platform_shell_uses_current_build():
     match = re.search(r"const BUILD_VERSION = '([^']+)'", shell)
     assert match, 'platform-shell.js thiếu BUILD_VERSION'
     assert match.group(1) == version, 'platform-shell.js đang dùng build cũ'
+    index = (ROOT / 'index.html').read_text(encoding='utf-8')
+    assert 'assets/platform-shell.js?v=20260827-ocr-complete-v1' in index
+    worker = (ROOT / 'sw.js').read_text(encoding='utf-8')
+    assert './assets/platform-shell.js?v=20260827-ocr-complete-v1' in worker
 
 
 def test_notifier_verifies_loaded_build_before_success():
@@ -72,7 +76,7 @@ def test_notifier_verifies_loaded_build_before_success():
 def test_changed_prescription_asset_has_current_cache_buster():
     shell = (ROOT / 'assets' / 'platform-shell.js').read_text(encoding='utf-8')
     assert 'assets/prescription-result-model.js?v=20260822-behavior-tests-v1' in shell
-    assert 'assets/prescription-check.js?v=20260826-bhyt-ai-text-v1' in shell
+    assert 'assets/prescription-check.js?v=20260827-ocr-complete-v1' in shell
     assert 'showWorkerUpdateBanner' in shell
     assert 'vpmedUpdateBanner' in shell
     assert 'vpmed:app-update-available' in shell

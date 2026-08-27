@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.26.50",
-  "displayVersion": "5.5.1",
-  "updatedAt": "2026-08-26T16:19:16+07:00",
-  "note": "Chuyển rà soát đơn BHYT và y lệnh nội trú sang Gemini Free Tier, có model dự phòng khi quá tải.",
-  "buildId": "v5.5.1-gemini-free-review-20260826-50",
-  "previousVersion": "2026.08.23.49",
-  "previousDisplayVersion": "5.5.0",
+  "version": "2026.08.27.51",
+  "displayVersion": "5.5.2",
+  "updatedAt": "2026-08-27T07:57:47+07:00",
+  "note": "Sửa OCR đơn thuốc: không bỏ sót tên có khoảng trắng, dấu phân cách, xuống dòng hoặc hậu tố kho.",
+  "buildId": "v5.5.2-ocr-drug-completeness-20260827-51",
+  "previousVersion": "2026.08.26.50",
+  "previousDisplayVersion": "5.5.1",
   "clinicalDataVersion": "sha256-67dc0a3583a0c269e59ca281"
 }

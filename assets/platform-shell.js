@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.08.26.50';
+  const BUILD_VERSION = '2026.08.27.51';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -77,7 +77,7 @@
         'assets/icd-clinical-match.js?v=20260817-tt06-2026',
         'assets/prescription-diagnosis-ocr.js?v=20260817-exact-icd-v2',
         'assets/prescription-result-model.js?v=20260822-behavior-tests-v1',
-        'assets/prescription-check.js?v=20260826-bhyt-ai-text-v1'
+        'assets/prescription-check.js?v=20260827-ocr-complete-v1'
       ]
     },
     'inpatient-order': {

@@ -501,6 +501,45 @@
     return best;
   }
 
+  function medicineNameAliases(value){
+    const full=String(value||'').trim();
+    if(!full)return [];
+    // Mã đợt/danh mục ở cuối tên (TTKN-25, TTYTHD-26, SYT-25, BVVT-26...)
+    // thường bị OCR chèn khoảng trắng hoặc bỏ hẳn. Giữ cả tên đầy đủ và phần
+    // tên biệt dược + hàm lượng để không làm mất thuốc chỉ vì hậu tố kho.
+    const withoutInventorySuffix=full
+      .replace(/\b(?:TTKN|TTYTHD|SYT|BVVT)[\s-]*\d{2}\b/gi,' ')
+      .replace(/\s+/g,' ')
+      .trim();
+    return unique([full,withoutInventorySuffix]).filter(alias=>norm(alias).replace(/\s+/g,'').length>=6);
+  }
+
+  function compactOcrValue(value){
+    // OCR bảng thường đổi “850 mg” thành “850mg”, “30/70” thành “30 70”
+    // hoặc tách “TTKN” thành “TTK N”. Bản compact chỉ dùng cho đối chiếu tên
+    // đã có trong danh mục, không dùng để tự tạo tên thuốc mới.
+    return norm(value).replace(/\s+/g,'');
+  }
+
+  function ocrLineWindows(text,maxLines=3){
+    const lines=String(text||'').split(/\r?\n/).map(line=>line.trim()).filter(Boolean);
+    const windows=[];
+    const offsets=[];
+    let compactOffset=0;
+    lines.forEach(line=>{
+      offsets.push(compactOffset);
+      compactOffset+=compactOcrValue(line).length;
+    });
+    lines.forEach((line,start)=>{
+      let value='';
+      for(let count=1;count<=maxLines&&start+count<=lines.length;count+=1){
+        value=`${value} ${lines[start+count-1]}`.trim();
+        windows.push({start,count,offset:offsets[start],compact:compactOcrValue(value)});
+      }
+    });
+    return windows;
+  }
+
   function matchDrugsFromText(text,entry,providedDrugs=[]){
     const source={sourceId:entry.id,sourceName:entry.name,sourceTitle:entry.title};
     if(Array.isArray(providedDrugs)&&providedDrugs.length){
@@ -510,19 +549,36 @@
         return name?resolvedDrug(name,entry.payment,{...source,orderText}):null;
       }).filter(Boolean);
     }
-    const normalized=norm(text);
+    const compactWindows=ocrLineWindows(text);
     const matches=[];
     getMeds().forEach(med=>{
       // Chỉ đối chiếu tên thuốc trong danh mục với nội dung OCR. Không quét theo
       // hoạt chất vì một hoạt chất có thể tương ứng nhiều biệt dược/hàm lượng.
-      const medicineName=norm(med.name);
-      if(medicineName.length<5)return;
-      let from=0;
-      while(from<normalized.length){
-        const start=normalized.indexOf(medicineName,from);
-        if(start<0)break;
-        matches.push({med,start,end:start+medicineName.length,length:medicineName.length});
-        from=start+Math.max(1,medicineName.length);
+      const aliases=medicineNameAliases(med.name);
+      // Đối chiếu chịu lỗi khoảng trắng/dấu câu/xuống dòng của OCR. Chỉ chọn
+      // một khớp tốt nhất cho mỗi tên danh mục; bước seen bên dưới tiếp tục
+      // bảo đảm ba lượt OCR không tạo thuốc trùng.
+      let bestMatch=null;
+      aliases.forEach(alias=>{
+        const compactName=compactOcrValue(alias);
+        if(compactName.length<6)return;
+        compactWindows.forEach(window=>{
+          const position=window.compact.indexOf(compactName);
+          if(position<0)return;
+          const candidate={
+            med,
+            start:window.offset+position,
+            end:window.offset+position+compactName.length,
+            length:compactName.length,
+            kind:'compact',
+            windowLines:window.count
+          };
+          if(!bestMatch||candidate.windowLines<bestMatch.windowLines||
+            (candidate.windowLines===bestMatch.windowLines&&candidate.length>bestMatch.length))bestMatch=candidate;
+        });
+      });
+      if(bestMatch){
+        matches.push(bestMatch);
       }
     });
 
