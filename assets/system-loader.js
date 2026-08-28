@@ -1,4 +1,4 @@
-/* VPMED - loading chậm vừa phải; không can thiệp giao diện hoặc dữ liệu ứng dụng. */
+/* VPMED - Splash khởi tạo theo trạng thái thật của ứng dụng, có thời gian hiển thị tối thiểu. */
 (function () {
   'use strict';
 
@@ -14,16 +14,42 @@
     return;
   }
 
-  /* Khóa cuộn trang thật trên iOS Safari: overflow:hidden không đủ để chặn
-     cuộn nảy đàn hồi (rubber-band), khiến overlay bị kéo lệch và lộ giao diện
-     bên dưới. Cố định luôn <body> tại đúng vị trí cuộn hiện tại. */
+  var MIN_VISIBLE_MS = 2800;
+  var FADE_MS = 460;
+  var startedAt = (window.performance && typeof window.performance.now === 'function')
+    ? window.performance.now()
+    : Date.now();
+
+  var state = {
+    domReady: document.readyState !== 'loading',
+    authReady: !root.classList.contains('vpmed-auth-checking'),
+    shellReady: false,
+    initialFeatureReady: false,
+    windowLoaded: document.readyState === 'complete'
+  };
+
+  var initialFeature = (location.hash || '#home').slice(1) || 'home';
+  var displayed = 6;
+  var target = 8;
+  var initComplete = false;
+  var closed = false;
+  var closing = false;
+  var animationFrame = 0;
+  var lastFrameAt = startedAt;
   var lockScrollY = window.scrollY || window.pageYOffset || 0;
+
   if (body) {
     body.style.position = 'fixed';
     body.style.top = (-lockScrollY) + 'px';
     body.style.left = '0';
     body.style.right = '0';
     body.style.width = '100%';
+  }
+
+  function now() {
+    return (window.performance && typeof window.performance.now === 'function')
+      ? window.performance.now()
+      : Date.now();
   }
 
   function unlockScroll() {
@@ -36,66 +62,156 @@
     window.scrollTo(0, lockScrollY);
   }
 
-  var startedAt = Date.now();
-  var minimumVisibleMs = 1800;
-  var closed = false;
-  var closing = false;
-  var current = 7;
-  var timer = null;
-
-  function setProgress(value, label) {
-    current = Math.max(current, Math.min(100, Math.round(value)));
-    if (bar) bar.style.width = current + '%';
-    if (percent) percent.textContent = current + '%';
-    if (status && label) status.textContent = label;
+  function statusForProgress(value) {
+    if (value < 18) return 'Đang bắt đầu hệ thống…';
+    if (value < 34) return 'Đang khởi tạo giao diện…';
+    if (value < 52) return 'Đang xác minh phiên làm việc…';
+    if (value < 70) return 'Đang nạp hệ thống hỗ trợ lâm sàng…';
+    if (value < 84) return 'Đang tải tài nguyên và dữ liệu ban đầu…';
+    if (value < 96) return 'Đang nạp mô-đun khởi tạo…';
+    if (value < 100) return 'Đang hoàn tất kiểm tra tài nguyên…';
+    return 'Hệ thống đã sẵn sàng';
   }
 
-  function finishLoading() {
+  function renderProgress(value) {
+    var rounded = Math.max(0, Math.min(100, Math.round(value)));
+    if (bar) bar.style.width = rounded + '%';
+    if (percent) percent.textContent = rounded + '%';
+    if (status) status.textContent = statusForProgress(rounded);
+  }
+
+  function setTarget(value) {
+    if (closed) return;
+    target = Math.max(target, Math.min(96, Math.round(value)));
+  }
+
+  function allInitReady() {
+    return state.domReady &&
+      state.authReady &&
+      state.shellReady &&
+      state.initialFeatureReady &&
+      state.windowLoaded;
+  }
+
+  function closeLoader() {
     if (closed || closing) return;
     closing = true;
+    displayed = 100;
+    renderProgress(100);
 
-    var wait = Math.max(0, minimumVisibleMs - (Date.now() - startedAt));
     window.setTimeout(function () {
-      if (timer) window.clearInterval(timer);
-      setProgress(100, 'Hệ thống đã sẵn sàng');
-
+      loader.classList.add('is-hidden');
       window.setTimeout(function () {
         closed = true;
-        loader.classList.add('is-hidden');
-
-        /* Chỉ hiện giao diện chính sau khi loader đã mờ hết. Nếu mở khóa ngay
-           tại đây, nội dung phía dưới sẽ lộ ra trong lúc loader còn tồn tại. */
-        window.setTimeout(function () {
-          if (loader.parentNode) loader.parentNode.removeChild(loader);
-          root.classList.remove('system-loading');
-          unlockScroll();
-        }, 480);
-      }, 350);
-    }, wait);
+        if (animationFrame) window.cancelAnimationFrame(animationFrame);
+        if (loader.parentNode) loader.parentNode.removeChild(loader);
+        root.classList.remove('system-loading');
+        unlockScroll();
+        window.dispatchEvent(new CustomEvent('vpmed:splash-complete'));
+      }, FADE_MS);
+    }, 180);
   }
 
-  var steps = [
-    { value: 23, label: 'Đang khởi tạo giao diện…' },
-    { value: 46, label: 'Đang tải công cụ lâm sàng…' },
-    { value: 68, label: 'Đang chuẩn bị dữ liệu tra cứu…' },
-    { value: 86, label: 'Đang hoàn tất hệ thống…' }
-  ];
-  var index = 0;
+  function animate(timestamp) {
+    if (closed) return;
 
-  timer = window.setInterval(function () {
-    if (index < steps.length) {
-      setProgress(steps[index].value, steps[index].label);
-      index += 1;
-    } else if (current < 93) {
-      setProgress(current + 1, 'Đang hoàn tất hệ thống…');
+    var frameNow = typeof timestamp === 'number' ? timestamp : now();
+    var delta = Math.max(0, Math.min(64, frameNow - lastFrameAt));
+    lastFrameAt = frameNow;
+
+    if (initComplete && frameNow - startedAt >= MIN_VISIBLE_MS) {
+      target = 100;
     }
-  }, 380);
 
-  if (document.readyState === 'complete') {
-    finishLoading();
-  } else {
-    window.addEventListener('load', finishLoading, { once: true });
+    if (displayed < target) {
+      var remaining = target - displayed;
+      var speedPerMs = target >= 100 ? 0.055 : 0.036;
+      var step = Math.max(0.18, delta * speedPerMs);
+      displayed += Math.min(remaining, step);
+      renderProgress(displayed);
+    }
+
+    if (initComplete && target === 100 && displayed >= 99.6) {
+      closeLoader();
+      return;
+    }
+
+    animationFrame = window.requestAnimationFrame(animate);
   }
 
-  window.setTimeout(finishLoading, 6000);
+  function finishIfReady() {
+    if (closed || closing || !allInitReady()) return;
+    initComplete = true;
+    setTarget(96);
+  }
+
+  function markDomReady() {
+    state.domReady = true;
+    setTarget(20);
+    finishIfReady();
+  }
+
+  function markAuthReady() {
+    state.authReady = true;
+    setTarget(38);
+    finishIfReady();
+  }
+
+  function markShellReady() {
+    state.shellReady = true;
+    setTarget(60);
+    finishIfReady();
+  }
+
+  function markInitialFeatureLoading() {
+    setTarget(76);
+  }
+
+  function markInitialFeatureReady() {
+    state.initialFeatureReady = true;
+    setTarget(92);
+    finishIfReady();
+  }
+
+  function markWindowLoaded() {
+    state.windowLoaded = true;
+    setTarget(96);
+    finishIfReady();
+  }
+
+  if (!state.domReady) {
+    document.addEventListener('DOMContentLoaded', markDomReady, { once: true });
+  } else {
+    markDomReady();
+  }
+
+  window.addEventListener('vpmed-auth-ready', markAuthReady, { once: true });
+  window.addEventListener('vpmed-auth-offline', markAuthReady, { once: true });
+  if (state.authReady) markAuthReady();
+
+  window.addEventListener('vpmed:shell-ready', function (event) {
+    var detail = event && event.detail ? event.detail : {};
+    if (Array.isArray(detail.features) && detail.features.indexOf(initialFeature) === -1) {
+      initialFeature = 'home';
+      state.initialFeatureReady = true;
+    }
+    markShellReady();
+  }, { once: true });
+
+  window.addEventListener('vpmed:feature-open', function (event) {
+    var detail = event && event.detail ? event.detail : {};
+    if (detail.source !== 'initial' || detail.feature !== initialFeature) return;
+    if (detail.phase === 'loading') markInitialFeatureLoading();
+    if (detail.phase === 'opened' || detail.phase === 'error') markInitialFeatureReady();
+  });
+
+  if (!state.windowLoaded) {
+    window.addEventListener('load', markWindowLoaded, { once: true });
+  } else {
+    markWindowLoaded();
+  }
+
+  renderProgress(displayed);
+  setTarget(8);
+  animationFrame = window.requestAnimationFrame(animate);
 }());

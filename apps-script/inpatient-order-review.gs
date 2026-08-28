@@ -99,16 +99,13 @@ function handleAnalyzeInpatientOrder(payload) {
 
   try {
     var identityText = callGeminiIdentity(images);
-    var identityOcr = parseModelJson(identityText);
-    if (!identityOcr || !Array.isArray(identityOcr.drugs)) {
-      return { ok: false, message: 'AI không đọc được danh sách tên thuốc ở bước định danh. Vui lòng thử ảnh rõ hơn.' };
-    }
+    var identityOcr = parseIdentityModelOutput(identityText, drugCatalog);
     var lockedIdentities = resolveCatalogIdentities(identityOcr.drugs, drugCatalog);
     var resultText = callGeminiAnalysis(images, payload.note, lockedIdentities);
 
-    var parsed = parseModelJson(resultText);
+    var parsed = normalizeAnalysisResult(parseModelJson(resultText));
     if (!parsed) {
-      return { ok: false, message: 'AI trả về định dạng không hợp lệ. Vui lòng thử lại.' };
+      return { ok: false, message: 'AI trả về định dạng phân tích không hợp lệ. Vui lòng thử lại.' };
     }
     return { ok: true, result: enforceCatalogIdentity(parsed, drugCatalog) };
   } catch (err) {
@@ -182,6 +179,7 @@ function sanitizeDrugCatalog(input) {
 function normalizeCatalogBrand(value) {
   return normalizeIdentityText(String(value || '').split('(')[0])
     .replace(/\b(?:ttkn|syt|dv|bhyt)\s*\d+\b/g, ' ')
+    .replace(/\b(\d+)\s+(mg|g|mcg|ug|ml|iu|ui)\b/g, '$1$2')
     .replace(/\s+/g, ' ').trim();
 }
 
@@ -218,7 +216,7 @@ function resolveCatalogIdentities(ocrDrugs, catalog) {
     var rawName = String(ocr.rawName || '').slice(0, 240);
     var match = ocr.readable === false
       ? { status: 'unreadable', entry: null }
-      : exactCatalogMatch(rawName, catalog);
+      : catalogMatchFromOrderLine(rawName, catalog);
     if (!match.entry) {
       return {
         rawName: rawName, orderedText: String(ocr.orderedText || '').slice(0, 500),
@@ -275,6 +273,10 @@ function enforceCatalogIdentity(result, catalog) {
     drug = drug || {};
     var identity = drug.identity || {};
     var entry = identity.status === 'exact' ? byId[String(identity.catalogId || '')] : null;
+    if (!entry) {
+      var recovered = catalogMatchFromOrderLine(identity.rawName || drug.tradeName || drug.brand || drug.name || '', catalog);
+      if (recovered.entry) entry = recovered.entry;
+    }
     var declaredActive = String(identity.activeIngredient || drug.activeIngredient || '');
     if (!entry) {
       allVerified = false;
@@ -374,14 +376,187 @@ function extractGeminiText(body) {
   return chunks.join('');
 }
 
-/** Gỡ markdown code fence nếu model lỡ bọc, rồi parse JSON an toàn. */
-function parseModelJson(text) {
-  var cleaned = String(text || '').trim().replace(/^```json\s*|^```\s*|```$/g, '').trim();
-  try {
-    return JSON.parse(cleaned);
-  } catch (e) {
-    return null;
+/** Tìm một fragment JSON cân bằng trong text, có xử lý chuỗi và ký tự escape. */
+function extractBalancedJsonFragment(text, startIndex) {
+  var source = String(text || '');
+  var opener = source.charAt(startIndex);
+  var closer = opener === '{' ? '}' : opener === '[' ? ']' : '';
+  if (!closer) return '';
+  var depth = 0;
+  var inString = false;
+  var escaped = false;
+  for (var i = startIndex; i < source.length; i++) {
+    var ch = source.charAt(i);
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (ch === '\\') escaped = true;
+      else if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') { inString = true; continue; }
+    if (ch === opener) depth++;
+    if (ch === closer) {
+      depth--;
+      if (depth === 0) return source.slice(startIndex, i + 1);
+    }
   }
+  return '';
+}
+
+/** Parse JSON chịu được markdown fence hoặc phần giải thích thừa trước/sau JSON. */
+function parseModelJson(text) {
+  var raw = String(text || '').trim();
+  if (!raw) return null;
+  var cleaned = raw
+    .replace(/```(?:json)?/gi, '')
+    .replace(/```/g, '')
+    .replace(/^\s*json\s*[:\-]?\s*/i, '')
+    .trim();
+
+  var candidates = [cleaned];
+  var starts = [];
+  var objectStart = cleaned.indexOf('{');
+  var arrayStart = cleaned.indexOf('[');
+  if (objectStart >= 0) starts.push(objectStart);
+  if (arrayStart >= 0) starts.push(arrayStart);
+  starts.sort(function (a, b) { return a - b; });
+  starts.forEach(function (index) {
+    var fragment = extractBalancedJsonFragment(cleaned, index);
+    if (fragment) candidates.push(fragment);
+  });
+
+  for (var i = 0; i < candidates.length; i++) {
+    try { return JSON.parse(candidates[i]); } catch (e) {}
+  }
+  return null;
+}
+
+function normalizeIdentityDrugRow(item) {
+  if (typeof item === 'string') {
+    return { rawName: item.trim(), orderedText: item.trim(), readable: true };
+  }
+  item = item && typeof item === 'object' ? item : {};
+  var rawName = String(item.rawName || item.name || item.drug || item.medicine || item.medication || item.tradeName || item.brand || '').trim();
+  var orderedText = String(item.orderedText || item.order || item.line || item.text || item.doseLine || rawName).trim();
+  if (!rawName) return null;
+  return { rawName: rawName, orderedText: orderedText, readable: item.readable !== false };
+}
+
+function identityRowsFromParsed(parsed) {
+  if (!parsed) return [];
+  var rows = [];
+  if (Array.isArray(parsed)) rows = parsed;
+  else if (Array.isArray(parsed.drugs)) rows = parsed.drugs;
+  else if (Array.isArray(parsed.medications)) rows = parsed.medications;
+  else if (Array.isArray(parsed.medicines)) rows = parsed.medicines;
+  else if (Array.isArray(parsed.items)) rows = parsed.items;
+  else if (parsed.drugs && typeof parsed.drugs === 'object') rows = Object.keys(parsed.drugs).map(function (key) { return parsed.drugs[key]; });
+  return rows.map(normalizeIdentityDrugRow).filter(function (row) { return row && row.rawName; });
+}
+
+function catalogMatchFromOrderLine(rawText, catalog) {
+  var direct = exactCatalogMatch(rawText, catalog);
+  if (direct.entry || direct.status === 'ambiguous') return direct;
+
+  var normalizedLine = ' ' + normalizeIdentityText(rawText) + ' ';
+  var matches = catalog.filter(function (entry) {
+    var brand = normalizeCatalogBrand(entry.brand);
+    return brand.length >= 4 && normalizedLine.indexOf(' ' + brand + ' ') !== -1;
+  });
+  if (matches.length === 1 || (matches.length > 1 && catalogEntriesSameIdentity(matches))) {
+    matches.sort(function (a, b) { return normalizeCatalogBrand(b.brand).length - normalizeCatalogBrand(a.brand).length; });
+    return { status: 'exact', entry: matches[0] };
+  }
+  return { status: matches.length > 1 ? 'ambiguous' : direct.status, entry: null };
+}
+
+function looseRawNameFromLine(line) {
+  var value = String(line || '').trim()
+    .replace(/^[-*•]+\s*/, '')
+    .replace(/^\d+[.)\-:]\s*/, '')
+    .replace(/^["']?(?:rawName|name|drug|medicine|medication|thuoc|tên thuốc)["']?\s*[:=]\s*/i, '')
+    .replace(/^["']|["'],?$/g, '')
+    .trim();
+  if (!value || value.length < 3 || value.length > 240) return '';
+  var doseIndex = value.search(/\s(?:\d+(?:[.,]\d+)?\s*(?:mg|g|mcg|µg|ml|mL|iu|ui|đv|%|lọ|lo|ống|ong|viên|vien)\b|x\s*\d+\b)/i);
+  if (doseIndex > 2) value = value.slice(0, doseIndex).trim();
+  if (/^(?:drugs?|medications?|medicines?|result|json|object|danh sach|danh sách)\b/i.test(value)) return '';
+  return value;
+}
+
+/**
+ * Fallback định danh: đọc text thô từng dòng và ưu tiên đối chiếu tên thuốc
+ * trực tiếp với danh mục nội trú. Không suy diễn hoạt chất từ kiến thức model.
+ */
+function fallbackParseIdentityText(text, catalog) {
+  var raw = String(text || '').replace(/```(?:json)?/gi, '').replace(/```/g, '');
+  var lines = raw.split(/\r?\n/).map(function (line) { return line.trim(); }).filter(Boolean);
+  var rows = [];
+  var seen = {};
+
+  function pushRow(rawName, orderedText) {
+    rawName = String(rawName || '').trim();
+    if (!rawName) return;
+    var key = normalizeIdentityText(rawName);
+    if (seen[key]) return;
+    seen[key] = true;
+    rows.push({ rawName: rawName, orderedText: String(orderedText || rawName).slice(0, 500), readable: true });
+  }
+
+  lines.forEach(function (line) {
+    var match = catalogMatchFromOrderLine(line, catalog);
+    if (match.entry) {
+      pushRow(match.entry.brand, line);
+      return;
+    }
+    var keyed = line.match(/["']?(?:rawName|name|drug|medicine|medication|thuoc|tên thuốc)["']?\s*[:=]\s*["']?([^"',}\]]{3,240})/i);
+    if (keyed && keyed[1]) {
+      pushRow(looseRawNameFromLine(keyed[1]) || keyed[1], line);
+      return;
+    }
+    if (/\b\d+(?:[.,]\d+)?\s*(?:mg|g|mcg|µg|ml|mL|iu|ui|đv|%|lọ|lo|ống|ong|viên|vien)\b/i.test(line)) {
+      var loose = looseRawNameFromLine(line);
+      if (loose) pushRow(loose, line);
+    }
+  });
+
+  if (!rows.length && raw) {
+    var normalizedWhole = ' ' + normalizeIdentityText(raw) + ' ';
+    catalog.forEach(function (entry) {
+      var brand = normalizeCatalogBrand(entry.brand);
+      if (brand.length >= 4 && normalizedWhole.indexOf(' ' + brand + ' ') !== -1) pushRow(entry.brand, entry.brand);
+    });
+  }
+  return rows.slice(0, 100);
+}
+
+function parseIdentityModelOutput(text, catalog) {
+  var parsedRows = identityRowsFromParsed(parseModelJson(text));
+  var fallbackRows = fallbackParseIdentityText(text, catalog || []);
+  var rows = [];
+  var seen = {};
+  parsedRows.concat(fallbackRows).forEach(function (row) {
+    var key = normalizeIdentityText(row.rawName);
+    if (!row.rawName || seen[key]) return;
+    seen[key] = true;
+    rows.push(row);
+  });
+  return { drugs: rows.slice(0, 100) };
+}
+
+function normalizeAnalysisResult(parsed) {
+  if (!parsed) return null;
+  if (Array.isArray(parsed)) return { drugs: parsed, interactions: [], unclear: [] };
+  if (typeof parsed !== 'object') return null;
+  if (!Array.isArray(parsed.drugs)) {
+    if (Array.isArray(parsed.medications)) parsed.drugs = parsed.medications;
+    else if (Array.isArray(parsed.medicines)) parsed.drugs = parsed.medicines;
+    else if (parsed.drugs && typeof parsed.drugs === 'object') parsed.drugs = Object.keys(parsed.drugs).map(function (key) { return parsed.drugs[key]; });
+    else parsed.drugs = [];
+  }
+  if (!Array.isArray(parsed.interactions)) parsed.interactions = [];
+  if (!Array.isArray(parsed.unclear)) parsed.unclear = [];
+  return parsed;
 }
 
 /**

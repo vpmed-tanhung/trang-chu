@@ -16,7 +16,7 @@ def test_inpatient_order_feature_is_wired_without_regressing_rx_review():
     assert inpatient_bundle.index(shared_layout_css) < inpatient_bundle.index(module_css)
     assert 'data-open="inpatient-order"' in html
     assert 'id="view-inpatient-order"' in html
-    assert 'assets/inpatient-order-review.js?v=20260828-ai-identity-v1' in shell
+    assert 'assets/inpatient-order-review.js?v=20260828-auto-pipeline-v2' in shell
     assert "'inpatient-order'" in unified
 
     # Các sửa mới nhất của module rà soát đơn BHYT phải được giữ nguyên khi merge.
@@ -67,7 +67,7 @@ def test_inpatient_ai_identity_is_catalog_grounded_and_not_hardcoded():
 
     catalog_asset = 'assets/inpatient_medicines_20260707.js?v=20260828-ai-identity-v1'
     identity_asset = 'assets/inpatient-drug-identity.js?v=20260828-ai-identity-v1'
-    review_asset = 'assets/inpatient-order-review.js?v=20260828-ai-identity-v1'
+    review_asset = 'assets/inpatient-order-review.js?v=20260828-auto-pipeline-v2'
     inpatient_bundle = shell.split("'inpatient-order': {", 1)[1].split("'petct-dose':", 1)[0]
     assert inpatient_bundle.index(catalog_asset) < inpatient_bundle.index(identity_asset) < inpatient_bundle.index(review_asset)
     assert 'VPMED_INPATIENT_MEDICINES_20260707' in identity
@@ -161,3 +161,35 @@ def test_inpatient_order_has_deterministic_renal_safety_layer():
     assert 'Không tự chọn dải liều cố định' in js
     assert 'suggestedRegimen' in gs
     assert 'liều nạp' in gs
+
+
+def test_splash_screen_is_restored_and_waits_for_real_init_events():
+    html = (ROOT / 'index.html').read_text(encoding='utf-8')
+    loader = (ROOT / 'assets' / 'system-loader.js').read_text(encoding='utf-8')
+    assert 'id="systemLoader"' in html
+    assert 'id="systemLoaderBar"' in html
+    assert 'id="systemLoaderPercent"' in html
+    assert "classList.add('vpmed-auth-checking','system-loading')" in html
+    assert 'assets/system-loader.js?v=20260828-init-flow-v3' in html
+    for event_name in ['vpmed-auth-ready', 'vpmed-auth-offline', 'vpmed:shell-ready', 'vpmed:feature-open']:
+        assert event_name in loader
+    assert "detail.source !== 'initial'" in loader
+    assert 'state.windowLoaded' in loader
+    assert 'MIN_VISIBLE_MS = 2800' in loader
+    assert "return 'Hệ thống đã sẵn sàng'" in loader
+    assert 'allInitReady()' in loader
+    assert 'target = 100' in loader
+    assert 'finishIfReady()' in loader
+
+
+def test_inpatient_order_restores_automatic_pipeline_and_parser_fallback():
+    client = (ROOT / 'assets' / 'inpatient-order-review.js').read_text(encoding='utf-8')
+    gs = (ROOT / 'apps-script' / 'inpatient-order-review.gs').read_text(encoding='utf-8')
+    assert 'scheduleAutoAnalyze();' in client
+    assert "if (consent.checked) scheduleAutoAnalyze();" in client
+    assert 'reconcileServerResult(data.result, drugCatalog)' in client
+    assert 'identityApi.reconcileResult(data.result)' not in client
+    assert 'parseIdentityModelOutput(identityText, drugCatalog)' in gs
+    assert 'fallbackParseIdentityText' in gs
+    assert 'catalogMatchFromOrderLine' in gs
+    assert 'AI không đọc được danh sách tên thuốc ở bước định danh' not in gs

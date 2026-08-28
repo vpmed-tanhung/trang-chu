@@ -367,7 +367,9 @@
     nextId: 1,
     result: null,
     renalAssessment: null,
-    sending: false
+    sending: false,
+    autoAnalyzeTimer: null,
+    autoAnalyzePending: false
   };
 
   function fingerprint(file) {
@@ -391,6 +393,7 @@
     renumberFiles();
     renderFileQueue();
     updateAnalyzeButtonState();
+    scheduleAutoAnalyze();
   }
 
   function renumberFiles() {
@@ -435,6 +438,40 @@
     if (!btn) return;
     const consent = io$('#ioConsent');
     btn.disabled = state.sending || !state.files.length || !(consent && consent.checked);
+  }
+
+
+  function canAutoAnalyze() {
+    const consent = io$('#ioConsent');
+    return Boolean(state.files.length && consent && consent.checked);
+  }
+
+  function scheduleAutoAnalyze(delayMs = 220) {
+    if (!canAutoAnalyze()) return;
+    if (state.autoAnalyzeTimer) window.clearTimeout(state.autoAnalyzeTimer);
+    if (state.sending) {
+      state.autoAnalyzePending = true;
+      return;
+    }
+    state.autoAnalyzePending = false;
+    state.autoAnalyzeTimer = window.setTimeout(() => {
+      state.autoAnalyzeTimer = null;
+      analyzeOrder({ source: 'auto' });
+    }, delayMs);
+  }
+
+  function reconcileServerResult(result, catalog) {
+    const identityApi = getDrugIdentityApi();
+    if (identityApi && typeof identityApi.reconcileResult === 'function') {
+      try {
+        return identityApi.reconcileResult(result);
+      } catch (error) {
+        console.warn('[VPMED] Đối chiếu identity module lỗi, chuyển sang guard cục bộ:', error);
+      }
+    }
+
+    const guarded = applyVerifiedCatalogGuard(result, catalog);
+    return suppressUnsafeIdentityConflicts(guarded.result, guarded.conflicts);
   }
 
   function readRenalInputs() {
@@ -619,7 +656,7 @@
     updateAnalyzeButtonState();
   }
 
-  async function analyzeOrder() {
+  async function analyzeOrder(options = {}) {
     if (!state.files.length || state.sending) return;
     const consent = io$('#ioConsent');
     if (!consent || !consent.checked) {
@@ -632,7 +669,6 @@
     }
     setBusy(true);
     try {
-      const identityApi = getDrugIdentityApi();
       const drugCatalog = buildVerifiedDrugCatalog();
       if (!drugCatalog.length) {
         throw new Error('Không tải được danh mục thuốc nội trú để đối chiếu. Hệ thống đã dừng phân tích nhằm tránh AI tự suy diễn hoạt chất.');
@@ -652,7 +688,7 @@
       });
       const data = await res.json();
       if (!data.ok) throw new Error(data.message || 'AI không trả về kết quả hợp lệ.');
-      const verifiedResult = identityApi.reconcileResult(data.result);
+      const verifiedResult = reconcileServerResult(data.result, drugCatalog);
       state.result = verifiedResult;
       renderResult(verifiedResult);
       window.VPMED_PLATFORM?.calculationComplete({feature:'inpatient-order',files:state.files.length});
@@ -660,6 +696,10 @@
       renderError(err && err.message ? err.message : 'Không thể phân tích y lệnh. Vui lòng thử lại.');
     } finally {
       setBusy(false);
+      if (state.autoAnalyzePending && canAutoAnalyze()) {
+        state.autoAnalyzePending = false;
+        scheduleAutoAnalyze(120);
+      }
     }
   }
 
@@ -789,6 +829,11 @@
     state.nextId = 1;
     state.result = null;
     state.renalAssessment = null;
+    state.autoAnalyzePending = false;
+    if (state.autoAnalyzeTimer) {
+      window.clearTimeout(state.autoAnalyzeTimer);
+      state.autoAnalyzeTimer = null;
+    }
     const input = io$('#ioUploadInput');
     if (input) input.value = '';
     const consent = io$('#ioConsent');
@@ -823,7 +868,10 @@
     }
 
     const consent = io$('#ioConsent');
-    if (consent) consent.addEventListener('change', updateAnalyzeButtonState);
+    if (consent) consent.addEventListener('change', () => {
+      updateAnalyzeButtonState();
+      if (consent.checked) scheduleAutoAnalyze();
+    });
 
     ['ioRenalStatus', 'ioAge', 'ioSex', 'ioWeight', 'ioHeight', 'ioScr', 'ioScrUnit']
       .forEach(id => {
@@ -859,7 +907,8 @@
     buildVerifiedDrugCatalog,
     buildVerifiedDrugCatalogNote,
     applyVerifiedCatalogGuard,
-    suppressUnsafeIdentityConflicts
+    suppressUnsafeIdentityConflicts,
+    reconcileServerResult
   };
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = testHooks;

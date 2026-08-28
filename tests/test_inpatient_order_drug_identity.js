@@ -67,4 +67,10 @@ const correctGuard = hooks.applyVerifiedCatalogGuard(correct, catalog);
 assert.strictEqual(correctGuard.conflicts.length, 0, 'Ampicillin/Ampicilin phải được coi là cùng hoạt chất');
 assert.strictEqual(correctGuard.result.drugs[0].activeIngredient, 'Ampicilin + sulbactam');
 
+const noIdentityApiResult = hooks.reconcileServerResult({
+  drugs: [{ name: 'Nerusyn 1.5g', brand: 'Nerusyn 1.5g', activeIngredient: 'Ampicillin + Sulbactam' }],
+  interactions: [], unclear: []
+}, catalog);
+assert.strictEqual(noIdentityApiResult.drugs[0].activeIngredient, 'Ampicilin + sulbactam', 'Không có identityApi vẫn phải hiển thị kết quả đã đối chiếu cục bộ');
+
 console.log('Inpatient drug identity guard tests: OK');

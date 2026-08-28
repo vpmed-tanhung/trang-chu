@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.08.28.56';
+  const BUILD_VERSION = '2026.08.28.57';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -92,7 +92,7 @@
         'assets/renal_database_20260723.js?v=20260723-renal-only-v4',
         'assets/inpatient_medicines_20260707.js?v=20260828-ai-identity-v1',
         'assets/inpatient-drug-identity.js?v=20260828-ai-identity-v1',
-        'assets/inpatient-order-review.js?v=20260828-ai-identity-v1'
+        'assets/inpatient-order-review.js?v=20260828-auto-pipeline-v2'
       ]
     },
     'petct-dose': {

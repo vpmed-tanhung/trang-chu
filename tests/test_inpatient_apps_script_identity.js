@@ -52,3 +52,29 @@ assert.strictEqual(blocked.drugs[0].safetyBlocked, true);
 assert.strictEqual(blocked.drugs[0].doseAssessment.status, 'không đủ dữ liệu để đánh giá');
 
 console.log('Inpatient Apps Script two-stage identity tests: OK');
+
+const looseIdentity = sandbox.parseIdentityModelOutput(
+  `Kết quả định danh:\n- ${rawNameFromImage} 1,5 g x 2 lần/ngày, truyền tĩnh mạch`,
+  catalog
+);
+assert.ok(looseIdentity.drugs.length >= 1, 'Fallback phải bóc được thuốc từ text thô không phải JSON');
+const looseLocked = sandbox.resolveCatalogIdentities(looseIdentity.drugs, catalog);
+assert.ok(looseLocked.some(item => item.catalogId === entry.catalogId && item.status === 'exact'));
+
+const fencedIdentity = sandbox.parseIdentityModelOutput(
+  'Giải thích thừa trước JSON\n```json\n{"drugs":[{"rawName":"' + rawNameFromImage + '","orderedText":"' + rawNameFromImage + ' 1,5g"}]}\n```\nNội dung thừa sau JSON',
+  catalog
+);
+assert.strictEqual(fencedIdentity.drugs[0].rawName, rawNameFromImage, 'Parser phải lấy JSON fragment dù có text thừa');
+
+const recoveredAnalysis = sandbox.enforceCatalogIdentity({
+  drugs: [{
+    name: rawNameFromImage,
+    identity: { rawName: rawNameFromImage, status: 'not_found', catalogId: '' },
+    doseAssessment: { status: 'phù hợp', detail: 'Kết quả kiểm thử', source: 'Nguồn kiểm thử' },
+    infusionRate: { applicable: false },
+    renalAdjustment: { applicable: false }
+  }], interactions: [], unclear: []
+}, catalog);
+assert.strictEqual(recoveredAnalysis.drugs[0].identity.status, 'exact', 'Phải đối chiếu lại bằng danh mục thay vì khóa chỉ vì identity status từ AI không chuẩn');
+assert.strictEqual(recoveredAnalysis.drugs[0].identity.catalogId, entry.catalogId);
