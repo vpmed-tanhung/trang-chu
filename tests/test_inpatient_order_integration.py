@@ -16,7 +16,7 @@ def test_inpatient_order_feature_is_wired_without_regressing_rx_review():
     assert inpatient_bundle.index(shared_layout_css) < inpatient_bundle.index(module_css)
     assert 'data-open="inpatient-order"' in html
     assert 'id="view-inpatient-order"' in html
-    assert 'assets/inpatient-order-review.js?v=20260822-platform-events-v1' in shell
+    assert 'assets/inpatient-order-review.js?v=20260828-ai-identity-v1' in shell
     assert "'inpatient-order'" in unified
 
     # Các sửa mới nhất của module rà soát đơn BHYT phải được giữ nguyên khi merge.
@@ -32,9 +32,12 @@ def test_inpatient_order_artifacts_are_present():
         'apps-script/inpatient-order-review.gs',
         'assets/inpatient-order-review.css',
         'assets/inpatient-order-review.js',
+        'assets/inpatient-drug-identity.js',
         'docs/ai-prompts/y-lenh-noi-tru-system-prompt.md',
         'tests/test_inpatient_order_severity.js',
         'tests/test_inpatient_order_renal.js',
+        'tests/test_inpatient_drug_identity.js',
+        'tests/test_inpatient_apps_script_identity.js',
     ]
     for rel in required:
         assert (ROOT / rel).is_file(), rel
@@ -54,6 +57,32 @@ def test_bundled_apps_script_uses_gemini_free_vision_with_fallback():
     assert "getProperty('GEMINI_API_KEY')" in gs
     assert "responseMimeType: 'application/json'" in gs
     assert 'https://api.openai.com' not in gs
+
+
+def test_inpatient_ai_identity_is_catalog_grounded_and_not_hardcoded():
+    shell = (ROOT / 'assets' / 'platform-shell.js').read_text(encoding='utf-8')
+    identity = (ROOT / 'assets' / 'inpatient-drug-identity.js').read_text(encoding='utf-8')
+    client = (ROOT / 'assets' / 'inpatient-order-review.js').read_text(encoding='utf-8')
+    gs = (ROOT / 'apps-script' / 'inpatient-order-review.gs').read_text(encoding='utf-8')
+
+    catalog_asset = 'assets/inpatient_medicines_20260707.js?v=20260828-ai-identity-v1'
+    identity_asset = 'assets/inpatient-drug-identity.js?v=20260828-ai-identity-v1'
+    review_asset = 'assets/inpatient-order-review.js?v=20260828-ai-identity-v1'
+    inpatient_bundle = shell.split("'inpatient-order': {", 1)[1].split("'petct-dose':", 1)[0]
+    assert inpatient_bundle.index(catalog_asset) < inpatient_bundle.index(identity_asset) < inpatient_bundle.index(review_asset)
+    assert 'VPMED_INPATIENT_MEDICINES_20260707' in identity
+    assert 'VERIFIED_DRUG_IDENTITIES' not in identity
+    assert 'Nerusyn' not in identity
+    assert 'getCatalogForAi' in client
+    assert 'reconcileResult' in client
+    assert 'drugCatalog' in gs
+    assert 'sanitizeDrugCatalog' in gs
+    assert 'INPATIENT_IDENTITY_PROMPT' in gs
+    assert 'callGeminiIdentity(images)' in gs
+    assert 'resolveCatalogIdentities' in gs
+    assert 'callGeminiAnalysis(images, payload.note, lockedIdentities)' in gs
+    assert 'enforceCatalogIdentity' in gs
+    assert 'Nerusyn' not in gs
 
 
 def test_bhyt_ocr_text_has_optional_ai_review_without_uploading_images():

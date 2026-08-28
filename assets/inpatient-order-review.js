@@ -26,10 +26,12 @@
     crrt: 'lọc máu liên tục (CRRT)'
   };
 
+
   const io$ = selector => document.querySelector(selector);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[char]));
+
 
   function positiveNumber(value) {
     if (value === '' || value === null || value === undefined) return null;
@@ -187,6 +189,10 @@
     if (!assessment.canApplyDoseBand) parts.push('Không tự chọn dải liều cố định từ CrCl ở trạng thái hiện tại; cần nêu dữ liệu còn thiếu và cách định liều/giám sát phù hợp.');
     if (assessment.warnings.length) parts.push(`Cảnh báo kiểm chứng: ${assessment.warnings.join(' ')}`);
     return parts.join(' ');
+  }
+
+  function getDrugIdentityApi() {
+    return typeof window !== 'undefined' ? window.VPMED_INPATIENT_IDENTITY : null;
   }
 
   const state = {
@@ -459,6 +465,11 @@
     }
     setBusy(true);
     try {
+      const identityApi = getDrugIdentityApi();
+      const drugCatalog = identityApi?.getCatalogForAi?.() || [];
+      if (!drugCatalog.length) {
+        throw new Error('Không tải được danh mục thuốc nội trú để đối chiếu. Hệ thống đã dừng phân tích nhằm tránh AI tự suy diễn hoạt chất.');
+      }
       const renalAssessment = refreshRenalAssessment();
       const images = await Promise.all(state.files.map(entry => fileToCompressedBase64(entry.file)));
       setBusy(true);
@@ -468,13 +479,15 @@
         body: JSON.stringify({
           action: 'analyzeInpatientOrder',
           images,
+          drugCatalog,
           note: buildRenalNote(renalAssessment)
         })
       });
       const data = await res.json();
       if (!data.ok) throw new Error(data.message || 'AI không trả về kết quả hợp lệ.');
-      state.result = data.result;
-      renderResult(data.result);
+      const verifiedResult = identityApi.reconcileResult(data.result);
+      state.result = verifiedResult;
+      renderResult(verifiedResult);
       window.VPMED_PLATFORM?.calculationComplete({feature:'inpatient-order',files:state.files.length});
     } catch (err) {
       renderError(err && err.message ? err.message : 'Không thể phân tích y lệnh. Vui lòng thử lại.');
@@ -501,6 +514,9 @@
     return `
       <div class="clinical-item io-drug-card">
         <b>${esc(drug.name || 'Thuốc chưa xác định')}</b>
+        ${drug.identity ? `<p><small><strong>Đối chiếu danh mục:</strong> ${drug.identity.status === 'exact'
+          ? `${esc(drug.identity.catalogId)} · ${esc(drug.identity.activeIngredient || '')}${drug.identity.strength ? ` · ${esc(drug.identity.strength)}` : ''}`
+          : 'Chưa xác nhận — đã khóa phân tích lâm sàng'}</small></p>` : ''}
         <p><strong>Y lệnh kê:</strong> ${esc(drug.orderedDose || '—')}${drug.route ? ` · ${esc(drug.route)}` : ''}</p>
         ${drug.usageNote ? `<p><strong>Cách dùng:</strong> ${esc(drug.usageNote)}</p>` : ''}
         <p class="${doseCls}"><strong>Đánh giá liều:</strong> ${esc(dose.status || 'không đủ dữ liệu để đánh giá')}${dose.detail ? ` — ${esc(dose.detail)}` : ''}</p>

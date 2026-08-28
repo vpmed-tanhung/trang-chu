@@ -42,10 +42,19 @@ var BHYT_TEXT_PROMPT = [
   '{"summary":"string","issues":[{"category":"OCR|thuốc|liều-cách dùng|tương tác|ICD-BHYT","severity":"cao|vừa|thấp","finding":"string","recommendation":"string"}],"confidence":"cao|trung bình|thấp","disclaimer":"string"}'
 ].join('\n');
 
+var INPATIENT_IDENTITY_PROMPT = [
+  'NHIỆM VỤ DUY NHẤT: chép nguyên văn tên từng thuốc/y lệnh thuốc nhìn thấy trong ảnh.',
+  'Không phân tích lâm sàng, không đoán hoạt chất, không đổi sang tên generic hoặc biệt dược khác.',
+  'Giữ nguyên tên biệt dược, hàm lượng đi kèm và phần chữ có ý nghĩa nhận diện. Nếu chữ không rõ, vẫn chép phần đọc được và đặt readable=false.',
+  'Chỉ trả một JSON object hợp lệ, không markdown, đúng cấu trúc:',
+  '{"drugs":[{"rawName":"tên thuốc chép nguyên văn từ ảnh","orderedText":"toàn bộ dòng y lệnh liên quan","readable":true}]}'
+].join('\n');
+
 var SYSTEM_PROMPT = [
   'VAI TRÒ: Bạn là Dược sĩ lâm sàng cấp cao (Senior Clinical Pharmacist), chuyên sâu Dược lâm sàng nội trú tại bệnh viện Việt Nam, dày kinh nghiệm đọc và rà soát y lệnh dùng thuốc trong bệnh án.',
   '',
   'NHIỆM VỤ: Phân tích y lệnh dùng thuốc (không phải dịch pha truyền hay dịch pha thuốc) của một bệnh nhân nội trú dựa trên ảnh y lệnh/trang bệnh án được cung cấp. Chỉ tập trung đúng 5 việc, không mở rộng phạm vi:',
+  'BƯỚC 0 BẮT BUỘC — ĐỊNH DANH THUỐC: Hệ thống đã thực hiện một lượt OCR riêng và gửi kèm DANH SÁCH ĐỊNH DANH ĐÃ KHÓA. Phải chép nguyên trạng identity của từng thuốc từ danh sách này; không tự tìm lại hoạt chất bằng kiến thức mô hình, không đổi catalogId và không tự đổi sang biệt dược khác. Chỉ thuốc có identity.status="exact" mới được phân tích. Thuốc "not_found", "ambiguous" hoặc "unreadable" phải để trống hoạt chất và không phân tích liều/tương tác/hiệu chỉnh thận.',
   '1. Tính toán liều dùng — đối chiếu liều bác sĩ kê với liều khuyến cáo (theo cân nặng/tuổi/chức năng thận nếu có dữ liệu); tách rõ liều nạp và liều duy trì; nêu rõ khi liều bất thường và mức chênh lệch ước tính.',
   '2. Cách dùng — đường dùng, thời điểm dùng, số lần/ngày, điều kiện đói/no, tương thích dạng bào chế.',
   '3. Tính tốc độ truyền thuốc — CHỈ tính tốc độ truyền (mL/giờ hoặc giọt/phút) cho thuốc IV dựa trên liều, thời gian truyền khuyến cáo và nồng độ/thể tích đã ghi rõ trong y lệnh. KHÔNG tính pha loãng/chọn dung môi/thể tích pha chế.',
@@ -57,6 +66,8 @@ var SYSTEM_PROMPT = [
   '',
   'RÀNG BUỘC:',
   '- Không suy đoán thông tin không xuất hiện trong ảnh. Nếu chữ mờ/không đọc rõ, ghi "Không đọc rõ, cần xác minh thủ công" — tuyệt đối không tự bịa số liệu.',
+  '- DANH SÁCH ĐỊNH DANH ĐÃ KHÓA gửi kèm là nguồn duy nhất để gán biệt dược → hoạt chất/hàm lượng/đường dùng. Không được sửa, bổ sung hoặc thay thế dữ liệu này bằng trí nhớ của mô hình. Khi identity.status="exact", mọi phép tính và nhận định phải dựa đúng activeIngredient/strength của cùng catalogId.',
+  '- Nếu chưa có identity.status="exact" và catalogId hợp lệ thì doseAssessment.status bắt buộc là "không đủ dữ liệu để đánh giá"; infusionRate.applicable=false; renalAdjustment.applicable=false. Không được ghi một nguồn tham khảo như thể đã xác minh đúng chế phẩm.',
   '- Ghi chú có tiền tố "Dữ liệu thận do dược sĩ nhập" là dữ liệu có cấu trúc do người dùng cung cấp; dùng để kiểm chứng nhưng nếu xung đột với ảnh phải nêu xung đột, không tự chọn một giá trị im lặng.',
   '- Cockcroft-Gault/CKD-EPI chỉ phù hợp khi creatinine tương đối ổn định. Không đồng nhất giai đoạn CKD với ngưỡng chỉnh liều của từng thuốc. Ở thể trạng rất nhỏ/lớn, xem xét eGFR không chuẩn hóa BSA; với thuốc khoảng điều trị hẹp, ưu tiên cystatin C/mGFR hoặc TDM khi có.',
   '- Không chẩn đoán bệnh, không kê đơn thay bác sĩ, không tự quyết định ngừng/đổi thuốc.',
@@ -66,7 +77,7 @@ var SYSTEM_PROMPT = [
   '- Trả lời bằng tiếng Việt.',
   '',
   'ĐỊNH DẠNG ĐẦU RA: Trả về DUY NHẤT một object JSON hợp lệ, không kèm văn bản khác, không dùng markdown code fence, đúng khung sau (bỏ trống mảng/field không áp dụng, không tự thêm field mới):',
-  '{"patientContext":{"renalFunction":{"creatinine":"string hoặc null","crclOrEgfr":"string hoặc null","status":"ổn định|AKI/biến động|IHD|CRRT|chưa rõ","dataQuality":"đủ|thiếu|xung đột","note":"string"},"otherRelevantConditions":["string"]},"drugs":[{"name":"string (ưu tiên tên hoạt chất)","orderedDose":"string","route":"string","usageNote":"string","doseAssessment":{"status":"phù hợp|cao hơn khuyến cáo|thấp hơn khuyến cáo|không đủ dữ liệu để đánh giá","detail":"string","source":"string"},"infusionRate":{"applicable":true,"rate":"string","basis":"string"},"renalAdjustment":{"applicable":true,"priority":"rà soát ngay|trong ca trực|theo dõi","warning":"string","method":"string","suggestedRegimen":"string hoặc để trống nếu chưa đủ dữ liệu","loadingDoseNote":"string","monitoring":"string","source":"string"}}],"interactions":[{"drugs":["string","string"],"severity":"chống chỉ định|nghiêm trọng cần theo dõi|cần lưu ý","mechanism":"string","recommendation":"string","source":"string"}],"unclear":["string"],"disclaimer":"string"}',
+  '{"patientContext":{"renalFunction":{"creatinine":"string hoặc null","crclOrEgfr":"string hoặc null","status":"ổn định|AKI/biến động|IHD|CRRT|chưa rõ","dataQuality":"đủ|thiếu|xung đột","note":"string"},"otherRelevantConditions":["string"]},"drugs":[{"name":"string","identity":{"rawName":"tên chép nguyên văn từ ảnh","status":"exact|not_found|ambiguous|unreadable","catalogId":"string hoặc rỗng","brand":"string hoặc rỗng","activeIngredient":"string hoặc rỗng","strength":"string hoặc rỗng","route":"string hoặc rỗng","registrationNumber":"string hoặc rỗng"},"orderedDose":"string","route":"string","usageNote":"string","doseAssessment":{"status":"phù hợp|cao hơn khuyến cáo|thấp hơn khuyến cáo|không đủ dữ liệu để đánh giá","detail":"string","source":"string"},"infusionRate":{"applicable":true,"rate":"string","basis":"string"},"renalAdjustment":{"applicable":true,"priority":"rà soát ngay|trong ca trực|theo dõi","warning":"string","method":"string","suggestedRegimen":"string hoặc để trống nếu chưa đủ dữ liệu","loadingDoseNote":"string","monitoring":"string","source":"string"}}],"interactions":[{"drugs":["string","string"],"severity":"chống chỉ định|nghiêm trọng cần theo dõi|cần lưu ý","mechanism":"string","recommendation":"string","source":"string"}],"unclear":["string"],"disclaimer":"string"}',
   'Nếu ảnh không đọc được y lệnh nào hợp lệ, trả "drugs": [] và ghi rõ lý do trong "unclear".'
 ].join('\n');
 
@@ -81,14 +92,25 @@ function handleAnalyzeInpatientOrder(payload) {
     return { ok: false, message: 'Chưa nhận được ảnh y lệnh nào.' };
   }
 
+  var drugCatalog = sanitizeDrugCatalog(payload && payload.drugCatalog);
+  if (!drugCatalog.length) {
+    return { ok: false, message: 'Thiếu danh mục thuốc nội trú để đối chiếu. Đã dừng phân tích nhằm tránh AI tự suy diễn hoạt chất.' };
+  }
+
   try {
-    var resultText = callGemini(images, payload.note);
+    var identityText = callGeminiIdentity(images);
+    var identityOcr = parseModelJson(identityText);
+    if (!identityOcr || !Array.isArray(identityOcr.drugs)) {
+      return { ok: false, message: 'AI không đọc được danh sách tên thuốc ở bước định danh. Vui lòng thử ảnh rõ hơn.' };
+    }
+    var lockedIdentities = resolveCatalogIdentities(identityOcr.drugs, drugCatalog);
+    var resultText = callGeminiAnalysis(images, payload.note, lockedIdentities);
 
     var parsed = parseModelJson(resultText);
     if (!parsed) {
       return { ok: false, message: 'AI trả về định dạng không hợp lệ. Vui lòng thử lại.' };
     }
-    return { ok: true, result: parsed };
+    return { ok: true, result: enforceCatalogIdentity(parsed, drugCatalog) };
   } catch (err) {
     var detail = err && err.message ? err.message : String(err);
     return { ok: false, message: 'Không thể phân tích lúc này. Vui lòng thử lại sau. Chi tiết: ' + detail };
@@ -109,9 +131,21 @@ function handleAnalyzeBhytPrescriptionText(payload) {
   }
 }
 
-function callGemini(images, note) {
+function callGeminiIdentity(images) {
+  var parts = [{ text: 'Chép nguyên văn tên thuốc và dòng y lệnh trong các ảnh; không suy diễn hoạt chất.' }];
+  images.forEach(function (img) {
+    parts.push({
+      inlineData: { mimeType: img.mimeType || 'image/jpeg', data: img.base64 }
+    });
+  });
+  return requestGemini(INPATIENT_IDENTITY_PROMPT, parts, 4096);
+}
+
+function callGeminiAnalysis(images, note, lockedIdentities) {
   var parts = [{
-    text: 'Phân tích y lệnh trong (các) ảnh theo đúng hướng dẫn và chỉ trả về một object JSON hợp lệ.' +
+    text: 'DANH SÁCH ĐỊNH DANH ĐÃ ĐƯỢC HỆ THỐNG KHÓA (sao chép nguyên trạng; không tự sửa):\n' +
+      JSON.stringify(lockedIdentities) +
+      '\n\nPhân tích y lệnh trong (các) ảnh theo đúng hướng dẫn và chỉ trả về một object JSON hợp lệ.' +
       (note ? ('\n\nGhi chú thêm từ dược sĩ: ' + note) : '')
   }];
   images.forEach(function (img) {
@@ -123,6 +157,155 @@ function callGemini(images, note) {
     });
   });
   return requestGemini(SYSTEM_PROMPT, parts, 8192);
+}
+
+function sanitizeDrugCatalog(input) {
+  if (!Array.isArray(input)) return [];
+  var seen = {};
+  return input.slice(0, 600).map(function (item) {
+    item = item || {};
+    return {
+      catalogId: String(item.catalogId || '').slice(0, 80),
+      brand: String(item.brand || '').slice(0, 200),
+      activeIngredient: String(item.activeIngredient || '').slice(0, 300),
+      strength: String(item.strength || '').slice(0, 120),
+      route: String(item.route || '').slice(0, 80),
+      registrationNumber: String(item.registrationNumber || '').slice(0, 80)
+    };
+  }).filter(function (item) {
+    if (!item.catalogId || !item.brand || !item.activeIngredient || seen[item.catalogId]) return false;
+    seen[item.catalogId] = true;
+    return true;
+  });
+}
+
+function normalizeCatalogBrand(value) {
+  return normalizeIdentityText(String(value || '').split('(')[0])
+    .replace(/\b(?:ttkn|syt|dv|bhyt)\s*\d+\b/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+}
+
+function catalogEntriesSameIdentity(entries) {
+  if (!entries.length) return false;
+  var first = entries[0];
+  return entries.every(function (entry) {
+    return identityActiveEquivalent(entry.activeIngredient, first.activeIngredient)
+      && normalizeIdentityText(entry.strength) === normalizeIdentityText(first.strength);
+  });
+}
+
+function exactCatalogMatch(rawName, catalog) {
+  var raw = normalizeCatalogBrand(rawName);
+  if (raw.length < 4) return { status: 'unreadable', entry: null };
+  var exact = catalog.filter(function (entry) { return normalizeCatalogBrand(entry.brand) === raw; });
+  if (exact.length === 1 || (exact.length > 1 && catalogEntriesSameIdentity(exact))) {
+    return { status: 'exact', entry: exact[0] };
+  }
+  if (exact.length > 1) return { status: 'ambiguous', entry: null };
+  var prefix = catalog.filter(function (entry) {
+    var brand = normalizeCatalogBrand(entry.brand);
+    return brand.length >= 5 && (raw.indexOf(brand + ' ') === 0 || brand.indexOf(raw + ' ') === 0);
+  });
+  if (prefix.length === 1 || (prefix.length > 1 && catalogEntriesSameIdentity(prefix))) {
+    return { status: 'exact', entry: prefix[0] };
+  }
+  return { status: prefix.length > 1 ? 'ambiguous' : 'not_found', entry: null };
+}
+
+function resolveCatalogIdentities(ocrDrugs, catalog) {
+  return ocrDrugs.slice(0, 100).map(function (ocr) {
+    ocr = ocr || {};
+    var rawName = String(ocr.rawName || '').slice(0, 240);
+    var match = ocr.readable === false
+      ? { status: 'unreadable', entry: null }
+      : exactCatalogMatch(rawName, catalog);
+    if (!match.entry) {
+      return {
+        rawName: rawName, orderedText: String(ocr.orderedText || '').slice(0, 500),
+        status: match.status, catalogId: '', brand: rawName,
+        activeIngredient: '', strength: '', route: '', registrationNumber: ''
+      };
+    }
+    return {
+      rawName: rawName, orderedText: String(ocr.orderedText || '').slice(0, 500),
+      status: 'exact', catalogId: match.entry.catalogId, brand: match.entry.brand,
+      activeIngredient: match.entry.activeIngredient, strength: match.entry.strength,
+      route: match.entry.route, registrationNumber: match.entry.registrationNumber
+    };
+  });
+}
+
+function normalizeIdentityText(value) {
+  return String(value || '').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd').replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function identityActiveTokens(value) {
+  var ignored = { duoi:1, dang:1, tuong:1, duong:1, natri:1, sodium:1, kali:1, potassium:1, hydrat:1, hydrate:1, hydrochlorid:1, hydrochloride:1 };
+  return normalizeIdentityText(value).split(' ').map(function (token) {
+    return token === 'ampicillin' ? 'ampicilin' : token;
+  }).filter(function (token) { return token.length >= 4 && !ignored[token] && !/^\d/.test(token); });
+}
+
+function identityActiveEquivalent(left, right) {
+  var a = identityActiveTokens(left);
+  var b = identityActiveTokens(right);
+  if (!a.length || !b.length) return false;
+  var overlap = a.filter(function (token) { return b.indexOf(token) !== -1; }).length;
+  return overlap === Math.min(a.length, b.length) && overlap / Math.max(a.length, b.length) >= 0.5;
+}
+
+function blockUnverifiedDrug(drug, detail) {
+  drug.safetyBlocked = true;
+  drug.doseAssessment = { status: 'không đủ dữ liệu để đánh giá', detail: detail, source: '' };
+  drug.infusionRate = { applicable: false, rate: '', basis: 'Đã khóa vì định danh thuốc chưa được xác nhận từ danh mục.' };
+  drug.renalAdjustment = { applicable: false, priority: 'rà soát ngay', warning: 'Chưa cho phép khuyến cáo thận khi định danh thuốc chưa chắc chắn.', method: '', suggestedRegimen: '', loadingDoseNote: '', monitoring: '', source: '' };
+}
+
+function enforceCatalogIdentity(result, catalog) {
+  result = result && typeof result === 'object' ? result : {};
+  result.drugs = Array.isArray(result.drugs) ? result.drugs : [];
+  result.unclear = Array.isArray(result.unclear) ? result.unclear : [];
+  var byId = {};
+  catalog.forEach(function (entry) { byId[entry.catalogId] = entry; });
+  var allVerified = result.drugs.length > 0;
+
+  result.drugs.forEach(function (drug) {
+    drug = drug || {};
+    var identity = drug.identity || {};
+    var entry = identity.status === 'exact' ? byId[String(identity.catalogId || '')] : null;
+    var declaredActive = String(identity.activeIngredient || drug.activeIngredient || '');
+    if (!entry) {
+      allVerified = false;
+      blockUnverifiedDrug(drug, 'Không có đối chiếu chính xác với danh mục thuốc nội trú; hệ thống không tự suy diễn hoạt chất.');
+      result.unclear.push('Có thuốc chưa được định danh chính xác từ danh mục; đã khóa kết luận lâm sàng liên quan.');
+      return;
+    }
+
+    var mismatch = declaredActive && !identityActiveEquivalent(declaredActive, entry.activeIngredient);
+    drug.identity = {
+      rawName: String(identity.rawName || drug.name || ''), status: 'exact',
+      catalogId: entry.catalogId, brand: entry.brand,
+      activeIngredient: entry.activeIngredient, strength: entry.strength,
+      route: entry.route, registrationNumber: entry.registrationNumber
+    };
+    drug.tradeName = entry.brand;
+    drug.activeIngredient = entry.activeIngredient;
+    drug.name = entry.brand + ' (' + entry.activeIngredient + (entry.strength ? '; ' + entry.strength : '') + ')';
+    if (mismatch) {
+      allVerified = false;
+      blockUnverifiedDrug(drug, 'AI gán hoạt chất không khớp với catalogId đã chọn; hệ thống đã khóa kết luận và yêu cầu phân tích lại.');
+      result.unclear.push('AI trả hoạt chất không khớp danh mục; đã khóa kết luận liên quan.');
+    }
+  });
+
+  if (!allVerified && Array.isArray(result.interactions) && result.interactions.length) {
+    result.interactions = [];
+    result.unclear.push('Đã khóa kết quả tương tác vì còn thuốc chưa được định danh chính xác.');
+  }
+  result.unclear = result.unclear.filter(function (item, index, array) { return item && array.indexOf(item) === index; });
+  return result;
 }
 
 function callGeminiText(instructions, inputText) {
