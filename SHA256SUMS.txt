@@ -1,5 +1,6 @@
 d60f352d0db1404c70afb4bb8b2ca3fd1c610572aa40720e8a0b7baa7885418c  ./.gitattributes
-a7003d7ed621be2f4096637a328eb17889d1218fe612854e4037253426d44a4e  ./.github/workflows/cap-nhat-canh-bao-duoc.yml
+ac81ddfca7642aaf250e77254fda2da494c7457297dc80cc0e36e6ad03fbdc3c  ./.github/workflows/cap-nhat-canh-bao-duoc.yml
+d082641cb40316d5fad87b112624d9969187a5dc01e8de44a75d9a65fa93f655  ./.github/workflows/du-phong-cap-nhat-canh-bao-duoc.yml
 4fbd0a19086b903807d1685191c773a98c150a543dc9effc9dddcfa619492566  ./.github/workflows/quality-gate.yml
 8b332b42e642d0103f4d25f758500777bff907d55c86a63a7c2941aace2599e3  ./.gitignore
 91abc7d017bd79b01177510231008693835b289a3b3cff700ce1cf05ed7565b5  ./BAO_CAO_LOC_DU_LIEU_DUOC_LAM_SANG_20260814.md
