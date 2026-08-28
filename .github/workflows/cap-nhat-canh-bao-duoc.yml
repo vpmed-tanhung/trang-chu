@@ -11,6 +11,8 @@ on:
     # Lượt dự phòng 06:37 chỉ chạy lại khi lượt 06:07 chưa cập nhật thành công.
     - cron: "37 23 * * *"
   workflow_dispatch: {}
+  # Cho phép workflow dự phòng gọi lại đúng quy trình này, không nhân đôi mã.
+  workflow_call: {}
 
 permissions:
   contents: write

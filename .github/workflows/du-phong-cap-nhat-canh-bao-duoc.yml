@@ -1,0 +1,23 @@
+name: Dự phòng cập nhật Cảnh báo dược
+run-name: >-
+  Dự phòng Cảnh báo dược •
+  ${{ github.event_name == 'schedule' && 'Tự động kiểm tra 07:17' || 'Chạy thử thủ công' }}
+
+on:
+  schedule:
+    # Workflow độc lập để GitHub đăng ký một lịch mới sau sự cố file lịch chính
+    # bị xóa rồi thêm lại ngày 26/08/2026.
+    # 00:17 UTC = 07:17 sáng cùng ngày tại Việt Nam.
+    - cron: "17 0 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  cap-nhat-du-phong:
+    # Gọi lại toàn bộ quy trình chính. Tùy chọn --skip-if-fresh trong quy trình
+    # chính sẽ tự bỏ qua nếu lượt 06:07 hoặc 06:37 đã cập nhật thành công.
+    uses: ./.github/workflows/cap-nhat-canh-bao-duoc.yml
+    permissions:
+      contents: write
