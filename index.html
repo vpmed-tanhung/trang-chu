@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8">
-  <meta name="vpmed-build-version" content="2026.08.28.58">
+  <meta name="vpmed-build-version" content="2026.08.28.61">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#075f9f">
   <meta name="application-name" content="VPMED Dược lâm sàng">
@@ -251,7 +251,7 @@ html.system-loading body > :not(#systemLoader):not(script):not(style) {
     <button class="menu-btn" id="menuBtn" aria-label="Mở menu">☰</button>
     <nav class="main-nav" id="mainNav">
       <button data-view="home" class="active">Trang chủ</button>
-      <a class="nav-emergency" href="cap-cuu-phan-ve.html">Cấp cứu phản vệ</a>
+      <button type="button" class="nav-emergency" data-view="cap-cuu-phan-ve">Cấp cứu phản vệ</button>
       <a class="nav-evaluation" href="phieu-danh-gia.html" target="_blank" rel="noopener">Đánh giá</a>
       <a class="facebook-text-link" href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a>
     
@@ -347,10 +347,10 @@ html.system-loading body > :not(#systemLoader):not(script):not(style) {
     <section class="section-card">
       <div class="section-heading"><div><span class="kicker">Công cụ lâm sàng</span></div></div>
       <div class="feature-grid">
-        <!-- Module mới: liên kết độc lập, không thay đổi dữ liệu của các module hiện có -->
-        <a class="feature-card emergency-feature" href="cap-cuu-phan-ve.html" aria-label="Mở module Cấp cứu phản vệ">
+        <!-- Module cấp cứu được mở trong luồng điều hướng chung của hệ thống -->
+        <button type="button" class="feature-card emergency-feature" data-open="cap-cuu-phan-ve" aria-label="Mở module Cấp cứu phản vệ">
           <span class="feature-icon" aria-hidden="true">🚨</span><b>Cấp cứu phản vệ</b><small>Phân độ, tính liều Adrenalin, hỗ trợ xử trí và ghi nhận diễn biến cấp cứu.</small><em>Mới</em>
-        </a>
+        </button>
         <button class="feature-card" data-open="inpatient-order"><span class="feature-icon">🏥</span><b>Phân tích y lệnh nội trú</b><small>Tính liều, cách dùng, tốc độ truyền, tương tác thuốc và cảnh báo suy thận từ ảnh y lệnh.</small><em>Tính năng mới</em></button>
         <button class="feature-card prescription-feature" data-open="prescription-check"><span class="feature-icon">📋</span><b>Rà soát đơn thuốc BHYT</b><small>Kiểm tra tương tác toàn đơn và phân biệt thiếu mã bệnh với mã bệnh chưa thật sự phù hợp.</small><em>Tính năng mới</em></button>
         <button class="feature-card" data-open="interactions"><span class="feature-icon">⚠️</span><b>Kiểm tra tương tác thuốc</b><small>Kiểm tra tương tác giữa hai thuốc hoặc trong toàn bộ danh mục.</small><em>Đang hoạt động</em></button>
@@ -373,6 +373,20 @@ html.system-loading body > :not(#systemLoader):not(script):not(style) {
       <button type="button" class="home-responsibility-reopen" id="reopenDisclaimerBtn">Xem lại Tuyên bố trách nhiệm</button>
     </section>
 
+  </section>
+
+  <section class="view clinical-tool-view" id="view-cap-cuu-phan-ve">
+    <div class="back-home-wrap">
+      <button type="button" class="back-home-btn" data-go="home" aria-label="Quay lại Trang chủ"><span aria-hidden="true">←</span> Quay lại Trang chủ</button>
+    </div>
+    <iframe
+      id="frame-cap-cuu-phan-ve"
+      class="clinical-tool-frame anaphylaxis-frame"
+      data-feature-frame="cap-cuu-phan-ve"
+      title="Công cụ Cấp cứu phản vệ"
+      allow="autoplay"
+      scrolling="no"
+    ></iframe>
   </section>
 
   <section class="view" id="view-prescription-check">
@@ -1284,7 +1298,7 @@ Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối
 </main>
 
 <footer class="site-footer">
-  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v5.6.6</span></div>
+  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v5.6.9</span></div>
   <div><a class="nav-evaluation" href="phieu-danh-gia.html" target="_blank" rel="noopener">Phiếu đánh giá phần mềm</a> · <a href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a> · Công cụ hỗ trợ, không thay thế đánh giá lâm sàng.</div>
   <details class="site-policy" id="sitePolicy">
     <summary>Chính sách sử dụng và minh bạch nguồn</summary>
@@ -1302,7 +1316,7 @@ Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3" integrity="sha384-l8ah+VgaWtk1mvOe9VC+OirC6qHFF4yH7l7mKRidV9MSti3E9F463bMp6ZVN4kuC" crossorigin="anonymous"></script>
 <script defer src="assets/vpmed-access.js?v=20260817-admin-delete-v1"></script>
-<script defer src="assets/platform-shell.js?v=20260827-ocr-complete-v1"></script>
+<script defer src="assets/platform-shell.js?v=20260828-anaphylaxis-layout-v3"></script>
 <script defer src="assets/disclaimer-gate.js?v=20260822-disclaimer-gate-v1"></script>
 <script defer src="assets/update-notifier.js?v=20260822-installed-data-channel-v1"></script>
 </body>

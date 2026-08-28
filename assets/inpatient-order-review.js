@@ -343,21 +343,24 @@
         return;
       }
 
-      drug.brand = entry.brand;
-      drug.activeIngredient = verifiedActive;
-      drug.strength = String(entry.strength || '');
-      drug.route = drug.route || entry.route || '';
+      drug.brand = drug.brand || declaredBrand;
+      drug.activeIngredient = drug.activeIngredient || declaredActive;
       drug.identity = {
         ...(drug.identity || {}),
         rawName,
-        status: 'exact',
+        status: String(drug?.identity?.status || 'exact'),
         catalogStatus: 'matched',
         catalogId: String(entry.catalogId || ''),
-        brand: entry.brand,
-        activeIngredient: verifiedActive,
-        strength: String(entry.strength || ''),
-        route: String(entry.route || ''),
-        registrationNumber: String(entry.registrationNumber || '')
+        brand: declaredBrand,
+        activeIngredient: declaredActive,
+        strength: String(drug?.identity?.strength || drug.strength || ''),
+        route: String(drug?.identity?.route || drug.route || ''),
+        registrationNumber: String(drug?.identity?.registrationNumber || ''),
+        catalogReference: {
+          catalogId: String(entry.catalogId || ''), brand: entry.brand,
+          activeIngredient: verifiedActive, strength: String(entry.strength || ''),
+          route: String(entry.route || ''), registrationNumber: String(entry.registrationNumber || '')
+        }
       };
     });
 
@@ -741,6 +744,16 @@
     return `<p><small><strong>AI nhận diện:</strong> ${aiIdentity || 'Chưa đủ dữ liệu'}<br><strong>Đối chiếu:</strong> ${catalogNote}</small></p>`;
   }
 
+  function drugDisplayName(drug) {
+    const identity = drug?.identity || {};
+    const brand = String(identity.brand || identity.rawName || drug?.tradeName || drug?.brand || '').trim();
+    const active = String(identity.activeIngredient || drug?.activeIngredient || '').trim();
+    const strength = String(identity.strength || drug?.strength || '').trim();
+    if (!brand) return String(drug?.name || 'Thuốc chưa xác định');
+    const detail = [active, strength].filter(Boolean).join('; ');
+    return detail ? `${brand} (${detail})` : brand;
+  }
+
   function renderDrugCard(drug) {
     const dose = drug.doseAssessment || {};
     const infusion = drug.infusionRate || {};
@@ -751,7 +764,7 @@
 
     return `
       <div class="clinical-item io-drug-card">
-        <b>${esc(drug.name || 'Thuốc chưa xác định')}</b>
+        <b>${esc(drugDisplayName(drug))}</b>
         ${renderIdentityReference(drug.identity)}
         <p><strong>Y lệnh kê:</strong> ${esc(drug.orderedDose || '—')}${drug.route ? ` · ${esc(drug.route)}` : ''}</p>
         ${drug.usageNote ? `<p><strong>Cách dùng:</strong> ${esc(drug.usageNote)}</p>` : ''}
@@ -937,7 +950,8 @@
     buildVerifiedDrugCatalogNote,
     applyVerifiedCatalogGuard,
     annotateIdentityConflicts,
-    reconcileServerResult
+    reconcileServerResult,
+    drugDisplayName
   };
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = testHooks;

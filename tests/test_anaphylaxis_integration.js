@@ -7,13 +7,39 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const theme = fs.readFileSync(path.join(root, 'assets', 'navy-theme.css'), 'utf8');
+const shell = fs.readFileSync(path.join(root, 'assets', 'platform-shell.js'), 'utf8');
 const moduleHtml = fs.readFileSync(path.join(root, 'cap-cuu-phan-ve.html'), 'utf8');
 const worker = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
 
-assert(index.includes('class="nav-emergency" href="cap-cuu-phan-ve.html"'),
-  'Menu chính phải có liên kết đến module Cấp cứu phản vệ');
-assert(index.includes('class="feature-card emergency-feature" href="cap-cuu-phan-ve.html"'),
-  'Trang chủ phải có card Cấp cứu phản vệ');
+assert(index.includes('class="nav-emergency" data-view="cap-cuu-phan-ve"'),
+  'Menu chính phải mở module Cấp cứu phản vệ bằng điều hướng nội bộ');
+assert(index.includes('class="feature-card emergency-feature" data-open="cap-cuu-phan-ve"'),
+  'Trang chủ phải mở card Cấp cứu phản vệ bằng platform shell');
+assert(index.includes('id="view-cap-cuu-phan-ve"'),
+  'Phải có view nội bộ cho module Cấp cứu phản vệ');
+assert(index.includes('data-feature-frame="cap-cuu-phan-ve"'),
+  'View phản vệ phải có khung module được quản lý bởi platform shell');
+const anaphylaxisView = index.split('id="view-cap-cuu-phan-ve"', 2)[1].split('</section>', 1)[0];
+assert(anaphylaxisView.includes('class="back-home-btn" data-go="home"'),
+  'View phản vệ phải có nút quay về dùng chung như các module khác');
+assert(shell.includes("'cap-cuu-phan-ve':"),
+  'Platform shell phải đăng ký bundle Cấp cứu phản vệ');
+assert(shell.includes("frame: 'cap-cuu-phan-ve.html?v=20260828-integrated-layout-v2'"),
+  'Module phản vệ phải được nạp lười trong view nội bộ');
+assert(index.includes('class="clinical-tool-frame anaphylaxis-frame"') && index.includes('scrolling="no"'),
+  'Khung phản vệ phải tắt thanh cuộn riêng');
+assert(shell.includes("data.type === 'vpmed:feature-frame-height'") && shell.includes("frame.style.height = `${height + 2}px`"),
+  'Platform shell phải tự giãn khung phản vệ theo chiều cao nội dung');
+assert(moduleHtml.includes("postHostMessage('vpmed:feature-frame-height'") && moduleHtml.includes('startEmbeddedBridge()'),
+  'Module phản vệ phải đồng bộ chiều cao với trang chính');
+assert(moduleHtml.includes('html.vpmed-embedded .system-back{display:none}'),
+  'Khi nhúng phải ẩn nút Trang chủ bị lặp bên trong module');
+assert(moduleHtml.includes('function openModuleDialog(dialog)') && !moduleHtml.includes("$('#assessDialog').showModal()"),
+  'Hộp thoại trong khung tự giãn phải được đặt theo vùng đang nhìn thấy');
+assert(moduleHtml.includes('data-vpmed-home'),
+  'Nút Trang chủ trong module phải có hook điều hướng nội bộ');
+assert(moduleHtml.includes("platform.openFeature('home',{source:'anaphylaxis-back'})"),
+  'Nút Trang chủ phải chuyển view qua platform shell, không tải lại index.html');
 const orderedModules = [
   'Cấp cứu phản vệ',
   'Phân tích y lệnh nội trú',
@@ -63,8 +89,8 @@ assert(moduleHtml.includes('ĐÃ KHÓA — KHÔNG TIÊM IM'),
   'Độ IV phải hiển thị trạng thái khóa IM');
 assert(moduleHtml.includes('Adrenalin IV/IO'),
   'Quy trình độ IV phải có Adrenalin IV/IO');
-assert(moduleHtml.includes('href="index.html"'),
-  'Module phải có liên kết quay lại hệ thống chính');
+assert(moduleHtml.includes('href="index.html#home"'),
+  'Module phải có liên kết dự phòng quay lại hệ thống chính');
 assert(!moduleHtml.includes('ONLINE · NGUỒN TRỰC TIẾP'),
   'Phải xóa nhãn ONLINE · NGUỒN TRỰC TIẾP');
 assert(!moduleHtml.includes('Phân độ · Adrenalin IM · Đánh giá lại · Ngừng tuần hoàn · Timeline'),
@@ -84,7 +110,7 @@ assert(moduleHtml.includes('https://vbpl.vn/boyte/Pages/vbpq-van-ban-goc.aspx?It
 
 for (const cached of [
   "'./assets/navy-theme.css?v=20260828-original-colors-pulse-v2'",
-  "'./cap-cuu-phan-ve.html'"
+  "'./cap-cuu-phan-ve.html?v=20260828-integrated-layout-v2'"
 ]) {
   assert(worker.includes(cached), `Service worker thiếu tài nguyên ${cached}`);
 }

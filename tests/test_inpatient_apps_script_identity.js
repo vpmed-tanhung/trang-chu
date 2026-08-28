@@ -22,6 +22,28 @@ const catalog = sandbox.sanitizeDrugCatalog(payloadCatalog);
 assert.ok(catalog.length > 250);
 const entry = catalog.find(item => /\s(?:TTKN|SYT)-\d+$/i.test(item.brand));
 assert.ok(entry);
+
+const brandRegressionCatalog = sandbox.sanitizeDrugCatalog([
+  { catalogId: 'brand-a', brand: 'Trade Alpha I.V 5mg/ml', activeIngredient: 'Levofloxacin', strength: '5mg/ml' },
+  { catalogId: 'brand-b', brand: 'Levofloxacin Vendor', activeIngredient: 'Levofloxacin', strength: '500mg/100ml' }
+]);
+assert.strictEqual(
+  sandbox.catalogMatchFromOrderLine('Levofloxacin', brandRegressionCatalog).status,
+  'not_found',
+  'Tên hoạt chất đơn lẻ không được ghép sang biệt dược cùng tiền tố'
+);
+const visibleBrandResult = sandbox.enforceCatalogIdentity({
+  drugs: [{
+    name: 'Levofloxacin Vendor',
+    identity: {
+      rawName: 'Levofloxacin (Trade Alpha I.V 5mg/ml)', status: 'exact', catalogId: '',
+      brand: 'Levofloxacin Vendor', activeIngredient: 'Levofloxacin', strength: '5mg/ml'
+    }
+  }], interactions: [], unclear: []
+}, brandRegressionCatalog);
+assert.strictEqual(visibleBrandResult.drugs[0].identity.catalogId, 'brand-a');
+assert.strictEqual(visibleBrandResult.drugs[0].identity.brand, 'Trade Alpha I.V 5mg/ml', 'Phải lấy biệt dược xuất hiện nguyên văn trong rawName');
+assert.strictEqual(visibleBrandResult.drugs[0].name, 'Trade Alpha I.V 5mg/ml', 'Tên tổng hợp sai phải được sửa theo biệt dược thực sự có trong rawName');
 const rawNameFromImage = entry.brand.replace(/\s(?:TTKN|SYT)-\d+$/i, '');
 
 const locked = sandbox.resolveCatalogIdentities([
@@ -78,5 +100,6 @@ const recoveredAnalysis = sandbox.enforceCatalogIdentity({
     renalAdjustment: { applicable: false }
   }], interactions: [], unclear: []
 }, catalog);
-assert.strictEqual(recoveredAnalysis.drugs[0].identity.status, 'exact', 'Phải đối chiếu lại bằng danh mục thay vì khóa chỉ vì identity status từ AI không chuẩn');
+assert.strictEqual(recoveredAnalysis.drugs[0].identity.status, 'not_found', 'Đối chiếu danh mục không được viết lại trạng thái nhận diện do AI trả');
+assert.strictEqual(recoveredAnalysis.drugs[0].identity.catalogStatus, 'matched');
 assert.strictEqual(recoveredAnalysis.drugs[0].identity.catalogId, entry.catalogId);

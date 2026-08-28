@@ -21,6 +21,27 @@ const exact = api.findExact(rawNameFromImage);
 assert.strictEqual(exact.status, 'exact');
 assert.strictEqual(exact.entry.catalogId, catalogEntry.catalogId);
 
+const sameActiveDifferentBrands = [
+  { catalogId: 'brand-a', brand: 'Trade Alpha I.V 5mg/ml', activeIngredient: 'Levofloxacin', strength: '5mg/ml' },
+  { catalogId: 'brand-b', brand: 'Levofloxacin Vendor', activeIngredient: 'Levofloxacin', strength: '500mg/100ml' }
+];
+const genericMustNotBecomeBrand = api.findExact('Levofloxacin', sameActiveDifferentBrands);
+assert.strictEqual(genericMustNotBecomeBrand.status, 'not_found', 'Tên hoạt chất không được suy thành một biệt dược có cùng tiền tố');
+
+const literalCatalogEntry = catalog.find(item => !/\s(?:TTKN|SYT|DV|BHYT)-\d+$/i.test(item.brand));
+assert.ok(literalCatalogEntry, 'Cần một biệt dược không có hậu tố kho để kiểm tra chuỗi nhìn thấy');
+const visibleBrand = api.reconcileResult({
+  drugs: [{
+    name: 'Tên biệt dược AI tự thay',
+    identity: {
+      rawName: `Hoạt chất (${literalCatalogEntry.brand})`, status: 'exact', catalogId: literalCatalogEntry.catalogId,
+      brand: 'Tên biệt dược AI tự thay', activeIngredient: literalCatalogEntry.activeIngredient, strength: literalCatalogEntry.strength
+    }
+  }], interactions: [], unclear: []
+});
+assert.strictEqual(visibleBrand.drugs[0].identity.brand, literalCatalogEntry.brand, 'Phải ưu tiên biệt dược thực sự có trong rawName');
+assert.strictEqual(visibleBrand.drugs[0].name, literalCatalogEntry.brand, 'Tên tổng hợp sai phải được sửa theo biệt dược thực sự có trong rawName');
+
 const wrongAiResult = {
   drugs: [{
     name: `${rawNameFromImage} (Hoạt chất sai do AI tự đoán)`,

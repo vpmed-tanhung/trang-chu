@@ -45,6 +45,15 @@
     return overlap === Math.min(a.size, b.size) && overlap / Math.max(a.size, b.size) >= 0.5;
   }
 
+  function brandVisibleInRawName(rawName, catalogBrand) {
+    const compactUnits = value => normalize(value)
+      .replace(/\b(\d+)\s+(mg|g|mcg|ug|ml|iu|ui)\b/g, '$1$2')
+      .replace(/\s+/g, ' ').trim();
+    const raw = ` ${compactUnits(rawName)} `;
+    const brand = compactUnits(catalogBrand);
+    return brand.length >= 4 && raw.includes(` ${brand} `);
+  }
+
   function inventoryRows() {
     return Array.isArray(root.VPMED_INPATIENT_MEDICINES_20260707)
       ? root.VPMED_INPATIENT_MEDICINES_20260707 : [];
@@ -99,16 +108,6 @@
     }
     if (exact.length > 1) return { status: 'ambiguous', entry: null, candidates: exact };
 
-    // Chấp nhận duy nhất trường hợp một bên chỉ thiếu hậu tố kho/hàm lượng ở
-    // cuối chuỗi. Không dùng fuzzy/đoán gần đúng vì có thể ghép nhầm biệt dược.
-    const prefix = rows.filter(entry => {
-      const brand = normalizeBrand(entry.brand);
-      return brand.length >= 5 && (raw.startsWith(`${brand} `) || brand.startsWith(`${raw} `));
-    });
-    if (prefix.length === 1 || (prefix.length > 1 && sameIdentity(prefix))) {
-      return { status: 'exact', entry: prefix[0], candidates: prefix };
-    }
-    if (prefix.length > 1) return { status: 'ambiguous', entry: null, candidates: prefix };
     return { status: 'not_found', entry: null, candidates: [] };
   }
 
@@ -134,7 +133,7 @@
       const claimedEntry = claimedId ? byId.get(claimedId) : null;
       const match = claimedEntry ? { status: 'exact', entry: claimedEntry } : findExact(originalName, catalog);
       const declaredActive = extractDeclaredActive(drug);
-      const declaredBrand = String(drug?.identity?.brand || drug.tradeName || drug.brand || originalName).trim();
+      let declaredBrand = String(drug?.identity?.brand || drug.tradeName || drug.brand || originalName).trim();
 
       if (match.status !== 'exact' || !match.entry) {
         drug.identity = {
@@ -156,6 +155,11 @@
       }
 
       const entry = match.entry;
+      if (!brandVisibleInRawName(originalName, declaredBrand)
+          && brandVisibleInRawName(originalName, entry.brand)) {
+        declaredBrand = entry.brand;
+        drug.name = declaredBrand;
+      }
       const activeMismatch = Boolean(declaredActive) && !activeEquivalent(declaredActive, entry.activeIngredient);
       if (activeMismatch) {
         drug.identity = {
@@ -178,25 +182,28 @@
 
       drug.identity = {
         rawName: originalName,
-        status: 'exact',
+        status: String(drug?.identity?.status || 'exact'),
         catalogStatus: 'matched',
         catalogId: entry.catalogId,
-        brand: entry.brand,
-        activeIngredient: entry.activeIngredient,
-        strength: entry.strength,
-        route: entry.route,
-        registrationNumber: entry.registrationNumber
+        brand: declaredBrand,
+        activeIngredient: declaredActive,
+        strength: String(drug?.identity?.strength || drug.strength || ''),
+        route: String(drug?.identity?.route || drug.route || ''),
+        registrationNumber: String(drug?.identity?.registrationNumber || ''),
+        catalogReference: {
+          catalogId: entry.catalogId, brand: entry.brand, activeIngredient: entry.activeIngredient,
+          strength: entry.strength, route: entry.route, registrationNumber: entry.registrationNumber
+        }
       };
-      drug.tradeName = entry.brand;
-      drug.activeIngredient = entry.activeIngredient;
-      drug.name = `${entry.brand} (${entry.activeIngredient}${entry.strength ? `; ${entry.strength}` : ''})`;
+      drug.tradeName = drug.tradeName || declaredBrand;
+      drug.activeIngredient = drug.activeIngredient || declaredActive;
     });
 
     safe.unclear = [...new Set(safe.unclear.filter(Boolean))];
     return safe;
   }
 
-  const api = { normalize, normalizeBrand, activeEquivalent, getCatalog, getCatalogForAi, findExact, reconcileResult };
+  const api = { normalize, normalizeBrand, activeEquivalent, brandVisibleInRawName, getCatalog, getCatalogForAi, findExact, reconcileResult };
   root.VPMED_INPATIENT_IDENTITY = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : globalThis);

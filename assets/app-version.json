@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.28.58",
-  "displayVersion": "5.6.6",
-  "updatedAt": "2026-08-28T21:48:02+07:00",
-  "note": "AI nội trú tự nhận diện biệt dược/tên thương mại; danh mục nội bộ chỉ cảnh báo tham khảo, không khóa phân tích.",
-  "buildId": "v5.6.6-inpatient-ai-catalog-advisory-20260828-58",
-  "previousVersion": "2026.08.28.57",
-  "previousDisplayVersion": "5.6.5",
-  "clinicalDataVersion": "sha256-bf9336751854a3bd84d7f210"
+  "version": "2026.08.28.61",
+  "displayVersion": "5.6.9",
+  "updatedAt": "2026-08-28T22:24:59+07:00",
+  "note": "Đồng bộ bố cục module Cấp cứu phản vệ: tự giãn chiều cao, bỏ thanh cuộn khung và loại nút Trang chủ bị lặp.",
+  "buildId": "v5.6.9-anaphylaxis-integrated-layout-20260828-61",
+  "clinicalDataVersion": "sha256-bf9336751854a3bd84d7f210",
+  "previousVersion": "2026.08.28.60",
+  "previousDisplayVersion": "5.6.8"
 }

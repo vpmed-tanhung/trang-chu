@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.08.28.58';
+  const BUILD_VERSION = '2026.08.28.61';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -63,6 +63,11 @@
   const FEATURE_BUNDLES = Object.freeze({
     home: {styles: [], scripts: []},
     sources: {styles: [], scripts: []},
+    'cap-cuu-phan-ve': {
+      styles: [],
+      scripts: [],
+      frame: 'cap-cuu-phan-ve.html?v=20260828-integrated-layout-v2'
+    },
     dose: DOSE_CLINICAL,
     antibiotics: CORE_CLINICAL,
     diseases: CORE_CLINICAL,
@@ -91,8 +96,8 @@
         'assets/interaction-regulatory-data.js?v=20260817-rx-regulatory-v2',
         'assets/renal_database_20260723.js?v=20260723-renal-only-v4',
         'assets/inpatient_medicines_20260707.js?v=20260828-ai-identity-v1',
-        'assets/inpatient-drug-identity.js?v=20260828-catalog-advisory-v2',
-        'assets/inpatient-order-review.js?v=20260828-auto-pipeline-v3'
+        'assets/inpatient-drug-identity.js?v=20260828-brand-preserve-v3',
+        'assets/inpatient-order-review.js?v=20260828-brand-preserve-v4'
       ]
     },
     'petct-dose': {
@@ -284,6 +289,7 @@
     const promise = (async () => {
       await Promise.all(bundle.styles.map(loadStyle));
       await Promise.all(bundle.scripts.map(loadScript));
+      if (bundle.frame) await loadFeatureFrame(name, bundle.frame);
     })();
     featureLoads.set(name, promise);
     try {
@@ -291,6 +297,43 @@
     } catch (error) {
       featureLoads.delete(name);
       throw error;
+    }
+  }
+
+  function loadFeatureFrame(name, url) {
+    const frame = document.querySelector(`[data-feature-frame="${CSS.escape(name)}"]`);
+    if (!frame) return Promise.reject(new Error(`Thiếu khung hiển thị cho module ${name}`));
+    if (frame.dataset.vpmedReady === 'true') return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const onLoad = () => {
+        frame.dataset.vpmedReady = 'true';
+        frame.setAttribute('scrolling', 'no');
+        resolve();
+      };
+      const onError = () => reject(new Error(`Không tải được khung module: ${url}`));
+      frame.addEventListener('load', onLoad, {once: true});
+      frame.addEventListener('error', onError, {once: true});
+      frame.src = clientAwareUrl(url);
+    });
+  }
+
+  function handleFeatureFrameMessage(event) {
+    const data = event.data;
+    if (!data || typeof data !== 'object' || !String(data.type || '').startsWith('vpmed:feature-frame-')) return;
+    const name = String(data.feature || '');
+    const frame = document.querySelector(`[data-feature-frame="${CSS.escape(name)}"]`);
+    if (!frame || event.source !== frame.contentWindow) return;
+    if (data.type === 'vpmed:feature-frame-height') {
+      const height = Math.ceil(Number(data.height));
+      if (!Number.isFinite(height) || height < 320 || height > 50000) return;
+      frame.style.height = `${height + 2}px`;
+      frame.dataset.vpmedAutoHeight = 'true';
+      return;
+    }
+    if (data.type === 'vpmed:feature-frame-scroll') {
+      const offset = Math.max(0, Number(data.top) || 0);
+      const top = window.scrollY + frame.getBoundingClientRect().top + offset;
+      window.scrollTo({top: Math.max(0, top - 8), behavior: 'smooth'});
     }
   }
 
@@ -605,6 +648,7 @@
   }
 
   function bindLifecycle() {
+    window.addEventListener('message', handleFeatureFrameMessage);
     window.addEventListener('vpmed:app-update-available', (event) => {
       const detail = event.detail || {};
       if (!IS_INSTALLED_APP || detail.kind === 'clinical-data') {

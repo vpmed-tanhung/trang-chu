@@ -65,12 +65,20 @@ const correct = {
 };
 const correctGuard = hooks.applyVerifiedCatalogGuard(correct, catalog);
 assert.strictEqual(correctGuard.conflicts.length, 0, 'Ampicillin/Ampicilin phải được coi là cùng hoạt chất');
-assert.strictEqual(correctGuard.result.drugs[0].activeIngredient, 'Ampicilin + sulbactam');
+assert.strictEqual(correctGuard.result.drugs[0].activeIngredient, 'Ampicillin + Sulbactam', 'Danh mục không được ghi đè cách ghi hoạt chất AI đã nhận');
 
 const noIdentityApiResult = hooks.reconcileServerResult({
   drugs: [{ name: 'Nerusyn 1.5g', brand: 'Nerusyn 1.5g', activeIngredient: 'Ampicillin + Sulbactam' }],
   interactions: [], unclear: []
 }, catalog);
-assert.strictEqual(noIdentityApiResult.drugs[0].activeIngredient, 'Ampicilin + sulbactam', 'Không có identityApi vẫn phải hiển thị kết quả đã đối chiếu cục bộ');
+assert.strictEqual(noIdentityApiResult.drugs[0].activeIngredient, 'Ampicillin + Sulbactam', 'Không có identityApi vẫn phải giữ kết quả AI và chỉ gắn tham chiếu danh mục');
+assert.strictEqual(
+  hooks.drugDisplayName({
+    name: 'Tên sai không được hiển thị',
+    identity: { brand: 'Trade Alpha I.V', activeIngredient: 'Levofloxacin', strength: '5mg/ml' }
+  }),
+  'Trade Alpha I.V (Levofloxacin; 5mg/ml)',
+  'Tiêu đề thuốc phải lấy từ identity đã kiểm chứng, không lấy drug.name có thể đã bị ghi đè'
+);
 
 console.log('Inpatient drug identity guard tests: OK');

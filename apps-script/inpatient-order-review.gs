@@ -47,7 +47,7 @@ var SYSTEM_PROMPT = [
   '',
   'NHIỆM VỤ: Đọc trực tiếp ảnh y lệnh và phân tích y lệnh dùng thuốc (không phải dịch pha truyền hay dịch pha thuốc) của một bệnh nhân nội trú trong CÙNG MỘT LƯỢT GỌI AI và CÙNG MỘT PHẢN HỒI JSON. Chỉ tập trung đúng 5 việc, không mở rộng phạm vi:',
   'QUY TRÌNH BẮT BUỘC TRONG MỘT LƯỢT: Với từng dòng y lệnh, trước hết chép nguyên văn phần nhìn thấy vào identity.rawName và orderedDose; sau đó mới phân tích lâm sàng dựa đúng trên tên/hoạt chất vừa nhận diện. Không tách thành lượt nhận diện riêng và không dùng một thuốc khác để thay thế phần chữ trong ảnh.',
-  'QUY TẮC NHẬN DIỆN: Từ tên đọc được trong ảnh, phải nhận diện cả tên biệt dược/tên thương mại do nhà sản xuất đặt và hoạt chất tương ứng. Không sửa tên nhìn thấy theo trí nhớ, không tự hoàn thiện chữ bị khuất/mờ và không chọn một tên gần giống khi ảnh không đủ rõ. identity.rawName chép nguyên văn; identity.brand ghi tên thương mại nhận diện được; identity.activeIngredient ghi hoạt chất thực sự được dùng cho toàn bộ đánh giá lâm sàng. Không tự tạo catalogId: luôn để catalogId="".',
+  'QUY TẮC NHẬN DIỆN: Từ tên đọc được trong ảnh, phải nhận diện cả tên biệt dược/tên thương mại do nhà sản xuất đặt và hoạt chất tương ứng. Không sửa tên nhìn thấy theo trí nhớ, không tự hoàn thiện chữ bị khuất/mờ và không chọn một tên gần giống khi ảnh không đủ rõ. identity.rawName chép nguyên văn toàn bộ cụm tên thuốc nhìn thấy; identity.brand chỉ ghi đúng tên thương mại thực sự xuất hiện trong cụm đó; identity.activeIngredient ghi hoạt chất thực sự được dùng cho toàn bộ đánh giá lâm sàng. Nếu dòng ghi hoạt chất rồi đặt biệt dược trong ngoặc, phải giữ cả cụm trong rawName và lấy đúng biệt dược trong ngoặc làm brand. Không được gắn thêm tên nhà sản xuất, hậu tố hoặc một biệt dược khác chỉ vì cùng hoạt chất. Không tự tạo catalogId: luôn để catalogId="".',
   'DANH MỤC NỘI BỘ CHỈ THAM KHẢO: AI phải tự đọc, tự nhận diện và phân tích thuốc dựa trên ảnh cùng kiến thức dược lâm sàng. Một thuốc không có trong danh mục nội bộ không có nghĩa là ngoài phạm vi phân tích và không được dùng làm lý do từ chối phân tích. Sau phản hồi AI, mã chương trình chỉ dùng danh mục để bổ sung cảnh báo đối chiếu; không được xóa hoặc khóa kết quả AI.',
   'ĐIỀU KIỆN PHÂN TÍCH: Khi tên thương mại/biệt dược được đọc rõ và hoạt chất được nhận diện đủ tin cậy, phải tiếp tục phân tích liều, cách dùng, tốc độ truyền, hiệu chỉnh thận và tương tác dù thuốc chưa có trong danh mục nội bộ. Chỉ khi chính chữ trong ảnh thật sự mờ, tên có nhiều cách hiểu hoặc không xác định được hoạt chất thì mới để trống phần không chắc và ghi cụ thể vào unclear thay vì đoán.',
   '1. Tính toán liều dùng — đối chiếu liều bác sĩ kê với liều khuyến cáo (theo cân nặng/tuổi/chức năng thận nếu có dữ liệu); tách rõ liều nạp và liều duy trì; nêu rõ khi liều bất thường và mức chênh lệch ước tính.',
@@ -181,14 +181,7 @@ function exactCatalogMatch(rawName, catalog) {
     return { status: 'exact', entry: exact[0] };
   }
   if (exact.length > 1) return { status: 'ambiguous', entry: null };
-  var prefix = catalog.filter(function (entry) {
-    var brand = normalizeCatalogBrand(entry.brand);
-    return brand.length >= 5 && (raw.indexOf(brand + ' ') === 0 || brand.indexOf(raw + ' ') === 0);
-  });
-  if (prefix.length === 1 || (prefix.length > 1 && catalogEntriesSameIdentity(prefix))) {
-    return { status: 'exact', entry: prefix[0] };
-  }
-  return { status: prefix.length > 1 ? 'ambiguous' : 'not_found', entry: null };
+  return { status: 'not_found', entry: null };
 }
 
 function resolveCatalogIdentities(ocrDrugs, catalog) {
@@ -235,6 +228,16 @@ function identityActiveEquivalent(left, right) {
   return overlap === Math.min(a.length, b.length) && overlap / Math.max(a.length, b.length) >= 0.5;
 }
 
+function catalogBrandVisibleInRawName(rawName, catalogBrand) {
+  var raw = ' ' + normalizeIdentityText(rawName)
+    .replace(/\b(\d+)\s+(mg|g|mcg|ug|ml|iu|ui)\b/g, '$1$2')
+    .replace(/\s+/g, ' ').trim() + ' ';
+  var brand = normalizeIdentityText(catalogBrand)
+    .replace(/\b(\d+)\s+(mg|g|mcg|ug|ml|iu|ui)\b/g, '$1$2')
+    .replace(/\s+/g, ' ').trim();
+  return brand.length >= 4 && raw.indexOf(' ' + brand + ' ') !== -1;
+}
+
 function enforceCatalogIdentity(result, catalog) {
   result = result && typeof result === 'object' ? result : {};
   result.drugs = Array.isArray(result.drugs) ? result.drugs : [];
@@ -273,6 +276,11 @@ function enforceCatalogIdentity(result, catalog) {
       return;
     }
 
+    if (!catalogBrandVisibleInRawName(rawName, declaredBrand)
+        && catalogBrandVisibleInRawName(rawName, entry.brand)) {
+      declaredBrand = entry.brand;
+      drug.name = declaredBrand;
+    }
     var mismatch = declaredActive && !identityActiveEquivalent(declaredActive, entry.activeIngredient);
     if (mismatch) {
       drug.identity = {
@@ -291,14 +299,18 @@ function enforceCatalogIdentity(result, catalog) {
     }
 
     drug.identity = {
-      rawName: rawName, status: 'exact', catalogStatus: 'matched',
-      catalogId: entry.catalogId, brand: entry.brand,
-      activeIngredient: entry.activeIngredient, strength: entry.strength,
-      route: entry.route, registrationNumber: entry.registrationNumber
+      rawName: rawName, status: String(identity.status || 'exact'), catalogStatus: 'matched',
+      catalogId: entry.catalogId, brand: declaredBrand,
+      activeIngredient: declaredActive, strength: String(identity.strength || drug.strength || ''),
+      route: String(identity.route || drug.route || ''),
+      registrationNumber: String(identity.registrationNumber || ''),
+      catalogReference: {
+        catalogId: entry.catalogId, brand: entry.brand, activeIngredient: entry.activeIngredient,
+        strength: entry.strength, route: entry.route, registrationNumber: entry.registrationNumber
+      }
     };
-    drug.tradeName = entry.brand;
-    drug.activeIngredient = entry.activeIngredient;
-    drug.name = entry.brand + ' (' + entry.activeIngredient + (entry.strength ? '; ' + entry.strength : '') + ')';
+    drug.tradeName = drug.tradeName || declaredBrand;
+    drug.activeIngredient = drug.activeIngredient || declaredActive;
   });
 
   result.unclear = result.unclear.filter(function (item, index, array) { return item && array.indexOf(item) === index; });
