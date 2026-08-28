@@ -206,18 +206,22 @@
     const identityApi = getDrugIdentityApi();
     if (identityApi && typeof identityApi.getCatalogForAi === 'function') {
       const catalog = identityApi.getCatalogForAi();
-      if (Array.isArray(catalog)) return catalog;
+      if (Array.isArray(catalog) && catalog.length) return catalog;
     }
 
     // Nhánh dự phòng chỉ chuyển đổi nguyên văn danh mục chính thức đã nạp.
     // Không tra gần đúng và không tự bổ sung hoạt chất từ tên biệt dược.
-    const rows = typeof window !== 'undefined' && Array.isArray(window.VPMED_INPATIENT_MEDICINES_20260707)
+    const inpatientRows = typeof window !== 'undefined' && Array.isArray(window.VPMED_INPATIENT_MEDICINES_20260707)
       ? window.VPMED_INPATIENT_MEDICINES_20260707 : [];
+    const verifiedRows = inpatientRows.length
+      ? inpatientRows
+      : (typeof window !== 'undefined' && Array.isArray(window.VPMED_DRUGS) ? window.VPMED_DRUGS : []);
     const seen = new Set();
-    return rows.map((row, index) => ({
+    return verifiedRows.map((row, index) => ({
       catalogId: String(row.code || row.regNumber || row.id || `inventory-${index + 1}`),
-      brand: String(row.name || ''),
-      activeIngredient: String(row.active || ''),
+      brand: String(row.name || row.brand || ''),
+      active: String(row.active || row.activeIngredient || ''),
+      activeIngredient: String(row.activeIngredient || row.active || ''),
       strength: String(row.strength || row.concentration || ''),
       route: String(row.route || row.routeBHYT || ''),
       registrationNumber: String(row.regNumber || '')
@@ -226,6 +230,136 @@
       seen.add(entry.catalogId);
       return true;
     });
+  }
+
+  function normalizeVerifiedText(value) {
+    return String(value ?? '').toLowerCase().normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function normalizeVerifiedBrand(value) {
+    return normalizeVerifiedText(String(value ?? '').split('(')[0])
+      .replace(/\b(?:ttkn|syt|dv|bhyt)\s*\d+\b/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function normalizeVerifiedActive(value) {
+    return normalizeVerifiedText(value)
+      .replace(/\bampicillin\b/g, 'ampicilin')
+      .replace(/\bsulbactam sodium\b/g, 'sulbactam')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function verifiedActiveEquivalent(left, right) {
+    const identityApi = getDrugIdentityApi();
+    if (identityApi && typeof identityApi.activeEquivalent === 'function') {
+      return identityApi.activeEquivalent(left, right);
+    }
+    return Boolean(left && right) && normalizeVerifiedActive(left) === normalizeVerifiedActive(right);
+  }
+
+  function findVerifiedCatalogEntry(rawName, catalog) {
+    const normalizedName = normalizeVerifiedBrand(rawName);
+    if (normalizedName.length < 4) return null;
+    const exact = (Array.isArray(catalog) ? catalog : []).filter(entry =>
+      normalizeVerifiedBrand(entry.brand) === normalizedName
+    );
+    if (exact.length === 1) return exact[0];
+    if (exact.length > 1) {
+      const firstActive = exact[0].active || exact[0].activeIngredient;
+      const firstStrength = normalizeVerifiedText(exact[0].strength);
+      return exact.every(entry =>
+        verifiedActiveEquivalent(entry.active || entry.activeIngredient, firstActive)
+        && normalizeVerifiedText(entry.strength) === firstStrength
+      ) ? exact[0] : null;
+    }
+    return null;
+  }
+
+  function extractDeclaredDrugActive(drug) {
+    const declared = drug?.activeIngredient || drug?.active || drug?.genericName || drug?.identity?.activeIngredient;
+    if (declared) return String(declared);
+    const match = String(drug?.name || '').match(/\(([^)]+)\)/);
+    return match && /[A-Za-zÀ-ỹ]/.test(match[1]) ? match[1] : '';
+  }
+
+  function buildVerifiedDrugCatalogNote(catalog) {
+    const lines = (Array.isArray(catalog) ? catalog : [])
+      .filter(entry => entry && entry.brand && (entry.active || entry.activeIngredient))
+      .map(entry => `${entry.brand} => HOẠT CHẤT: ${entry.active || entry.activeIngredient}${entry.strength ? `; HÀM LƯỢNG: ${entry.strength}` : ''}`);
+    return ['DANH MỤC THUỐC NỘI BỘ ĐÃ XÁC MINH', ...lines].join('\n');
+  }
+
+  function applyVerifiedCatalogGuard(result, catalog) {
+    const guardedResult = result && typeof result === 'object' ? result : {};
+    guardedResult.drugs = Array.isArray(guardedResult.drugs) ? guardedResult.drugs : [];
+    const conflicts = [];
+
+    guardedResult.drugs.forEach((drug, index) => {
+      if (!drug || typeof drug !== 'object') return;
+      const rawName = String(drug.brand || drug.tradeName || drug.name || '').trim();
+      const entry = findVerifiedCatalogEntry(rawName, catalog);
+      if (!entry) return;
+      const verifiedActive = String(entry.active || entry.activeIngredient || '');
+      const declaredActive = extractDeclaredDrugActive(drug);
+      if (declaredActive && !verifiedActiveEquivalent(declaredActive, verifiedActive)) {
+        conflicts.push({ index, rawName, declaredActive, verifiedActive, catalogEntry: entry });
+      }
+      drug.brand = entry.brand;
+      drug.activeIngredient = verifiedActive;
+      drug.strength = String(entry.strength || '');
+      drug.route = drug.route || entry.route || '';
+      drug.identity = {
+        ...(drug.identity || {}),
+        rawName,
+        status: 'exact',
+        catalogId: String(entry.catalogId || ''),
+        brand: entry.brand,
+        activeIngredient: verifiedActive,
+        strength: String(entry.strength || ''),
+        route: String(entry.route || ''),
+        registrationNumber: String(entry.registrationNumber || '')
+      };
+    });
+
+    return { result: guardedResult, conflicts };
+  }
+
+  function suppressUnsafeIdentityConflicts(result, conflicts) {
+    const safeResult = result && typeof result === 'object' ? result : {};
+    safeResult.drugs = Array.isArray(safeResult.drugs) ? safeResult.drugs : [];
+    safeResult.unclear = Array.isArray(safeResult.unclear) ? safeResult.unclear : [];
+    (Array.isArray(conflicts) ? conflicts : []).forEach(conflict => {
+      const drug = safeResult.drugs[conflict.index];
+      if (!drug) return;
+      drug.safetyBlocked = true;
+      drug.doseAssessment = {
+        status: 'không đủ dữ liệu để đánh giá',
+        detail: `AI gán hoạt chất không khớp danh mục cho "${conflict.rawName}". Kết luận đã bị khóa.`,
+        source: ''
+      };
+      drug.infusionRate = {
+        applicable: false,
+        rate: '',
+        basis: 'Đã khóa vì AI nhận diện sai hoạt chất so với danh mục đã xác minh.'
+      };
+      drug.renalAdjustment = {
+        applicable: false,
+        priority: 'rà soát ngay',
+        warning: 'Đã khóa hiệu chỉnh thận vì nhận diện hoạt chất xung đột với danh mục.',
+        method: '', suggestedRegimen: '', loadingDoseNote: '', monitoring: '', source: ''
+      };
+      safeResult.unclear.push(`AI nhận diện sai hoạt chất của ${conflict.rawName}; cần phân tích lại từ hoạt chất đã xác minh.`);
+    });
+    if ((Array.isArray(conflicts) ? conflicts : []).length) safeResult.interactions = [];
+    safeResult.unclear = [...new Set(safeResult.unclear.filter(Boolean))];
+    return safeResult;
   }
 
   const state = {
@@ -722,7 +856,10 @@
     renalPriorityMeta,
     buildRenalNote,
     getLocalRenalRecommendation,
-    buildVerifiedDrugCatalog
+    buildVerifiedDrugCatalog,
+    buildVerifiedDrugCatalogNote,
+    applyVerifiedCatalogGuard,
+    suppressUnsafeIdentityConflicts
   };
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = testHooks;
