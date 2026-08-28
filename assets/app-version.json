@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.28.52",
-  "displayVersion": "5.5.3",
-  "updatedAt": "2026-08-28T08:51:12+07:00",
-  "note": "Sửa an toàn nhận diện thuốc AI: OCR tên riêng, đối chiếu danh mục nội trú, khóa kết luận khi không khớp.",
-  "buildId": "v5.5.3-ai-drug-identity-20260828-52",
-  "previousVersion": "2026.08.27.51",
-  "previousDisplayVersion": "5.5.2",
+  "version": "2026.08.27.51",
+  "displayVersion": "5.5.2",
+  "updatedAt": "2026-08-27T07:57:47+07:00",
+  "note": "Sửa OCR đơn thuốc: không bỏ sót tên có khoảng trắng, dấu phân cách, xuống dòng hoặc hậu tố kho.",
+  "buildId": "v5.5.2-ocr-drug-completeness-20260827-51",
+  "previousVersion": "2026.08.26.50",
+  "previousDisplayVersion": "5.5.1",
   "clinicalDataVersion": "sha256-bf9336751854a3bd84d7f210"
 }

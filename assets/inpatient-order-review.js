@@ -195,6 +195,39 @@
     return typeof window !== 'undefined' ? window.VPMED_INPATIENT_IDENTITY : null;
   }
 
+  /**
+   * Tạo danh mục đã xác minh dùng cho yêu cầu AI.
+   *
+   * Hàm này là điểm vào ổn định của module y lệnh (và của bộ kiểm thử). Mọi
+   * dữ liệu vẫn được lấy từ module đối chiếu danh mục; tuyệt đối không tạo ánh
+   * xạ biệt dược/hoạt chất bằng suy đoán tại đây.
+   */
+  function buildVerifiedDrugCatalog() {
+    const identityApi = getDrugIdentityApi();
+    if (identityApi && typeof identityApi.getCatalogForAi === 'function') {
+      const catalog = identityApi.getCatalogForAi();
+      if (Array.isArray(catalog)) return catalog;
+    }
+
+    // Nhánh dự phòng chỉ chuyển đổi nguyên văn danh mục chính thức đã nạp.
+    // Không tra gần đúng và không tự bổ sung hoạt chất từ tên biệt dược.
+    const rows = typeof window !== 'undefined' && Array.isArray(window.VPMED_INPATIENT_MEDICINES_20260707)
+      ? window.VPMED_INPATIENT_MEDICINES_20260707 : [];
+    const seen = new Set();
+    return rows.map((row, index) => ({
+      catalogId: String(row.code || row.regNumber || row.id || `inventory-${index + 1}`),
+      brand: String(row.name || ''),
+      activeIngredient: String(row.active || ''),
+      strength: String(row.strength || row.concentration || ''),
+      route: String(row.route || row.routeBHYT || ''),
+      registrationNumber: String(row.regNumber || '')
+    })).filter(entry => {
+      if (!entry.brand || !entry.activeIngredient || seen.has(entry.catalogId)) return false;
+      seen.add(entry.catalogId);
+      return true;
+    });
+  }
+
   const state = {
     files: [],      // { id, file, thumbUrl, label }
     nextId: 1,
@@ -466,7 +499,7 @@
     setBusy(true);
     try {
       const identityApi = getDrugIdentityApi();
-      const drugCatalog = identityApi?.getCatalogForAi?.() || [];
+      const drugCatalog = buildVerifiedDrugCatalog();
       if (!drugCatalog.length) {
         throw new Error('Không tải được danh mục thuốc nội trú để đối chiếu. Hệ thống đã dừng phân tích nhằm tránh AI tự suy diễn hoạt chất.');
       }
@@ -683,9 +716,17 @@
   }
 
   // Xuất hàm thuần phục vụ test không cần DOM/network.
+  const testHooks = {
+    severityMeta,
+    calculateRenalAssessment,
+    renalPriorityMeta,
+    buildRenalNote,
+    getLocalRenalRecommendation,
+    buildVerifiedDrugCatalog
+  };
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { severityMeta, calculateRenalAssessment, renalPriorityMeta, buildRenalNote, getLocalRenalRecommendation };
+    module.exports = testHooks;
   } else {
-    window.__inpatientOrderReviewTestHooks = { severityMeta, calculateRenalAssessment, renalPriorityMeta, buildRenalNote, getLocalRenalRecommendation };
+    window.__inpatientOrderReviewTestHooks = testHooks;
   }
 })();
