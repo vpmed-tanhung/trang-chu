@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.27.51",
-  "displayVersion": "5.5.2",
-  "updatedAt": "2026-08-27T07:57:47+07:00",
-  "note": "Sửa OCR đơn thuốc: không bỏ sót tên có khoảng trắng, dấu phân cách, xuống dòng hoặc hậu tố kho.",
-  "buildId": "v5.5.2-ocr-drug-completeness-20260827-51",
-  "previousVersion": "2026.08.26.50",
-  "previousDisplayVersion": "5.5.1",
+  "version": "2026.08.28.56",
+  "displayVersion": "5.6.4",
+  "updatedAt": "2026-08-28T15:41:55+07:00",
+  "note": "Xóa nút nổi ↑ Menu khỏi module Cấp cứu phản vệ.",
+  "buildId": "v5.6.4-remove-floating-menu-20260828-56",
+  "previousVersion": "2026.08.28.55",
+  "previousDisplayVersion": "5.6.3",
   "clinicalDataVersion": "sha256-bf9336751854a3bd84d7f210"
 }
