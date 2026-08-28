@@ -1,12 +1,91 @@
 {
-  "generated_at": "2026-08-27T07:25:35+07:00",
+  "generated_at": "2026-08-28T07:55:20+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
-  "newly_fetched_count": 0,
+  "newly_fetched_count": 2,
   "retained_history_count": 0,
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
+    {
+      "id": "auto-33683739ad5f6f",
+      "level": "red",
+      "year": "2026",
+      "date": "27/08/2026",
+      "category": "Cảnh báo an toàn thuốc",
+      "system": "Tim mạch · Thần kinh",
+      "interaction": false,
+      "title": "PMDA: CẬP NHẬT BỔ SUNG NGUY CƠ HẠ MAGIE HUYẾT KHI SỬ DỤNG CÁC THUỐC ỨC CHẾ BƠM PROTON",
+      "drugs": "CÁC THUỐC ỨC CHẾ BƠM PROTON",
+      "summary": "Quyết định được ban hành sau quá trình đánh giá các báo cáo về biến cố hạ magie máu và nhận định có mối liên quan giữa biến cố này với việc sử dụng các thuốc ức chế bơm proton hoặc vonoprazan. Tại mục ‘Thận trọng quan trọng’ của tờ thông tin sản phẩm của các chế phẩm trên được bổ sung cảnh báo về việc sử dụng thuốc kéo dài có thể gây hạ magie huyết và cần định kỳ theo dõi nồng độ magie trong máu khi điều trị dài hạn.",
+      "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
+      "risk": [
+        "Nội dung cập nhật trên tờ thông tin sản phẩm Quyết định cập nhật thông tin an toàn được áp dụng với thuốc ức chế bơm proton và vonoprazan, bao gồm: - Các thuốc chứa đơn hoạt chất như esomeprazol, omeprazol, vonoprazan fumarat, rabeprazol natri và lansoprazol dùng qua đường uống. - Các thuốc phối hợp có chứa các đơn chất trên, bao gồm các chế phẩm kết hợp…"
+      ],
+      "signs": [
+        "Quyết định được ban hành sau quá trình đánh giá các báo cáo về biến cố hạ magie máu và nhận định có mối liên quan giữa biến cố này với việc sử dụng các thuốc ức chế bơm proton hoặc vonoprazan.",
+        "Tình trạng này có thể đi kèm các biểu hiện như kéo dài khoảng QT, co giật và tê bì; đồng thời có thể gây ra các rối loạn điện giải thứ phát như hạ calci huyết và hạ kali huyết."
+      ],
+      "action": [
+        "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn."
+      ],
+      "monitor": [
+        "Tại mục ‘Thận trọng quan trọng’ của tờ thông tin sản phẩm của các chế phẩm trên được bổ sung cảnh báo về việc sử dụng thuốc kéo dài có thể gây hạ magie huyết và cần định kỳ theo dõi nồng độ magie trong máu khi điều trị dài hạn.",
+        "Khi xuất hiện các triệu chứng nghi ngờ, cần kiểm tra nồng độ magie huyết và áp dụng biện pháp xử trí thích hợp, bao gồm bổ sung magie khi cần thiết."
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5861/ha-magie-huyet-khi-su-dung-thuoc-uc-che-bom-proton.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5861/ha-magie-huyet-khi-su-dung-thuoc-uc-che-bom-proton.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-concise-v2"
+    },
+    {
+      "id": "auto-c372791d94dbc1",
+      "level": "red",
+      "year": "2026",
+      "date": "25/08/2026",
+      "category": "Cảnh báo an toàn thuốc",
+      "system": "Tim mạch",
+      "interaction": false,
+      "title": "Nguy cơ dị ứng với tá dược: Cập nhật khuyến cáo của Viện Hàn lâm Dị ứng và Miễn dịch Lâm sàng Châu Âu",
+      "drugs": "Corticosteroid",
+      "summary": "Phản ứng quá mẫn với povidon đã được ghi nhận chủ yếu là các triệu chứng phản vệ nghiêm trọng, trong đó hơn 40% số ca trải qua nhiều lần quá mẫn lặp lại trước khi được phát hiện. Trong tình huống bắt buộc phải sử dụng thuốc chứa tá dược nghi ngờ có nguy cơ dị ứng, việc sử dụng cần được thực hiện tại bệnh viện dưới sự giám sát y tế.",
+      "quick": "Dấu hiệu lâm sàng nghi ngờ quá mẫn với tá dược Việc đánh giá phản ứng quá mẫn cần rà soát cả hoạt chất và tá dược có nguy cơ gây phản vệ.",
+      "risk": [
+        "Về xử trí, tránh tái sử dụng các tá dược gây dị ứng và các chất có phản ứng dị ứng chéo, đồng thời cấp thẻ cảnh báo dị ứng cho bệnh nhân.",
+        "Cân nhắc cấp phát bút tiêm tự động chứa adrenalin cho bệnh nhân có tiền sử phản vệ.",
+        "Thực hiện test dị ứng chéo với polysorbat nguyên chất và poloxamer 10% w/v ở bệnh nhân có tiền sử dị ứng PEG.",
+        "Phản ứng quá mẫn do tá dược này thường khởi phát quanh thời điểm phẫu thuật, sau tiêm vắc xin hoặc sau ăn ở những bệnh nhân mắc hội chứng alpha-gal (AGS) - dị ứng với các sản phẩm có nguồn gốc từ động vật có vú.",
+        "Thận trọng khi chỉ định thuốc tiêm chứa gelatin ở bệnh nhân có hội chứng alpha-gal.",
+        "Tránh sử dụng các chế phẩm chứa methylcellulose đường tiêm và bôi ngoài da cho bệnh nhân tiền sử dị ứng, các thực phẩm chứa CMC cần tránh khi có bằng chứng dị ứng rõ ràng."
+      ],
+      "signs": [
+        "Mới đây, Viện Hàn lâm Dị ứng và Miễn dịch Lâm sàng Châu Âu (EAACI) đã đưa ra các khuyến cáo mới về những dấu hiệu lâm sàng, nguyên tắc trong chẩn đoán và quản lý quá mẫn với tá dược.",
+        "Hơn một nửa số ca quá mẫn với CMC xuất hiện phản ứng sau khi tiêm steroid giải phóng chậm và 76% trường hợp gặp phản vệ Đa số bệnh nhân dị ứng CMC đường tiêm vẫn có thể dung nạp khi dùng qua đường uống.",
+        "Phản ứng quá mẫn với povidon đã được ghi nhận chủ yếu là các triệu chứng phản vệ nghiêm trọng, trong đó hơn 40% số ca trải qua nhiều lần quá mẫn lặp lại trước khi được phát hiện."
+      ],
+      "action": [
+        "Dấu hiệu lâm sàng nghi ngờ quá mẫn với tá dược Việc đánh giá phản ứng quá mẫn cần rà soát cả hoạt chất và tá dược có nguy cơ gây phản vệ.",
+        "Chẩn đoán phân biệt quá mẫn với tá dược được khuyến cáo trong các trường hợp: - Người bệnh xuất hiện phản ứng sau khi sử dụng những chế phẩm mà tá dược lại đóng vai trò là thành phần chính, điển hình như thuốc nhuận tràng chứa PEG, dung dịch thay thế huyết tương chứa gelatin, dịch truyền tĩnh mạch mannitol hoặc dung dịch sát khuẩn povidon-iod. - Người…",
+        "Cần đánh giá nguy cơ dị ứng chéo với hydroxypropyl methylcellulose hoặc hydroxyethyl cellulose."
+      ],
+      "monitor": [
+        "Trong tình huống bắt buộc phải sử dụng thuốc chứa tá dược nghi ngờ có nguy cơ dị ứng, việc sử dụng cần được thực hiện tại bệnh viện dưới sự giám sát y tế.",
+        "Hướng dẫn bệnh nhân kiểm tra thành phần của thuốc kê đơn, thuốc không kê đơn và sản phẩm chăm sóc sức khỏe.",
+        "Cần kiểm tra dị ứng chéo với crospovidon ở bệnh nhân dị ứng povidon."
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5860/eaaci-nguy-co-di-ung-voi-ta-duoc.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5860/eaaci-nguy-co-di-ung-voi-ta-duoc.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-concise-v2"
+    },
     {
       "id": "auto-1844287fb2c53c",
       "level": "red",
