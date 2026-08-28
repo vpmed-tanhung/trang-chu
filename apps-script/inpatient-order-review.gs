@@ -42,19 +42,14 @@ var BHYT_TEXT_PROMPT = [
   '{"summary":"string","issues":[{"category":"OCR|thuốc|liều-cách dùng|tương tác|ICD-BHYT","severity":"cao|vừa|thấp","finding":"string","recommendation":"string"}],"confidence":"cao|trung bình|thấp","disclaimer":"string"}'
 ].join('\n');
 
-var INPATIENT_IDENTITY_PROMPT = [
-  'NHIỆM VỤ DUY NHẤT: chép nguyên văn tên từng thuốc/y lệnh thuốc nhìn thấy trong ảnh.',
-  'Không phân tích lâm sàng, không đoán hoạt chất, không đổi sang tên generic hoặc biệt dược khác.',
-  'Giữ nguyên tên biệt dược, hàm lượng đi kèm và phần chữ có ý nghĩa nhận diện. Nếu chữ không rõ, vẫn chép phần đọc được và đặt readable=false.',
-  'Chỉ trả một JSON object hợp lệ, không markdown, đúng cấu trúc:',
-  '{"drugs":[{"rawName":"tên thuốc chép nguyên văn từ ảnh","orderedText":"toàn bộ dòng y lệnh liên quan","readable":true}]}'
-].join('\n');
-
 var SYSTEM_PROMPT = [
   'VAI TRÒ: Bạn là Dược sĩ lâm sàng cấp cao (Senior Clinical Pharmacist), chuyên sâu Dược lâm sàng nội trú tại bệnh viện Việt Nam, dày kinh nghiệm đọc và rà soát y lệnh dùng thuốc trong bệnh án.',
   '',
-  'NHIỆM VỤ: Phân tích y lệnh dùng thuốc (không phải dịch pha truyền hay dịch pha thuốc) của một bệnh nhân nội trú dựa trên ảnh y lệnh/trang bệnh án được cung cấp. Chỉ tập trung đúng 5 việc, không mở rộng phạm vi:',
-  'BƯỚC 0 BẮT BUỘC — ĐỊNH DANH THUỐC: Hệ thống đã thực hiện một lượt OCR riêng và gửi kèm DANH SÁCH ĐỊNH DANH ĐÃ KHÓA. Phải chép nguyên trạng identity của từng thuốc từ danh sách này; không tự tìm lại hoạt chất bằng kiến thức mô hình, không đổi catalogId và không tự đổi sang biệt dược khác. Chỉ thuốc có identity.status="exact" mới được phân tích. Thuốc "not_found", "ambiguous" hoặc "unreadable" phải để trống hoạt chất và không phân tích liều/tương tác/hiệu chỉnh thận.',
+  'NHIỆM VỤ: Đọc trực tiếp ảnh y lệnh và phân tích y lệnh dùng thuốc (không phải dịch pha truyền hay dịch pha thuốc) của một bệnh nhân nội trú trong CÙNG MỘT LƯỢT GỌI AI và CÙNG MỘT PHẢN HỒI JSON. Chỉ tập trung đúng 5 việc, không mở rộng phạm vi:',
+  'QUY TRÌNH BẮT BUỘC TRONG MỘT LƯỢT: Với từng dòng y lệnh, trước hết chép nguyên văn phần nhìn thấy vào identity.rawName và orderedDose; sau đó mới phân tích lâm sàng dựa đúng trên tên/hoạt chất vừa nhận diện. Không tách thành lượt nhận diện riêng và không dùng một thuốc khác để thay thế phần chữ trong ảnh.',
+  'QUY TẮC NHẬN DIỆN: Từ tên đọc được trong ảnh, phải nhận diện cả tên biệt dược/tên thương mại do nhà sản xuất đặt và hoạt chất tương ứng. Không sửa tên nhìn thấy theo trí nhớ, không tự hoàn thiện chữ bị khuất/mờ và không chọn một tên gần giống khi ảnh không đủ rõ. identity.rawName chép nguyên văn; identity.brand ghi tên thương mại nhận diện được; identity.activeIngredient ghi hoạt chất thực sự được dùng cho toàn bộ đánh giá lâm sàng. Không tự tạo catalogId: luôn để catalogId="".',
+  'DANH MỤC NỘI BỘ CHỈ THAM KHẢO: AI phải tự đọc, tự nhận diện và phân tích thuốc dựa trên ảnh cùng kiến thức dược lâm sàng. Một thuốc không có trong danh mục nội bộ không có nghĩa là ngoài phạm vi phân tích và không được dùng làm lý do từ chối phân tích. Sau phản hồi AI, mã chương trình chỉ dùng danh mục để bổ sung cảnh báo đối chiếu; không được xóa hoặc khóa kết quả AI.',
+  'ĐIỀU KIỆN PHÂN TÍCH: Khi tên thương mại/biệt dược được đọc rõ và hoạt chất được nhận diện đủ tin cậy, phải tiếp tục phân tích liều, cách dùng, tốc độ truyền, hiệu chỉnh thận và tương tác dù thuốc chưa có trong danh mục nội bộ. Chỉ khi chính chữ trong ảnh thật sự mờ, tên có nhiều cách hiểu hoặc không xác định được hoạt chất thì mới để trống phần không chắc và ghi cụ thể vào unclear thay vì đoán.',
   '1. Tính toán liều dùng — đối chiếu liều bác sĩ kê với liều khuyến cáo (theo cân nặng/tuổi/chức năng thận nếu có dữ liệu); tách rõ liều nạp và liều duy trì; nêu rõ khi liều bất thường và mức chênh lệch ước tính.',
   '2. Cách dùng — đường dùng, thời điểm dùng, số lần/ngày, điều kiện đói/no, tương thích dạng bào chế.',
   '3. Tính tốc độ truyền thuốc — CHỈ tính tốc độ truyền (mL/giờ hoặc giọt/phút) cho thuốc IV dựa trên liều, thời gian truyền khuyến cáo và nồng độ/thể tích đã ghi rõ trong y lệnh. KHÔNG tính pha loãng/chọn dung môi/thể tích pha chế.',
@@ -65,9 +60,10 @@ var SYSTEM_PROMPT = [
   'Nguồn tham chiếu bắt buộc, theo thứ tự ưu tiên khi xung đột: (1) HDSD/SPC đã phê duyệt của đúng hoạt chất, hàm lượng, dạng bào chế và đường dùng; (2) quy trình/phác đồ chỉnh liều đã được bệnh viện phê duyệt; (3) Dược thư Quốc gia Việt Nam hiện hành và hướng dẫn Bộ Y tế; (4) hướng dẫn chuyên ngành hiện hành (KDIGO dùng cho nguyên tắc đánh giá chức năng thận; UpToDate/Sanford/Renal Drug Handbook dùng khi có nội dung phù hợp). Nếu các nguồn xung đột, phải nêu rõ sự khác biệt.',
   '',
   'RÀNG BUỘC:',
-  '- Không suy đoán thông tin không xuất hiện trong ảnh. Nếu chữ mờ/không đọc rõ, ghi "Không đọc rõ, cần xác minh thủ công" — tuyệt đối không tự bịa số liệu.',
-  '- DANH SÁCH ĐỊNH DANH ĐÃ KHÓA gửi kèm là nguồn duy nhất để gán biệt dược → hoạt chất/hàm lượng/đường dùng. Không được sửa, bổ sung hoặc thay thế dữ liệu này bằng trí nhớ của mô hình. Khi identity.status="exact", mọi phép tính và nhận định phải dựa đúng activeIngredient/strength của cùng catalogId.',
-  '- Nếu chưa có identity.status="exact" và catalogId hợp lệ thì doseAssessment.status bắt buộc là "không đủ dữ liệu để đánh giá"; infusionRate.applicable=false; renalAdjustment.applicable=false. Không được ghi một nguồn tham khảo như thể đã xác minh đúng chế phẩm.',
+  '- Không suy đoán thông tin không xuất hiện trong ảnh. Nếu chữ mờ/không đọc rõ, ghi "Không đọc rõ, cần xác minh thủ công" — tuyệt đối không tự bịa số liệu, không tự nối phần chữ thiếu và không dùng ngữ cảnh lâm sàng để đoán tên thuốc.',
+  '- Tên thuốc, hàm lượng, liều, đường dùng và tần suất phải được đọc trực tiếp từ ảnh trong lượt phân tích này. identity.rawName phải giữ nguyên đúng phần chữ đọc được, kể cả khi chưa đầy đủ; catalogId luôn để trống để hệ thống đối chiếu sau. Không được bịa tên thuốc, sửa thành tên quen thuộc hơn hoặc đổi sang một biệt dược/generic khác.',
+  '- identity.brand phải ghi tên biệt dược/tên thương mại nhận diện được; identity.activeIngredient phải là hoạt chất bạn đã dùng để đưa ra đánh giá lâm sàng. Không được bỏ qua thuốc chỉ vì tên thương mại chưa có trong danh mục nội bộ. Nếu chính việc nhận diện hoạt chất không chắc chắn thì để trống activeIngredient, đặt doseAssessment.status="không đủ dữ liệu để đánh giá", infusionRate.applicable=false, renalAdjustment.applicable=false và ghi rõ trong unclear.',
+  '- Mọi kết luận về liều, truyền, thận và tương tác của một thuốc phải cùng dựa trên identity.rawName và identity.activeIngredient của chính thuốc đó. Không được phân tích theo một hoạt chất nhưng hiển thị tên thuốc khác.',
   '- Ghi chú có tiền tố "Dữ liệu thận do dược sĩ nhập" là dữ liệu có cấu trúc do người dùng cung cấp; dùng để kiểm chứng nhưng nếu xung đột với ảnh phải nêu xung đột, không tự chọn một giá trị im lặng.',
   '- Cockcroft-Gault/CKD-EPI chỉ phù hợp khi creatinine tương đối ổn định. Không đồng nhất giai đoạn CKD với ngưỡng chỉnh liều của từng thuốc. Ở thể trạng rất nhỏ/lớn, xem xét eGFR không chuẩn hóa BSA; với thuốc khoảng điều trị hẹp, ưu tiên cystatin C/mGFR hoặc TDM khi có.',
   '- Không chẩn đoán bệnh, không kê đơn thay bác sĩ, không tự quyết định ngừng/đổi thuốc.',
@@ -93,15 +89,9 @@ function handleAnalyzeInpatientOrder(payload) {
   }
 
   var drugCatalog = sanitizeDrugCatalog(payload && payload.drugCatalog);
-  if (!drugCatalog.length) {
-    return { ok: false, message: 'Thiếu danh mục thuốc nội trú để đối chiếu. Đã dừng phân tích nhằm tránh AI tự suy diễn hoạt chất.' };
-  }
 
   try {
-    var identityText = callGeminiIdentity(images);
-    var identityOcr = parseIdentityModelOutput(identityText, drugCatalog);
-    var lockedIdentities = resolveCatalogIdentities(identityOcr.drugs, drugCatalog);
-    var resultText = callGeminiAnalysis(images, payload.note, lockedIdentities);
+    var resultText = callGeminiAnalysis(images, payload.note);
 
     var parsed = normalizeAnalysisResult(parseModelJson(resultText));
     if (!parsed) {
@@ -128,21 +118,12 @@ function handleAnalyzeBhytPrescriptionText(payload) {
   }
 }
 
-function callGeminiIdentity(images) {
-  var parts = [{ text: 'Chép nguyên văn tên thuốc và dòng y lệnh trong các ảnh; không suy diễn hoạt chất.' }];
-  images.forEach(function (img) {
-    parts.push({
-      inlineData: { mimeType: img.mimeType || 'image/jpeg', data: img.base64 }
-    });
-  });
-  return requestGemini(INPATIENT_IDENTITY_PROMPT, parts, 4096);
-}
-
-function callGeminiAnalysis(images, note, lockedIdentities) {
+function callGeminiAnalysis(images, note) {
   var parts = [{
-    text: 'DANH SÁCH ĐỊNH DANH ĐÃ ĐƯỢC HỆ THỐNG KHÓA (sao chép nguyên trạng; không tự sửa):\n' +
-      JSON.stringify(lockedIdentities) +
-      '\n\nPhân tích y lệnh trong (các) ảnh theo đúng hướng dẫn và chỉ trả về một object JSON hợp lệ.' +
+    text: 'Đọc trực tiếp và phân tích toàn bộ y lệnh trong (các) ảnh theo đúng hướng dẫn trong MỘT lượt gọi AI; chỉ trả về một object JSON hợp lệ.' +
+      '\nVới từng thuốc: chép nguyên văn tên và dòng y lệnh trước; nhận diện tên biệt dược/tên thương mại cùng hoạt chất rồi phân tích đầy đủ liều, cách dùng, tốc độ truyền, thận và tương tác khi đủ rõ.' +
+      '\nKhông được từ chối hoặc loại thuốc chỉ vì thuốc chưa có trong danh mục nội bộ. identity.rawName giữ đúng phần chữ nhìn thấy; identity.brand ghi tên thương mại; identity.activeIngredient ghi hoạt chất dùng để phân tích; identity.catalogId luôn để trống.' +
+      '\nChỉ khi chữ trong ảnh hoặc hoạt chất thật sự không chắc chắn mới để trống phần không chắc và ghi vào unclear; không đoán phần chữ mờ, không tự hoàn thiện tên thuốc, không thay bằng tên gần giống.' +
       (note ? ('\n\nGhi chú thêm từ dược sĩ: ' + note) : '')
   }];
   images.forEach(function (img) {
@@ -254,20 +235,12 @@ function identityActiveEquivalent(left, right) {
   return overlap === Math.min(a.length, b.length) && overlap / Math.max(a.length, b.length) >= 0.5;
 }
 
-function blockUnverifiedDrug(drug, detail) {
-  drug.safetyBlocked = true;
-  drug.doseAssessment = { status: 'không đủ dữ liệu để đánh giá', detail: detail, source: '' };
-  drug.infusionRate = { applicable: false, rate: '', basis: 'Đã khóa vì định danh thuốc chưa được xác nhận từ danh mục.' };
-  drug.renalAdjustment = { applicable: false, priority: 'rà soát ngay', warning: 'Chưa cho phép khuyến cáo thận khi định danh thuốc chưa chắc chắn.', method: '', suggestedRegimen: '', loadingDoseNote: '', monitoring: '', source: '' };
-}
-
 function enforceCatalogIdentity(result, catalog) {
   result = result && typeof result === 'object' ? result : {};
   result.drugs = Array.isArray(result.drugs) ? result.drugs : [];
   result.unclear = Array.isArray(result.unclear) ? result.unclear : [];
   var byId = {};
   catalog.forEach(function (entry) { byId[entry.catalogId] = entry; });
-  var allVerified = result.drugs.length > 0;
 
   result.drugs.forEach(function (drug) {
     drug = drug || {};
@@ -277,17 +250,48 @@ function enforceCatalogIdentity(result, catalog) {
       var recovered = catalogMatchFromOrderLine(identity.rawName || drug.tradeName || drug.brand || drug.name || '', catalog);
       if (recovered.entry) entry = recovered.entry;
     }
-    var declaredActive = String(identity.activeIngredient || drug.activeIngredient || '');
+    var rawName = String(identity.rawName || drug.tradeName || drug.brand || drug.name || '');
+    var declaredBrand = String(identity.brand || drug.tradeName || drug.brand || rawName);
+    var declaredActive = String(identity.activeIngredient || drug.activeIngredient || drug.genericName || '');
     if (!entry) {
-      allVerified = false;
-      blockUnverifiedDrug(drug, 'Không có đối chiếu chính xác với danh mục thuốc nội trú; hệ thống không tự suy diễn hoạt chất.');
-      result.unclear.push('Có thuốc chưa được định danh chính xác từ danh mục; đã khóa kết luận lâm sàng liên quan.');
+      drug.identity = {
+        rawName: rawName,
+        status: String(identity.status || (rawName ? 'exact' : 'unreadable')),
+        catalogStatus: catalog.length ? 'not_found' : 'unavailable',
+        catalogId: '',
+        brand: declaredBrand,
+        activeIngredient: declaredActive,
+        strength: String(identity.strength || drug.strength || ''),
+        route: String(identity.route || drug.route || ''),
+        registrationNumber: String(identity.registrationNumber || '')
+      };
+      drug.tradeName = drug.tradeName || declaredBrand;
+      drug.activeIngredient = drug.activeIngredient || declaredActive;
+      if (catalog.length) {
+        result.unclear.push('Thuốc "' + (rawName || 'chưa đọc rõ tên') + '" chưa có trong danh mục nội bộ; kết quả AI vẫn được giữ để dược sĩ đối chiếu.');
+      }
       return;
     }
 
     var mismatch = declaredActive && !identityActiveEquivalent(declaredActive, entry.activeIngredient);
+    if (mismatch) {
+      drug.identity = {
+        rawName: rawName, status: String(identity.status || 'exact'), catalogStatus: 'conflict',
+        catalogId: '', brand: declaredBrand, activeIngredient: declaredActive,
+        strength: String(identity.strength || drug.strength || ''),
+        route: String(identity.route || drug.route || ''),
+        registrationNumber: String(identity.registrationNumber || ''),
+        catalogReference: {
+          catalogId: entry.catalogId, brand: entry.brand, activeIngredient: entry.activeIngredient,
+          strength: entry.strength, route: entry.route, registrationNumber: entry.registrationNumber
+        }
+      };
+      result.unclear.push('Cần đối chiếu thuốc "' + (rawName || declaredBrand) + '": AI nhận hoạt chất "' + declaredActive + '" nhưng danh mục nội bộ ghi "' + entry.activeIngredient + '". Kết quả AI không bị khóa.');
+      return;
+    }
+
     drug.identity = {
-      rawName: String(identity.rawName || drug.name || ''), status: 'exact',
+      rawName: rawName, status: 'exact', catalogStatus: 'matched',
       catalogId: entry.catalogId, brand: entry.brand,
       activeIngredient: entry.activeIngredient, strength: entry.strength,
       route: entry.route, registrationNumber: entry.registrationNumber
@@ -295,17 +299,8 @@ function enforceCatalogIdentity(result, catalog) {
     drug.tradeName = entry.brand;
     drug.activeIngredient = entry.activeIngredient;
     drug.name = entry.brand + ' (' + entry.activeIngredient + (entry.strength ? '; ' + entry.strength : '') + ')';
-    if (mismatch) {
-      allVerified = false;
-      blockUnverifiedDrug(drug, 'AI gán hoạt chất không khớp với catalogId đã chọn; hệ thống đã khóa kết luận và yêu cầu phân tích lại.');
-      result.unclear.push('AI trả hoạt chất không khớp danh mục; đã khóa kết luận liên quan.');
-    }
   });
 
-  if (!allVerified && Array.isArray(result.interactions) && result.interactions.length) {
-    result.interactions = [];
-    result.unclear.push('Đã khóa kết quả tương tác vì còn thuốc chưa được định danh chính xác.');
-  }
   result.unclear = result.unclear.filter(function (item, index, array) { return item && array.indexOf(item) === index; });
   return result;
 }

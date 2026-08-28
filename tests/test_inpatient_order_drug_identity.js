@@ -45,14 +45,14 @@ const wrong = {
 
 const guarded = hooks.applyVerifiedCatalogGuard(wrong, catalog);
 assert.strictEqual(guarded.conflicts.length, 1, 'Phải phát hiện AI nhận Nerusyn sai hoạt chất');
-assert.strictEqual(guarded.result.drugs[0].activeIngredient, 'Ampicilin + sulbactam');
-assert.strictEqual(guarded.result.drugs[0].strength, '1g + 0,5g');
+assert.strictEqual(guarded.result.drugs[0].identity.catalogStatus, 'conflict');
+assert.strictEqual(guarded.result.drugs[0].identity.catalogReference.activeIngredient, 'Ampicilin + sulbactam');
 
-hooks.suppressUnsafeIdentityConflicts(guarded.result, guarded.conflicts);
-assert.strictEqual(guarded.result.drugs[0].doseAssessment.status, 'không đủ dữ liệu để đánh giá');
-assert.strictEqual(guarded.result.drugs[0].infusionRate.applicable, false);
-assert.strictEqual(guarded.result.drugs[0].renalAdjustment.applicable, false);
-assert.strictEqual(guarded.result.interactions.length, 0, 'Tương tác dựa trên hoạt chất nhận sai phải bị loại');
+hooks.annotateIdentityConflicts(guarded.result, guarded.conflicts);
+assert.strictEqual(guarded.result.drugs[0].doseAssessment.status, 'cao hơn khuyến cáo');
+assert.strictEqual(guarded.result.drugs[0].infusionRate.applicable, true);
+assert.strictEqual(guarded.result.drugs[0].renalAdjustment.applicable, true);
+assert.strictEqual(guarded.result.interactions.length, 1, 'Cảnh báo danh mục không được xóa tương tác AI');
 assert.ok(guarded.result.unclear.some(item => item.includes('Nerusyn')));
 
 const correct = {

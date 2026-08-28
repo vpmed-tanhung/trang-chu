@@ -16,7 +16,7 @@ def test_inpatient_order_feature_is_wired_without_regressing_rx_review():
     assert inpatient_bundle.index(shared_layout_css) < inpatient_bundle.index(module_css)
     assert 'data-open="inpatient-order"' in html
     assert 'id="view-inpatient-order"' in html
-    assert 'assets/inpatient-order-review.js?v=20260828-auto-pipeline-v2' in shell
+    assert 'assets/inpatient-order-review.js?v=20260828-auto-pipeline-v3' in shell
     assert "'inpatient-order'" in unified
 
     # Các sửa mới nhất của module rà soát đơn BHYT phải được giữ nguyên khi merge.
@@ -66,8 +66,8 @@ def test_inpatient_ai_identity_is_catalog_grounded_and_not_hardcoded():
     gs = (ROOT / 'apps-script' / 'inpatient-order-review.gs').read_text(encoding='utf-8')
 
     catalog_asset = 'assets/inpatient_medicines_20260707.js?v=20260828-ai-identity-v1'
-    identity_asset = 'assets/inpatient-drug-identity.js?v=20260828-ai-identity-v1'
-    review_asset = 'assets/inpatient-order-review.js?v=20260828-auto-pipeline-v2'
+    identity_asset = 'assets/inpatient-drug-identity.js?v=20260828-catalog-advisory-v2'
+    review_asset = 'assets/inpatient-order-review.js?v=20260828-auto-pipeline-v3'
     inpatient_bundle = shell.split("'inpatient-order': {", 1)[1].split("'petct-dose':", 1)[0]
     assert inpatient_bundle.index(catalog_asset) < inpatient_bundle.index(identity_asset) < inpatient_bundle.index(review_asset)
     assert 'VPMED_INPATIENT_MEDICINES_20260707' in identity
@@ -77,12 +77,23 @@ def test_inpatient_ai_identity_is_catalog_grounded_and_not_hardcoded():
     assert 'reconcileResult' in client
     assert 'drugCatalog' in gs
     assert 'sanitizeDrugCatalog' in gs
-    assert 'INPATIENT_IDENTITY_PROMPT' in gs
-    assert 'callGeminiIdentity(images)' in gs
-    assert 'resolveCatalogIdentities' in gs
-    assert 'callGeminiAnalysis(images, payload.note, lockedIdentities)' in gs
+    assert 'INPATIENT_IDENTITY_PROMPT' not in gs
+    assert 'function callGeminiIdentity' not in gs
+    handler = gs.split('function handleAnalyzeInpatientOrder(payload) {', 1)[1].split('function handleAnalyzeBhytPrescriptionText', 1)[0]
+    assert 'callGeminiIdentity(' not in handler
+    assert 'parseIdentityModelOutput(' not in handler
+    assert 'var resultText = callGeminiAnalysis(images, payload.note);' in handler
+    assert handler.count('callGeminiAnalysis(') == 1
+    assert 'callGeminiAnalysis(images, payload.note, lockedIdentities)' not in gs
     assert 'enforceCatalogIdentity' in gs
     assert 'Nerusyn' not in gs
+    assert 'Đã dừng phân tích nhằm tránh AI tự suy diễn hoạt chất' not in gs
+    assert 'blockUnverifiedDrug' not in gs
+    assert 'blockDrugAssessment' not in identity
+    assert 'suppressUnsafeIdentityConflicts' not in client
+    assert 'annotateIdentityConflicts' in client
+    assert 'không có nghĩa là ngoài phạm vi phân tích' in gs
+    assert 'tên biệt dược/tên thương mại' in gs
 
 
 def test_bhyt_ocr_text_has_optional_ai_review_without_uploading_images():
@@ -189,7 +200,7 @@ def test_inpatient_order_restores_automatic_pipeline_and_parser_fallback():
     assert "if (consent.checked) scheduleAutoAnalyze();" in client
     assert 'reconcileServerResult(data.result, drugCatalog)' in client
     assert 'identityApi.reconcileResult(data.result)' not in client
-    assert 'parseIdentityModelOutput(identityText, drugCatalog)' in gs
+    assert 'parseIdentityModelOutput(identityText, drugCatalog)' not in gs
     assert 'fallbackParseIdentityText' in gs
     assert 'catalogMatchFromOrderLine' in gs
     assert 'AI không đọc được danh sách tên thuốc ở bước định danh' not in gs

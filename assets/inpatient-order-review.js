@@ -303,14 +303,46 @@
 
     guardedResult.drugs.forEach((drug, index) => {
       if (!drug || typeof drug !== 'object') return;
-      const rawName = String(drug.brand || drug.tradeName || drug.name || '').trim();
+      const rawName = String(drug?.identity?.rawName || drug.brand || drug.tradeName || drug.name || '').trim();
       const entry = findVerifiedCatalogEntry(rawName, catalog);
-      if (!entry) return;
-      const verifiedActive = String(entry.active || entry.activeIngredient || '');
       const declaredActive = extractDeclaredDrugActive(drug);
+      const declaredBrand = String(drug?.identity?.brand || drug.tradeName || drug.brand || rawName).trim();
+      if (!entry) {
+        drug.identity = {
+          ...(drug.identity || {}),
+          rawName,
+          status: String(drug?.identity?.status || (rawName ? 'exact' : 'unreadable')),
+          catalogStatus: Array.isArray(catalog) && catalog.length ? 'not_found' : 'unavailable',
+          catalogId: '',
+          brand: declaredBrand,
+          activeIngredient: declaredActive,
+          strength: String(drug?.identity?.strength || drug.strength || ''),
+          route: String(drug?.identity?.route || drug.route || ''),
+          registrationNumber: String(drug?.identity?.registrationNumber || '')
+        };
+        return;
+      }
+
+      const verifiedActive = String(entry.active || entry.activeIngredient || '');
       if (declaredActive && !verifiedActiveEquivalent(declaredActive, verifiedActive)) {
         conflicts.push({ index, rawName, declaredActive, verifiedActive, catalogEntry: entry });
+        drug.identity = {
+          ...(drug.identity || {}),
+          rawName,
+          status: String(drug?.identity?.status || 'exact'),
+          catalogStatus: 'conflict',
+          catalogId: '',
+          brand: declaredBrand,
+          activeIngredient: declaredActive,
+          catalogReference: {
+            catalogId: String(entry.catalogId || ''), brand: entry.brand,
+            activeIngredient: verifiedActive, strength: String(entry.strength || ''),
+            route: String(entry.route || ''), registrationNumber: String(entry.registrationNumber || '')
+          }
+        };
+        return;
       }
+
       drug.brand = entry.brand;
       drug.activeIngredient = verifiedActive;
       drug.strength = String(entry.strength || '');
@@ -319,6 +351,7 @@
         ...(drug.identity || {}),
         rawName,
         status: 'exact',
+        catalogStatus: 'matched',
         catalogId: String(entry.catalogId || ''),
         brand: entry.brand,
         activeIngredient: verifiedActive,
@@ -331,35 +364,17 @@
     return { result: guardedResult, conflicts };
   }
 
-  function suppressUnsafeIdentityConflicts(result, conflicts) {
-    const safeResult = result && typeof result === 'object' ? result : {};
-    safeResult.drugs = Array.isArray(safeResult.drugs) ? safeResult.drugs : [];
-    safeResult.unclear = Array.isArray(safeResult.unclear) ? safeResult.unclear : [];
+  function annotateIdentityConflicts(result, conflicts) {
+    const reviewedResult = result && typeof result === 'object' ? result : {};
+    reviewedResult.drugs = Array.isArray(reviewedResult.drugs) ? reviewedResult.drugs : [];
+    reviewedResult.unclear = Array.isArray(reviewedResult.unclear) ? reviewedResult.unclear : [];
     (Array.isArray(conflicts) ? conflicts : []).forEach(conflict => {
-      const drug = safeResult.drugs[conflict.index];
+      const drug = reviewedResult.drugs[conflict.index];
       if (!drug) return;
-      drug.safetyBlocked = true;
-      drug.doseAssessment = {
-        status: 'không đủ dữ liệu để đánh giá',
-        detail: `AI gán hoạt chất không khớp danh mục cho "${conflict.rawName}". Kết luận đã bị khóa.`,
-        source: ''
-      };
-      drug.infusionRate = {
-        applicable: false,
-        rate: '',
-        basis: 'Đã khóa vì AI nhận diện sai hoạt chất so với danh mục đã xác minh.'
-      };
-      drug.renalAdjustment = {
-        applicable: false,
-        priority: 'rà soát ngay',
-        warning: 'Đã khóa hiệu chỉnh thận vì nhận diện hoạt chất xung đột với danh mục.',
-        method: '', suggestedRegimen: '', loadingDoseNote: '', monitoring: '', source: ''
-      };
-      safeResult.unclear.push(`AI nhận diện sai hoạt chất của ${conflict.rawName}; cần phân tích lại từ hoạt chất đã xác minh.`);
+      reviewedResult.unclear.push(`Cần đối chiếu thuốc "${conflict.rawName}": AI nhận hoạt chất "${conflict.declaredActive}" nhưng danh mục nội bộ ghi "${conflict.verifiedActive}". Kết quả AI không bị khóa.`);
     });
-    if ((Array.isArray(conflicts) ? conflicts : []).length) safeResult.interactions = [];
-    safeResult.unclear = [...new Set(safeResult.unclear.filter(Boolean))];
-    return safeResult;
+    reviewedResult.unclear = [...new Set(reviewedResult.unclear.filter(Boolean))];
+    return reviewedResult;
   }
 
   const state = {
@@ -471,7 +486,7 @@
     }
 
     const guarded = applyVerifiedCatalogGuard(result, catalog);
-    return suppressUnsafeIdentityConflicts(guarded.result, guarded.conflicts);
+    return annotateIdentityConflicts(guarded.result, guarded.conflicts);
   }
 
   function readRenalInputs() {
@@ -670,9 +685,6 @@
     setBusy(true);
     try {
       const drugCatalog = buildVerifiedDrugCatalog();
-      if (!drugCatalog.length) {
-        throw new Error('Không tải được danh mục thuốc nội trú để đối chiếu. Hệ thống đã dừng phân tích nhằm tránh AI tự suy diễn hoạt chất.');
-      }
       const renalAssessment = refreshRenalAssessment();
       const images = await Promise.all(state.files.map(entry => fileToCompressedBase64(entry.file)));
       setBusy(true);
@@ -710,6 +722,25 @@
     return { cls: 'io-sev-lu', label: 'Cần lưu ý' };
   }
 
+  function renderIdentityReference(identity) {
+    if (!identity) return '';
+    const aiIdentity = [identity.brand || identity.rawName, identity.activeIngredient, identity.strength]
+      .filter(Boolean).map(esc).join(' · ');
+    let catalogNote = '';
+    if (identity.catalogStatus === 'matched' || identity.catalogId) {
+      catalogNote = `Đã đối chiếu danh mục${identity.catalogId ? `: ${esc(identity.catalogId)}` : ''}`;
+    } else if (identity.catalogStatus === 'conflict') {
+      const ref = identity.catalogReference || {};
+      const referenceText = [ref.brand, ref.activeIngredient, ref.strength].filter(Boolean).map(esc).join(' · ');
+      catalogNote = `Danh mục nội bộ có dữ liệu khác${referenceText ? `: ${referenceText}` : ''} — chỉ cảnh báo tham khảo, không khóa kết quả AI`;
+    } else if (identity.catalogStatus === 'unavailable') {
+      catalogNote = 'Danh mục nội bộ chưa tải được — kết quả AI vẫn được hiển thị';
+    } else {
+      catalogNote = 'Chưa có trong danh mục nội bộ — kết quả AI vẫn được hiển thị để đối chiếu';
+    }
+    return `<p><small><strong>AI nhận diện:</strong> ${aiIdentity || 'Chưa đủ dữ liệu'}<br><strong>Đối chiếu:</strong> ${catalogNote}</small></p>`;
+  }
+
   function renderDrugCard(drug) {
     const dose = drug.doseAssessment || {};
     const infusion = drug.infusionRate || {};
@@ -721,9 +752,7 @@
     return `
       <div class="clinical-item io-drug-card">
         <b>${esc(drug.name || 'Thuốc chưa xác định')}</b>
-        ${drug.identity ? `<p><small><strong>Đối chiếu danh mục:</strong> ${drug.identity.status === 'exact'
-          ? `${esc(drug.identity.catalogId)} · ${esc(drug.identity.activeIngredient || '')}${drug.identity.strength ? ` · ${esc(drug.identity.strength)}` : ''}`
-          : 'Chưa xác nhận — đã khóa phân tích lâm sàng'}</small></p>` : ''}
+        ${renderIdentityReference(drug.identity)}
         <p><strong>Y lệnh kê:</strong> ${esc(drug.orderedDose || '—')}${drug.route ? ` · ${esc(drug.route)}` : ''}</p>
         ${drug.usageNote ? `<p><strong>Cách dùng:</strong> ${esc(drug.usageNote)}</p>` : ''}
         <p class="${doseCls}"><strong>Đánh giá liều:</strong> ${esc(dose.status || 'không đủ dữ liệu để đánh giá')}${dose.detail ? ` — ${esc(dose.detail)}` : ''}</p>
@@ -907,7 +936,7 @@
     buildVerifiedDrugCatalog,
     buildVerifiedDrugCatalogNote,
     applyVerifiedCatalogGuard,
-    suppressUnsafeIdentityConflicts,
+    annotateIdentityConflicts,
     reconcileServerResult
   };
   if (typeof module !== 'undefined' && module.exports) {

@@ -46,12 +46,14 @@ const badAnalysis = {
     renalAdjustment: { applicable: false }
   }], interactions: [], unclear: []
 };
-const blocked = sandbox.enforceCatalogIdentity(badAnalysis, catalog);
-assert.strictEqual(blocked.drugs[0].identity.activeIngredient, entry.activeIngredient);
-assert.strictEqual(blocked.drugs[0].safetyBlocked, true);
-assert.strictEqual(blocked.drugs[0].doseAssessment.status, 'không đủ dữ liệu để đánh giá');
+const warned = sandbox.enforceCatalogIdentity(badAnalysis, catalog);
+assert.strictEqual(warned.drugs[0].identity.activeIngredient, 'Hoạt chất sai do AI tự đoán');
+assert.strictEqual(warned.drugs[0].identity.catalogStatus, 'conflict');
+assert.strictEqual(warned.drugs[0].identity.catalogReference.activeIngredient, entry.activeIngredient);
+assert.ok(!warned.drugs[0].safetyBlocked);
+assert.strictEqual(warned.drugs[0].doseAssessment.status, 'phù hợp');
 
-console.log('Inpatient Apps Script two-stage identity tests: OK');
+console.log('Inpatient Apps Script catalog identity safety tests: OK');
 
 const looseIdentity = sandbox.parseIdentityModelOutput(
   `Kết quả định danh:\n- ${rawNameFromImage} 1,5 g x 2 lần/ngày, truyền tĩnh mạch`,

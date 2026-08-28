@@ -31,12 +31,13 @@ const wrongAiResult = {
   }],
   interactions: [], unclear: []
 };
-const blocked = api.reconcileResult(wrongAiResult);
-assert.strictEqual(blocked.drugs[0].identity.catalogId, catalogEntry.catalogId);
-assert.strictEqual(blocked.drugs[0].identity.activeIngredient, catalogEntry.activeIngredient);
-assert.strictEqual(blocked.drugs[0].safetyBlocked, true, 'Sai hoạt chất phải khóa kết luận AI');
-assert.strictEqual(blocked.drugs[0].doseAssessment.status, 'không đủ dữ liệu để đánh giá');
-assert.strictEqual(blocked.drugs[0].infusionRate.applicable, false);
+const warned = api.reconcileResult(wrongAiResult);
+assert.strictEqual(warned.drugs[0].identity.catalogStatus, 'conflict');
+assert.strictEqual(warned.drugs[0].identity.catalogReference.catalogId, catalogEntry.catalogId);
+assert.strictEqual(warned.drugs[0].identity.activeIngredient, 'Hoạt chất sai do AI tự đoán');
+assert.ok(!warned.drugs[0].safetyBlocked, 'Xung đột danh mục chỉ cảnh báo, không khóa kết luận AI');
+assert.strictEqual(warned.drugs[0].doseAssessment.status, 'cao hơn khuyến cáo');
+assert.strictEqual(warned.drugs[0].infusionRate.applicable, true);
 
 const correctAiResult = {
   drugs: [{
@@ -50,14 +51,26 @@ const correctAiResult = {
   }], interactions: [], unclear: []
 };
 const accepted = api.reconcileResult(correctAiResult);
-assert.ok(!accepted.drugs[0].safetyBlocked, 'Khớp catalogId và hoạt chất thì không bị khóa');
+assert.ok(!accepted.drugs[0].safetyBlocked, 'Khớp catalogId và hoạt chất thì giữ nguyên kết quả');
 assert.strictEqual(accepted.drugs[0].identity.activeIngredient, catalogEntry.activeIngredient);
 
 const unknown = api.reconcileResult({
-  drugs: [{ name: 'Thuốc hoàn toàn không có trong danh mục', doseAssessment: { status: 'phù hợp' } }],
+  drugs: [{
+    name: 'Biệt dược kiểm thử ngoài danh mục',
+    identity: { rawName: 'Biệt dược kiểm thử ngoài danh mục', status: 'exact', brand: 'Biệt dược kiểm thử', activeIngredient: 'Hoạt chất kiểm thử' },
+    doseAssessment: { status: 'phù hợp', detail: 'Kết quả AI được giữ nguyên' },
+    usageNote: 'Cách dùng do AI phân tích',
+    infusionRate: { applicable: true, rate: '30 mL/giờ' },
+    renalAdjustment: { applicable: true, warning: 'Theo dõi chức năng thận' }
+  }],
   interactions: [{ drugs: ['A', 'B'] }], unclear: []
 });
-assert.strictEqual(unknown.drugs[0].safetyBlocked, true);
-assert.strictEqual(unknown.interactions.length, 0, 'Có thuốc chưa định danh thì phải khóa tương tác');
+assert.strictEqual(unknown.drugs[0].identity.catalogStatus, 'not_found');
+assert.ok(!unknown.drugs[0].safetyBlocked, 'Thuốc ngoài danh mục không được khóa phân tích AI');
+assert.strictEqual(unknown.drugs[0].doseAssessment.status, 'phù hợp');
+assert.strictEqual(unknown.drugs[0].usageNote, 'Cách dùng do AI phân tích');
+assert.strictEqual(unknown.drugs[0].infusionRate.applicable, true);
+assert.strictEqual(unknown.drugs[0].renalAdjustment.applicable, true);
+assert.strictEqual(unknown.interactions.length, 1, 'Thuốc ngoài danh mục không được xóa tương tác AI đã phân tích');
 
 console.log('Inpatient drug identity safety tests: OK');

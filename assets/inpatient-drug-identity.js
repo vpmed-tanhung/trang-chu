@@ -120,67 +120,66 @@
     return match && /[A-Za-zÀ-ỹ]/.test(match[1]) ? match[1] : '';
   }
 
-  function blockDrugAssessment(drug, reason) {
-    drug.safetyBlocked = true;
-    drug.doseAssessment = {
-      status: 'không đủ dữ liệu để đánh giá',
-      detail: reason,
-      source: ''
-    };
-    drug.infusionRate = {
-      applicable: false,
-      rate: '',
-      basis: 'Đã khóa vì định danh thuốc chưa được xác nhận chắc chắn từ danh mục.'
-    };
-    drug.renalAdjustment = {
-      applicable: false,
-      priority: 'rà soát ngay',
-      warning: 'Chưa cho phép đưa khuyến cáo hiệu chỉnh thận khi định danh thuốc chưa chắc chắn.',
-      method: '', suggestedRegimen: '', loadingDoseNote: '', monitoring: '', source: ''
-    };
-  }
-
   function reconcileResult(result) {
     const safe = result && typeof result === 'object' ? result : {};
     safe.drugs = Array.isArray(safe.drugs) ? safe.drugs : [];
     safe.unclear = Array.isArray(safe.unclear) ? safe.unclear : [];
     const catalog = getCatalog();
     const byId = new Map(catalog.map(entry => [entry.catalogId, entry]));
-    let allVerified = safe.drugs.length > 0;
 
     safe.drugs.forEach(drug => {
-      if (!drug || typeof drug !== 'object') {
-        allVerified = false;
-        return;
-      }
+      if (!drug || typeof drug !== 'object') return;
       const originalName = String(drug?.identity?.rawName || drug.tradeName || drug.name || '').trim();
       const claimedId = String(drug?.identity?.catalogId || '').trim();
       const claimedEntry = claimedId ? byId.get(claimedId) : null;
       const match = claimedEntry ? { status: 'exact', entry: claimedEntry } : findExact(originalName, catalog);
       const declaredActive = extractDeclaredActive(drug);
+      const declaredBrand = String(drug?.identity?.brand || drug.tradeName || drug.brand || originalName).trim();
 
       if (match.status !== 'exact' || !match.entry) {
-        allVerified = false;
         drug.identity = {
           rawName: originalName,
-          status: match.status,
-          catalogId: '', brand: originalName,
-          activeIngredient: '', strength: '', route: '', registrationNumber: ''
+          status: String(drug?.identity?.status || (originalName ? 'exact' : 'unreadable')),
+          catalogStatus: catalog.length ? match.status : 'unavailable',
+          catalogId: '', brand: declaredBrand,
+          activeIngredient: declaredActive,
+          strength: String(drug?.identity?.strength || drug.strength || ''),
+          route: String(drug?.identity?.route || drug.route || ''),
+          registrationNumber: String(drug?.identity?.registrationNumber || '')
         };
-        blockDrugAssessment(drug,
-          match.status === 'ambiguous'
-            ? `Tên "${originalName || 'không đọc rõ'}" khớp nhiều thuốc trong danh mục; cần chọn/xác minh thủ công.`
-            : `Không tìm thấy khớp chính xác cho "${originalName || 'không đọc rõ'}" trong danh mục thuốc nội trú; hệ thống không tự suy diễn hoạt chất.`
-        );
-        safe.unclear.push(`Định danh thuốc chưa xác nhận: ${originalName || 'không đọc rõ'}.`);
+        drug.tradeName = drug.tradeName || declaredBrand;
+        drug.activeIngredient = drug.activeIngredient || declaredActive;
+        if (catalog.length) {
+          safe.unclear.push(`Thuốc "${originalName || 'chưa đọc rõ tên'}" chưa có khớp duy nhất trong danh mục nội bộ; kết quả AI vẫn được giữ để dược sĩ đối chiếu.`);
+        }
         return;
       }
 
       const entry = match.entry;
       const activeMismatch = Boolean(declaredActive) && !activeEquivalent(declaredActive, entry.activeIngredient);
+      if (activeMismatch) {
+        drug.identity = {
+          rawName: originalName,
+          status: String(drug?.identity?.status || 'exact'),
+          catalogStatus: 'conflict',
+          catalogId: '', brand: declaredBrand,
+          activeIngredient: declaredActive,
+          strength: String(drug?.identity?.strength || drug.strength || ''),
+          route: String(drug?.identity?.route || drug.route || ''),
+          registrationNumber: String(drug?.identity?.registrationNumber || ''),
+          catalogReference: {
+            catalogId: entry.catalogId, brand: entry.brand, activeIngredient: entry.activeIngredient,
+            strength: entry.strength, route: entry.route, registrationNumber: entry.registrationNumber
+          }
+        };
+        safe.unclear.push(`Cần đối chiếu thuốc "${originalName}": AI nhận hoạt chất "${declaredActive}" nhưng danh mục nội bộ ghi "${entry.activeIngredient}". Kết quả AI không bị khóa.`);
+        return;
+      }
+
       drug.identity = {
         rawName: originalName,
         status: 'exact',
+        catalogStatus: 'matched',
         catalogId: entry.catalogId,
         brand: entry.brand,
         activeIngredient: entry.activeIngredient,
@@ -191,20 +190,8 @@
       drug.tradeName = entry.brand;
       drug.activeIngredient = entry.activeIngredient;
       drug.name = `${entry.brand} (${entry.activeIngredient}${entry.strength ? `; ${entry.strength}` : ''})`;
-
-      if (activeMismatch) {
-        allVerified = false;
-        blockDrugAssessment(drug,
-          `AI gán hoạt chất không khớp danh mục cho "${originalName}". Kết luận lâm sàng đã bị khóa; cần phân tích lại từ hoạt chất trong danh mục.`
-        );
-        safe.unclear.push(`AI trả sai hoạt chất cho ${originalName}; hệ thống đã khóa kết luận liên quan.`);
-      }
     });
 
-    if (!allVerified && Array.isArray(safe.interactions) && safe.interactions.length) {
-      safe.interactions = [];
-      safe.unclear.push('Đã khóa kết quả tương tác vì còn thuốc chưa được định danh chính xác.');
-    }
     safe.unclear = [...new Set(safe.unclear.filter(Boolean))];
     return safe;
   }
