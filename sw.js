@@ -1,7 +1,7 @@
 'use strict';
 
-const APP_VERSION = '2026.08.29.63';
-const CLINICAL_DATA_VERSION = 'sha256-bf9336751854a3bd84d7f210';
+const APP_VERSION = '2026.08.29.64';
+const CLINICAL_DATA_VERSION = 'sha256-1dea5a680b0248414c397d8b';
 const APP_SHELL_CACHE = `vpmed-shell-${APP_VERSION}`;
 const RUNTIME_CACHE = `vpmed-runtime-${APP_VERSION}`;
 const CLINICAL_WEB_CACHE_PREFIX = 'vpmed-clinical-web-';
@@ -15,6 +15,11 @@ const STORED_INSTALLED_DATA_VERSION_URL = new URL('__vpmed_installed_data_versio
 const APP_SHELL = [
   './',
   './index.html',
+  './cap-nhat-du-lieu.html',
+  './cong-cu-duoc-lam-sang.html',
+  './petct-dose-tool.html',
+  './phieu-danh-gia.html',
+  './tai-khoan.html',
   './manifest.json',
   './assets/style.css?v=20260829-scroll-layout-v2',
   './assets/disclaimer-gate.css?v=20260822-disclaimer-gate-v1',
@@ -23,7 +28,7 @@ const APP_SHELL = [
   './assets/platform-shell.css?v=20260822-pwa-v1',
   './assets/navy-theme.css?v=20260828-original-colors-pulse-v2',
   './assets/vpmed-access.js?v=20260817-admin-delete-v1',
-  './assets/platform-shell.js?v=20260829-frame-scroll-v2',
+  './assets/platform-shell.js?v=20260829-frame-scroll-v3',
   './assets/disclaimer-gate.js?v=20260822-disclaimer-gate-v1',
   './assets/update-notifier.js?v=20260822-installed-data-channel-v1',
   './assets/logo-vpmed.png',
@@ -370,19 +375,32 @@ function withCacheMetadata(response, version) {
 }
 
 async function networkFirstNavigation(request) {
+  const url = new URL(request.url);
+  const updateRequested = Boolean(url.searchParams.get('vpmed_update'));
+  const shell = await caches.open(APP_SHELL_CACHE);
   const runtime = await caches.open(RUNTIME_CACHE);
+
+  /* Không tải HTML mới trong nền. Khi chưa có dấu vpmed_update do chính nút
+     “Cập nhật” tạo ra, tiếp tục phục vụ HTML của build đang được sử dụng. */
+  if (!updateRequested) {
+    const cachedShellPage = await shell.match(request, {ignoreSearch: true});
+    if (cachedShellPage) return cachedShellPage;
+    const cachedRuntimePage = await runtime.match(request, {ignoreSearch: true});
+    if (cachedRuntimePage) return cachedRuntimePage;
+  }
+
   try {
-    const response = await fetch(request);
+    const response = await fetch(new Request(request, {
+      cache: updateRequested ? 'reload' : 'default'
+    }));
     if (response.ok) await runtime.put(request, response.clone());
     return response;
   } catch (error) {
     const exact = await runtime.match(request, {ignoreSearch: true});
     if (exact) return exact;
-    const url = new URL(request.url);
     const scopePath = new URL('./', self.registration.scope).pathname;
     const isHome = url.pathname === scopePath || url.pathname === `${scopePath}index.html`;
     if (isHome) {
-      const shell = await caches.open(APP_SHELL_CACHE);
       const index = await shell.match('./index.html', {ignoreSearch: true});
       if (index) return index;
     }

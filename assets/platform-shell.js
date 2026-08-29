@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.08.29.63';
+  const BUILD_VERSION = '2026.08.29.64';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -134,7 +134,7 @@
       styles: [],
       scripts: [
         'assets/pharmacovigilance_alerts_data.js?v=20260711',
-        'assets/pharmacovigilance_auto_data.js?v=20260828075520',
+        'assets/pharmacovigilance_auto_data.js?v=20260829083633',
         'assets/pharmacovigilance_bulletin_76_data.js?v=20260804',
         'assets/pharmacovigilance_auto_editor.js?v=20260823-concise-summary-v2',
         'assets/pharmacovigilance_integration.js?v=20260823-concise-summary-v2'

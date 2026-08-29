@@ -30,9 +30,9 @@ def test_platform_shell_uses_current_build():
     assert match, 'platform-shell.js thiếu BUILD_VERSION'
     assert match.group(1) == version, 'platform-shell.js đang dùng build cũ'
     index = (ROOT / 'index.html').read_text(encoding='utf-8')
-    assert 'assets/platform-shell.js?v=20260829-frame-scroll-v2' in index
+    assert 'assets/platform-shell.js?v=20260829-frame-scroll-v3' in index
     worker = (ROOT / 'sw.js').read_text(encoding='utf-8')
-    assert './assets/platform-shell.js?v=20260829-frame-scroll-v2' in worker
+    assert './assets/platform-shell.js?v=20260829-frame-scroll-v3' in worker
 
 
 def test_notifier_verifies_loaded_build_before_success():

@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.29.63",
-  "displayVersion": "5.7.1",
-  "updatedAt": "2026-08-29T07:58:41+07:00",
-  "note": "Sửa dứt điểm chiều cao module Cấp cứu phản vệ khi mở nhúng hoặc mở từ file cục bộ.",
-  "buildId": "v5.7.1-anaphylaxis-frame-handshake-20260829-63",
-  "clinicalDataVersion": "sha256-bf9336751854a3bd84d7f210",
-  "previousVersion": "2026.08.29.62",
-  "previousDisplayVersion": "5.7.0"
+  "version": "2026.08.29.64",
+  "displayVersion": "5.7.2",
+  "updatedAt": "2026-08-29T08:40:04+07:00",
+  "note": "Giữ bản cũ đến khi người dùng bấm Cập nhật và khôi phục ba lượt tự động Cảnh giác dược mỗi sáng.",
+  "buildId": "v5.7.2-manual-update-pv-daily-20260829-64",
+  "clinicalDataVersion": "sha256-1dea5a680b0248414c397d8b",
+  "previousVersion": "2026.08.29.63",
+  "previousDisplayVersion": "5.7.1"
 }

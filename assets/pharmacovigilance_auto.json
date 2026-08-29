@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-08-28T07:55:20+07:00",
+  "generated_at": "2026-08-29T08:36:33+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
-  "newly_fetched_count": 2,
+  "newly_fetched_count": 0,
   "retained_history_count": 0,
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
@@ -15,15 +15,15 @@
       "category": "Cảnh báo an toàn thuốc",
       "system": "Tim mạch · Thần kinh",
       "interaction": false,
-      "title": "PMDA: CẬP NHẬT BỔ SUNG NGUY CƠ HẠ MAGIE HUYẾT KHI SỬ DỤNG CÁC THUỐC ỨC CHẾ BƠM PROTON",
-      "drugs": "CÁC THUỐC ỨC CHẾ BƠM PROTON",
-      "summary": "Quyết định được ban hành sau quá trình đánh giá các báo cáo về biến cố hạ magie máu và nhận định có mối liên quan giữa biến cố này với việc sử dụng các thuốc ức chế bơm proton hoặc vonoprazan. Tại mục ‘Thận trọng quan trọng’ của tờ thông tin sản phẩm của các chế phẩm trên được bổ sung cảnh báo về việc sử dụng thuốc kéo dài có thể gây hạ magie huyết và cần định kỳ theo dõi nồng độ magie trong máu khi điều trị dài hạn.",
+      "title": "PMDA: Cập nhật về nguy cơ hạ magie máu liên quan đến các thuốc ức chế bơm proton (PPI) và vonoprazan",
+      "drugs": "Thuốc/nhóm thuốc nêu trong tiêu đề; xem bài nguồn để xác định đầy đủ.",
+      "summary": "Quyết định được ban hành sau quá trình đánh giá các báo cáo về biến cố hạ magie máu và nhận định có mối liên quan giữa biến cố này với việc sử dụng các thuốc ức chế bơm proton và vonoprazan. Tại mục ‘Thận trọng quan trọng’ của tờ thông tin sản phẩm của các chế phẩm trên được bổ sung cảnh báo về việc sử dụng thuốc kéo dài có thể gây hạ magie huyết và cần định kỳ theo dõi nồng độ magie trong máu khi điều trị dài hạn.",
       "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
       "risk": [
-        "Nội dung cập nhật trên tờ thông tin sản phẩm Quyết định cập nhật thông tin an toàn được áp dụng với thuốc ức chế bơm proton và vonoprazan, bao gồm: - Các thuốc chứa đơn hoạt chất như esomeprazol, omeprazol, vonoprazan fumarat, rabeprazol natri và lansoprazol dùng qua đường uống. - Các thuốc phối hợp có chứa các đơn chất trên, bao gồm các chế phẩm kết hợp…"
+        "Nội dung cập nhật trên tờ thông tin sản phẩm Quyết định cập nhật thông tin an toàn được áp dụng với thuốc ức chế bơm proton và vonoprazan, bao gồm: - Các thuốc chứa đơn hoạt chất như esomeprazol, omeprazol, vonoprazan fumarat, rabeprazol natri và lansoprazol đường uống. - Các thuốc phối hợp có chứa các đơn chất trên, bao gồm các chế phẩm kết hợp giữa…"
       ],
       "signs": [
-        "Quyết định được ban hành sau quá trình đánh giá các báo cáo về biến cố hạ magie máu và nhận định có mối liên quan giữa biến cố này với việc sử dụng các thuốc ức chế bơm proton hoặc vonoprazan.",
+        "Quyết định được ban hành sau quá trình đánh giá các báo cáo về biến cố hạ magie máu và nhận định có mối liên quan giữa biến cố này với việc sử dụng các thuốc ức chế bơm proton và vonoprazan.",
         "Tình trạng này có thể đi kèm các biểu hiện như kéo dài khoảng QT, co giật và tê bì; đồng thời có thể gây ra các rối loạn điện giải thứ phát như hạ calci huyết và hạ kali huyết."
       ],
       "action": [

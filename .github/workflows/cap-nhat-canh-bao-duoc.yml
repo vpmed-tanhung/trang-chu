@@ -10,6 +10,8 @@ on:
     - cron: "7 23 * * *"
     # Lượt dự phòng 06:37 chỉ chạy lại khi lượt 06:07 chưa cập nhật thành công.
     - cron: "37 23 * * *"
+    # Lượt cuối 07:17 để bù trường hợp GitHub trì hoãn hai lịch trước.
+    - cron: "17 0 * * *"
   workflow_dispatch: {}
   # Cho phép workflow dự phòng gọi lại đúng quy trình này, không nhân đôi mã.
   workflow_call: {}
@@ -19,7 +21,7 @@ permissions:
 
 concurrency:
   group: cap-nhat-canh-bao-duoc
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   cap-nhat:
@@ -123,8 +125,9 @@ jobs:
           fi
           git commit -m "chore: cập nhật cảnh báo dược tự động"
 
+          target_branch="${GITHUB_REF_NAME:-main}"
           for i in 1 2 3 4 5; do
-            if git push; then
+            if git push origin "HEAD:${target_branch}"; then
               echo "Push thành công."
               exit 0
             fi
@@ -133,8 +136,8 @@ jobs:
               exit 1
             fi
             echo "Push bị từ chối (lần $i), đang pull --rebase rồi thử lại..."
-            git fetch origin main
-            git rebase origin/main
+            git fetch origin "${target_branch}"
+            git rebase "origin/${target_branch}"
             python scripts/update_clinical_data_version.py
             python scripts/update_sha256sums.py
             git add assets/app-version.json sw.js SHA256SUMS.txt
