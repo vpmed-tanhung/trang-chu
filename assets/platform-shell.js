@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.08.29.64';
+  const BUILD_VERSION = '2026.08.29.66';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -69,6 +69,14 @@
       frame: 'cap-cuu-phan-ve.html?v=20260829-no-clip-v2'
     },
     dose: DOSE_CLINICAL,
+    'antibiotic-consultation': {
+      styles: [],
+      scripts: [
+        'assets/data.js',
+        'assets/antibiotic_38_complete.js?v=20260716-38-drugs',
+        'assets/antibiotic_consultation.js?v=20260814-short-module-copy-v1'
+      ]
+    },
     antibiotics: CORE_CLINICAL,
     diseases: CORE_CLINICAL,
     interactions: CORE_CLINICAL,
@@ -88,7 +96,7 @@
     'inpatient-order': {
       styles: [
         'assets/prescription-check.css?v=20260821-rx-actions-v9',
-        'assets/inpatient-order-review.css?v=20260829-stable-layout-v1'
+        'assets/inpatient-order-review.css?v=20260829-ai-availability-v1'
       ],
       scripts: [
         'assets/data.js',
@@ -97,7 +105,7 @@
         'assets/renal_database_20260723.js?v=20260723-renal-only-v4',
         'assets/inpatient_medicines_20260707.js?v=20260828-ai-identity-v1',
         'assets/inpatient-drug-identity.js?v=20260828-brand-preserve-v3',
-        'assets/inpatient-order-review.js?v=20260829-order-mapping-v1'
+        'assets/inpatient-order-review.js?v=20260829-ai-availability-v1'
       ]
     },
     'petct-dose': {

@@ -69,7 +69,7 @@ vm.runInContext(fs.readFileSync(path.join(root, 'sw.js'), 'utf8'), sandbox);
   assert.strictEqual(networkRequests, 0, 'Chưa bấm Cập nhật thì không được tải HTML build mới');
 
   const accepted = await sandbox.networkFirstNavigation(
-    new Request('https://example.test/index.html?vpmed_update=2026.08.29.64')
+    new Request('https://example.test/index.html?vpmed_update=2026.08.29.66')
   );
   assert.strictEqual(await accepted.text(), 'NEW_BUILD');
   assert.strictEqual(networkRequests, 1, 'Dấu do nút Cập nhật tạo ra mới được phép tải HTML build mới');

@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.29.64",
-  "displayVersion": "5.7.2",
-  "updatedAt": "2026-08-29T08:40:04+07:00",
-  "note": "Giữ bản cũ đến khi người dùng bấm Cập nhật và khôi phục ba lượt tự động Cảnh giác dược mỗi sáng.",
-  "buildId": "v5.7.2-manual-update-pv-daily-20260829-64",
+  "version": "2026.08.29.66",
+  "displayVersion": "5.7.4",
+  "updatedAt": "2026-08-29T09:40:00+07:00",
+  "note": "Khôi phục card và đường mở mô-đun Kháng sinh cần hội chẩn khi dùng.",
+  "buildId": "v5.7.4-restore-antibiotic-consultation-20260829-66",
   "clinicalDataVersion": "sha256-1dea5a680b0248414c397d8b",
-  "previousVersion": "2026.08.29.63",
-  "previousDisplayVersion": "5.7.1"
+  "previousVersion": "2026.08.29.65",
+  "previousDisplayVersion": "5.7.3"
 }

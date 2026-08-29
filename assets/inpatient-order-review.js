@@ -808,6 +808,10 @@
 
   async function analyzeOrder(options = {}) {
     if (!state.files.length || state.sending) return;
+    if (state.autoAnalyzeTimer) {
+      window.clearTimeout(state.autoAnalyzeTimer);
+      state.autoAnalyzeTimer = null;
+    }
     const consent = io$('#ioConsent');
     if (!consent || !consent.checked) {
       alert('Vui lòng xác nhận đã che/xóa thông tin định danh bệnh nhân trước khi phân tích.');
@@ -817,6 +821,7 @@
       renderError('Chưa cấu hình dịch vụ phân tích y lệnh.');
       return;
     }
+    let analysisSucceeded = false;
     setBusy(true);
     try {
       const drugCatalog = buildVerifiedDrugCatalog();
@@ -834,20 +839,51 @@
         })
       });
       const data = await res.json();
-      if (!data.ok) throw new Error(data.message || 'AI không trả về kết quả hợp lệ.');
+      if (!data.ok) {
+        const aiError = normalizeAiError(data);
+        const error = new Error(aiError.message);
+        error.code = aiError.code;
+        throw error;
+      }
       const verifiedResult = reconcileServerResult(data.result, drugCatalog);
       state.result = verifiedResult;
       renderResult(verifiedResult);
+      analysisSucceeded = true;
       window.VPMED_PLATFORM?.calculationComplete({feature:'inpatient-order',files:state.files.length});
     } catch (err) {
-      renderError(err && err.message ? err.message : 'Không thể phân tích y lệnh. Vui lòng thử lại.');
+      renderError(
+        err && err.message ? err.message : 'Không thể phân tích y lệnh. Vui lòng thử lại.',
+        err && err.code ? err.code : ''
+      );
     } finally {
       setBusy(false);
-      if (state.autoAnalyzePending && canAutoAnalyze()) {
+      if (analysisSucceeded && state.autoAnalyzePending && canAutoAnalyze()) {
         state.autoAnalyzePending = false;
         scheduleAutoAnalyze(120);
+      } else if (!analysisSucceeded) {
+        state.autoAnalyzePending = false;
       }
     }
+  }
+
+  function normalizeAiError(data) {
+    const raw = String(data?.message || '');
+    const normalized = raw.toLowerCase();
+    const quotaLimited = data?.errorCode === 'AI_QUOTA' || /quota|rate.?limit|resource_exhausted|http 429/.test(normalized);
+    const temporarilyBusy = data?.errorCode === 'AI_BUSY' || /high demand|overload|unavailable|spike|http 5\d\d/.test(normalized);
+    const retrySeconds = Math.max(0, Number(data?.retryAfterSeconds) || 0);
+    if (quotaLimited) {
+      return {
+        code: 'AI_QUOTA',
+        message: retrySeconds
+          ? `Dịch vụ AI đã chạm giới hạn tạm thời. Vui lòng thử lại sau khoảng ${Math.ceil(retrySeconds)} giây.`
+          : 'Dịch vụ AI đã chạm giới hạn tạm thời. Vui lòng thử lại sau ít phút.'
+      };
+    }
+    if (temporarilyBusy) {
+      return { code: 'AI_BUSY', message: 'Dịch vụ AI đang quá tải tạm thời. Vui lòng thử lại sau ít phút.' };
+    }
+    return { code: data?.errorCode || 'AI_UNAVAILABLE', message: raw || 'Dịch vụ AI tạm thời chưa thể phân tích. Vui lòng thử lại sau.' };
   }
 
   function severityMeta(severity) {
@@ -991,10 +1027,11 @@
     io$('#ioResetBtn').disabled = false;
   }
 
-  function renderError(message) {
+  function renderError(message, code = '') {
     const box = io$('#ioResultBody');
     if (!box) return;
-    box.innerHTML = `<div class="empty-state"><b>Không thể phân tích</b><p>${esc(message)}</p></div>`;
+    const busy = code === 'AI_QUOTA' || code === 'AI_BUSY';
+    box.innerHTML = `<div class="empty-state io-error-state" role="alert"><b>${busy ? 'AI tạm thời bận' : 'Không thể phân tích'}</b><p>${esc(message)}</p><small>Ảnh đã chọn vẫn được giữ nguyên; hệ thống không tự gửi lại để tránh tốn lượt API.</small></div>`;
   }
 
   function resetOrder() {

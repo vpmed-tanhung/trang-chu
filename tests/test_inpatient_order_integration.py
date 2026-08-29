@@ -8,15 +8,15 @@ def test_inpatient_order_feature_is_wired_without_regressing_rx_review():
     shell = (ROOT / 'assets' / 'platform-shell.js').read_text(encoding='utf-8')
     unified = (ROOT / 'assets' / 'unified.js').read_text(encoding='utf-8')
 
-    assert 'assets/inpatient-order-review.css?v=20260829-stable-layout-v1' in shell
+    assert 'assets/inpatient-order-review.css?v=20260829-ai-availability-v1' in shell
     inpatient_bundle = shell.split("'inpatient-order': {", 1)[1].split("'petct-dose':", 1)[0]
     shared_layout_css = 'assets/prescription-check.css?v=20260821-rx-actions-v9'
-    module_css = 'assets/inpatient-order-review.css?v=20260829-stable-layout-v1'
+    module_css = 'assets/inpatient-order-review.css?v=20260829-ai-availability-v1'
     assert shared_layout_css in inpatient_bundle
     assert inpatient_bundle.index(shared_layout_css) < inpatient_bundle.index(module_css)
     assert 'data-open="inpatient-order"' in html
     assert 'id="view-inpatient-order"' in html
-    assert 'assets/inpatient-order-review.js?v=20260829-order-mapping-v1' in shell
+    assert 'assets/inpatient-order-review.js?v=20260829-ai-availability-v1' in shell
     assert "'inpatient-order'" in unified
 
     # Các sửa mới nhất của module rà soát đơn BHYT phải được giữ nguyên khi merge.
@@ -52,11 +52,31 @@ def test_inpatient_order_web_app_endpoint_is_configured():
 
 def test_bundled_apps_script_uses_gemini_free_vision_with_fallback():
     gs = (ROOT / 'apps-script' / 'inpatient-order-review.gs').read_text(encoding='utf-8')
-    assert "var GEMINI_MODELS = ['gemini-3.6-flash', 'gemini-3.5-flash-lite']" in gs
+    for model in (
+        'gemini-3.6-flash',
+        'gemini-3.5-flash-lite',
+        'gemini-3.1-flash-lite',
+        'gemini-2.5-flash',
+    ):
+        assert model in gs
     assert 'https://generativelanguage.googleapis.com/v1beta/models/' in gs
     assert "getProperty('GEMINI_API_KEY')" in gs
     assert "responseMimeType: 'application/json'" in gs
+    assert 'for (var attempt = 0; attempt < 3; attempt++)' not in gs
+    assert 'buildGeminiErrorResponse' in gs
     assert 'https://api.openai.com' not in gs
+
+
+def test_inpatient_ai_error_is_compact_and_does_not_auto_retry():
+    js = (ROOT / 'assets' / 'inpatient-order-review.js').read_text(encoding='utf-8')
+    css = (ROOT / 'assets' / 'inpatient-order-review.css').read_text(encoding='utf-8')
+
+    assert 'normalizeAiError' in js
+    assert 'hệ thống không tự gửi lại để tránh tốn lượt API' in js
+    assert 'if (analysisSucceeded && state.autoAnalyzePending && canAutoAnalyze())' in js
+    assert 'io-error-state' in js
+    assert '.io-error-state p,.io-error-state small' in css
+    assert 'overflow-wrap:anywhere' in css
 
 
 def test_inpatient_ai_identity_is_catalog_grounded_and_not_hardcoded():
@@ -67,7 +87,7 @@ def test_inpatient_ai_identity_is_catalog_grounded_and_not_hardcoded():
 
     catalog_asset = 'assets/inpatient_medicines_20260707.js?v=20260828-ai-identity-v1'
     identity_asset = 'assets/inpatient-drug-identity.js?v=20260828-brand-preserve-v3'
-    review_asset = 'assets/inpatient-order-review.js?v=20260829-order-mapping-v1'
+    review_asset = 'assets/inpatient-order-review.js?v=20260829-ai-availability-v1'
     inpatient_bundle = shell.split("'inpatient-order': {", 1)[1].split("'petct-dose':", 1)[0]
     assert inpatient_bundle.index(catalog_asset) < inpatient_bundle.index(identity_asset) < inpatient_bundle.index(review_asset)
     assert 'VPMED_INPATIENT_MEDICINES_20260707' in identity

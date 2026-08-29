@@ -13,7 +13,8 @@
  *    file .gs mới, dán toàn bộ nội dung này vào.
  * 2. Project Settings → Script Properties → thêm khóa:
  *      GEMINI_API_KEY = <API key Gemini của bạn>
- *    Proxy tự thử Gemini 3.5 Flash-Lite khi Gemini 3.6 Flash quá tải.
+ *    Proxy tự chuyển qua các model multimodal ổn định khi model chính hết
+ *    quota hoặc tạm quá tải.
  * 3. Trong hàm doPost(e) hiện có của dự án (nếu đã có action router chung),
  *    thêm nhánh: if (action === 'analyzeInpatientOrder') return
  *    handleAnalyzeInpatientOrder(payload); Nếu dự án chưa có router, hàm
@@ -31,7 +32,12 @@
  *   nơi lưu trữ lâu dài; chỉ xử lý trong bộ nhớ của request rồi trả về.
  */
 
-var GEMINI_MODELS = ['gemini-3.6-flash', 'gemini-3.5-flash-lite'];
+var GEMINI_MODELS = [
+  'gemini-3.6-flash',
+  'gemini-3.5-flash-lite',
+  'gemini-3.1-flash-lite',
+  'gemini-2.5-flash'
+];
 
 var BHYT_TEXT_PROMPT = [
   'VAI TRÒ: Dược sĩ kiểm tra đơn thuốc ngoại trú BHYT tại Việt Nam.',
@@ -100,8 +106,27 @@ function handleAnalyzeInpatientOrder(payload) {
     return { ok: true, result: enforceCatalogIdentity(parsed, drugCatalog) };
   } catch (err) {
     var detail = err && err.message ? err.message : String(err);
-    return { ok: false, message: 'Không thể phân tích lúc này. Vui lòng thử lại sau. Chi tiết: ' + detail };
+    return buildGeminiErrorResponse(detail);
   }
+}
+
+function buildGeminiErrorResponse(detail) {
+  var raw = String(detail || '');
+  var normalized = raw.toLowerCase();
+  var quotaLimited = /quota|rate.?limit|resource_exhausted|http 429/.test(normalized);
+  var temporarilyBusy = /high demand|overload|unavailable|spike|http 5\d\d/.test(normalized);
+  var response = {
+    ok: false,
+    errorCode: quotaLimited ? 'AI_QUOTA' : (temporarilyBusy ? 'AI_BUSY' : 'AI_UNAVAILABLE'),
+    message: quotaLimited
+      ? 'Dịch vụ AI đã chạm giới hạn sử dụng tạm thời. Vui lòng thử lại sau ít phút.'
+      : (temporarilyBusy
+        ? 'Dịch vụ AI đang quá tải tạm thời. Vui lòng thử lại sau ít phút.'
+        : 'Dịch vụ AI tạm thời chưa thể phân tích. Vui lòng thử lại sau.')
+  };
+  var retryMatch = raw.match(/retry(?:Delay| in)?[^0-9]{0,20}([0-9]+(?:\.[0-9]+)?)\s*s/i);
+  if (retryMatch) response.retryAfterSeconds = Math.ceil(Number(retryMatch[1]) || 0);
+  return response;
 }
 
 function handleAnalyzeBhytPrescriptionText(payload) {
@@ -114,7 +139,7 @@ function handleAnalyzeBhytPrescriptionText(payload) {
     if (!parsed) return { ok: false, message: 'AI trả về định dạng không hợp lệ. Vui lòng thử lại.' };
     return { ok: true, result: parsed };
   } catch (err) {
-    return { ok: false, message: 'Không thể phân tích văn bản OCR lúc này. Chi tiết: ' + (err && err.message ? err.message : err) };
+    return buildGeminiErrorResponse(err && err.message ? err.message : String(err));
   }
 }
 
@@ -340,37 +365,42 @@ function requestGemini(instructions, parts, maxOutputTokens) {
 
   for (var modelIndex = 0; modelIndex < GEMINI_MODELS.length; modelIndex++) {
     var model = GEMINI_MODELS[modelIndex];
-    for (var attempt = 0; attempt < 3; attempt++) {
-      var url = 'https://generativelanguage.googleapis.com/v1beta/models/' +
-        encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(apiKey);
-      var res = UrlFetchApp.fetch(url, {
-        method: 'post',
-        contentType: 'application/json',
-        muteHttpExceptions: true,
-        payload: JSON.stringify(request)
-      });
-      var code = res.getResponseCode();
-      var body;
-      try { body = JSON.parse(res.getContentText()); } catch (e) { body = {}; }
+    var url = 'https://generativelanguage.googleapis.com/v1beta/models/' +
+      encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(apiKey);
+    var res = UrlFetchApp.fetch(url, {
+      method: 'post',
+      contentType: 'application/json',
+      muteHttpExceptions: true,
+      payload: JSON.stringify(request)
+    });
+    var code = res.getResponseCode();
+    var body;
+    try { body = JSON.parse(res.getContentText()); } catch (e) { body = {}; }
 
-      if (code >= 200 && code < 300) {
-        var text = extractGeminiText(body);
-        if (text) return text;
-        errors.push(model + ': không có nội dung trả về');
-        break;
-      }
-
-      var detail = (body.error && body.error.message) || ('HTTP ' + code);
-      var retryable = code === 429 || code >= 500;
-      if (!retryable || attempt === 2) {
-        errors.push(model + ': ' + detail);
-        break;
-      }
-      Utilities.sleep(Math.pow(2, attempt) * 1000);
+    if (code >= 200 && code < 300) {
+      var text = extractGeminiText(body);
+      if (text) return text;
+      errors.push(model + ': không có nội dung trả về');
+      continue;
     }
+
+    var detail = (body.error && body.error.message) || ('HTTP ' + code);
+    var retryDelay = extractGeminiRetryDelay(body);
+    errors.push(model + ': ' + detail + (retryDelay ? ('; retryDelay=' + retryDelay + 's') : ''));
   }
 
   throw new Error('Gemini không khả dụng sau khi đã thử model chính và dự phòng. ' + errors.join(' | '));
+}
+
+function extractGeminiRetryDelay(body) {
+  var details = body && body.error && body.error.details;
+  if (!Array.isArray(details)) return 0;
+  for (var index = 0; index < details.length; index++) {
+    var value = details[index] && details[index].retryDelay;
+    var match = String(value || '').match(/^([0-9]+(?:\.[0-9]+)?)s$/i);
+    if (match) return Math.ceil(Number(match[1]) || 0);
+  }
+  return 0;
 }
 
 function extractGeminiText(body) {

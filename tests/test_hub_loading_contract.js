@@ -33,6 +33,11 @@ for (const forbidden of [
 }
 
 const shell = fs.readFileSync(path.join(root, 'assets/platform-shell.js'), 'utf8');
+const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+
+assert.ok(index.includes('data-open="antibiotic-consultation"'), 'Trang chủ phải giữ card Kháng sinh cần hội chẩn khi dùng');
+assert.ok(index.includes('Kháng sinh cần hội chẩn khi dùng'), 'Không được làm mất tên card hội chẩn kháng sinh');
+assert.ok(shell.includes("'antibiotic-consultation': {"), 'Card hội chẩn phải có bundle riêng để mở trực tiếp từ trang chủ');
 for (const contract of [
   'requestIdleCallback', 'saveData', 'effectiveType', 'beforeinstallprompt',
   'vpmed:shell-ready', 'vpmed:feature-open', 'vpmed:calculation-complete',
