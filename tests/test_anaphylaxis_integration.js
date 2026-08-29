@@ -24,7 +24,7 @@ assert(anaphylaxisView.includes('class="back-home-btn" data-go="home"'),
   'View phản vệ phải có nút quay về dùng chung như các module khác');
 assert(shell.includes("'cap-cuu-phan-ve':"),
   'Platform shell phải đăng ký bundle Cấp cứu phản vệ');
-assert(shell.includes("frame: 'cap-cuu-phan-ve.html?v=20260828-integrated-layout-v2'"),
+assert(shell.includes("frame: 'cap-cuu-phan-ve.html?v=20260829-no-clip-v2'"),
   'Module phản vệ phải được nạp lười trong view nội bộ');
 assert(index.includes('class="clinical-tool-frame anaphylaxis-frame"') && index.includes('scrolling="no"'),
   'Khung phản vệ phải tắt thanh cuộn riêng');
@@ -32,6 +32,17 @@ assert(shell.includes("data.type === 'vpmed:feature-frame-height'") && shell.inc
   'Platform shell phải tự giãn khung phản vệ theo chiều cao nội dung');
 assert(moduleHtml.includes("postHostMessage('vpmed:feature-frame-height'") && moduleHtml.includes('startEmbeddedBridge()'),
   'Module phản vệ phải đồng bộ chiều cao với trang chính');
+assert(shell.includes('scheduleFeatureFrameMeasure(frame)') && shell.includes("classList.contains('active')"),
+  'Khung phản vệ phải đo lại chiều cao sau khi view đã hiện');
+assert(shell.includes("postMessage({type: 'vpmed:feature-frame-measure'}, '*')") &&
+  moduleHtml.includes("event.data?.type==='vpmed:feature-frame-measure'"),
+  'Trang chính phải yêu cầu đo lại sau khi iframe ẩn đã được hiển thị, kể cả khi mở bằng file cục bộ');
+assert(moduleHtml.includes('html.vpmed-embedded,html.vpmed-embedded body{overflow:visible') &&
+  moduleHtml.includes('function scheduleHostSize()'),
+  'Nội dung nhúng không được bị cắt bởi overflow hoặc phép đo quá sớm');
+for (const panelId of ['panel-grade', 'panel-im', 'panel-arrest', 'panel-advanced', 'panel-log']) {
+  assert(moduleHtml.includes(`id="${panelId}"`), `Module phản vệ bị thiếu phần ${panelId}`);
+}
 assert(moduleHtml.includes('html.vpmed-embedded .system-back{display:none}'),
   'Khi nhúng phải ẩn nút Trang chủ bị lặp bên trong module');
 assert(moduleHtml.includes('function openModuleDialog(dialog)') && !moduleHtml.includes("$('#assessDialog').showModal()"),
@@ -110,7 +121,7 @@ assert(moduleHtml.includes('https://vbpl.vn/boyte/Pages/vbpq-van-ban-goc.aspx?It
 
 for (const cached of [
   "'./assets/navy-theme.css?v=20260828-original-colors-pulse-v2'",
-  "'./cap-cuu-phan-ve.html?v=20260828-integrated-layout-v2'"
+  "'./cap-cuu-phan-ve.html?v=20260829-no-clip-v2'"
 ]) {
   assert(worker.includes(cached), `Service worker thiếu tài nguyên ${cached}`);
 }

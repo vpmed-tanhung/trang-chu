@@ -2,7 +2,7 @@ const D=window.VPMED_DRUGS||[],I=window.VPMED_INTERACTIONS||[];
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
-function showView(name){$$('.view').forEach(v=>v.classList.remove('active'));$('#view-'+name)?.classList.add('active');$$('.main-nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));history.replaceState(null,'','#'+name);$('#mainNav')?.classList.remove('open');window.scrollTo({top:0,behavior:'smooth'})}
+function showView(name){if(window.VPMED_PLATFORM?.openFeature){window.VPMED_PLATFORM.openFeature(name,{source:'legacy-module'});return}const target=$('#view-'+name),viewChanged=!target?.classList.contains('active');$$('.view').forEach(v=>v.classList.remove('active'));target?.classList.add('active');$$('.main-nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));history.replaceState(null,'','#'+name);$('#mainNav')?.classList.remove('open');if(viewChanged)requestAnimationFrame(()=>window.scrollTo({top:0,left:0,behavior:'auto'}))}
 window.VPMED_LEGACY_SHOW_VIEW=showView;
 if(!window.VPMED_PLATFORM){
   $$('[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));

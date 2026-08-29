@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.08.28.61';
+  const BUILD_VERSION = '2026.08.29.63';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -36,7 +36,7 @@
       'assets/antibiotic_38_complete.js?v=20260716-38-drugs',
       'assets/renal_database_20260723.js?v=20260723-renal-only-v4',
       'assets/diseases.js',
-      'assets/unified.js?v=20260822-renal-layout-v4-large-clean',
+      'assets/unified.js?v=20260829-scroll-guard-v1',
       'assets/vpmed-renal-audit.js?v=20260814-module-history-v5',
       'assets/antibiotic_consultation.js?v=20260814-short-module-copy-v1',
       'assets/dose_24h_summary.js?v=20260822-renal-layout-v4-large-clean',
@@ -66,7 +66,7 @@
     'cap-cuu-phan-ve': {
       styles: [],
       scripts: [],
-      frame: 'cap-cuu-phan-ve.html?v=20260828-integrated-layout-v2'
+      frame: 'cap-cuu-phan-ve.html?v=20260829-no-clip-v2'
     },
     dose: DOSE_CLINICAL,
     antibiotics: CORE_CLINICAL,
@@ -88,7 +88,7 @@
     'inpatient-order': {
       styles: [
         'assets/prescription-check.css?v=20260821-rx-actions-v9',
-        'assets/inpatient-order-review.css?v=20260821-inpatient-file-grid-v4'
+        'assets/inpatient-order-review.css?v=20260829-stable-layout-v1'
       ],
       scripts: [
         'assets/data.js',
@@ -97,7 +97,7 @@
         'assets/renal_database_20260723.js?v=20260723-renal-only-v4',
         'assets/inpatient_medicines_20260707.js?v=20260828-ai-identity-v1',
         'assets/inpatient-drug-identity.js?v=20260828-brand-preserve-v3',
-        'assets/inpatient-order-review.js?v=20260828-brand-preserve-v4'
+        'assets/inpatient-order-review.js?v=20260829-order-mapping-v1'
       ]
     },
     'petct-dose': {
@@ -300,6 +300,32 @@
     }
   }
 
+  function measureFeatureFrame(frame) {
+    if (!frame?.contentDocument) return;
+    try {
+      const doc = frame.contentDocument;
+      const app = doc.querySelector('.app');
+      const height = Math.ceil(app
+        ? Math.max(app.scrollHeight, app.getBoundingClientRect().height)
+        : Math.max(doc.documentElement?.scrollHeight || 0, doc.body?.scrollHeight || 0));
+      if (!Number.isFinite(height) || height < 320 || height > 50000) return;
+      frame.style.height = `${height + 2}px`;
+      frame.dataset.vpmedAutoHeight = 'true';
+    } catch (error) {
+      // Khung khác origin (nếu có) vẫn dùng cơ chế postMessage hiện tại.
+    }
+  }
+
+  function scheduleFeatureFrameMeasure(frame) {
+    [0, 80, 250, 600].forEach((delay) => {
+      window.setTimeout(() => {
+        if (!frame?.closest('.view')?.classList.contains('active')) return;
+        frame.contentWindow?.postMessage({type: 'vpmed:feature-frame-measure'}, '*');
+        measureFeatureFrame(frame);
+      }, delay);
+    });
+  }
+
   function loadFeatureFrame(name, url) {
     const frame = document.querySelector(`[data-feature-frame="${CSS.escape(name)}"]`);
     if (!frame) return Promise.reject(new Error(`Thiếu khung hiển thị cho module ${name}`));
@@ -308,6 +334,7 @@
       const onLoad = () => {
         frame.dataset.vpmedReady = 'true';
         frame.setAttribute('scrolling', 'no');
+        scheduleFeatureFrameMeasure(frame);
         resolve();
       };
       const onError = () => reject(new Error(`Không tải được khung module: ${url}`));
@@ -324,6 +351,7 @@
     const frame = document.querySelector(`[data-feature-frame="${CSS.escape(name)}"]`);
     if (!frame || event.source !== frame.contentWindow) return;
     if (data.type === 'vpmed:feature-frame-height') {
+      if (!frame.closest('.view')?.classList.contains('active')) return;
       const height = Math.ceil(Number(data.height));
       if (!Number.isFinite(height) || height < 320 || height > 50000) return;
       frame.style.height = `${height + 2}px`;
@@ -331,9 +359,17 @@
       return;
     }
     if (data.type === 'vpmed:feature-frame-scroll') {
+      const ownerView = frame.closest('.view');
+      if (!data.userInitiated || !ownerView?.classList.contains('active')) return;
       const offset = Math.max(0, Number(data.top) || 0);
       const top = window.scrollY + frame.getBoundingClientRect().top + offset;
-      window.scrollTo({top: Math.max(0, top - 8), behavior: 'smooth'});
+      const targetTop = Math.max(0, top - 8);
+      if (Math.abs(window.scrollY - targetTop) < 24) return;
+      window.requestAnimationFrame(() => {
+        if (ownerView.classList.contains('active')) {
+          window.scrollTo({top: targetTop, left: 0, behavior: 'auto'});
+        }
+      });
     }
   }
 
@@ -347,13 +383,15 @@
   function showView(name, options = {}) {
     const target = document.getElementById(`view-${name}`);
     if (!target) throw new Error(`Thiếu vùng hiển thị cho module ${name}`);
+    const viewChanged = !target.classList.contains('active');
     document.querySelectorAll('.view').forEach((view) => view.classList.toggle('active', view === target));
     document.querySelectorAll('.main-nav button').forEach((button) => button.classList.toggle('active', button.dataset.view === name));
     document.getElementById('mainNav')?.classList.remove('open');
     if (!options.fromHistory) history.replaceState(null, '', `#${name}`);
-    if (!options.preserveScroll) {
-      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-      window.scrollTo({top: 0, behavior: reduceMotion ? 'auto' : 'smooth'});
+    const frame = target.querySelector('[data-feature-frame]');
+    if (frame) scheduleFeatureFrameMeasure(frame);
+    if (!options.preserveScroll && viewChanged) {
+      window.requestAnimationFrame(() => window.scrollTo({top: 0, left: 0, behavior: 'auto'}));
     }
   }
 

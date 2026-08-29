@@ -551,18 +551,129 @@ function parseIdentityModelOutput(text, catalog) {
   return { drugs: rows.slice(0, 100) };
 }
 
+function analysisObject(value) {
+  return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+}
+
+function firstAnalysisText() {
+  for (var i = 0; i < arguments.length; i++) {
+    var value = arguments[i];
+    if (typeof value === 'string' && value.trim()) return value.trim();
+    if (typeof value === 'number' && isFinite(value)) return String(value);
+  }
+  return '';
+}
+
+function parseAnalysisOrderLine(value) {
+  var orderedDose = firstAnalysisText(value)
+    .replace(/^\s*(?:[-*•▪◦]+|\d+\s*[.)\-:])\s*/, '').trim();
+  if (!orderedDose) return { rawName: '', orderedDose: '', strength: '' };
+  var strengthMatch = orderedDose.match(/\b\d+(?:[.,]\d+)?\s*(?:mg|g|mcg|µg|ug|ml|mL|l|iu|ui|đv|%)\b(?:\s*\/\s*\d*(?:[.,]\d+)?\s*(?:ml|mL|l))?/i);
+  var quantityMatch = orderedDose.match(/\b\d+(?:[.,]\d+)?\s*(?:viên|vien|ống|ong|lọ|lo|gói|goi|chai|túi|tui|bơm)\b/i);
+  var routeMatch = orderedDose.match(/\s+(?=(?:uống|tiêm|truyền|ngậm|bôi|đặt|xịt|nhỏ|khí\s*dung)\b)/i);
+  var indexes = [];
+  if (strengthMatch && strengthMatch.index > 1) indexes.push(strengthMatch.index);
+  if (quantityMatch && quantityMatch.index > 1) indexes.push(quantityMatch.index);
+  if (routeMatch && routeMatch.index > 1) indexes.push(routeMatch.index);
+  indexes.sort(function (left, right) { return left - right; });
+  var rawName = indexes.length ? orderedDose.slice(0, indexes[0]) : orderedDose;
+  return {
+    rawName: rawName.trim(),
+    orderedDose: orderedDose,
+    strength: strengthMatch ? strengthMatch[0].trim() : ''
+  };
+}
+
+function normalizeAnalysisDrugRow(item) {
+  var source = typeof item === 'string' ? { orderedText: item } : analysisObject(item);
+  var identity = analysisObject(source.identity || source.drugIdentity || source.drug_identity);
+  var order = analysisObject(source.order);
+  var orderedDose = firstAnalysisText(
+    source.orderedDose, source.ordered_dose, source.orderedText, source.ordered_text,
+    source.orderText, source.order_text, source.order, order.text,
+    source.dosage, source.dose, source.instruction, source.instructions
+  );
+  var parsedLine = parseAnalysisOrderLine(orderedDose);
+  var rawName = firstAnalysisText(
+    identity.rawName, identity.raw_name, source.rawName, source.raw_name,
+    source.drugName, source.drug_name, source.name, source.drug,
+    source.medicine, source.medication, source.tradeName, source.trade_name,
+    source.brand, parsedLine.rawName
+  );
+  var brand = firstAnalysisText(
+    identity.brand, identity.tradeName, identity.trade_name,
+    source.tradeName, source.trade_name, source.brand, rawName
+  );
+  var activeIngredient = firstAnalysisText(
+    identity.activeIngredient, identity.active_ingredient,
+    source.activeIngredient, source.active_ingredient,
+    source.genericName, source.generic_name, source.active
+  );
+  var route = firstAnalysisText(
+    source.route, source.administrationRoute, source.administration_route,
+    identity.route, order.route
+  );
+  var doseInput = source.doseAssessment || source.dose_assessment || source.doseEvaluation || source.dose_evaluation;
+  var dose = analysisObject(doseInput);
+  var infusionInput = source.infusionRate || source.infusion_rate;
+  var infusion = analysisObject(infusionInput);
+  var renalInput = source.renalAdjustment || source.renal_adjustment;
+  var renal = analysisObject(renalInput);
+  var infusionRate = firstAnalysisText(infusion.rate, source.infusionRateText, source.infusion_rate_text);
+  var normalized = {};
+  Object.keys(source).forEach(function (key) { normalized[key] = source[key]; });
+  normalized.name = firstAnalysisText(source.name, source.drugName, source.drug_name, brand, rawName);
+  normalized.identity = {
+    rawName: rawName,
+    status: firstAnalysisText(identity.status, rawName ? 'not_found' : 'unreadable'),
+    catalogId: firstAnalysisText(identity.catalogId, identity.catalog_id),
+    brand: brand,
+    activeIngredient: activeIngredient,
+    strength: firstAnalysisText(identity.strength, source.strength, parsedLine.strength),
+    route: firstAnalysisText(identity.route, route),
+    registrationNumber: firstAnalysisText(identity.registrationNumber, identity.registration_number)
+  };
+  normalized.orderedDose = firstAnalysisText(orderedDose, parsedLine.orderedDose);
+  normalized.route = route;
+  normalized.usageNote = firstAnalysisText(
+    source.usageNote, source.usage_note, source.instructions,
+    source.instruction, source.directions, order.usageNote, order.usage_note
+  );
+  normalized.doseAssessment = {
+    status: firstAnalysisText(dose.status, dose.result, typeof doseInput === 'string' ? doseInput : '', source.doseStatus, source.dose_status),
+    detail: firstAnalysisText(dose.detail, dose.reason, dose.note),
+    source: firstAnalysisText(dose.source, dose.reference)
+  };
+  normalized.infusionRate = {
+    applicable: typeof infusion.applicable === 'boolean' ? infusion.applicable : Boolean(infusionRate),
+    rate: infusionRate,
+    basis: firstAnalysisText(infusion.basis, infusion.detail, infusion.source)
+  };
+  normalized.renalAdjustment = {
+    applicable: typeof renal.applicable === 'boolean' ? renal.applicable : Boolean(firstAnalysisText(renal.warning, renal.method, renal.suggestedRegimen, renal.suggested_regimen)),
+    priority: firstAnalysisText(renal.priority),
+    warning: firstAnalysisText(renal.warning, renal.note),
+    method: firstAnalysisText(renal.method, renal.basis),
+    suggestedRegimen: firstAnalysisText(renal.suggestedRegimen, renal.suggested_regimen),
+    loadingDoseNote: firstAnalysisText(renal.loadingDoseNote, renal.loading_dose_note),
+    monitoring: firstAnalysisText(renal.monitoring, renal.followUp, renal.follow_up),
+    source: firstAnalysisText(renal.source, renal.reference)
+  };
+  return normalized;
+}
+
 function normalizeAnalysisResult(parsed) {
   if (!parsed) return null;
-  if (Array.isArray(parsed)) return { drugs: parsed, interactions: [], unclear: [] };
+  if (Array.isArray(parsed)) parsed = { drugs: parsed };
   if (typeof parsed !== 'object') return null;
-  if (!Array.isArray(parsed.drugs)) {
-    if (Array.isArray(parsed.medications)) parsed.drugs = parsed.medications;
-    else if (Array.isArray(parsed.medicines)) parsed.drugs = parsed.medicines;
-    else if (parsed.drugs && typeof parsed.drugs === 'object') parsed.drugs = Object.keys(parsed.drugs).map(function (key) { return parsed.drugs[key]; });
-    else parsed.drugs = [];
-  }
+  var container = parsed.drugs || parsed.medications || parsed.medicines || parsed.items || [];
+  var rows = Array.isArray(container)
+    ? container
+    : Object.keys(analysisObject(container)).map(function (key) { return container[key]; });
+  parsed.drugs = rows.map(normalizeAnalysisDrugRow);
   if (!Array.isArray(parsed.interactions)) parsed.interactions = [];
   if (!Array.isArray(parsed.unclear)) parsed.unclear = [];
+  if (!parsed.patientContext && parsed.patient_context) parsed.patientContext = parsed.patient_context;
   return parsed;
 }
 

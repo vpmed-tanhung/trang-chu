@@ -8,15 +8,15 @@ def test_inpatient_order_feature_is_wired_without_regressing_rx_review():
     shell = (ROOT / 'assets' / 'platform-shell.js').read_text(encoding='utf-8')
     unified = (ROOT / 'assets' / 'unified.js').read_text(encoding='utf-8')
 
-    assert 'assets/inpatient-order-review.css?v=20260821-inpatient-file-grid-v4' in shell
+    assert 'assets/inpatient-order-review.css?v=20260829-stable-layout-v1' in shell
     inpatient_bundle = shell.split("'inpatient-order': {", 1)[1].split("'petct-dose':", 1)[0]
     shared_layout_css = 'assets/prescription-check.css?v=20260821-rx-actions-v9'
-    module_css = 'assets/inpatient-order-review.css?v=20260821-inpatient-file-grid-v4'
+    module_css = 'assets/inpatient-order-review.css?v=20260829-stable-layout-v1'
     assert shared_layout_css in inpatient_bundle
     assert inpatient_bundle.index(shared_layout_css) < inpatient_bundle.index(module_css)
     assert 'data-open="inpatient-order"' in html
     assert 'id="view-inpatient-order"' in html
-    assert 'assets/inpatient-order-review.js?v=20260828-brand-preserve-v4' in shell
+    assert 'assets/inpatient-order-review.js?v=20260829-order-mapping-v1' in shell
     assert "'inpatient-order'" in unified
 
     # Các sửa mới nhất của module rà soát đơn BHYT phải được giữ nguyên khi merge.
@@ -67,7 +67,7 @@ def test_inpatient_ai_identity_is_catalog_grounded_and_not_hardcoded():
 
     catalog_asset = 'assets/inpatient_medicines_20260707.js?v=20260828-ai-identity-v1'
     identity_asset = 'assets/inpatient-drug-identity.js?v=20260828-brand-preserve-v3'
-    review_asset = 'assets/inpatient-order-review.js?v=20260828-brand-preserve-v4'
+    review_asset = 'assets/inpatient-order-review.js?v=20260829-order-mapping-v1'
     inpatient_bundle = shell.split("'inpatient-order': {", 1)[1].split("'petct-dose':", 1)[0]
     assert inpatient_bundle.index(catalog_asset) < inpatient_bundle.index(identity_asset) < inpatient_bundle.index(review_asset)
     assert 'VPMED_INPATIENT_MEDICINES_20260707' in identity
@@ -120,9 +120,11 @@ def test_inpatient_order_has_compact_busy_indicator():
     css = (ROOT / 'assets' / 'inpatient-order-review.css').read_text(encoding='utf-8')
 
     assert 'Đang phân tích…' in js
-    assert 'io-analyzing-state' in js
+    assert 'io-analyzing-overlay' in js
+    assert "resultBox.classList.toggle('io-result-busy', isBusy)" in js
     assert 'aria-busy' in js
     assert '.io-spinner' in css
+    assert '.io-result-busy>:not(.io-analyzing-overlay){visibility:hidden}' in css
     assert '@keyframes io-spin' in css
 
 

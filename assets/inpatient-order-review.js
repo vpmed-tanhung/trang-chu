@@ -478,17 +478,146 @@
     }, delayMs);
   }
 
+  function firstText(...values) {
+    for (const value of values) {
+      if (typeof value === 'string' && value.trim()) return value.trim();
+      if (typeof value === 'number' && Number.isFinite(value)) return String(value);
+    }
+    return '';
+  }
+
+  function asObject(value) {
+    return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+  }
+
+  function parseOrderLine(value) {
+    const orderedDose = firstText(value).replace(/^\s*(?:[-*•▪◦]+|\d+\s*[.)\-:])\s*/, '').trim();
+    if (!orderedDose) return { rawName: '', orderedDose: '', strength: '' };
+    const strengthMatch = orderedDose.match(/\b\d+(?:[.,]\d+)?\s*(?:mg|g|mcg|µg|ug|ml|mL|l|iu|ui|đv|%)\b(?:\s*\/\s*\d*(?:[.,]\d+)?\s*(?:ml|mL|l))?/i);
+    const quantityMatch = orderedDose.match(/\b\d+(?:[.,]\d+)?\s*(?:viên|vien|ống|ong|lọ|lo|gói|goi|chai|túi|tui|bơm)\b/i);
+    const routeMatch = orderedDose.match(/\s+(?=(?:uống|tiêm|truyền|ngậm|bôi|đặt|xịt|nhỏ|khí\s*dung)\b)/i);
+    const cutAt = [strengthMatch?.index, quantityMatch?.index, routeMatch?.index]
+      .filter(index => Number.isInteger(index) && index > 1)
+      .sort((left, right) => left - right)[0];
+    return {
+      rawName: (cutAt ? orderedDose.slice(0, cutAt) : orderedDose).trim(),
+      orderedDose,
+      strength: strengthMatch?.[0]?.trim() || ''
+    };
+  }
+
+  function normalizeDrugRecord(item) {
+    const source = typeof item === 'string' ? { orderedText: item } : asObject(item);
+    const identitySource = asObject(source.identity ?? source.drugIdentity ?? source.drug_identity);
+    const orderSource = asObject(source.order);
+    const orderText = firstText(
+      source.orderedDose, source.ordered_dose, source.orderedText, source.ordered_text,
+      source.orderText, source.order_text, source.order, orderSource.text,
+      source.dosage, source.dose, source.instruction, source.instructions
+    );
+    const parsedLine = parseOrderLine(orderText);
+    const rawName = firstText(
+      identitySource.rawName, identitySource.raw_name, source.rawName, source.raw_name,
+      source.drugName, source.drug_name, source.name, source.drug,
+      source.medicine, source.medication, source.tradeName, source.trade_name,
+      source.brand, parsedLine.rawName
+    );
+    const brand = firstText(
+      identitySource.brand, identitySource.tradeName, identitySource.trade_name,
+      source.tradeName, source.trade_name, source.brand, rawName
+    );
+    const activeIngredient = firstText(
+      identitySource.activeIngredient, identitySource.active_ingredient,
+      source.activeIngredient, source.active_ingredient,
+      source.genericName, source.generic_name, source.active
+    );
+    const route = firstText(
+      source.route, source.administrationRoute, source.administration_route,
+      identitySource.route, orderSource.route
+    );
+    const doseInput = source.doseAssessment ?? source.dose_assessment
+      ?? source.doseEvaluation ?? source.dose_evaluation;
+    const doseBlock = asObject(doseInput);
+    const infusionInput = source.infusionRate ?? source.infusion_rate;
+    const infusionBlock = asObject(infusionInput);
+    const renalInput = source.renalAdjustment ?? source.renal_adjustment;
+    const renalBlock = asObject(renalInput);
+    const infusionRate = firstText(infusionBlock.rate, source.infusionRateText, source.infusion_rate_text);
+
+    return {
+      ...source,
+      name: firstText(source.name, source.drugName, source.drug_name, brand, rawName),
+      identity: {
+        ...identitySource,
+        rawName,
+        status: firstText(identitySource.status, rawName ? 'not_found' : 'unreadable'),
+        catalogId: firstText(identitySource.catalogId, identitySource.catalog_id),
+        brand,
+        activeIngredient,
+        strength: firstText(identitySource.strength, source.strength, parsedLine.strength),
+        route: firstText(identitySource.route, route),
+        registrationNumber: firstText(identitySource.registrationNumber, identitySource.registration_number)
+      },
+      orderedDose: firstText(orderText, parsedLine.orderedDose),
+      route,
+      usageNote: firstText(
+        source.usageNote, source.usage_note, source.instructions,
+        source.instruction, source.directions, orderSource.usageNote, orderSource.usage_note
+      ),
+      doseAssessment: {
+        ...doseBlock,
+        status: firstText(doseBlock.status, doseBlock.result, typeof doseInput === 'string' ? doseInput : '', source.doseStatus, source.dose_status),
+        detail: firstText(doseBlock.detail, doseBlock.reason, doseBlock.note),
+        source: firstText(doseBlock.source, doseBlock.reference)
+      },
+      infusionRate: {
+        ...infusionBlock,
+        applicable: typeof infusionBlock.applicable === 'boolean' ? infusionBlock.applicable : Boolean(infusionRate),
+        rate: infusionRate,
+        basis: firstText(infusionBlock.basis, infusionBlock.detail, infusionBlock.source)
+      },
+      renalAdjustment: {
+        ...renalBlock,
+        applicable: typeof renalBlock.applicable === 'boolean'
+          ? renalBlock.applicable
+          : Boolean(firstText(renalBlock.warning, renalBlock.method, renalBlock.suggestedRegimen, renalBlock.suggested_regimen)),
+        warning: firstText(renalBlock.warning, renalBlock.note),
+        method: firstText(renalBlock.method, renalBlock.basis),
+        suggestedRegimen: firstText(renalBlock.suggestedRegimen, renalBlock.suggested_regimen),
+        loadingDoseNote: firstText(renalBlock.loadingDoseNote, renalBlock.loading_dose_note),
+        monitoring: firstText(renalBlock.monitoring, renalBlock.followUp, renalBlock.follow_up),
+        source: firstText(renalBlock.source, renalBlock.reference)
+      }
+    };
+  }
+
+  function normalizeServerResult(result) {
+    const safe = asObject(result);
+    const drugContainer = safe.drugs ?? safe.medications ?? safe.medicines ?? safe.items ?? [];
+    const rows = Array.isArray(drugContainer)
+      ? drugContainer
+      : Object.values(asObject(drugContainer));
+    return {
+      ...safe,
+      patientContext: asObject(safe.patientContext ?? safe.patient_context),
+      drugs: rows.map(normalizeDrugRecord),
+      interactions: Array.isArray(safe.interactions) ? safe.interactions : [],
+      unclear: Array.isArray(safe.unclear) ? safe.unclear : []
+    };
+  }
+
   function reconcileServerResult(result, catalog) {
+    const normalizedResult = normalizeServerResult(result);
     const identityApi = getDrugIdentityApi();
     if (identityApi && typeof identityApi.reconcileResult === 'function') {
       try {
-        return identityApi.reconcileResult(result);
+        return identityApi.reconcileResult(normalizedResult);
       } catch (error) {
         console.warn('[VPMED] Đối chiếu identity module lỗi, chuyển sang guard cục bộ:', error);
       }
     }
 
-    const guarded = applyVerifiedCatalogGuard(result, catalog);
+    const guarded = applyVerifiedCatalogGuard(normalizedResult, catalog);
     return annotateIdentityConflicts(guarded.result, guarded.conflicts);
   }
 
@@ -659,15 +788,18 @@
         : '⌁ Phân tích y lệnh';
     }
 
-    if (isBusy) {
-      const resultBox = io$('#ioResultBody');
-      if (resultBox) {
-        resultBox.innerHTML = `
-          <div class="io-analyzing-state" role="status" aria-live="polite">
+    const resultBox = io$('#ioResultBody');
+    if (resultBox) {
+      resultBox.classList.toggle('io-result-busy', isBusy);
+      resultBox.setAttribute('aria-busy', isBusy ? 'true' : 'false');
+      resultBox.querySelector(':scope > .io-analyzing-overlay')?.remove();
+      if (isBusy) {
+        resultBox.insertAdjacentHTML('beforeend', `
+          <div class="io-analyzing-overlay" role="status" aria-live="polite">
             <span class="io-spinner io-spinner-result" aria-hidden="true"></span>
             <b>Đang phân tích y lệnh…</b>
             <p>Vui lòng chờ trong giây lát.</p>
-          </div>`;
+          </div>`);
       }
     }
 
@@ -950,6 +1082,7 @@
     buildVerifiedDrugCatalogNote,
     applyVerifiedCatalogGuard,
     annotateIdentityConflicts,
+    normalizeServerResult,
     reconcileServerResult,
     drugDisplayName
   };
