@@ -53,12 +53,14 @@ jobs:
       - name: Lấy và tóm tắt cảnh báo mới
         shell: bash
         run: |
-          # Chạy tay phải luôn kiểm tra lại nguồn và tạo mốc dữ liệu mới.
-          # Chỉ hai lượt chạy theo lịch mới được bỏ qua khi hôm nay đã cập nhật.
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            python scripts/update_pharmacovigilance.py
-          else
+          # Chạy tay (workflow_dispatch) hoặc chạy qua workflow dự phòng
+          # (workflow_call) đều phải luôn kiểm tra lại nguồn và tạo mốc dữ
+          # liệu mới. Chỉ các lượt chạy đúng theo lịch (schedule) mới được
+          # bỏ qua khi hôm nay đã cập nhật thành công.
+          if [ "${{ github.event_name }}" = "schedule" ]; then
             python scripts/update_pharmacovigilance.py --skip-if-fresh
+          else
+            python scripts/update_pharmacovigilance.py
           fi
 
       - name: Kiểm tra dữ liệu đầu ra
