@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.29.66",
-  "displayVersion": "5.7.4",
-  "updatedAt": "2026-08-29T09:40:00+07:00",
-  "note": "Khôi phục card và đường mở mô-đun Kháng sinh cần hội chẩn khi dùng.",
-  "buildId": "v5.7.4-restore-antibiotic-consultation-20260829-66",
+  "version": "2026.08.31.70",
+  "displayVersion": "5.7.8",
+  "updatedAt": "2026-08-31T14:50:36+07:00",
+  "note": "Rà soát toàn bộ 51 liên kết nguồn; mở trực tiếp tệp PDF và giữ duy nhất công cụ tra cứu gốc Cục Quản lý Dược.",
+  "buildId": "v5.7.8-all-direct-source-pdfs-20260831-70",
   "clinicalDataVersion": "sha256-1dea5a680b0248414c397d8b",
-  "previousVersion": "2026.08.29.65",
-  "previousDisplayVersion": "5.7.3"
+  "previousVersion": "2026.08.31.69",
+  "previousDisplayVersion": "5.7.7"
 }
