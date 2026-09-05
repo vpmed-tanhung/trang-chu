@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-04T07:54:47+07:00",
+  "generated_at": "2026-09-05T08:27:14+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
-  "newly_fetched_count": 1,
+  "newly_fetched_count": 0,
   "retained_history_count": 1,
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
@@ -520,7 +520,7 @@
       "interaction": false,
       "title": "Cân bằng giữa lợi ích - nguy cơ khi sử dụng valproat: Thông tin từ tạp chí Australian Prescriber",
       "drugs": "Valproat (natri valproat/acid valproic)",
-      "summary": "PNCT đang dùng valproat nên cân nhắc chuyển đổi; nếu cần duy trì valproat thì dùng liều thấp nhất có thể và bổ sung acid folic (≥ 0,4mg/ngày) trước khi mang thai và trong suốt thai kỳ (tuy chưa được chứng minh có thể làm giảm nguy cơ dị tật bẩm sinh do valproat). Khoảng 10% bệnh nhân tăng men gan không triệu chứng, cần cân nhắc giảm liều và kiểm tra lại sau 1 tháng.",
+      "summary": "Thuốc không làm tăng GGT như carbamazepin hay phenytoin. - Hội chứng Stevens-Johnson (SJS): Phản ứng da hiếm gặp nhưng có nguy cơ tử vong, thường liên quan đến phối hợp đồng thời với lamotrigin. Giảm bạch cầu hoặc thiếu máu bất sản rất hiếm gặp. - Độc tính trên gan: Hiếm gặp (tỉ lệ 1/20.000) nhưng có thể gây tử vong; 95% số ca khởi phát trong 6 tháng đầu điều trị.",
       "quick": "Trong điều trị rối loạn lưỡng cực, vaproat được khuyến cáo dùng bổ trợ cho thuốc chống loạn thần để điều trị hưng cảm cấp tính, và là một lựa chọn điều trị duy trì khi không thể sử dụng lithium.",
       "risk": [
         "Trong 15 năm qua, mô hình kê đơn tại Úc đã có sự thay đổi đáng kể; trước đây từng là thuốc chống động kinh phổ biến nhất, tuy nhiên hiện nay tần suất chỉ định valproat đã giảm dần do nguy cơ gây dị tật bẩm sinh và sự sẵn có của thuốc thay thế khác an toàn hơn.",
