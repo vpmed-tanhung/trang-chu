@@ -4,7 +4,7 @@
   "updatedAt": "2026-08-31T14:50:36+07:00",
   "note": "Rà soát toàn bộ 51 liên kết nguồn; mở trực tiếp tệp PDF và giữ duy nhất công cụ tra cứu gốc Cục Quản lý Dược.",
   "buildId": "v5.7.8-all-direct-source-pdfs-20260831-70",
-  "clinicalDataVersion": "sha256-ff4e57f0f61abc5f1086137b",
+  "clinicalDataVersion": "sha256-28495f9641616be001dce694",
   "previousVersion": "2026.08.31.69",
   "previousDisplayVersion": "5.7.7"
 }
