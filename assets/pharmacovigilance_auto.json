@@ -1,12 +1,50 @@
 {
-  "generated_at": "2026-09-07T07:50:55+07:00",
+  "generated_at": "2026-09-08T08:06:28+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
-  "newly_fetched_count": 0,
-  "retained_history_count": 1,
+  "newly_fetched_count": 1,
+  "retained_history_count": 2,
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
+    {
+      "id": "auto-dda2320afadd88",
+      "level": "red",
+      "year": "2026",
+      "date": "07/09/2026",
+      "category": "Cảnh báo an toàn thuốc",
+      "system": "Tim mạch · Gan mật",
+      "interaction": false,
+      "title": "Medsafe: Hội chứng alpha-gal và nguy cơ quá mẫn khi sử dụng các thuốc sinh học",
+      "drugs": "các thuốc sinh học",
+      "summary": "Theo đó, trong Bản tin mới nhất ngày 03/09/2026, Cơ quan này đã đưa tin cảnh báo về nguy cơ quá mẫn hiếm gặp nhưng có ý nghĩa lâm sàng liên quan AGS. 07/09/2026 12:00:00 SA Cơ quan quản lý Dược phẩm New Zealand (Medsafe) gần đầy đã ghi nhận được một số báo cáo về phản ứng quá mẫn nghiêm trọng ở bệnh nhân có tiền sử mắc hội chứng Alpha-gal (Alpha-gal syndrome - AGS) sau khi sử dụng ustekinumab.",
+      "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
+      "risk": [
+        "07/09/2026 12:00:00 SA Cơ quan quản lý Dược phẩm New Zealand (Medsafe) gần đầy đã ghi nhận được một số báo cáo về phản ứng quá mẫn nghiêm trọng ở bệnh nhân có tiền sử mắc hội chứng Alpha-gal (Alpha-gal syndrome - AGS) sau khi sử dụng ustekinumab.",
+        "Theo đó, trong Bản tin mới nhất ngày 03/09/2026, Cơ quan này đã đưa tin cảnh báo về nguy cơ quá mẫn hiếm gặp nhưng có ý nghĩa lâm sàng liên quan AGS.",
+        "Ngoài ra, một số sản phẩm khác cũng chứa alpha-gal có nguồn gốc từ động vật có vú (như một số loại thuốc sinh học, vắc-xin và tá dược phẩm) cũng có thể gây phản ứng quá mẫn ở những đối tượng bệnh nhân này.",
+        "Ở bệnh nhân AGS, tiếp xúc với các loại thuốc này có thể gây ra phản ứng quá mẫn.",
+        "Dữ liệu trên toàn thế giới, các phản ứng quá mẫn đã được báo cáo ở bệnh nhân AGS liên quan đến các thuốc cetuximab, infliximab hoặc natalizumab.",
+        "Tại New Zealand, thông tin về AGS và nguy cơ phản ứng quá mẫn được cập nhật đối với các chế phẩm chứa cetuximab và ustekinumab."
+      ],
+      "signs": [
+        "Các biểu hiện lâm sàng của AGS có thể gồm từ các phản ứng mức độ nhẹ - trung bình như mề đay, phù mạch, triệu chứng trên tiêu hóa, đến các phản ứng phản vệ nặng."
+      ],
+      "action": [
+        "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn."
+      ],
+      "monitor": [
+        "Chẩn đoán dựa trên tiền sử lâm sàng và xét nghiệm kháng thể IgE đặc hiệu alpha-gal trong huyết thanh."
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5863/medsafe-hoi-chung-alpha-gal-va-nguy-co-qua-man.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5863/medsafe-hoi-chung-alpha-gal-va-nguy-co-qua-man.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-concise-v2"
+    },
     {
       "id": "auto-a9eda8d446207a",
       "level": "orange",
@@ -479,7 +517,7 @@
       "interaction": true,
       "title": "PMDA: Nguy cơ hạ carnitin máu và hạ đường huyết nghiêm trọng ở trẻ em khi sử dụng các kháng sinh dạng tiền chất ester pivoxil",
       "drugs": "Kháng sinh chứa ester pivoxil",
-      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Khi nhập viện cấp cứu, nồng độ đường huyết giảm sâu xuống còn 17 mg/dL và xác nhận có tình trạng giảm nồng độ carnitin máu.",
+      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Thiếu hụt carnitin gây cản trở quá trình chuyển hóa chất béo thành năng lượng, dẫn đến giảm khả năng duy trì đường huyết trong trạng thái nhịn ăn hoặc đói, từ đó gây hạ đường huyết nghiêm trọng.",
       "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
       "risk": [
         "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai.",
@@ -520,7 +558,7 @@
       "interaction": false,
       "title": "Cân bằng giữa lợi ích - nguy cơ khi sử dụng valproat: Thông tin từ tạp chí Australian Prescriber",
       "drugs": "Valproat (natri valproat/acid valproic)",
-      "summary": "Thuốc không làm tăng GGT như carbamazepin hay phenytoin. - Hội chứng Stevens-Johnson (SJS): Phản ứng da hiếm gặp nhưng có nguy cơ tử vong, thường liên quan đến phối hợp đồng thời với lamotrigin. Giảm bạch cầu hoặc thiếu máu bất sản rất hiếm gặp. - Độc tính trên gan: Hiếm gặp (tỉ lệ 1/20.000) nhưng có thể gây tử vong; 95% số ca khởi phát trong 6 tháng đầu điều trị.",
+      "summary": "PNCT đang dùng valproat nên cân nhắc chuyển đổi; nếu cần duy trì valproat thì dùng liều thấp nhất có thể và bổ sung acid folic (≥ 0,4mg/ngày) trước khi mang thai và trong suốt thai kỳ (tuy chưa được chứng minh có thể làm giảm nguy cơ dị tật bẩm sinh do valproat). Khoảng 10% bệnh nhân tăng men gan không triệu chứng, cần cân nhắc giảm liều và kiểm tra lại sau 1 tháng.",
       "quick": "Trong điều trị rối loạn lưỡng cực, vaproat được khuyến cáo dùng bổ trợ cho thuốc chống loạn thần để điều trị hưng cảm cấp tính, và là một lựa chọn điều trị duy trì khi không thể sử dụng lithium.",
       "risk": [
         "Trong 15 năm qua, mô hình kê đơn tại Úc đã có sự thay đổi đáng kể; trước đây từng là thuốc chống động kinh phổ biến nhất, tuy nhiên hiện nay tần suất chỉ định valproat đã giảm dần do nguy cơ gây dị tật bẩm sinh và sự sẵn có của thuốc thay thế khác an toàn hơn.",
