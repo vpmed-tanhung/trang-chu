@@ -1,12 +1,57 @@
 {
-  "generated_at": "2026-09-11T07:55:57+07:00",
+  "generated_at": "2026-09-12T08:01:31+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
-  "newly_fetched_count": 0,
-  "retained_history_count": 2,
+  "newly_fetched_count": 1,
+  "retained_history_count": 3,
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
+    {
+      "id": "auto-3732035cdcb84a",
+      "level": "red",
+      "year": "2026",
+      "date": "11/09/2026",
+      "category": "Cảnh báo an toàn thuốc",
+      "system": "Tim mạch · Gan mật · Thận",
+      "interaction": false,
+      "title": "Medsafe: Lưu ý lại về chỉ định và liều dùng rosuvastatin",
+      "drugs": "Atorvastatin; clarithromycin",
+      "summary": "Đặc biệt, nguy cơ tiêu cơ vân tăng đáng kể khi sử dụng rosuvastatin ở mức liều cao nhất. Các yếu tố nguy cơ gây độc tính trên cơ xương và khuyến cáo điều chỉnh liều rosuvastatin Yếu tố nguy cơ Khuyến cáo điều chỉnh liều rosuvastatin Người gốc châu Á Khởi đầu 5mg/ngày.",
+      "quick": "Các yếu tố nguy cơ gây độc tính trên cơ xương và khuyến cáo điều chỉnh liều rosuvastatin Yếu tố nguy cơ Khuyến cáo điều chỉnh liều rosuvastatin Người gốc châu Á Khởi đầu 5mg/ngày.",
+      "risk": [
+        "Theo đó, Medsafe đưa tin này nhằm nhấn mạnh lại tầm quan trọng của việc chỉ định liều rosuvastatin phù hợp với các yếu tố nguy cơ trên từng cá thể bệnh nhân.",
+        "Do có cường độ tác dụng mạnh, liều khởi đầu khuyến cáo của rosuvastatin trong điều trị tăng cholesterol máu thường là 5mg/ngày hoặc 10mg/ngày, áp dụng cho cả bệnh nhân chưa từng sử dụng statin và bệnh nhân chuyển từ một thuốc khác sang sử dụng rosuvastatin.",
+        "Đặc biệt, nguy cơ tiêu cơ vân tăng đáng kể khi sử dụng rosuvastatin ở mức liều cao nhất.",
+        "Tờ thông tin sản phẩm của Crestor (rosuvastatin) mới được cập nhật với khuyến cáo bắt đầu khởi trị rosuvastatin ở liều 5mg/ngày đối với bệnh nhân suy thận hoặc suy gan nặng (trước đây là 10 mg/ngày).",
+        "Khuyến cáo về liều khởi đầu 5mg/ngày cho bệnh nhân cao tuổi (trên 70 tuổi) là một điểm mới.",
+        "Khuyến cáo dành cho nhân viên y tế Theo cơ quan quản lý Dược phẩm New Zealand, chỉ sử dụng rosuvastatin 40mg/ngày ở những bệnh nhân vẫn còn tăng cholesterol máu nặng và có nguy cơ tim mạch cao mặc dù đã điều trị bằng liều 20mg/ngày."
+      ],
+      "signs": [
+        "11/09/2026 12:00:00 SA Mới đây, Cơ quan quản lý Dược phẩm New Zealand ghi nhận được một trường hợp bệnh nhân người châu Á xuất hiện tổn thương thận cấp, đau cơ, tăng creatin phosphokinase (> 10.000 U/L) và tăng kali máu khi chuyển từ một stain khác sang rosuvastatin 40mg/ngày.",
+        "Chỉ định và hiệu lực của rosuvastatin Rosuvastatin là một thuốc thuộc nhóm statin, được chỉ định trong điều trị tăng cholesterol máu và dự phòng các biến cố tim mạch nghiêm trọng.",
+        "Đối với dự phòng các biến cố tim mạch, liều khuyến cáo là 20 mg/ngày.",
+        "Tương tự các statin khác, rosuvastatin có thể gây các biến cố bất lợi trên cơ xương, bao gồm bệnh liên quan đến cơ và tiêu cơ vân.",
+        "Do đó, nhân viên y tế cần khuyến cáo bệnh nhân lưu ý và thông báo ngay cho nhân viên y tế khi xuất hiện các triệu chứng như đau, nhạy cảm hoặc yếu cơ không rõ nguyên nhân, đặc biệt khi kèm theo mệt mỏi hoặc sốt."
+      ],
+      "action": [
+        "Các yếu tố nguy cơ gây độc tính trên cơ xương và khuyến cáo điều chỉnh liều rosuvastatin Yếu tố nguy cơ Khuyến cáo điều chỉnh liều rosuvastatin Người gốc châu Á Khởi đầu 5mg/ngày.",
+        "Ngoài các yếu tố nguy cơ được liệt kê tại Bảng 1, không sử dụng rosuvastatin liều 40mg/ngày ở những bệnh nhân: - Có tiền sử độc tính trên cơ khi sử dụng một thuốc ức chế HMG-CoA reductase hoặc fibrat khác. - Có tiền sử bản thân hoặc gia đình mắc bệnh cơ di truyền. - Nghiện rượu."
+      ],
+      "monitor": [
+        "Với mọi chỉ định, cần thận trọng khi sử dụng rosuvastatin ở những bệnh nhân có nguy cơ xuất hiện độc tính statin trên cơ xương cao, bao gồm người gốc châu Á, bệnh nhân suy thận hoặc suy gan nặng, người cao tuổi, bệnh nhân đang sử dụng đồng thời các thuốc làm tăng nồng độ rosuvastatin và bệnh nhân mang một số đa hình gen nhất định ( Khởi trị rosuvastatin…",
+        "Suy thận nặng (độ thanh thải creatinin < 30mL/phút) Khởi đầu 5mg/ngày, không dùng quá 10 mg/ngày.",
+        "Đồng thời, cần theo dõi điều trị cẩn thận khi sử dụng mức liều 40mg/ngày cho bệnh nhân."
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5865/medsafe-luu-y-ve-lieu-dung-rosuvastatin.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5865/medsafe-luu-y-ve-lieu-dung-rosuvastatin.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-concise-v2"
+    },
     {
       "id": "auto-dda2320afadd88",
       "level": "red",
@@ -483,7 +528,7 @@
       "interaction": false,
       "title": "WHO: Cảnh báo về thuốc giả DARZALEX (daratumumab) ở khu vực Châu Mỹ và Đông Nam Á",
       "drugs": "Daratumumab (DARZALEX)",
-      "summary": "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp. Nguy cơ khi sử dụng thuốc DARZALEX giả Thuốc DARZALEX (daratumumab) giả mạo không an toàn cho người bệnh, tiềm ẩn nguy cơ biến cố nghiêm trọng.",
+      "summary": "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp. Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo.",
       "quick": "Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo.",
       "risk": [
         "Người bệnh sử dụng DARZALEX giả sẽ không được điều trị đúng phác đồ đối với tình trạng bệnh lý của mình, dẫn đến nguy cơ tiến triển bệnh, làm tăng tỷ lệ mắc bệnh và tử vong."
@@ -517,7 +562,7 @@
       "interaction": true,
       "title": "PMDA: Nguy cơ hạ carnitin máu và hạ đường huyết nghiêm trọng ở trẻ em khi sử dụng các kháng sinh dạng tiền chất ester pivoxil",
       "drugs": "Kháng sinh chứa ester pivoxil",
-      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Thiếu hụt carnitin gây cản trở quá trình chuyển hóa chất béo thành năng lượng, dẫn đến giảm khả năng duy trì đường huyết trong trạng thái nhịn ăn hoặc đói, từ đó gây hạ đường huyết nghiêm trọng.",
+      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Khi nhập viện cấp cứu, nồng độ đường huyết giảm sâu xuống còn 17 mg/dL và xác nhận có tình trạng giảm nồng độ carnitin máu.",
       "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
       "risk": [
         "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai.",
@@ -558,7 +603,7 @@
       "interaction": false,
       "title": "Cân bằng giữa lợi ích - nguy cơ khi sử dụng valproat: Thông tin từ tạp chí Australian Prescriber",
       "drugs": "Valproat (natri valproat/acid valproic)",
-      "summary": "PNCT đang dùng valproat nên cân nhắc chuyển đổi; nếu cần duy trì valproat thì dùng liều thấp nhất có thể và bổ sung acid folic (≥ 0,4mg/ngày) trước khi mang thai và trong suốt thai kỳ (tuy chưa được chứng minh có thể làm giảm nguy cơ dị tật bẩm sinh do valproat). Khoảng 10% bệnh nhân tăng men gan không triệu chứng, cần cân nhắc giảm liều và kiểm tra lại sau 1 tháng.",
+      "summary": "Thuốc không làm tăng GGT như carbamazepin hay phenytoin. - Hội chứng Stevens-Johnson (SJS): Phản ứng da hiếm gặp nhưng có nguy cơ tử vong, thường liên quan đến phối hợp đồng thời với lamotrigin. Giảm bạch cầu hoặc thiếu máu bất sản rất hiếm gặp. - Độc tính trên gan: Hiếm gặp (tỉ lệ 1/20.000) nhưng có thể gây tử vong; 95% số ca khởi phát trong 6 tháng đầu điều trị.",
       "quick": "Trong điều trị rối loạn lưỡng cực, vaproat được khuyến cáo dùng bổ trợ cho thuốc chống loạn thần để điều trị hưng cảm cấp tính, và là một lựa chọn điều trị duy trì khi không thể sử dụng lithium.",
       "risk": [
         "Trong 15 năm qua, mô hình kê đơn tại Úc đã có sự thay đổi đáng kể; trước đây từng là thuốc chống động kinh phổ biến nhất, tuy nhiên hiện nay tần suất chỉ định valproat đã giảm dần do nguy cơ gây dị tật bẩm sinh và sự sẵn có của thuốc thay thế khác an toàn hơn.",
