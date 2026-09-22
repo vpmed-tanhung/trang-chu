@@ -1,12 +1,56 @@
 {
-  "generated_at": "2026-09-21T07:59:33+07:00",
+  "generated_at": "2026-09-22T08:33:12+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
-  "newly_fetched_count": 0,
-  "retained_history_count": 5,
+  "newly_fetched_count": 1,
+  "retained_history_count": 6,
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
+    {
+      "id": "auto-a63280e506c5c2",
+      "level": "red",
+      "year": "2026",
+      "date": "21/09/2026",
+      "category": "Cảnh báo an toàn thuốc",
+      "system": "Tim mạch · Thần kinh",
+      "interaction": false,
+      "title": "EMA & FDA: Nguy cơ hạ phosphat máu và nguy cơ trên xương khi sử dụng các chế phẩm sắt đường tĩnh mạch",
+      "drugs": "các chế phẩm sắt đường tĩnh mạch",
+      "summary": "Đợt rà soát lần này được khởi động sau khi ghi nhận được các báo cáo ca làm dấy lên lo ngại về tính hiệu quả của các biện pháp giảm thiểu nguy cơ hiện tại đối với các chế phẩm sắt carboxymaltose tiêm tĩnh mạch. Cụ thể, nhiều trường hợp hạ phosphat máu nghiêm trọng dẫn đến nhuyễn xương đã được ghi nhận ngay cả ở những bệnh nhân chỉ mới sử dụng 1–2 liều sắt carboxymaltose và không có yếu tố nguy cơ trước đó.",
+      "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
+      "risk": [
+        "Chế phẩm chứa sắt đường tiêm được chỉ định trong điều trị thiếu sắt và thiếu máu do thiếu sắt ở những bệnh nhân không đáp ứng hay hấp thu được sắt dạng uống hoặc cần bổ sung nhanh lượng sắt dự trữ trong cơ thể.",
+        "Hạ phosphat máu và bệnh nhuyễn xương do hạ phosphat máu vốn được ghi nhận là tác dụng không mong muốn của các chế phẩm sắt carboxymaltose với tần suất thường gặp (lên tới 1/10 bệnh nhân).",
+        "Đợt rà soát lần này được khởi động sau khi ghi nhận được các báo cáo ca làm dấy lên lo ngại về tính hiệu quả của các biện pháp giảm thiểu nguy cơ hiện tại đối với các chế phẩm sắt carboxymaltose tiêm tĩnh mạch.",
+        "Cụ thể, nhiều trường hợp hạ phosphat máu nghiêm trọng dẫn đến nhuyễn xương đã được ghi nhận ngay cả ở những bệnh nhân chỉ mới sử dụng 1–2 liều sắt carboxymaltose và không có yếu tố nguy cơ trước đó.",
+        "Biểu hiện lâm sàng tình trạng hạ phosphat máu phụ thuộc vào mức độ nghiêm trọng và thời gian kéo dài của tình trạng hạ phosphat máu."
+      ],
+      "signs": [
+        "Tuy nhiên, tần suất xuất hiện bệnh nhuyễn xương do hạ phosphat máu vẫn chưa thể xác định chính xác do hạn chế về dữ liệu hiện có.",
+        "EMA: Quyết định sẽ đánh giá lại nguy cơ hạ phosphat và nhuyễn xương ở toàn bộ các chế phẩm chứa sắt đường tĩnh mạch Ủy ban Đánh giá Nguy cơ Cảnh giác Dược (PRAC) thuộc Cơ quan Quản lý Dược phẩm Châu Âu (EMA) đã quyết định sẽ tiến hành rà soát đánh giá về nguy cơ hạ phosphate máu và các rối loạn về xương của các loại thuốc chứa sắt đường tiêm.",
+        "Bên cạnh đó, việc chẩn đoán hạ phosphat máu thường bị trì hoãn do các triệu chứng như mệt mỏi, đau cơ, đau xương có thể gây nhầm lẫn với biểu hiện của chính bệnh lý thiếu sắt.",
+        "Trong đợt đánh giá này, PRAC sẽ xem xét toàn bộ nguy cơ hạ phosphat máu và các rối loạn xương liên quan, đồng thời đánh giá hiệu quả của các biện pháp tối thiểu hóa rủi ro hiện tại.",
+        "Triệu chứng có thể bao gồm yếu hoặc đau cơ, mệt mỏi, run, lú lẫn, co giật và rối loạn nhịp tim."
+      ],
+      "action": [
+        "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn."
+      ],
+      "monitor": [
+        "21/09/2026 12:00:00 SA Phosphat đóng vai trò then chốt trong việc duy trì sức khỏe xương; sự sụt giảm nồng độ phosphate máu kéo dài có thể dẫn đến nhuyễn xương (osteomalacia) với các biểu hiện như đau xương hoặc nghiêm trọng hơn là gãy xương.",
+        "Tờ thông tin sản phẩm cũng bao gồm các biện pháp giảm thiểu rủi ro, khuyến cáo theo dõi nồng độ phosphat máu ở những bệnh nhân điều trị liều cao, kéo dài hoặc có sẵn các yếu tố nguy cơ.",
+        "Cảnh báo cập nhật về nguy cơ hạ phosphat máu liên quan đến thuốc tiêm sắt carboxymaltose và khuyến cáo theo dõi nồng độ phosphat ở những bệnh nhân có nguy cơ hạ phosphat máu và ở bất kỳ bệnh nhân nào được tái điều trị với thuốc trong vòng ba tháng kể từ đợt điều trị trước đó.",
+        "Khuyến cáo dành cho nhân viên y tế - Thông báo cho bệnh nhân về nguy cơ hạ phosphat máu khi sử dụng thuốc tiêm sắt carboxymaltose. - Kiểm tra nồng độ phosphat trong huyết thanh trước khi thực hiện đợt điều trị lặp lại nếu bệnh nhân có nguy cơ giảm phosphat huyết thanh hoặc nếu bệnh nhân đã điều trị với các chế phẩm sắt đường tiêm trong vòng ba tháng trước…"
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5868/ema-fda-nguy-co-ha-phosphat-khi-dung-cac-san-pham-sat-duong-tinh-mach.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5868/ema-fda-nguy-co-ha-phosphat-khi-dung-cac-san-pham-sat-duong-tinh-mach.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-concise-v2"
+    },
     {
       "id": "auto-31c314bbc85836",
       "level": "orange",
@@ -527,7 +571,7 @@
       "interaction": false,
       "title": "Nguy cơ biến cố tim mạch khi sử dụng domperidon: Thông tin từ Bản tin BIP Occitanie số 02/2026",
       "drugs": "Domperidon",
-      "summary": "Thuốc có liên quan đến tình trạng kéo dài khoảng QT, dẫn đến nguy cơ loạn nhịp thất nghiêm trọng, thậm chí đột tử. Biến cố bất lợi ở người lớn đã được ghi nhận rõ ràng và đôi khi cực kỳ nghiêm trọng, điển hình là các biến cố tim mạch (kéo dài khoảng QT, loạn nhịp thất) và trên thần kinh, đặc biệt khi dùng liều cao, kéo dài hoặc khi ngưng thuốc đột ngột.",
+      "summary": "Nguy cơ này tăng lên ở bệnh nhân sử dụng liều trên 30mg/ngày, điều trị kéo dài, có các yếu tố nguy cơ tim mạch, hoặc khi phối hợp với các thuốc gây kéo dài khoảng QT hay các thuốc ức chế CYP3A4. Dựa trên các phân tích về lợi ích và nguy cơ, domperidon không được khuyến cáo cho chỉ định kích thích tiết sữa, đặc biệt là khi dùng liều cao và kéo dài.",
       "quick": "Theo khuyến cáo, domperidon chỉ được phê duyệt ở liều 10 mg, tối đa 3 lần/ngày, dùng không quá 7 ngày và chỉ có chỉ định điều trị buồn nôn và nôn.",
       "risk": [
         "Tuy nhiên, khi dùng để kích thích tiết sữa, mức liều 60 mg/ngày hoặc cao hơn đôi khi vẫn được chỉ định và dùng kéo dài trong nhiều tuần.",
@@ -604,7 +648,7 @@
       "interaction": false,
       "title": "WHO: Cảnh báo về thuốc giả DARZALEX (daratumumab) ở khu vực Châu Mỹ và Đông Nam Á",
       "drugs": "Daratumumab (DARZALEX)",
-      "summary": "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp. Nguy cơ khi sử dụng thuốc DARZALEX giả Thuốc DARZALEX (daratumumab) giả mạo không an toàn cho người bệnh, tiềm ẩn nguy cơ biến cố nghiêm trọng.",
+      "summary": "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp. Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo.",
       "quick": "Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo.",
       "risk": [
         "Người bệnh sử dụng DARZALEX giả sẽ không được điều trị đúng phác đồ đối với tình trạng bệnh lý của mình, dẫn đến nguy cơ tiến triển bệnh, làm tăng tỷ lệ mắc bệnh và tử vong."
@@ -638,7 +682,7 @@
       "interaction": true,
       "title": "PMDA: Nguy cơ hạ carnitin máu và hạ đường huyết nghiêm trọng ở trẻ em khi sử dụng các kháng sinh dạng tiền chất ester pivoxil",
       "drugs": "Kháng sinh chứa ester pivoxil",
-      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Thiếu hụt carnitin gây cản trở quá trình chuyển hóa chất béo thành năng lượng, dẫn đến giảm khả năng duy trì đường huyết trong trạng thái nhịn ăn hoặc đói, từ đó gây hạ đường huyết nghiêm trọng.",
+      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Khi nhập viện cấp cứu, nồng độ đường huyết giảm sâu xuống còn 17 mg/dL và xác nhận có tình trạng giảm nồng độ carnitin máu.",
       "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
       "risk": [
         "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai.",
@@ -679,7 +723,7 @@
       "interaction": false,
       "title": "Cân bằng giữa lợi ích - nguy cơ khi sử dụng valproat: Thông tin từ tạp chí Australian Prescriber",
       "drugs": "Valproat (natri valproat/acid valproic)",
-      "summary": "PNCT đang dùng valproat nên cân nhắc chuyển đổi; nếu cần duy trì valproat thì dùng liều thấp nhất có thể và bổ sung acid folic (≥ 0,4mg/ngày) trước khi mang thai và trong suốt thai kỳ (tuy chưa được chứng minh có thể làm giảm nguy cơ dị tật bẩm sinh do valproat). Khoảng 10% bệnh nhân tăng men gan không triệu chứng, cần cân nhắc giảm liều và kiểm tra lại sau 1 tháng.",
+      "summary": "Thuốc không làm tăng GGT như carbamazepin hay phenytoin. - Hội chứng Stevens-Johnson (SJS): Phản ứng da hiếm gặp nhưng có nguy cơ tử vong, thường liên quan đến phối hợp đồng thời với lamotrigin. Giảm bạch cầu hoặc thiếu máu bất sản rất hiếm gặp. - Độc tính trên gan: Hiếm gặp (tỉ lệ 1/20.000) nhưng có thể gây tử vong; 95% số ca khởi phát trong 6 tháng đầu điều trị.",
       "quick": "Trong điều trị rối loạn lưỡng cực, vaproat được khuyến cáo dùng bổ trợ cho thuốc chống loạn thần để điều trị hưng cảm cấp tính, và là một lựa chọn điều trị duy trì khi không thể sử dụng lithium.",
       "risk": [
         "Trong 15 năm qua, mô hình kê đơn tại Úc đã có sự thay đổi đáng kể; trước đây từng là thuốc chống động kinh phổ biến nhất, tuy nhiên hiện nay tần suất chỉ định valproat đã giảm dần do nguy cơ gây dị tật bẩm sinh và sự sẵn có của thuốc thay thế khác an toàn hơn.",
