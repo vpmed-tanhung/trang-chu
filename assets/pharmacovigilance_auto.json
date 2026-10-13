@@ -1,12 +1,58 @@
 {
-  "generated_at": "2026-10-12T09:14:37+07:00",
+  "generated_at": "2026-10-13T10:29:03+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
-  "newly_fetched_count": 0,
-  "retained_history_count": 8,
+  "newly_fetched_count": 1,
+  "retained_history_count": 9,
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
+    {
+      "id": "auto-bcc5cf1d5a1b1a",
+      "level": "red",
+      "year": "2026",
+      "date": "12/10/2026",
+      "category": "Cảnh báo an toàn thuốc",
+      "system": "Tim mạch · Thận",
+      "interaction": false,
+      "title": "HSA: Nguy cơ phản ứng phản vệ khi sử dụng clorhexidin sát khuẩn da trong thực hiện các thủ thuật",
+      "drugs": "clorhexidin sát khuẩn da",
+      "summary": "Dữ liệu tại Singapore Tính đến ngày 01/09/2026, HSA đã tiếp nhận 95 báo cáo về phản vệ liên quan đến clorhexidin. Con số này tăng đáng kể so với 15 trường hợp phản vệ được báo cáo trong năm 2017, thời điểm HSA đã ban hành thông tin về nguy cơ phản ứng dị ứng nghiêm trọng liên quan đến clorhexidin.",
+      "quick": "Nhân viên y tế cần lưu ý và cảnh giác, đồng thời cân nhắc clorhexidin có thể là nguyên nhân của các phản ứng phản vệ xảy ra trong hoặc liên quan đến quá trình thực hiện thủ thuật.",
+      "risk": [
+        "12/10/2026 12:00:00 SA Case lâm sàng: Một bệnh nhân nam 69 tuổi suy thận giai đoạn cuối, đang điều trị lọc máu đã nhập viện do huyết khối tái phát tại cầu nối động-tĩnh mạch (arteriovenous graft - AVG).",
+        "Sau đó, màng lọc máu được thay bằng loại mà bệnh nhân đã sử dụng trong các lần lọc máu trước đây.",
+        "Nhân viên y tế đã tiến hành đánh giá và loại trừ các yếu tố khác có thể gây phản vệ ở bệnh nhân.",
+        "Khai thác thêm tiền sử cho thấy clorhexidin chỉ được sử dụng trong thời gian bệnh nhân nằm viện và không được sử dụng trong các buổi lọc máu ngoại trú.",
+        "Bệnh nhân đã được tư vấn tránh sử dụng clorhexidin trong tương lai, đồng thời hồ sơ bệnh án của bệnh nhân cũng ghi nhận tình trạng dị ứng với clorhexidin nhằm đảm bảo an toàn cho bệnh nhân trong những lần điều trị tiếp theo.",
+        "Việc xác định nguyên nhân dị ứng là clorhexidin có thể gặp khó khăn do bệnh nhân có thể tiếp xúc với clorhexidin từ nhiều nguồn khác nhau."
+      ],
+      "signs": [
+        "Trong thời gian nằm viện, bệnh nhân xuất hiện phản vệ sau 15 phút kể từ khi bắt đầu lọc máu với các biểu hiện hạ huyết áp, mày đay và phù mạch.",
+        "Các lần lọc máu tiếp theo đã được tiến hành và không ghi nhận biến cố bất thường nào.",
+        "Khoảng một năm sau, bệnh nhân lại nhập viện do tái phát huyết khối và một lần nữa xuất hiện phản vệ, mặc dù đã sử dụng cùng loại màng lọc trước đây.",
+        "Phản vệ tái xuất hiện ở case lâm sàng trên được xác định là do sử dụng dung dịch clorhexidin dùng ngoài da.",
+        "Heparin và màng lọc máu được loại trừ bởi chúng được sử dụng trong các buổi lọc máu ngoại trú mà không xuất hiện biến cố bất lợi.",
+        "Cả hai bệnh nhân đều xuất hiện phản ứng quá mẫn tái diễn trong các buổi lọc máu, trong đó clorhexidin được sử dụng làm chất làm sạch."
+      ],
+      "action": [
+        "Nhân viên y tế cần lưu ý và cảnh giác, đồng thời cân nhắc clorhexidin có thể là nguyên nhân của các phản ứng phản vệ xảy ra trong hoặc liên quan đến quá trình thực hiện thủ thuật."
+      ],
+      "monitor": [
+        "Nồng độ tryptase huyết thanh trong vòng hai giờ kể từ khi xảy ra cả hai đợt phản vệ đều tăng, lần lượt là 28,6 và 32,5 µg/L rồi giảm đáng kể sau 24 giờ.",
+        "Xét nghiệm IgE đặc hiệu với ethylene oxid được thực hiện và cho kết quả âm tính.",
+        "Xét nghiệm IgE đặc hiệu với clorhexidin cho kết quả nồng độ tăng, bệnh nhân có dị ứng với clorhexidin (phản ứng quá mẫn typ I).",
+        "Trong 23 trường hợp, clorhexidin được xác định là tác nhân gây phản ứng sau khi thực hiện xét nghiệm dị ứng, bao gồm test lẩy da (15 trường hợp), test trong da (4 trường hợp) và cả hai phương pháp (2 trường hợp) hoặc không ghi nhận loại xét nghiệm được thực hiện (2 trường hợp)."
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5875/hsa-phan-ve-khi-su-dung-clorhexidin-sat-khuan-da-trong-thu-thuat.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5875/hsa-phan-ve-khi-su-dung-clorhexidin-sat-khuan-da-trong-thu-thuat.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-concise-v2"
+    },
     {
       "id": "auto-09cdd9f8c97fa0",
       "level": "red",
@@ -647,7 +693,7 @@
       "interaction": false,
       "title": "Nguy cơ biến cố tim mạch khi sử dụng domperidon: Thông tin từ Bản tin BIP Occitanie số 02/2026",
       "drugs": "Domperidon",
-      "summary": "Nguy cơ này tăng lên ở bệnh nhân sử dụng liều trên 30mg/ngày, điều trị kéo dài, có các yếu tố nguy cơ tim mạch, hoặc khi phối hợp với các thuốc gây kéo dài khoảng QT hay các thuốc ức chế CYP3A4. Dựa trên các phân tích về lợi ích và nguy cơ, domperidon không được khuyến cáo cho chỉ định kích thích tiết sữa, đặc biệt là khi dùng liều cao và kéo dài.",
+      "summary": "Thuốc có liên quan đến tình trạng kéo dài khoảng QT, dẫn đến nguy cơ loạn nhịp thất nghiêm trọng, thậm chí đột tử. Biến cố bất lợi ở người lớn đã được ghi nhận rõ ràng và đôi khi cực kỳ nghiêm trọng, điển hình là các biến cố tim mạch (kéo dài khoảng QT, loạn nhịp thất) và trên thần kinh, đặc biệt khi dùng liều cao, kéo dài hoặc khi ngưng thuốc đột ngột.",
       "quick": "Theo khuyến cáo, domperidon chỉ được phê duyệt ở liều 10 mg, tối đa 3 lần/ngày, dùng không quá 7 ngày và chỉ có chỉ định điều trị buồn nôn và nôn.",
       "risk": [
         "Tuy nhiên, khi dùng để kích thích tiết sữa, mức liều 60 mg/ngày hoặc cao hơn đôi khi vẫn được chỉ định và dùng kéo dài trong nhiều tuần.",
@@ -724,7 +770,7 @@
       "interaction": false,
       "title": "WHO: Cảnh báo về thuốc giả DARZALEX (daratumumab) ở khu vực Châu Mỹ và Đông Nam Á",
       "drugs": "Daratumumab (DARZALEX)",
-      "summary": "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp. Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo.",
+      "summary": "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp. Nguy cơ khi sử dụng thuốc DARZALEX giả Thuốc DARZALEX (daratumumab) giả mạo không an toàn cho người bệnh, tiềm ẩn nguy cơ biến cố nghiêm trọng.",
       "quick": "Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo.",
       "risk": [
         "Người bệnh sử dụng DARZALEX giả sẽ không được điều trị đúng phác đồ đối với tình trạng bệnh lý của mình, dẫn đến nguy cơ tiến triển bệnh, làm tăng tỷ lệ mắc bệnh và tử vong."
@@ -758,7 +804,7 @@
       "interaction": true,
       "title": "PMDA: Nguy cơ hạ carnitin máu và hạ đường huyết nghiêm trọng ở trẻ em khi sử dụng các kháng sinh dạng tiền chất ester pivoxil",
       "drugs": "Kháng sinh chứa ester pivoxil",
-      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Khi nhập viện cấp cứu, nồng độ đường huyết giảm sâu xuống còn 17 mg/dL và xác nhận có tình trạng giảm nồng độ carnitin máu.",
+      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Thiếu hụt carnitin gây cản trở quá trình chuyển hóa chất béo thành năng lượng, dẫn đến giảm khả năng duy trì đường huyết trong trạng thái nhịn ăn hoặc đói, từ đó gây hạ đường huyết nghiêm trọng.",
       "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
       "risk": [
         "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai.",
@@ -799,7 +845,7 @@
       "interaction": false,
       "title": "Cân bằng giữa lợi ích - nguy cơ khi sử dụng valproat: Thông tin từ tạp chí Australian Prescriber",
       "drugs": "Valproat (natri valproat/acid valproic)",
-      "summary": "Thuốc không làm tăng GGT như carbamazepin hay phenytoin. - Hội chứng Stevens-Johnson (SJS): Phản ứng da hiếm gặp nhưng có nguy cơ tử vong, thường liên quan đến phối hợp đồng thời với lamotrigin. Giảm bạch cầu hoặc thiếu máu bất sản rất hiếm gặp. - Độc tính trên gan: Hiếm gặp (tỉ lệ 1/20.000) nhưng có thể gây tử vong; 95% số ca khởi phát trong 6 tháng đầu điều trị.",
+      "summary": "PNCT đang dùng valproat nên cân nhắc chuyển đổi; nếu cần duy trì valproat thì dùng liều thấp nhất có thể và bổ sung acid folic (≥ 0,4mg/ngày) trước khi mang thai và trong suốt thai kỳ (tuy chưa được chứng minh có thể làm giảm nguy cơ dị tật bẩm sinh do valproat). Khoảng 10% bệnh nhân tăng men gan không triệu chứng, cần cân nhắc giảm liều và kiểm tra lại sau 1 tháng.",
       "quick": "Trong điều trị rối loạn lưỡng cực, vaproat được khuyến cáo dùng bổ trợ cho thuốc chống loạn thần để điều trị hưng cảm cấp tính, và là một lựa chọn điều trị duy trì khi không thể sử dụng lithium.",
       "risk": [
         "Trong 15 năm qua, mô hình kê đơn tại Úc đã có sự thay đổi đáng kể; trước đây từng là thuốc chống động kinh phổ biến nhất, tuy nhiên hiện nay tần suất chỉ định valproat đã giảm dần do nguy cơ gây dị tật bẩm sinh và sự sẵn có của thuốc thay thế khác an toàn hơn.",
