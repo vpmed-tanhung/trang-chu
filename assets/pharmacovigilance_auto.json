@@ -1,12 +1,50 @@
 {
-  "generated_at": "2026-10-15T08:22:25+07:00",
+  "generated_at": "2026-10-16T08:09:34+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
-  "newly_fetched_count": 0,
-  "retained_history_count": 10,
+  "newly_fetched_count": 1,
+  "retained_history_count": 11,
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
+    {
+      "id": "auto-23554d2f09d5e3",
+      "level": "red",
+      "year": "2026",
+      "date": "15/10/2026",
+      "category": "Tương tác thuốc",
+      "system": "Chuyển hóa",
+      "interaction": true,
+      "title": "Nguy cơ tắc ruột do tương tác giữa thuốc chống loạn thần và thuốc chủ vận thụ thể GLP-1: Thông tin từ Bản tin BIP Occitane số 03/2026",
+      "drugs": "Thuốc/nhóm thuốc nêu trong tiêu đề; xem bài nguồn để xác định đầy đủ.",
+      "summary": "Clozapin là một trong những thuốc có nguy cơ gây tăng cân cao nhất (đôi khi tăng tới 30 kg trong 3 tháng) và có liên quan đến nguy cơ tắc ruột nghiêm trọng do tác dụng kháng cholinergic. Các Trung tâm Cảnh giác dược tại Pháp ghi nhận được nhiều báo cáo mô tả các trường hợp biến cố nghiêm trọng trên tiêu hóa, do đó theo dõi trên lâm sàng được khuyến cáo đối tương tác giữa hai thuốc này.",
+      "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
+      "risk": [
+        "15/10/2026 12:00:00 SA Các chất chủ vận thụ thể GLP-1 (như semaglutid) được chỉ định trên bệnh nhân đang điều trị bằng thuốc chống loạn thần nhằm hạn chế hoặc phòng ngừa tình trạng tăng cân và các biến chứng chuyển hóa liên quan.",
+        "Mới đây, tạp chí The Lancet Psychiatry đã nhấn mạnh về nguy cơ trên tiêu hóa, đặc biệt là khi phối hợp clozapin và các thuốc chủ vận GLP-1.",
+        "Clozapin là một trong những thuốc có nguy cơ gây tăng cân cao nhất (đôi khi tăng tới 30 kg trong 3 tháng) và có liên quan đến nguy cơ tắc ruột nghiêm trọng do tác dụng kháng cholinergic.",
+        "Vì vậy, cần hết sức thận trọng khi phối hợp thuốc chống loạn thần với GLP-1 RA do tăng nguy cơ biến chứng đường tiêu hóa, đặc biệt trên những bệnh nhân có các yếu tố nguy cơ đi kèm như lối sống ít vận động, tuổi cao, v.v.."
+      ],
+      "signs": [
+        "Tuy nhiên, việc phối hợp này đòi hỏi phải đặc biệt thận trọng do những biến cố bất lợi trên tiêu hóa.",
+        "Cụ thể, thuốc chống loạn thần thông qua tác dụng kháng cholinergic và thuốc chủ vận GLP-1 thông qua tác dụng tương tự incretin, sự hiệp đồng tác dụng này làm tăng nguy cơ rối loạn tiêu hóa, đặc biệt là táo bón, tình trạng này có thể tiến triển thành u phân, tắc ruột cơ năng hoặc tắc ruột cơ học, thậm chí gây ra các biến chứng dẫn đến tử vong.",
+        "Năm 2017, một nghiên cứu cảnh giác dược dựa trên các báo cáo biến cố bất lợi tại Úc và New Zealand trong giai đoạn 1992-2013 đã ghi nhận 160 trường hợp rối loạn nhu động tiêu hóa nghiêm trọng do clozapin, trong đó có 70 trường hợp táo bón và 62 trường hợp tắc ruột, với ít nhất 29 trường hợp được ghi nhận tử vong."
+      ],
+      "action": [
+        "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn."
+      ],
+      "monitor": [
+        "Các Trung tâm Cảnh giác dược tại Pháp ghi nhận được nhiều báo cáo mô tả các trường hợp biến cố nghiêm trọng trên tiêu hóa, do đó theo dõi trên lâm sàng được khuyến cáo đối tương tác giữa hai thuốc này."
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5877/nguy-co-tac-ruot-do-tuong-tac-chong-loan-than-va-chu-van-thu-the-glp1-bip-03.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5877/nguy-co-tac-ruot-do-tuong-tac-chong-loan-than-va-chu-van-thu-the-glp1-bip-03.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-concise-v2"
+    },
     {
       "id": "auto-29cf787efef48d",
       "level": "red",
@@ -737,7 +775,7 @@
       "interaction": false,
       "title": "Nguy cơ biến cố tim mạch khi sử dụng domperidon: Thông tin từ Bản tin BIP Occitanie số 02/2026",
       "drugs": "Domperidon",
-      "summary": "Thuốc có liên quan đến tình trạng kéo dài khoảng QT, dẫn đến nguy cơ loạn nhịp thất nghiêm trọng, thậm chí đột tử. Biến cố bất lợi ở người lớn đã được ghi nhận rõ ràng và đôi khi cực kỳ nghiêm trọng, điển hình là các biến cố tim mạch (kéo dài khoảng QT, loạn nhịp thất) và trên thần kinh, đặc biệt khi dùng liều cao, kéo dài hoặc khi ngưng thuốc đột ngột.",
+      "summary": "Nguy cơ này tăng lên ở bệnh nhân sử dụng liều trên 30mg/ngày, điều trị kéo dài, có các yếu tố nguy cơ tim mạch, hoặc khi phối hợp với các thuốc gây kéo dài khoảng QT hay các thuốc ức chế CYP3A4. Dựa trên các phân tích về lợi ích và nguy cơ, domperidon không được khuyến cáo cho chỉ định kích thích tiết sữa, đặc biệt là khi dùng liều cao và kéo dài.",
       "quick": "Theo khuyến cáo, domperidon chỉ được phê duyệt ở liều 10 mg, tối đa 3 lần/ngày, dùng không quá 7 ngày và chỉ có chỉ định điều trị buồn nôn và nôn.",
       "risk": [
         "Tuy nhiên, khi dùng để kích thích tiết sữa, mức liều 60 mg/ngày hoặc cao hơn đôi khi vẫn được chỉ định và dùng kéo dài trong nhiều tuần.",
@@ -814,7 +852,7 @@
       "interaction": false,
       "title": "WHO: Cảnh báo về thuốc giả DARZALEX (daratumumab) ở khu vực Châu Mỹ và Đông Nam Á",
       "drugs": "Daratumumab (DARZALEX)",
-      "summary": "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp. Nguy cơ khi sử dụng thuốc DARZALEX giả Thuốc DARZALEX (daratumumab) giả mạo không an toàn cho người bệnh, tiềm ẩn nguy cơ biến cố nghiêm trọng.",
+      "summary": "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp. Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo.",
       "quick": "Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo.",
       "risk": [
         "Người bệnh sử dụng DARZALEX giả sẽ không được điều trị đúng phác đồ đối với tình trạng bệnh lý của mình, dẫn đến nguy cơ tiến triển bệnh, làm tăng tỷ lệ mắc bệnh và tử vong."
@@ -848,7 +886,7 @@
       "interaction": true,
       "title": "PMDA: Nguy cơ hạ carnitin máu và hạ đường huyết nghiêm trọng ở trẻ em khi sử dụng các kháng sinh dạng tiền chất ester pivoxil",
       "drugs": "Kháng sinh chứa ester pivoxil",
-      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Thiếu hụt carnitin gây cản trở quá trình chuyển hóa chất béo thành năng lượng, dẫn đến giảm khả năng duy trì đường huyết trong trạng thái nhịn ăn hoặc đói, từ đó gây hạ đường huyết nghiêm trọng.",
+      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Khi nhập viện cấp cứu, nồng độ đường huyết giảm sâu xuống còn 17 mg/dL và xác nhận có tình trạng giảm nồng độ carnitin máu.",
       "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
       "risk": [
         "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai.",
@@ -889,7 +927,7 @@
       "interaction": false,
       "title": "Cân bằng giữa lợi ích - nguy cơ khi sử dụng valproat: Thông tin từ tạp chí Australian Prescriber",
       "drugs": "Valproat (natri valproat/acid valproic)",
-      "summary": "PNCT đang dùng valproat nên cân nhắc chuyển đổi; nếu cần duy trì valproat thì dùng liều thấp nhất có thể và bổ sung acid folic (≥ 0,4mg/ngày) trước khi mang thai và trong suốt thai kỳ (tuy chưa được chứng minh có thể làm giảm nguy cơ dị tật bẩm sinh do valproat). Khoảng 10% bệnh nhân tăng men gan không triệu chứng, cần cân nhắc giảm liều và kiểm tra lại sau 1 tháng.",
+      "summary": "Thuốc không làm tăng GGT như carbamazepin hay phenytoin. - Hội chứng Stevens-Johnson (SJS): Phản ứng da hiếm gặp nhưng có nguy cơ tử vong, thường liên quan đến phối hợp đồng thời với lamotrigin. Giảm bạch cầu hoặc thiếu máu bất sản rất hiếm gặp. - Độc tính trên gan: Hiếm gặp (tỉ lệ 1/20.000) nhưng có thể gây tử vong; 95% số ca khởi phát trong 6 tháng đầu điều trị.",
       "quick": "Trong điều trị rối loạn lưỡng cực, vaproat được khuyến cáo dùng bổ trợ cho thuốc chống loạn thần để điều trị hưng cảm cấp tính, và là một lựa chọn điều trị duy trì khi không thể sử dụng lithium.",
       "risk": [
         "Trong 15 năm qua, mô hình kê đơn tại Úc đã có sự thay đổi đáng kể; trước đây từng là thuốc chống động kinh phổ biến nhất, tuy nhiên hiện nay tần suất chỉ định valproat đã giảm dần do nguy cơ gây dị tật bẩm sinh và sự sẵn có của thuốc thay thế khác an toàn hơn.",
