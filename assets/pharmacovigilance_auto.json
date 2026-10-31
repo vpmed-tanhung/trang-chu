@@ -1,12 +1,48 @@
 {
-  "generated_at": "2026-10-30T09:30:28+07:00",
+  "generated_at": "2026-10-31T09:13:47+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
-  "newly_fetched_count": 0,
-  "retained_history_count": 15,
+  "newly_fetched_count": 1,
+  "retained_history_count": 16,
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
+    {
+      "id": "auto-d3dbea9c4309e2",
+      "level": "red",
+      "year": "2026",
+      "date": "30/10/2026",
+      "category": "Cảnh báo an toàn thuốc",
+      "system": "Tim mạch · Thần kinh",
+      "interaction": false,
+      "title": "Health Canada: Nguy cơ tiềm ẩn hội chứng tiết hormon chống bài niệu không thích hợp (SIADH) khi sử dụng ciprofloxacin đường toàn thân",
+      "drugs": "ciprofloxacin đường toàn thân",
+      "summary": "Tại thời điểm rà soát, Health Canada đã ghi nhận được 5 trường hợp báo cáo SIADH ở bệnh nhân được điều trị bằng ciprofloxacin đường toàn thân (gồm 1 ca tại Canada và 4 ca từ các quốc gia khác); trong đó có 4 ca được ghi nhận từ y văn. Phần lớn các trường hợp đều có sự hiện diện của các yếu tố gây nhiễu (cácyếu tố khác có thể góp phần gây raSIADH) và không có trường hợp tử vong nào được báo cáo.",
+      "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
+      "risk": [
+        "Health Canada đã tiến hành đánh giá nguy cơ tiềm ẩn của hội chứng tiết hormon chống bài niệu không thích hợp (SIADH) liên quan đến ciprofloxacin đường toàn thân sau khi Cơ quan Quản lý Dược phẩm Châu Âu cập nhật nhãn thuốc, trong đó bổ sung SIADH vào danh sách các vấn đề an toàn cần quan tâm.",
+        "Kết quả đánh giá về nguy cơ tiềm ẩn SIADH Health Canada đã rà soát dữ liệu từ hệ thống báo cáo về phản ứng có hại của Canada (Canada Vigilance), cơ sở dữ liệu phản ứng có hại của thuốc của WHO và các y văn đã công bố.",
+        "Tại thời điểm rà soát, Health Canada đã ghi nhận được 5 trường hợp báo cáo SIADH ở bệnh nhân được điều trị bằng ciprofloxacin đường toàn thân (gồm 1 ca tại Canada và 4 ca từ các quốc gia khác); trong đó có 4 ca được ghi nhận từ y văn."
+      ],
+      "signs": [
+        "Các triệu chứng của hạ natri máu bao gồm chuột rút, run, đau đầu, buồn nôn và nôn."
+      ],
+      "action": [
+        "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn."
+      ],
+      "monitor": [
+        "Nếu nồng độ natri máu giảm quá thấp hoặc hạ quá nhanh, tình trạng bệnh nhân có thể tiến triển nặng thành co giật, hôn mê và ngừng thở, gây đe dọa tính mạng hoặc dẫn đến tử vong.",
+        "Kết luận và khuyến cáo từ Health Canada Health Canada kết luận có mối liên quan giữa việc sử dụng ciprofloxacin đường toàn thân và nguy cơ mắc hội chứng SIADH và tiến hành một số biện pháp giảm thiểu nguy cơ như sau: - Health Canada sẽ làm việc với các nhà sản xuất nhằm bổ sung bổ sung cảnh báo về nguy cơ SIADH vào Tờ thông tin sản phẩm tại Canada đối với…"
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5883/health-canada-nguy-co-hc-tiet-hormon-chong-bai-nieu-khi-su-dung-ciprofloxacin-duong-toan-than.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5883/health-canada-nguy-co-hc-tiet-hormon-chong-bai-nieu-khi-su-dung-ciprofloxacin-duong-toan-than.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-concise-v2"
+    },
     {
       "id": "auto-22e9fec01eb4ee",
       "level": "red",
@@ -494,7 +530,7 @@
       "interaction": false,
       "title": "Medsafe: Lưu ý lại về chỉ định và liều dùng rosuvastatin",
       "drugs": "Atorvastatin; clarithromycin",
-      "summary": "Đặc biệt, nguy cơ tiêu cơ vân tăng đáng kể khi sử dụng rosuvastatin ở mức liều cao nhất. Các yếu tố nguy cơ gây độc tính trên cơ xương và khuyến cáo điều chỉnh liều rosuvastatin Yếu tố nguy cơ Khuyến cáo điều chỉnh liều rosuvastatin Người gốc châu Á Khởi đầu 5mg/ngày.",
+      "summary": "Đặc biệt, nguy cơ tiêu cơ vân tăng đáng kể khi sử dụng rosuvastatin ở mức liều cao nhất. Ngoài các yếu tố nguy cơ được liệt kê tại Bảng 1, không sử dụng rosuvastatin liều 40mg/ngày ở những bệnh nhân: - Có tiền sử độc tính trên cơ khi sử dụng một thuốc ức chế HMG-CoA reductase hoặc fibrat khác. - Có tiền sử bản thân hoặc gia đình mắc bệnh cơ di truyền. - Nghiện rượu.",
       "quick": "Các yếu tố nguy cơ gây độc tính trên cơ xương và khuyến cáo điều chỉnh liều rosuvastatin Yếu tố nguy cơ Khuyến cáo điều chỉnh liều rosuvastatin Người gốc châu Á Khởi đầu 5mg/ngày.",
       "risk": [
         "Theo đó, Medsafe đưa tin này nhằm nhấn mạnh lại tầm quan trọng của việc chỉ định liều rosuvastatin phù hợp với các yếu tố nguy cơ trên từng cá thể bệnh nhân.",
@@ -539,7 +575,7 @@
       "interaction": false,
       "title": "Medsafe: Hội chứng alpha-gal và nguy cơ quá mẫn khi sử dụng các thuốc sinh học",
       "drugs": "các thuốc sinh học",
-      "summary": "Theo đó, trong Bản tin mới nhất ngày 03/09/2026, Cơ quan này đã đưa tin cảnh báo về nguy cơ quá mẫn hiếm gặp nhưng có ý nghĩa lâm sàng liên quan AGS. 07/09/2026 12:00:00 SA Cơ quan quản lý Dược phẩm New Zealand (Medsafe) gần đầy đã ghi nhận được một số báo cáo về phản ứng quá mẫn nghiêm trọng ở bệnh nhân có tiền sử mắc hội chứng Alpha-gal (Alpha-gal syndrome - AGS) sau khi sử dụng ustekinumab.",
+      "summary": "Theo đó, trong Bản tin mới nhất ngày 03/09/2026, Cơ quan này đã đưa tin cảnh báo về nguy cơ quá mẫn hiếm gặp nhưng có ý nghĩa lâm sàng liên quan AGS. Dữ liệu trên toàn thế giới, các phản ứng quá mẫn đã được báo cáo ở bệnh nhân AGS liên quan đến các thuốc cetuximab, infliximab hoặc natalizumab.",
       "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
       "risk": [
         "07/09/2026 12:00:00 SA Cơ quan quản lý Dược phẩm New Zealand (Medsafe) gần đầy đã ghi nhận được một số báo cáo về phản ứng quá mẫn nghiêm trọng ở bệnh nhân có tiền sử mắc hội chứng Alpha-gal (Alpha-gal syndrome - AGS) sau khi sử dụng ustekinumab.",
@@ -645,7 +681,7 @@
       "interaction": false,
       "title": "Nguy cơ dị ứng với tá dược: Cập nhật khuyến cáo của Viện Hàn lâm Dị ứng và Miễn dịch Lâm sàng Châu Âu",
       "drugs": "Corticosteroid",
-      "summary": "Phản ứng quá mẫn với povidon đã được ghi nhận chủ yếu là các triệu chứng phản vệ nghiêm trọng, trong đó hơn 40% số ca trải qua nhiều lần quá mẫn lặp lại trước khi được phát hiện. Trong tình huống bắt buộc phải sử dụng thuốc chứa tá dược nghi ngờ có nguy cơ dị ứng, việc sử dụng cần được thực hiện tại bệnh viện dưới sự giám sát y tế.",
+      "summary": "Phản ứng quá mẫn với povidon đã được ghi nhận chủ yếu là các triệu chứng phản vệ nghiêm trọng, trong đó hơn 40% số ca trải qua nhiều lần quá mẫn lặp lại trước khi được phát hiện. Dấu hiệu lâm sàng nghi ngờ quá mẫn với tá dược Việc đánh giá phản ứng quá mẫn cần rà soát cả hoạt chất và tá dược có nguy cơ gây phản vệ.",
       "quick": "Dấu hiệu lâm sàng nghi ngờ quá mẫn với tá dược Việc đánh giá phản ứng quá mẫn cần rà soát cả hoạt chất và tá dược có nguy cơ gây phản vệ.",
       "risk": [
         "Về xử trí, tránh tái sử dụng các tá dược gây dị ứng và các chất có phản ứng dị ứng chéo, đồng thời cấp thẻ cảnh báo dị ứng cho bệnh nhân.",
@@ -928,7 +964,7 @@
       "interaction": false,
       "title": "Nguy cơ biến cố tim mạch khi sử dụng domperidon: Thông tin từ Bản tin BIP Occitanie số 02/2026",
       "drugs": "Domperidon",
-      "summary": "Nguy cơ này tăng lên ở bệnh nhân sử dụng liều trên 30mg/ngày, điều trị kéo dài, có các yếu tố nguy cơ tim mạch, hoặc khi phối hợp với các thuốc gây kéo dài khoảng QT hay các thuốc ức chế CYP3A4. Dựa trên các phân tích về lợi ích và nguy cơ, domperidon không được khuyến cáo cho chỉ định kích thích tiết sữa, đặc biệt là khi dùng liều cao và kéo dài.",
+      "summary": "Thuốc có liên quan đến tình trạng kéo dài khoảng QT, dẫn đến nguy cơ loạn nhịp thất nghiêm trọng, thậm chí đột tử. Biến cố bất lợi ở người lớn đã được ghi nhận rõ ràng và đôi khi cực kỳ nghiêm trọng, điển hình là các biến cố tim mạch (kéo dài khoảng QT, loạn nhịp thất) và trên thần kinh, đặc biệt khi dùng liều cao, kéo dài hoặc khi ngưng thuốc đột ngột.",
       "quick": "Theo khuyến cáo, domperidon chỉ được phê duyệt ở liều 10 mg, tối đa 3 lần/ngày, dùng không quá 7 ngày và chỉ có chỉ định điều trị buồn nôn và nôn.",
       "risk": [
         "Tuy nhiên, khi dùng để kích thích tiết sữa, mức liều 60 mg/ngày hoặc cao hơn đôi khi vẫn được chỉ định và dùng kéo dài trong nhiều tuần.",
@@ -1005,7 +1041,7 @@
       "interaction": false,
       "title": "WHO: Cảnh báo về thuốc giả DARZALEX (daratumumab) ở khu vực Châu Mỹ và Đông Nam Á",
       "drugs": "Daratumumab (DARZALEX)",
-      "summary": "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp. Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo.",
+      "summary": "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp. Nguy cơ khi sử dụng thuốc DARZALEX giả Thuốc DARZALEX (daratumumab) giả mạo không an toàn cho người bệnh, tiềm ẩn nguy cơ biến cố nghiêm trọng.",
       "quick": "Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo.",
       "risk": [
         "Người bệnh sử dụng DARZALEX giả sẽ không được điều trị đúng phác đồ đối với tình trạng bệnh lý của mình, dẫn đến nguy cơ tiến triển bệnh, làm tăng tỷ lệ mắc bệnh và tử vong."
@@ -1039,7 +1075,7 @@
       "interaction": true,
       "title": "PMDA: Nguy cơ hạ carnitin máu và hạ đường huyết nghiêm trọng ở trẻ em khi sử dụng các kháng sinh dạng tiền chất ester pivoxil",
       "drugs": "Kháng sinh chứa ester pivoxil",
-      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Khi nhập viện cấp cứu, nồng độ đường huyết giảm sâu xuống còn 17 mg/dL và xác nhận có tình trạng giảm nồng độ carnitin máu.",
+      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Thiếu hụt carnitin gây cản trở quá trình chuyển hóa chất béo thành năng lượng, dẫn đến giảm khả năng duy trì đường huyết trong trạng thái nhịn ăn hoặc đói, từ đó gây hạ đường huyết nghiêm trọng.",
       "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
       "risk": [
         "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai.",
@@ -1080,7 +1116,7 @@
       "interaction": false,
       "title": "Cân bằng giữa lợi ích - nguy cơ khi sử dụng valproat: Thông tin từ tạp chí Australian Prescriber",
       "drugs": "Valproat (natri valproat/acid valproic)",
-      "summary": "Thuốc không làm tăng GGT như carbamazepin hay phenytoin. - Hội chứng Stevens-Johnson (SJS): Phản ứng da hiếm gặp nhưng có nguy cơ tử vong, thường liên quan đến phối hợp đồng thời với lamotrigin. Giảm bạch cầu hoặc thiếu máu bất sản rất hiếm gặp. - Độc tính trên gan: Hiếm gặp (tỉ lệ 1/20.000) nhưng có thể gây tử vong; 95% số ca khởi phát trong 6 tháng đầu điều trị.",
+      "summary": "PNCT đang dùng valproat nên cân nhắc chuyển đổi; nếu cần duy trì valproat thì dùng liều thấp nhất có thể và bổ sung acid folic (≥ 0,4mg/ngày) trước khi mang thai và trong suốt thai kỳ (tuy chưa được chứng minh có thể làm giảm nguy cơ dị tật bẩm sinh do valproat). Khoảng 10% bệnh nhân tăng men gan không triệu chứng, cần cân nhắc giảm liều và kiểm tra lại sau 1 tháng.",
       "quick": "Trong điều trị rối loạn lưỡng cực, vaproat được khuyến cáo dùng bổ trợ cho thuốc chống loạn thần để điều trị hưng cảm cấp tính, và là một lựa chọn điều trị duy trì khi không thể sử dụng lithium.",
       "risk": [
         "Trong 15 năm qua, mô hình kê đơn tại Úc đã có sự thay đổi đáng kể; trước đây từng là thuốc chống động kinh phổ biến nhất, tuy nhiên hiện nay tần suất chỉ định valproat đã giảm dần do nguy cơ gây dị tật bẩm sinh và sự sẵn có của thuốc thay thế khác an toàn hơn.",
