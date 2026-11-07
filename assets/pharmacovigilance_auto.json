@@ -1,12 +1,54 @@
 {
-  "generated_at": "2026-11-06T10:20:56+07:00",
+  "generated_at": "2026-11-07T09:39:38+07:00",
   "source": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTinCGD.aspx",
   "source_listing_count": 13,
-  "newly_fetched_count": 0,
-  "retained_history_count": 17,
+  "newly_fetched_count": 1,
+  "retained_history_count": 18,
   "detail_error_count": 0,
   "review_status": "Bản tin được tự động trích xuất và tóm tắt có cấu trúc từ nguồn đích. Luôn mở liên kết nguồn gốc để kiểm chứng trước khi áp dụng lâm sàng.",
   "alerts": [
+    {
+      "id": "auto-d7e1c692bbb9ed",
+      "level": "red",
+      "year": "2026",
+      "date": "06/11/2026",
+      "category": "Quá liều & thuốc nguy cơ cao",
+      "system": "Tim mạch · Thần kinh · Gan mật · Thận · Chuyển hóa",
+      "interaction": false,
+      "title": "Một số điểm tin an toàn thuốc: Cập nhật từ Bản tin WHO số 02/2026",
+      "drugs": "Thuốc/nhóm thuốc nêu trong tiêu đề; xem bài nguồn để xác định đầy đủ.",
+      "summary": "06/11/2026 12:00:00 SA Nguy cơ độc tính nghiêm trọng khi sử dụng colchicin liều cao và trên bệnh nhân suy thận nặng. Cụ thể, biến cố hạ natri được mô tả là nồng độ natri trong máu giảm xuống dưới mức bình thường và có thể gây buồn nôn, đau đầu, lú lẫn, mệt mỏi, yếu cơ, co giật, một số các trường hợp nghiêm trọng có thể dẫn đến hôn mê.",
+      "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
+      "risk": [
+        "Theo đó, Cơ quan Quản lý Sản phẩm Y tế Ireland (HPRA) đã ban hành thư thông báo trực tiếp cho cán bộ y tế (DHPC) nhấn mạnh nguy cơ này, đồng thời tiến hành cập nhật thông tin sản phẩm đối với các thuốc chứa hydroxycarbamid.",
+        "Ủy ban Dược điển Ấn Độ (IPC): Nguy cơ hạ natri máu khi sử dụng clonidin Clonidin được sử dụng để điều trị bệnh tăng huyết áp.",
+        "Sau một đánh giá dựa trên các báo cáo về phản ứng có hại từ cơ sở dữ liệu Quốc gia, Ủy ban Dược điển Ấn Độ (IPC) và Trung tâm Cảnh giác Dược Ấn Độ (PvPI) đã phát hiện một tín hiệu an toán mới về nguy cơ hạ natri máu liên quan clonidin."
+      ],
+      "signs": [
+        "06/11/2026 12:00:00 SA Nguy cơ độc tính nghiêm trọng khi sử dụng colchicin liều cao và trên bệnh nhân suy thận nặng.",
+        "Cơ quan quản lý Dược phẩm và Thiết bị Y tế Nhật Bản (PMDA) mới đây đã ghi nhận được một số báo cáo ca mô tả các biến cố nghiêm trọng, bao gồm rối loạn tiêu hóa, độc tính trên máu, thận và gan, dẫn đến tử vong ở những bệnh nhân sử dụng liều colchicin hằng ngày vượt quá 1,5 mg/ngày và ở bệnh nhân suy thận nặng.",
+        "Theo đó, PMDA yêu cầu bổ sung nguy cơ gặp độc tính nghiêm trọng liên quan việc sử dụng ở liều vượt quá 1,5 mg/ngày và sử dụng trên bệnh nhân suy thận nặng trong tờ thông tin sản phẩm của các chế phẩm chứa colchicin.",
+        "Khuyến cáo dành cho nhân viên y tế: - Tránh sử dụng liều cao vượt quá 1,5 mg/ngày và tránh sử dụng thuốc này cho bệnh nhân suy thận nặng, trừ khi có chỉ định lâm sàng rõ ràng. - Khuyến cáo bệnh nhân thông báo ngay cho nhân viên y tế khi xuất hiện triệu chứng nghi ngờ độc tính do colchicin như buồn nôn, nôn, đau bụng, tiêu chảy hoặc yếu cơ."
+      ],
+      "action": [
+        "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn."
+      ],
+      "monitor": [
+        "HPRA: Nguy cơ gây sai lệch kết quả đo đường huyết khi sử dụng hydroxycarbamid Cơ quan Quản lý Sản phẩm Y tế Ireland (HPRA) đã nhấn mạnh khuyến cáo từ Ủy ban Đánh giá Nguy cơ Cảnh giác Dược (PRAC) về việc cập nhật thông tin sản phẩm đối với các thuốc chứa hydroxycarbamid, nhằm bổ sung cảnh báo về khả năng gây nhiễu các hệ thống theo dõi đường huyết liên…",
+        "Hydroxycarbamid có thể gây hiện tượng tăng giả kết quả đo đường huyết trên cảm biến của một số hệ thống theo dõi đường huyết liên tục (CGM), dẫn đến nguy cơ hạ đường huyết khi người bệnh sử dụng liều insulin dựa trên các kết quả này.",
+        "Khuyến cáo dành cho nhân viên y tế: - Lưu ý về nguy cơ tiềm ẩn này khi điều trị cho bệnh nhân tiểu đường đang sử dụng hydroxycarbamid. - Tham khảo ý kiến chuyên khoa nội tiết - đái tháo đường khi cần sử dụng đồng thời để áp dụng các phương pháp theo dõi đường huyết thay thế phù hợp. - Lưu ý bệnh nhân về nguy cơ ảnh hưởng của thuốc đến kết quả đường huyết…",
+        "Cụ thể, biến cố hạ natri được mô tả là nồng độ natri trong máu giảm xuống dưới mức bình thường và có thể gây buồn nôn, đau đầu, lú lẫn, mệt mỏi, yếu cơ, co giật, một số các trường hợp nghiêm trọng có thể dẫn đến hôn mê.",
+        "Khuyến cáo dành cho nhân viên y tế theo dõi chặt chẽ natri máu trong quá trình điều trị bằng clonidin, đồng thời tích cực thực hiện báo cáo về biến cố bất lợi nghi ngờ liên quan thuốc."
+      ],
+      "source": "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phản ứng có hại của thuốc",
+      "source_note": "",
+      "source_url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5885/mot-so-diem-tin-an-toan-thuoc-who-02-2026.htm",
+      "url": "https://canhgiacduoc.org.vn/CanhGiacDuoc/DiemTin/5885/mot-so-diem-tin-an-toan-thuoc-who-02-2026.htm",
+      "auto": true,
+      "reviewed": false,
+      "autoEdited": true,
+      "editorialStatus": "auto-concise-v2"
+    },
     {
       "id": "auto-cdbd4618cc4c26",
       "level": "red",
@@ -488,7 +530,7 @@
       "interaction": false,
       "title": "Medsafe: Nguy cơ tổn thương thị giác khi sử dụng các thuốc kích thích thần kinh trong điều trị ADHD",
       "drugs": "các thuốc kích thích thần kinh",
-      "summary": "Báo cáo ca lâm sàng tại New Zealand Từ ngày 01/01/2010 đến ngày 31/05/2026, Cơ sở dữ liệu Cảnh giác dược New Zealand đã tiếp nhận 5 báo cáo về các rối loạn ở mắt liên quan đến nhóm thuốc kích thích thần kinh. Glôcôm là một nhóm bệnh lý đặc trưng bởi tổn thương thần kinh thị giác tiến triển, thường liên quan đến tình trạng tăng nhãn áp (IOP) và là một trong những nguyên nhân hàng đầu gây mù lòa không hồi phục.",
+      "summary": "Báo cáo ca lâm sàng tại New Zealand Từ ngày 01/01/2010 đến ngày 31/05/2026, Cơ sở dữ liệu Cảnh giác dược New Zealand đã tiếp nhận 5 báo cáo về các rối loạn ở mắt liên quan đến nhóm thuốc kích thích thần kinh. Trong đó, có 3 trường hợp nhìn mờ và 1 trường hợp giãn đồng tử khi bệnh nhân dùng methylphenidat; 1 trường hợp nhìn mờ ở bệnh nhân dùng dexamfetamin.",
       "quick": "Medsafe khuyến cáo nhân viên y tế lưu ý đến tác dụng không mong muốn trên mắt khi chỉ định thuốc điều trị ADHD đặc biệt trên bệnh nhân có tiền sử tăng nhãn áp (IOP), glôcôm, hoặc có nguy cơ mắc glôcôm góc đóng cấp tính.",
       "risk": [
         "Glôcôm góc đóng cấp tính (AAC) xảy ra do áp lực nội nhãn tăng nhanh do tắc nghẽn lưu thông thủy dịch đã được ghi nhận ở bệnh nhân dùng methylphenidat.",
@@ -564,7 +606,7 @@
       "interaction": false,
       "title": "Medsafe: Lưu ý lại về chỉ định và liều dùng rosuvastatin",
       "drugs": "Atorvastatin; clarithromycin",
-      "summary": "Đặc biệt, nguy cơ tiêu cơ vân tăng đáng kể khi sử dụng rosuvastatin ở mức liều cao nhất. Ngoài các yếu tố nguy cơ được liệt kê tại Bảng 1, không sử dụng rosuvastatin liều 40mg/ngày ở những bệnh nhân: - Có tiền sử độc tính trên cơ khi sử dụng một thuốc ức chế HMG-CoA reductase hoặc fibrat khác. - Có tiền sử bản thân hoặc gia đình mắc bệnh cơ di truyền. - Nghiện rượu.",
+      "summary": "Đặc biệt, nguy cơ tiêu cơ vân tăng đáng kể khi sử dụng rosuvastatin ở mức liều cao nhất. Các yếu tố nguy cơ gây độc tính trên cơ xương và khuyến cáo điều chỉnh liều rosuvastatin Yếu tố nguy cơ Khuyến cáo điều chỉnh liều rosuvastatin Người gốc châu Á Khởi đầu 5mg/ngày.",
       "quick": "Các yếu tố nguy cơ gây độc tính trên cơ xương và khuyến cáo điều chỉnh liều rosuvastatin Yếu tố nguy cơ Khuyến cáo điều chỉnh liều rosuvastatin Người gốc châu Á Khởi đầu 5mg/ngày.",
       "risk": [
         "Theo đó, Medsafe đưa tin này nhằm nhấn mạnh lại tầm quan trọng của việc chỉ định liều rosuvastatin phù hợp với các yếu tố nguy cơ trên từng cá thể bệnh nhân.",
@@ -609,7 +651,7 @@
       "interaction": false,
       "title": "Medsafe: Hội chứng alpha-gal và nguy cơ quá mẫn khi sử dụng các thuốc sinh học",
       "drugs": "các thuốc sinh học",
-      "summary": "Theo đó, trong Bản tin mới nhất ngày 03/09/2026, Cơ quan này đã đưa tin cảnh báo về nguy cơ quá mẫn hiếm gặp nhưng có ý nghĩa lâm sàng liên quan AGS. Dữ liệu trên toàn thế giới, các phản ứng quá mẫn đã được báo cáo ở bệnh nhân AGS liên quan đến các thuốc cetuximab, infliximab hoặc natalizumab.",
+      "summary": "Theo đó, trong Bản tin mới nhất ngày 03/09/2026, Cơ quan này đã đưa tin cảnh báo về nguy cơ quá mẫn hiếm gặp nhưng có ý nghĩa lâm sàng liên quan AGS. 07/09/2026 12:00:00 SA Cơ quan quản lý Dược phẩm New Zealand (Medsafe) gần đầy đã ghi nhận được một số báo cáo về phản ứng quá mẫn nghiêm trọng ở bệnh nhân có tiền sử mắc hội chứng Alpha-gal (Alpha-gal syndrome - AGS) sau khi sử dụng ustekinumab.",
       "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
       "risk": [
         "07/09/2026 12:00:00 SA Cơ quan quản lý Dược phẩm New Zealand (Medsafe) gần đầy đã ghi nhận được một số báo cáo về phản ứng quá mẫn nghiêm trọng ở bệnh nhân có tiền sử mắc hội chứng Alpha-gal (Alpha-gal syndrome - AGS) sau khi sử dụng ustekinumab.",
@@ -715,7 +757,7 @@
       "interaction": false,
       "title": "Nguy cơ dị ứng với tá dược: Cập nhật khuyến cáo của Viện Hàn lâm Dị ứng và Miễn dịch Lâm sàng Châu Âu",
       "drugs": "Corticosteroid",
-      "summary": "Phản ứng quá mẫn với povidon đã được ghi nhận chủ yếu là các triệu chứng phản vệ nghiêm trọng, trong đó hơn 40% số ca trải qua nhiều lần quá mẫn lặp lại trước khi được phát hiện. Dấu hiệu lâm sàng nghi ngờ quá mẫn với tá dược Việc đánh giá phản ứng quá mẫn cần rà soát cả hoạt chất và tá dược có nguy cơ gây phản vệ.",
+      "summary": "Phản ứng quá mẫn với povidon đã được ghi nhận chủ yếu là các triệu chứng phản vệ nghiêm trọng, trong đó hơn 40% số ca trải qua nhiều lần quá mẫn lặp lại trước khi được phát hiện. Trong tình huống bắt buộc phải sử dụng thuốc chứa tá dược nghi ngờ có nguy cơ dị ứng, việc sử dụng cần được thực hiện tại bệnh viện dưới sự giám sát y tế.",
       "quick": "Dấu hiệu lâm sàng nghi ngờ quá mẫn với tá dược Việc đánh giá phản ứng quá mẫn cần rà soát cả hoạt chất và tá dược có nguy cơ gây phản vệ.",
       "risk": [
         "Về xử trí, tránh tái sử dụng các tá dược gây dị ứng và các chất có phản ứng dị ứng chéo, đồng thời cấp thẻ cảnh báo dị ứng cho bệnh nhân.",
@@ -998,7 +1040,7 @@
       "interaction": false,
       "title": "Nguy cơ biến cố tim mạch khi sử dụng domperidon: Thông tin từ Bản tin BIP Occitanie số 02/2026",
       "drugs": "Domperidon",
-      "summary": "Thuốc có liên quan đến tình trạng kéo dài khoảng QT, dẫn đến nguy cơ loạn nhịp thất nghiêm trọng, thậm chí đột tử. Biến cố bất lợi ở người lớn đã được ghi nhận rõ ràng và đôi khi cực kỳ nghiêm trọng, điển hình là các biến cố tim mạch (kéo dài khoảng QT, loạn nhịp thất) và trên thần kinh, đặc biệt khi dùng liều cao, kéo dài hoặc khi ngưng thuốc đột ngột.",
+      "summary": "Nguy cơ này tăng lên ở bệnh nhân sử dụng liều trên 30mg/ngày, điều trị kéo dài, có các yếu tố nguy cơ tim mạch, hoặc khi phối hợp với các thuốc gây kéo dài khoảng QT hay các thuốc ức chế CYP3A4. Dựa trên các phân tích về lợi ích và nguy cơ, domperidon không được khuyến cáo cho chỉ định kích thích tiết sữa, đặc biệt là khi dùng liều cao và kéo dài.",
       "quick": "Theo khuyến cáo, domperidon chỉ được phê duyệt ở liều 10 mg, tối đa 3 lần/ngày, dùng không quá 7 ngày và chỉ có chỉ định điều trị buồn nôn và nôn.",
       "risk": [
         "Tuy nhiên, khi dùng để kích thích tiết sữa, mức liều 60 mg/ngày hoặc cao hơn đôi khi vẫn được chỉ định và dùng kéo dài trong nhiều tuần.",
@@ -1075,7 +1117,7 @@
       "interaction": false,
       "title": "WHO: Cảnh báo về thuốc giả DARZALEX (daratumumab) ở khu vực Châu Mỹ và Đông Nam Á",
       "drugs": "Daratumumab (DARZALEX)",
-      "summary": "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp. Nguy cơ khi sử dụng thuốc DARZALEX giả Thuốc DARZALEX (daratumumab) giả mạo không an toàn cho người bệnh, tiềm ẩn nguy cơ biến cố nghiêm trọng.",
+      "summary": "Việc phát hiện các tiểu phân bằng mắt thường ở ít nhất một lô thuốc giả (lô STV1K01) cho thấy dấu hiệu về nguy cơ nhiễm khuẩn, nhiễm tạp. Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo.",
       "quick": "Đồng thời, thông báo ngay cho WHO nếu phát hiện các sản phẩm giả mạo. - WHO khuyến cáo người bệnh không sử dụng các thuốc giả mạo có số lô được cảnh báo.",
       "risk": [
         "Người bệnh sử dụng DARZALEX giả sẽ không được điều trị đúng phác đồ đối với tình trạng bệnh lý của mình, dẫn đến nguy cơ tiến triển bệnh, làm tăng tỷ lệ mắc bệnh và tử vong."
@@ -1109,7 +1151,7 @@
       "interaction": true,
       "title": "PMDA: Nguy cơ hạ carnitin máu và hạ đường huyết nghiêm trọng ở trẻ em khi sử dụng các kháng sinh dạng tiền chất ester pivoxil",
       "drugs": "Kháng sinh chứa ester pivoxil",
-      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Thiếu hụt carnitin gây cản trở quá trình chuyển hóa chất béo thành năng lượng, dẫn đến giảm khả năng duy trì đường huyết trong trạng thái nhịn ăn hoặc đói, từ đó gây hạ đường huyết nghiêm trọng.",
+      "summary": "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai. Khi nhập viện cấp cứu, nồng độ đường huyết giảm sâu xuống còn 17 mg/dL và xác nhận có tình trạng giảm nồng độ carnitin máu.",
       "quick": "Rà soát chỉ định, liều dùng, thời gian điều trị và thuốc dùng đồng thời theo bài nguồn.",
       "risk": [
         "Ngoài ra, tình trạng giảm carnitin máu cũng được ghi nhận ở trẻ sơ sinh có mẹ sử dụng kháng sinh dạng tiền chất ester pivoxil trong thời kỳ mang thai.",
@@ -1150,7 +1192,7 @@
       "interaction": false,
       "title": "Cân bằng giữa lợi ích - nguy cơ khi sử dụng valproat: Thông tin từ tạp chí Australian Prescriber",
       "drugs": "Valproat (natri valproat/acid valproic)",
-      "summary": "PNCT đang dùng valproat nên cân nhắc chuyển đổi; nếu cần duy trì valproat thì dùng liều thấp nhất có thể và bổ sung acid folic (≥ 0,4mg/ngày) trước khi mang thai và trong suốt thai kỳ (tuy chưa được chứng minh có thể làm giảm nguy cơ dị tật bẩm sinh do valproat). Khoảng 10% bệnh nhân tăng men gan không triệu chứng, cần cân nhắc giảm liều và kiểm tra lại sau 1 tháng.",
+      "summary": "Thuốc không làm tăng GGT như carbamazepin hay phenytoin. - Hội chứng Stevens-Johnson (SJS): Phản ứng da hiếm gặp nhưng có nguy cơ tử vong, thường liên quan đến phối hợp đồng thời với lamotrigin. Giảm bạch cầu hoặc thiếu máu bất sản rất hiếm gặp. - Độc tính trên gan: Hiếm gặp (tỉ lệ 1/20.000) nhưng có thể gây tử vong; 95% số ca khởi phát trong 6 tháng đầu điều trị.",
       "quick": "Trong điều trị rối loạn lưỡng cực, vaproat được khuyến cáo dùng bổ trợ cho thuốc chống loạn thần để điều trị hưng cảm cấp tính, và là một lựa chọn điều trị duy trì khi không thể sử dụng lithium.",
       "risk": [
         "Trong 15 năm qua, mô hình kê đơn tại Úc đã có sự thay đổi đáng kể; trước đây từng là thuốc chống động kinh phổ biến nhất, tuy nhiên hiện nay tần suất chỉ định valproat đã giảm dần do nguy cơ gây dị tật bẩm sinh và sự sẵn có của thuốc thay thế khác an toàn hơn.",
