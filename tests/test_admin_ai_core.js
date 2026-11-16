@@ -4,7 +4,11 @@ const root=path.resolve(__dirname,'..'),mod=p=>import(url.pathToFileURL(path.joi
 const core=await mod('supabase/functions/admin-ai/core.mjs'),XLSX=await mod('supabase/functions/admin-ai/xlsx.mjs');
 const sheet=XLSX.read(fs.readFileSync(path.join(root,'sources/danh_muc_thuoc_kho_noi_tru_20260814.xls')),{type:'buffer'});
 const rows=core.rowsFromGrid(XLSX.utils.sheet_to_json(sheet.Sheets.Data,{header:1,raw:false,defval:''}));
-const base=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/admin_ai_baseline.json'))),c=core.normalizeCatalog(rows,base);
+let baseline;
+try {baseline=require('node:child_process').execFileSync('git',['show','175274a5825c96c3db09b74f83931add68cf9313:data/inpatient_medicines_20260707.json'],{cwd:root,stdio:['ignore','pipe','pipe']}).toString('utf8');}
+catch {baseline=fs.readFileSync(path.join(root,'data/inpatient_medicines_20260707.json'),'utf8');}
+const base=JSON.parse(baseline);assert.equal(base.length,309,'Pinned baseline history is required');
+const c=core.normalizeCatalog(rows,base);
 assert.equal(c.records.length,336);assert.equal(c.diff.length,127);assert.equal(c.quarantined_rows.length,10);
 assert.equal(c.retained_baseline_codes.length,37);assert.equal(c.baseline_codes_absent_from_source.length,29);
 const kept=new Map(base.map(x=>[x.code,x]));for(const r of c.records)if(c.retained_baseline_codes.includes(r.code))assert.deepEqual(r,kept.get(r.code));
