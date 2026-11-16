@@ -1,8 +1,8 @@
 d60f352d0db1404c70afb4bb8b2ca3fd1c610572aa40720e8a0b7baa7885418c  ./.gitattributes
-04f1798279f581d806c91d7602851d12a3ea90c8ce7226060fa6559cd27cced5  ./.github/workflows/admin-ai-publish.yml
+5fecad63df1ff5d332b63a2519289d2cc20d9967cfd6e713d3861d01d8bb0e6f  ./.github/workflows/admin-ai-publish.yml
 78288442026e6b812934fd7ff69f1e5086802ddade526803c5a33f366612df55  ./.github/workflows/cap-nhat-canh-bao-duoc.yml
 b85ce965151b91b1d20b3131fb838a7ae9f1cfe651accf6dfcacc5367db39d76  ./.github/workflows/du-phong-cap-nhat-canh-bao-duoc.yml
-4fbd0a19086b903807d1685191c773a98c150a543dc9effc9dddcfa619492566  ./.github/workflows/quality-gate.yml
+f7bb6062af0cad29a35bcdf086812dd88e84f12120827f7dfae79d2acdf36447  ./.github/workflows/quality-gate.yml
 8b332b42e642d0103f4d25f758500777bff907d55c86a63a7c2941aace2599e3  ./.gitignore
 91abc7d017bd79b01177510231008693835b289a3b3cff700ce1cf05ed7565b5  ./BAO_CAO_LOC_DU_LIEU_DUOC_LAM_SANG_20260814.md
 68ac93c6e5a2c8e15c06e874d3e52ee34b70793d241e857ddf158f70a7ca1fb0  ./CAP_NHAT_PHAN_CAP_TAI_KHOAN_20260817.md
@@ -233,8 +233,7 @@ b6775473e6c5799a241d839d69595947baaa826c0cd7584d7b7c23c7a2fa8cf5  ./supabase/the
 3c102cafc778527b83798f339204dd0465d2f5b87462a748b0cccd4029a3660a  ./supabase/toi_uu_rls.sql
 144bfcf67332f4d0e6e8a3ee21f6f75dfedfa5b1d5a631f2c822b2369c0c4d22  ./sw.js
 f77b98588448a808c51b800c52ddf4920ef30774b10bd27d7f8e9c8be31bd543  ./tai-khoan.html
-c35c93ad50eee9e3ae4ad3b4a8b28c6868e577e3a1131f2d366cc12ddb855b1c  ./tests/fixtures/admin_ai_baseline.json
-d5bb924bf2d1f9a5d3fc68ed80c0e5cc9750b0776cb08fe5f0cc7951f2a40a6f  ./tests/test_admin_ai_core.js
+6aca7d99b4807817562aaec3ab3fb90f5c2815d1425e477394c02a40d6579af6  ./tests/test_admin_ai_core.js
 53fb3e201cf38811bcdd1153587ab35648b3ce37272568b7bb2909b8665e7454  ./tests/test_admin_ai_feedback.js
 b91c561b6cda1b871bd2902829a86a8b2ba5aedbf210eba996815d6a057edd01  ./tests/test_admin_ai_publisher.py
 ffb8b64a5cb8a0288dcdd0302db3751415cbdf2346a6e7d4b8b529883eddd621  ./tests/test_anaphylaxis_integration.js
