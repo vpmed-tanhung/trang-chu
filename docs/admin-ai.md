@@ -3,9 +3,11 @@
 Trang vận hành: https://hotrolamsang.io.vn/admin-ai.html
 
 1. Đăng nhập tài khoản Admin cá nhân hiện có.
-2. Mở “Cấu hình AI & xác thực duyệt”, nhập Gemini API key một lần. Khóa lưu trong Supabase Vault; không dán khóa vào chat hay repository.
+2. Kết nối model ngoài chưa được kích hoạt. Sau khi Admin cho phép phạm vi dữ liệu gửi đến Google Gemini và cập nhật riêng Edge Function admin-ai, cấu hình GEMINI_API_KEY tại Supabase. Không dán khóa vào chat hay repository.
 3. Tải Excel lên trang quản trị. Máy chủ đọc XLS/XLSX, kiểm tra cấu trúc, hợp nhất phạm vi A, so sánh với danh mục đang dùng và giữ các dòng thiếu thông tin.
 4. Mở tác vụ, đối chiếu nguồn và thay đổi, bấm duyệt. Tài khoản cần xác thực TOTP hai bước. GitHub Actions chỉ nhận bản được duyệt, kiểm tra lại hash danh mục nền, chạy kiểm thử và ghi commit; Supabase chỉ đánh dấu đã phát hành khi hash trên website khớp.
+
+Kết nối model ngoài hiện chưa được kích hoạt: máy chủ đang dùng bộ chuẩn hóa/quét/tổng hợp xác định, chưa gửi dữ liệu tới Gemini. Chờ Admin cho phép rõ nguồn dữ liệu và nơi nhận trước khi bật bản có AI.
 
 ## Lịch máy chủ
 
