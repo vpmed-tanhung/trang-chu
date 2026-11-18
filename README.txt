@@ -1,8 +1,14 @@
-VPMED — GHI CHÚ CẬP NHẬT HỆ THỐNG (cập nhật gần nhất: 18/11/2026, bản 5.8.5)
+VPMED — GHI CHÚ CẬP NHẬT HỆ THỐNG (cập nhật gần nhất: 18/11/2026, bản 5.8.10)
 
 Tài liệu này tóm tắt các thay đổi đang có hiệu lực trên website, viết theo đúng
 những gì mã nguồn hiện triển khai. Xem chi tiết kỹ thuật/lịch sử đầy đủ trong
 thư mục docs/changelog/.
+
+ĐIỂM MỚI TRONG BẢN 5.8.10
+- Trình duyệt kiểm tra bản web mới khi mở trang có mạng và dùng bản đã lưu khi
+  ngoại tuyến. Tab đang mở tiếp tục hoạt động tới lần điều hướng tiếp theo.
+- Chuyên mục Tương tác thuốc trong Bản tin Dược hiển thị 37 cặp từ bảng Excel
+  đã nhập và ghi số lượng ngay bên cạnh tên chuyên mục.
 
 ĐIỂM MỚI TRONG BẢN 5.8.5
 - Cảnh giác dược tự lấy dữ liệu mới khi mở công cụ. Lượt cập nhật dữ liệu

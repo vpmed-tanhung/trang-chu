@@ -1,10 +1,10 @@
 {
-  "version": "2026.11.18.81",
-  "displayVersion": "5.8.9",
-  "updatedAt": "2026-11-18T13:31:53+07:00",
-  "note": "Hiển thị đúng 37 cặp tương tác từ bảng nhập và đếm số cặp trong chuyên mục.",
-  "buildId": "v5.8.9-2026.11.18.81",
+  "version": "2026.11.18.82",
+  "displayVersion": "5.8.10",
+  "updatedAt": "2026-11-18T14:12:05+07:00",
+  "note": "Khắc phục trình duyệt giữ bản web cũ khi mở danh mục Tương tác thuốc.",
+  "buildId": "v5.8.10-2026.11.18.82",
   "clinicalDataVersion": "sha256-e6ce8a404fec507be513e915",
-  "previousVersion": "2026.11.18.80",
-  "previousDisplayVersion": "5.8.8"
+  "previousVersion": "2026.11.18.81",
+  "previousDisplayVersion": "5.8.9"
 }

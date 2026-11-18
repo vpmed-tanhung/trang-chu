@@ -1,6 +1,7 @@
 'use strict';
 
-const APP_VERSION = '2026.11.18.81';
+const APP_VERSION = '2026.11.18.82';
+const NAVIGATION_CACHE_RECOVERY_BUILD = '2026.11.18.82';
 const CLINICAL_DATA_VERSION = 'sha256-e6ce8a404fec507be513e915';
 const APP_SHELL_CACHE = `vpmed-shell-${APP_VERSION}`;
 const RUNTIME_CACHE = `vpmed-runtime-${APP_VERSION}`;
@@ -28,7 +29,7 @@ const APP_SHELL = [
   './assets/platform-shell.css?v=20260822-pwa-v1',
   './assets/navy-theme.css?v=20260828-original-colors-pulse-v2',
   './assets/vpmed-access.js?v=20261117-permissions-v1',
-  './assets/platform-shell.js?v=20261118-imported-interactions',
+  './assets/platform-shell.js?v=20261118-navigation-cache',
   './assets/pharmacy-library.css?v=20261118-imported-interactions',
   './assets/pharmacy-library.js?v=20261118-imported-interactions',
   './assets/pharmacy-home.js?v=20261117-home-v1',
@@ -65,10 +66,16 @@ const OFFLINE_PAGE = `<!doctype html>
 <a href="./index.html" style="color:#075f9f;font-weight:800">Về trang chủ ngoại tuyến</a></main></body></html>`;
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(APP_SHELL_CACHE)
-      .then((cache) => cache.addAll(APP_SHELL))
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(APP_SHELL_CACHE);
+    const requests = APP_SHELL.map((path) =>
+      new Request(new URL(path, self.registration.scope), {cache: 'reload'})
+    );
+    await cache.addAll(requests);
+
+    // Thay worker từng giữ HTML cũ trên thiết bị. Tab đang mở giữ nguyên đến lần điều hướng tiếp theo.
+    if (APP_VERSION === NAVIGATION_CACHE_RECOVERY_BUILD) await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', (event) => {
@@ -375,12 +382,12 @@ function withCacheMetadata(response, version) {
 async function networkFirstNavigation(request) {
   const url = new URL(request.url);
   const updateRequested = Boolean(url.searchParams.get('vpmed_update'));
+  const isInstalled = url.searchParams.get('vpmed_app') === 'installed';
   const shell = await caches.open(APP_SHELL_CACHE);
   const runtime = await caches.open(RUNTIME_CACHE);
 
-  /* Không tải HTML mới trong nền. Khi chưa có dấu vpmed_update do chính nút
-     “Cập nhật” tạo ra, tiếp tục phục vụ HTML của build đang được sử dụng. */
-  if (!updateRequested) {
+  // Ứng dụng đã cài tiếp tục dùng bản lưu. Trình duyệt kiểm tra HTML khi người dùng mở trang.
+  if (isInstalled && !updateRequested) {
     const cachedShellPage = await shell.match(request, {ignoreSearch: true});
     if (cachedShellPage) return cachedShellPage;
     const cachedRuntimePage = await runtime.match(request, {ignoreSearch: true});
@@ -389,13 +396,15 @@ async function networkFirstNavigation(request) {
 
   try {
     const response = await fetch(new Request(request, {
-      cache: updateRequested ? 'reload' : 'default'
+      cache: updateRequested ? 'reload' : 'no-cache'
     }));
     if (response.ok) await runtime.put(request, response.clone());
     return response;
   } catch (error) {
     const exact = await runtime.match(request, {ignoreSearch: true});
     if (exact) return exact;
+    const cachedShellPage = await shell.match(request, {ignoreSearch: true});
+    if (cachedShellPage) return cachedShellPage;
     const scopePath = new URL('./', self.registration.scope).pathname;
     const isHome = url.pathname === scopePath || url.pathname === `${scopePath}index.html`;
     if (isHome) {
