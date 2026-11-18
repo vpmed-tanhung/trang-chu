@@ -7,6 +7,10 @@
   var account=document.getElementById('homeUserAccount');
   function authUrl(){var next=(location.pathname.split('/').pop()||'index.html')+location.search+location.hash;return 'tai-khoan.html?next='+encodeURIComponent(next);}
   function redirect(){location.replace(authUrl());}
+  function requireSignInOnPrivateEntry(){
+    if(location.hash||document.documentElement.classList.contains('vpmed-private-entry')||
+      !document.getElementById('public-home-title'))redirect();
+  }
   function readOfflineAccess(){
     try{
       var snapshot=JSON.parse(localStorage.getItem(OFFLINE_ACCESS_KEY)||'null');
@@ -42,7 +46,10 @@
     return true;
   }
   if(!account){redirect();return;}
-  if(!window.supabase){if(!revealOfflineAccess())redirect();return;}
+  window.addEventListener('hashchange',function(){
+    if(document.documentElement.classList.contains('vpmed-auth-checking'))requireSignInOnPrivateEntry();
+  });
+  if(!window.supabase){if(!revealOfflineAccess())requireSignInOnPrivateEntry();return;}
   var client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
   var trigger=document.getElementById('homeUserTrigger'),menu=document.getElementById('homeUserMenu');
   var avatar=document.getElementById('homeUserAvatar'),nameEl=document.getElementById('homeUserName'),metaEl=document.getElementById('homeUserMeta');
@@ -105,7 +112,7 @@
     accessCheckTimer=window.setInterval(verifyStillApproved,10000);
   }
   async function applyVerifiedUser(user){
-    if(!user){if(!revealOfflineAccess(true))redirect();return;}
+    if(!/@vpmed\.vn$/i.test(user.email||'')){redirect();return;}
     var result=await client.from('profiles').select('id,email,full_name,job_title,workplace,account_type,role,status').eq('id',user.id).maybeSingle();
     if(result.error){if(!revealOfflineAccess(true))redirect();return;}
     if(!result.data){await forceDeletedLogout();return;}
@@ -116,7 +123,8 @@
   async function verifyIdentityAndApply(){
     var verified=await client.auth.getUser();
     if(verified.error||!verified.data||!verified.data.user){
-      if(!revealOfflineAccess(true))redirect();
+      var networkUnavailable=!navigator.onLine||verified.error?.name==='AuthRetryableFetchError';
+      if(!networkUnavailable||!revealOfflineAccess(true))requireSignInOnPrivateEntry();
       return;
     }
     await applyVerifiedUser(verified.data.user);
@@ -148,6 +156,15 @@
   logout.addEventListener('click',async function(){logout.disabled=true;if(accessCheckTimer)window.clearInterval(accessCheckTimer);await client.auth.signOut();location.replace('tai-khoan.html');});
   document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')verifyStillApproved();});
   window.addEventListener('focus',verifyStillApproved);
-  verifyIdentityAndApply().catch(function(){if(!revealOfflineAccess(true))redirect();});
-  client.auth.onAuthStateChange(function(event){if(event==='SIGNED_OUT'&&!passwordRedirectPending)redirect();else if(!routed&&event==='SIGNED_IN')setTimeout(verifyIdentityAndApply,0);});
+  verifyIdentityAndApply().catch(function(){if(!revealOfflineAccess())requireSignInOnPrivateEntry();});
+  client.auth.onAuthStateChange(function(event){
+    if(event==='SIGNED_OUT'&&!passwordRedirectPending){
+      try{localStorage.removeItem(OFFLINE_ACCESS_KEY);}catch(error){}
+      if(routed||window.VPMED_AUTH_OFFLINE){
+        document.documentElement.classList.add('vpmed-auth-checking');
+        redirect();
+      }
+      else requireSignInOnPrivateEntry();
+    }else if(!routed&&event==='SIGNED_IN')setTimeout(verifyIdentityAndApply,0);
+  });
 })();

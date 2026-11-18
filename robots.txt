@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hotrolamsang.io.vn/sitemap.xml

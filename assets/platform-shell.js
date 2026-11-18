@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.11.18.85';
+  const BUILD_VERSION = '2026.11.18.86';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -70,7 +70,7 @@
     'cap-cuu-phan-ve': {
       styles: [],
       scripts: [],
-      frame: 'cap-cuu-phan-ve.html?v=20260829-no-clip-v2'
+      frame: 'cap-cuu-phan-ve.html?v=20261118-tool-access'
     },
     dose: DOSE_CLINICAL,
     'antibiotic-consultation': {
@@ -698,6 +698,17 @@
     schedulePrefetch('dose');
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialize, {once: true});
-  else initialize();
+  function startAfterAuthorization() {
+    if (document.documentElement.classList.contains('vpmed-auth-checking')) {
+      window.addEventListener('vpmed-auth-ready', startAfterAuthorization);
+      window.addEventListener('vpmed-auth-offline', startAfterAuthorization);
+      return;
+    }
+    window.removeEventListener('vpmed-auth-ready', startAfterAuthorization);
+    window.removeEventListener('vpmed-auth-offline', startAfterAuthorization);
+    initialize();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startAfterAuthorization, {once: true});
+  else startAfterAuthorization();
 })();

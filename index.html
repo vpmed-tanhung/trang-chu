@@ -2,24 +2,63 @@
 <html lang="vi" class="vpmed-auth-checking">
 <head>
   <meta charset="utf-8">
-  <meta name="vpmed-build-version" content="2026.11.18.85">
+  <meta name="vpmed-build-version" content="2026.11.18.86">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#075f9f">
   <meta name="application-name" content="VPMED Dược lâm sàng">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Khoa Dược | Bệnh viện VPMED Tân Hưng</title>
+  <title>Hỗ trợ Dược lâm sàng | Bệnh viện VPMED Tân Hưng</title>
+  <meta name="description" content="Trang giới thiệu Hệ thống Hỗ trợ Dược lâm sàng và hoạt động của Khoa Dược Bệnh viện VPMED Tân Hưng.">
+  <link rel="canonical" href="https://hotrolamsang.io.vn/">
+  <link rel="icon" href="/assets/icon-192.png" type="image/png" sizes="192x192">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VPMED Dược lâm sàng">
+  <meta property="og:title" content="Hỗ trợ Dược lâm sàng | Bệnh viện VPMED Tân Hưng">
+  <meta property="og:description" content="Hệ thống hỗ trợ tra cứu thuốc và thực hành dược lâm sàng của Khoa Dược Bệnh viện VPMED Tân Hưng.">
+  <meta property="og:url" content="https://hotrolamsang.io.vn/">
+  <meta property="og:locale" content="vi_VN">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": "https://hotrolamsang.io.vn/",
+    "name": "VPMED Dược lâm sàng",
+    "alternateName": "hotrolamsang.io.vn",
+    "inLanguage": "vi"
+  }
+  </script>
+  <script>
+    if (location.hash || new URLSearchParams(location.search).get('vpmed_app') === 'installed' ||
+        navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches) {
+      document.documentElement.classList.add('vpmed-private-entry');
+    }
+  </script>
   <link rel="manifest" href="manifest.json?v=20260822-installed-data-channel-v1">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
   <link rel="stylesheet" href="assets/style.css?v=20260829-scroll-layout-v2">
   <link rel="stylesheet" href="assets/disclaimer-gate.css?v=20260822-disclaimer-gate-v1">
-  <link rel="stylesheet" href="assets/vpmed-access.css?v=20260814-password-change-v1">
+  <link rel="stylesheet" href="assets/vpmed-access.css?v=20261118-public-home">
   <link rel="stylesheet" href="assets/responsive-polish.css?v=20260712-balanced">
   <link rel="stylesheet" href="assets/platform-shell.css?v=20260822-pwa-v1">
   <!-- Chỉ chuẩn hóa bố cục thẻ và hiệu ứng cảnh báo; giữ nguyên bảng màu sáng gốc -->
   <link rel="stylesheet" href="assets/navy-theme.css?v=20260828-original-colors-pulse-v2">
 </head>
 <body>
+<main class="vpmed-public-home" aria-labelledby="public-home-title">
+  <header class="vpmed-public-brand">
+    <img src="assets/logo-vpmed.png" alt="" width="80" height="48">
+    <div><strong>VPMED Dược lâm sàng</strong><p>Khoa Dược · Bệnh viện VPMED Tân Hưng</p></div>
+  </header>
+  <section class="vpmed-public-intro">
+    <h1 id="public-home-title">Hệ thống Hỗ trợ Dược lâm sàng</h1>
+    <p>Khoa Dược Bệnh viện VPMED Tân Hưng phụ trách cung ứng, quản lý và giám sát an toàn sử dụng thuốc. Hệ thống Hỗ trợ Dược lâm sàng phục vụ công tác chuyên môn của nhân viên y tế tại bệnh viện.</p>
+    <a class="btn btn-primary" href="tai-khoan.html?next=index.html%23home">Đăng nhập để sử dụng</a>
+  </section>
+  <footer class="vpmed-public-footer">
+    <a href="phieu-danh-gia.html">Phiếu đánh giá hệ thống</a>
+  </footer>
+</main>
 <header class="topbar">
   <div class="topbar-inner">
     <a class="brand" href="#home" data-go="home">
@@ -979,7 +1018,7 @@ Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối
 </dialog>
 
 <footer class="site-footer">
-  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v5.8.13</span></div>
+  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v5.8.14</span></div>
   <div><a class="nav-evaluation" href="phieu-danh-gia.html" target="_blank" rel="noopener">Phiếu đánh giá phần mềm</a> · <a href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a> · Công cụ hỗ trợ, không thay thế đánh giá lâm sàng.</div>
   <details class="site-policy" id="sitePolicy">
     <summary>Chính sách sử dụng và minh bạch nguồn</summary>
@@ -995,9 +1034,9 @@ Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối
     </div>
   </details>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3" integrity="sha384-l8ah+VgaWtk1mvOe9VC+OirC6qHFF4yH7l7mKRidV9MSti3E9F463bMp6ZVN4kuC" crossorigin="anonymous"></script>
-<script defer src="assets/vpmed-access.js?v=20261117-permissions-v1"></script>
-<script defer src="assets/platform-shell.js?v=20261118-pediatric-catalog"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3" integrity="sha384-l8ah+VgaWtk1mvOe9VC+OirC6qHFF4yH7l7mKRidV9MSti3E9F463bMp6ZVN4kuC" crossorigin="anonymous"></script>
+<script defer src="assets/vpmed-access.js?v=20261118-public-home"></script>
+<script defer src="assets/platform-shell.js?v=20261118-public-home"></script>
 <script defer src="assets/disclaimer-gate.js?v=20260822-disclaimer-gate-v1"></script>
 <script defer src="assets/update-notifier.js?v=20261118-major-only"></script>
 </body>

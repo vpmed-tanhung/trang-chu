@@ -24,7 +24,7 @@ assert(anaphylaxisView.includes('class="back-home-btn" data-go="home"'),
   'View phản vệ phải có nút quay về dùng chung như các module khác');
 assert(shell.includes("'cap-cuu-phan-ve':"),
   'Platform shell phải đăng ký bundle Cấp cứu phản vệ');
-assert(shell.includes("frame: 'cap-cuu-phan-ve.html?v=20260829-no-clip-v2'"),
+assert(shell.includes("frame: 'cap-cuu-phan-ve.html?v=20261118-tool-access'"),
   'Module phản vệ phải được nạp lười trong view nội bộ');
 assert(index.includes('class="clinical-tool-frame anaphylaxis-frame"') && index.includes('scrolling="no"'),
   'Khung phản vệ phải tắt thanh cuộn riêng');
@@ -125,7 +125,7 @@ assert(moduleHtml.includes('https://vbpl.vn/boyte/Pages/vbpq-van-ban-goc.aspx?It
 
 for (const cached of [
   "'./assets/navy-theme.css?v=20260828-original-colors-pulse-v2'",
-  "'./cap-cuu-phan-ve.html?v=20260829-no-clip-v2'"
+  "'./cap-cuu-phan-ve.html?v=20261118-tool-access'"
 ]) {
   assert(worker.includes(cached), `Service worker thiếu tài nguyên ${cached}`);
 }

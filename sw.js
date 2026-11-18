@@ -1,6 +1,6 @@
 'use strict';
 
-const APP_VERSION = '2026.11.18.85';
+const APP_VERSION = '2026.11.18.86';
 const NAVIGATION_CACHE_RECOVERY_BUILD = '2026.11.18.82';
 const CLINICAL_DATA_VERSION = 'sha256-656039bef5cf6036c52c9085';
 const APP_SHELL_CACHE = `vpmed-shell-${APP_VERSION}`;
@@ -24,12 +24,12 @@ const APP_SHELL = [
   './manifest.json',
   './assets/style.css?v=20260829-scroll-layout-v2',
   './assets/disclaimer-gate.css?v=20260822-disclaimer-gate-v1',
-  './assets/vpmed-access.css?v=20260814-password-change-v1',
+  './assets/vpmed-access.css?v=20261118-public-home',
   './assets/responsive-polish.css?v=20260712-balanced',
   './assets/platform-shell.css?v=20260822-pwa-v1',
   './assets/navy-theme.css?v=20260828-original-colors-pulse-v2',
-  './assets/vpmed-access.js?v=20261117-permissions-v1',
-  './assets/platform-shell.js?v=20261118-pediatric-catalog',
+  './assets/vpmed-access.js?v=20261118-public-home',
+  './assets/platform-shell.js?v=20261118-public-home',
   './assets/pharmacy-library.css?v=20261118-imported-interactions',
   './assets/pharmacy-library.js?v=20261118-imported-interactions',
   './assets/pharmacy-home.js?v=20261117-home-v1',
@@ -42,7 +42,8 @@ const APP_SHELL = [
   './assets/icon-512.png',
   './assets/icon-maskable-512.png',
   './assets/app-version.json',
-  './cap-cuu-phan-ve.html?v=20260829-no-clip-v2'
+  './assets/vpmed-tool-entry.js?v=20261118-tool-access',
+  './cap-cuu-phan-ve.html?v=20261118-tool-access'
 ];
 
 const CLINICAL_PATH_PATTERN = /(?:^|\/)(?:data|sources)\/|\/assets\/(?:.*(?:data|database|profile|medicine|alert|icd10|disease|contra|renal|infusion|clinical|dosing|interaction|antibiotic|pharmacovigilance|pregnancy|hepatotoxicity|injectable|stock|source).*)\.(?:js|json|csv)$/i;

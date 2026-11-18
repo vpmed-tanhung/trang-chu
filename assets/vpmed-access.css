@@ -1,4 +1,20 @@
 html.vpmed-auth-checking .topbar,html.vpmed-auth-checking .app-shell,html.vpmed-auth-checking .site-footer{visibility:hidden!important}
+.vpmed-public-home{display:none}
+html.vpmed-auth-checking:not(.vpmed-private-entry) .vpmed-public-home{display:block}
+html.vpmed-auth-checking:not(.vpmed-private-entry) :is(.topbar,.app-shell,.site-footer){display:none!important}
+html.vpmed-auth-checking #disclaimerGate{display:none!important}
+html.vpmed-auth-checking:not(.vpmed-private-entry) body.disclaimer-gate-open{overflow:visible}
+.vpmed-public-brand,.vpmed-public-intro,.vpmed-public-footer{max-width:1080px;margin:0 auto;padding-inline:clamp(20px,5vw,56px)}
+.vpmed-public-brand{display:flex;align-items:center;gap:16px;padding-block:24px;border-bottom:1px solid var(--line)}
+.vpmed-public-brand img{width:80px;height:48px;object-fit:contain}
+.vpmed-public-brand strong{font-size:clamp(17px,3vw,22px);color:var(--navy)}
+.vpmed-public-brand p{margin:3px 0 0;font-size:14px}
+.vpmed-public-intro{padding-block:clamp(60px,11vw,122px);background:linear-gradient(125deg,#edf6f5,#f6fafc 65%);border-bottom:1px solid var(--line)}
+.vpmed-public-intro h1{max-width:800px;margin:0;color:var(--navy);font-size:clamp(32px,7vw,60px);line-height:1.14;letter-spacing:-.025em}
+.vpmed-public-intro p{max-width:660px;margin:22px 0 26px;font-size:clamp(16px,2.5vw,19px);line-height:1.65}
+.vpmed-public-intro .btn{display:inline-flex;align-items:center;min-height:44px}
+.vpmed-public-footer{text-align:left}
+.vpmed-public-footer a{color:var(--navy);text-decoration:underline;text-underline-offset:3px}
 .home-user-account{position:relative;flex:0 0 auto;max-width:250px}
 .home-user-account[hidden],.home-user-menu[hidden],.home-admin-link[hidden]{display:none!important}
 .home-user-trigger{width:100%;min-width:190px;max-width:250px;display:flex;align-items:center;gap:9px;padding:7px 10px 7px 8px;border:1px solid #d6e5ef;border-radius:14px;background:#fff;color:#102d45;box-shadow:0 5px 15px rgba(16,45,69,.08);text-align:left;cursor:pointer}

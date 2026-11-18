@@ -1,10 +1,10 @@
 {
-  "version": "2026.11.18.85",
-  "displayVersion": "5.8.13",
-  "updatedAt": "2026-11-18T19:55:42+07:00",
-  "note": "Đối chiếu toàn bộ danh mục kháng sinh; mở rộng bảng liều Nhi, mã HIS và nguồn trực tiếp theo từng mức liều.",
-  "buildId": "v5.8.13-2026.11.18.85",
+  "version": "2026.11.18.86",
+  "displayVersion": "5.8.14",
+  "updatedAt": "2026-11-18T20:38:07+07:00",
+  "note": "Trang chủ giới thiệu công khai, bổ sung thông tin tìm kiếm và sitemap. Công cụ lâm sàng tiếp tục yêu cầu tài khoản đã duyệt.",
+  "buildId": "v5.8.14-2026.11.18.86",
   "clinicalDataVersion": "sha256-656039bef5cf6036c52c9085",
-  "previousVersion": "2026.11.18.84",
-  "previousDisplayVersion": "5.8.12"
+  "previousVersion": "2026.11.18.85",
+  "previousDisplayVersion": "5.8.13"
 }
