@@ -56,14 +56,15 @@
   function setPasswordMessage(message,type){passwordMessage.textContent=message||'';passwordMessage.className='password-change-message'+(type==='success'?' success':'');}
   function openPasswordModal(){closeMenu();passwordForm.reset();setPasswordMessage('');passwordModal.hidden=false;document.body.classList.add('password-modal-open');window.setTimeout(function(){document.getElementById('currentPassword').focus();},0);}
   function closePasswordModal(){passwordModal.hidden=true;document.body.classList.remove('password-modal-open');passwordForm.reset();setPasswordMessage('');}
-  function reveal(user,profile){
+  function reveal(user,profile,canEditContent){
     if(routed)return;routed=true;
     currentUser=user;
-    var data=user.user_metadata||{};var workplace=profile.workplace||data.department||data.workplace||profile.full_name||'';var isDepartment=profile.account_type==='department'||profile.job_title==='Tài khoản khoa/phòng';var displayName=(profile.role==='admin'&&!isDepartment)?(profile.full_name||user.email):(workplace||profile.full_name||user.email||'Khoa/phòng');var detail=profile.role==='admin'?'Quản trị viên':'Tài khoản khoa/phòng';
+    var data=user.user_metadata||{};var workplace=profile.workplace||data.department||data.workplace||profile.full_name||'';var isDepartment=profile.account_type==='department'||profile.job_title==='Tài khoản khoa/phòng';var displayName=(profile.role==='admin'&&!isDepartment)?(profile.full_name||user.email):(workplace||profile.full_name||user.email||'Khoa/phòng');var detail=profile.role==='admin'?'Quản trị viên':canEditContent?'Biên tập nội dung':'Chỉ xem nội dung';
     avatar.textContent=initials(displayName);nameEl.textContent=displayName;metaEl.textContent=detail;menuName.textContent=displayName;menuDetail.textContent=detail+'\n'+(profile.email||user.email||'');
     if(adminLink)adminLink.hidden=profile.role!=='admin';account.hidden=false;document.documentElement.classList.remove('vpmed-auth-checking');
     try{localStorage.setItem(OFFLINE_ACCESS_KEY,JSON.stringify({id:user.id,email:user.email||'',displayName:displayName,role:profile.role||'user',status:profile.status,verifiedAt:Date.now()}));}catch(error){}
-    window.VPMED_AUTH={client:client,user:user,profile:profile};window.dispatchEvent(new CustomEvent('vpmed-auth-ready',{detail:window.VPMED_AUTH}));
+    var contentButton=document.getElementById('homeEditContent');if(contentButton)contentButton.hidden=!canEditContent;
+    window.VPMED_AUTH={client:client,user:user,profile:profile,canEditContent:canEditContent===true};window.dispatchEvent(new CustomEvent('vpmed-auth-ready',{detail:window.VPMED_AUTH}));
     client.rpc('touch_my_last_login').then(function(){});
   }
   async function forceDeletedLogout(){
@@ -89,6 +90,14 @@
       }
       if(!result.data){await forceDeletedLogout();return;}
       if(result.data.status!=='approved'){redirect();return;}
+      var permission=await client.rpc('can_edit_pharmacy_content');
+      var canEdit=!permission.error&&permission.data===true;
+      if(window.VPMED_AUTH&&window.VPMED_AUTH.canEditContent!==canEdit){
+        window.VPMED_AUTH.canEditContent=canEdit;
+        var contentButton=document.getElementById('homeEditContent');if(contentButton)contentButton.hidden=!canEdit;
+        var permissionLabel=window.VPMED_AUTH.profile.role==='admin'?'Quản trị viên':canEdit?'Biên tập nội dung':'Chỉ xem nội dung';metaEl.textContent=permissionLabel;menuDetail.textContent=permissionLabel+'\n'+(currentUser.email||'');
+        window.dispatchEvent(new CustomEvent('vpmed-content-permissions-changed',{detail:window.VPMED_AUTH}));
+      }
     }finally{accessCheckBusy=false;}
   }
   function startAccessWatch(){
@@ -101,7 +110,8 @@
     if(result.error){if(!revealOfflineAccess(true))redirect();return;}
     if(!result.data){await forceDeletedLogout();return;}
     if(result.data.status!=='approved'){redirect();return;}
-    reveal(user,result.data);startAccessWatch();
+    var permission=await client.rpc('can_edit_pharmacy_content');
+    reveal(user,result.data,!permission.error&&permission.data===true);startAccessWatch();
   }
   async function verifyIdentityAndApply(){
     var verified=await client.auth.getUser();
@@ -112,6 +122,7 @@
     await applyVerifiedUser(verified.data.user);
   }
   trigger.addEventListener('click',function(){var open=menu.hidden;menu.hidden=!open;trigger.setAttribute('aria-expanded',open?'true':'false');});
+  var contentEntry=document.getElementById('homeEditContent');if(contentEntry)contentEntry.addEventListener('click',closeMenu);
   document.addEventListener('click',function(event){if(!account.contains(event.target))closeMenu();});
   changePassword.addEventListener('click',openPasswordModal);
   document.querySelectorAll('[data-close-password-modal]').forEach(function(button){button.addEventListener('click',closePasswordModal);});

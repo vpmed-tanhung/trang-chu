@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.08.31.70';
+  const BUILD_VERSION = '2026.11.18.74';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -60,9 +60,15 @@
     ]
   });
 
+  const PHARMACY_LIBRARY = Object.freeze({
+    styles: ['assets/pharmacy-library.css?v=20261118-direct-pdf','assets/pharmacy-home.css?v=20261117-home-v1'],
+    scripts: ['assets/pharmacy-library.js?v=20261118-direct-pdf','assets/pharmacy-home.js?v=20261117-home-v1']
+  });
   const FEATURE_BUNDLES = Object.freeze({
-    home: {styles: [], scripts: []},
+    home: PHARMACY_LIBRARY,
     sources: {styles: [], scripts: []},
+    'thong-tin-thuoc': PHARMACY_LIBRARY,
+    'huong-dan-su-dung': PHARMACY_LIBRARY,
     'cap-cuu-phan-ve': {
       styles: [],
       scripts: [],
@@ -390,10 +396,11 @@
 
   function showView(name, options = {}) {
     const target = document.getElementById(`view-${name}`);
+    document.body.classList.toggle('pharmacy-home-active', name === 'home');
     if (!target) throw new Error(`Thiếu vùng hiển thị cho module ${name}`);
     const viewChanged = !target.classList.contains('active');
     document.querySelectorAll('.view').forEach((view) => view.classList.toggle('active', view === target));
-    document.querySelectorAll('.main-nav button').forEach((button) => button.classList.toggle('active', button.dataset.view === name));
+    document.querySelectorAll('.main-nav button').forEach((button) => button.classList.toggle('active', button.dataset.view === name && !button.dataset.scrollTarget));
     document.getElementById('mainNav')?.classList.remove('open');
     if (!options.fromHistory) history.replaceState(null, '', `#${name}`);
     const frame = target.querySelector('[data-feature-frame]');
@@ -680,7 +687,14 @@
       const name = trigger.dataset.open || trigger.dataset.view || trigger.dataset.go;
       if (!name) return;
       event.preventDefault();
-      openFeature(name, {source: trigger.dataset.open ? 'feature-card' : 'navigation'});
+      openFeature(name, {
+        source: trigger.dataset.open ? 'feature-card' : 'navigation',
+        preserveScroll: Boolean(trigger.dataset.scrollTarget)
+      }).then(() => {
+        if (trigger.dataset.scrollTarget) {
+          document.getElementById(trigger.dataset.scrollTarget)?.scrollIntoView({block: 'start', behavior: 'smooth'});
+        }
+      });
     }, true);
     document.getElementById('menuBtn')?.addEventListener('click', () => document.getElementById('mainNav')?.classList.toggle('open'));
     const intentHandler = (event) => {

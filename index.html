@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="vi">
+<html lang="vi" class="vpmed-auth-checking">
 <head>
   <meta charset="utf-8">
-  <meta name="vpmed-build-version" content="2026.08.31.70">
+  <meta name="vpmed-build-version" content="2026.11.18.74">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#075f9f">
   <meta name="application-name" content="VPMED Dược lâm sàng">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Hệ thống Hỗ trợ Dược lâm sàng | VPMED Tân Hưng</title>
+  <title>Khoa Dược | Bệnh viện VPMED Tân Hưng</title>
   <link rel="manifest" href="manifest.json?v=20260822-installed-data-channel-v1">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
   <link rel="stylesheet" href="assets/style.css?v=20260829-scroll-layout-v2">
@@ -18,244 +18,23 @@
   <link rel="stylesheet" href="assets/platform-shell.css?v=20260822-pwa-v1">
   <!-- Chỉ chuẩn hóa bố cục thẻ và hiệu ứng cảnh báo; giữ nguyên bảng màu sáng gốc -->
   <link rel="stylesheet" href="assets/navy-theme.css?v=20260828-original-colors-pulse-v2">
-  <style id="systemLoaderCriticalStyle">
-/* VPMED - màn hình khởi động hệ thống. Chỉ tác động lên #systemLoader. */
-html.system-loading,
-html.system-loading body {
-  overflow: hidden !important;
-  overscroll-behavior: none;
-  height: 100%;
-}
-
-/* Giữ giao diện chính ẩn hoàn toàn cho đến khi loader kết thúc. Dùng
-   visibility thay vì display để các mô-đun vẫn có thể khởi tạo bình thường. */
-html.system-loading body > :not(#systemLoader):not(script):not(style) {
-  visibility: hidden !important;
-}
-
-#systemLoader.system-loader {
-  position: fixed;
-  inset: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1000000;
-  display: grid;
-  place-items: center;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  height: -webkit-fill-available;
-  padding: 20px;
-  /* Nền đặc trước, gradient trang trí phủ lên trên - đảm bảo không có khe hở
-     lộ giao diện thật kể cả khi trình duyệt vẽ gradient chậm hơn 1 khung hình. */
-  background-color: #eaf5fc;
-  background-image:
-    radial-gradient(circle at 50% 4%, rgba(83, 180, 235, .24), transparent 33%),
-    linear-gradient(160deg, #f7fbff 0%, #eaf5fc 52%, #f8fbfd 100%);
-  opacity: 1;
-  visibility: visible;
-  isolation: isolate;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  transition: opacity .42s ease, visibility .42s ease;
-}
-
-#systemLoader.system-loader.is-hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-#systemLoader .system-loader-card {
-  width: min(440px, 100%);
-  padding: 34px 30px 28px;
-  text-align: center;
-  background: rgba(255, 255, 255, .97);
-  border: 1px solid rgba(7, 103, 168, .14);
-  border-radius: 24px;
-  box-shadow: 0 26px 70px rgba(20, 65, 99, .16);
-}
-
-#systemLoader .system-loader-logo-wrap {
-  position: relative;
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 18px;
-  display: grid;
-  place-items: center;
-}
-
-#systemLoader .system-loader-logo-wrap::before,
-#systemLoader .system-loader-logo-wrap::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-}
-
-#systemLoader .system-loader-logo-wrap::before {
-  border: 2px solid rgba(7, 103, 168, .12);
-}
-
-#systemLoader .system-loader-logo-wrap::after {
-  border: 3px solid transparent;
-  border-top-color: #0875b8;
-  border-right-color: #18a0c6;
-  -webkit-transform-origin: 50% 50%;
-  transform-origin: 50% 50%;
-  will-change: transform;
-  -webkit-animation: vpmedLoaderSpin 1.15s linear infinite;
-  animation: vpmedLoaderSpin 1.15s linear infinite;
-}
-
-#systemLoader .system-loader-logo {
-  width: 76px;
-  height: 58px;
-  object-fit: contain;
-  position: relative;
-  z-index: 1;
-}
-
-#systemLoader .system-loader-kicker {
-  margin-bottom: 7px;
-  color: #0870ad;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: .13em;
-  text-transform: uppercase;
-}
-
-#systemLoader .system-loader-title {
-  margin: 0;
-  color: #063b67;
-  font-size: clamp(20px, 4vw, 25px);
-  font-weight: 900;
-  line-height: 1.28;
-}
-
-#systemLoader .system-loader-subtitle {
-  margin: 7px 0 0;
-  color: #5a7285;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-#systemLoader .system-loader-progress {
-  height: 8px;
-  margin-top: 25px;
-  overflow: hidden;
-  background: #e4edf3;
-  border-radius: 999px;
-}
-
-#systemLoader .system-loader-progress-bar {
-  position: relative;
-  width: 7%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #0870b1, #13a1c8);
-  transition: width .34s ease;
-}
-
-#systemLoader .system-loader-progress-bar::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  width: 38%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .72), transparent);
-  transform: translateX(-130%);
-  animation: vpmedLoaderShimmer 1.05s ease-in-out infinite;
-}
-
-#systemLoader .system-loader-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  min-height: 21px;
-  margin-top: 12px;
-  color: #5d7485;
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-#systemLoader .system-loader-status { text-align: left; }
-#systemLoader .system-loader-percent {
-  flex: 0 0 auto;
-  color: #075f9f;
-  font-weight: 900;
-  font-variant-numeric: tabular-nums;
-}
-
-#systemLoader .system-loader-note {
-  margin: 18px 0 0;
-  color: #7a8d9b;
-  font-size: 11px;
-  line-height: 1.45;
-}
-
-@-webkit-keyframes vpmedLoaderSpin {
-  from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
-}
-@keyframes vpmedLoaderSpin {
-  from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
-}
-@keyframes vpmedLoaderShimmer { to { transform: translateX(360%); } }
-
-@media (max-width: 560px) {
-  #systemLoader.system-loader { padding: 18px; }
-  #systemLoader .system-loader-card { padding: 29px 21px 24px; border-radius: 21px; }
-  #systemLoader .system-loader-logo-wrap { width: 88px; height: 88px; }
-  #systemLoader .system-loader-logo { width: 69px; height: 52px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  /* Vẫn giữ chỉ báo đang tải trên máy tính, nhưng quay chậm hơn và bỏ shimmer
-     để tôn trọng tùy chọn giảm chuyển động của hệ điều hành. */
-  #systemLoader .system-loader-logo-wrap::after {
-    -webkit-animation: vpmedLoaderSpin 2.4s linear infinite;
-    animation: vpmedLoaderSpin 2.4s linear infinite;
-  }
-  #systemLoader .system-loader-progress-bar::after {
-    -webkit-animation: none;
-    animation: none;
-  }
-}
-  </style>
-  <script>document.documentElement.classList.add('vpmed-auth-checking','system-loading');</script>
-  <script defer src="assets/system-loader.js?v=20260828-init-flow-v3"></script>
 </head>
 <body>
-<div id="systemLoader" class="system-loader" role="status" aria-live="polite" aria-label="Đang khởi tạo hệ thống">
-  <div class="system-loader-card">
-    <div class="system-loader-logo-wrap"><img class="system-loader-logo" src="assets/logo-vpmed.png" alt=""></div>
-    <div class="system-loader-kicker">VPMED TÂN HƯNG</div>
-    <h1 class="system-loader-title">Hệ thống Hỗ trợ lâm sàng</h1>
-    <p class="system-loader-subtitle">Đang khởi tạo tài nguyên và dữ liệu cần thiết</p>
-    <div class="system-loader-progress" aria-hidden="true"><div id="systemLoaderBar" class="system-loader-progress-bar" style="width:8%"></div></div>
-    <div class="system-loader-meta"><span id="systemLoaderStatus" class="system-loader-status">Đang bắt đầu hệ thống…</span><strong id="systemLoaderPercent" class="system-loader-percent">8%</strong></div>
-    <p class="system-loader-note">Màn hình chính sẽ tự mở khi quá trình khởi tạo hoàn tất.</p>
-  </div>
-</div>
 <header class="topbar">
   <div class="topbar-inner">
     <a class="brand" href="#home" data-go="home">
       <img class="brand-logo" src="assets/logo-vpmed.png" alt="Logo Bệnh viện VPMED Tân Hưng">
-      <div><strong>Hệ thống Hỗ trợ – Dược lâm sàng</strong><span>Bệnh viện VPMED Tân Hưng</span></div>
+      <div><strong data-home-content="departmentName">Khoa Dược</strong><span data-home-content="hospitalName">Bệnh viện VPMED Tân Hưng</span></div>
     </a>
     <button class="menu-btn" id="menuBtn" aria-label="Mở menu">☰</button>
-    <nav class="main-nav" id="mainNav">
-      <button data-view="home" class="active">Trang chủ</button>
+    <nav class="main-nav" id="mainNav" aria-label="Điều hướng chính">
+      <button type="button" data-view="home" data-scroll-target="gioi-thieu" class="active">Giới thiệu</button>
+      <button type="button" data-view="home" data-scroll-target="chuc-nang">Chức năng</button>
+      <button type="button" data-view="home" data-scroll-target="cong-cu-lam-sang">Công cụ lâm sàng</button>
       <button type="button" class="nav-emergency" data-view="cap-cuu-phan-ve">Cấp cứu phản vệ</button>
-      <a class="nav-evaluation" href="phieu-danh-gia.html" target="_blank" rel="noopener">Đánh giá</a>
-      <a class="facebook-text-link" href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a>
-    
-      <button data-view="sources">Nguồn</button>
+      <button type="button" data-view="thong-tin-thuoc">Tài liệu</button>
+      <button type="button" data-view="home" data-scroll-target="ban-tin">Bản tin Dược</button>
+      <button type="button" data-view="home" data-scroll-target="lien-he">Liên hệ</button>
     </nav>
     <div class="home-user-account" id="homeUserAccount" hidden>
       <button class="home-user-trigger" id="homeUserTrigger" type="button" aria-haspopup="true" aria-expanded="false">
@@ -269,6 +48,7 @@ html.system-loading body > :not(#systemLoader):not(script):not(style) {
       <div class="home-user-menu" id="homeUserMenu" hidden>
         <div class="home-user-menu-name" id="homeUserMenuName">Người dùng</div>
         <div class="home-user-menu-detail" id="homeUserMenuDetail">Tài khoản khoa/phòng</div>
+        <button type="button" id="homeEditContent" data-view="home" data-scroll-target="gioi-thieu" hidden>Biên tập nội dung</button>
         <a class="home-admin-link" id="homeAdminLink" href="tai-khoan.html#admin" hidden>Quản trị tài khoản</a>
         <button class="home-password-action" type="button" id="homeChangePassword">Đổi mật khẩu</button>
         <button type="button" id="homeUserLogout">Đăng xuất</button>
@@ -334,18 +114,38 @@ html.system-loading body > :not(#systemLoader):not(script):not(style) {
 
 <main class="app-shell">
   <section class="view active" id="view-home">
-    <div class="hero-grid hero-grid-single">
-      <div class="hero-panel">
-        <div class="eyebrow">Khoa Dược · Dược lâm sàng</div>
-        <h1>Hệ thống hỗ trợ lâm sàng</h1>
-        <div class="hero-intro">
-          <p>Tra cứu thuốc, tính liều và hỗ trợ an toàn điều trị.</p>
+    <section class="home-masthead" id="gioi-thieu" aria-labelledby="home-hero-title">
+      <div class="home-masthead-inner">
+        <div>
+          <span class="home-eyebrow">Khoa Dược · VPMED Tân Hưng</span>
+          <h1 id="home-hero-title" data-home-content="heroTitle">Bảo đảm thuốc an toàn, hợp lý và kịp thời cho từng người bệnh</h1>
+          <p data-home-content="heroLead" class="home-lede">Khoa Dược chịu trách nhiệm cung ứng, quản lý, tư vấn sử dụng thuốc và giám sát an toàn dùng thuốc trong toàn bệnh viện; phối hợp với các khoa lâm sàng để tối ưu hóa điều trị cho người bệnh.</p>
+          <div class="home-hero-actions"><button type="button" class="btn home-primary" data-view="home" data-scroll-target="ban-tin">Xem bản tin Dược <span aria-hidden="true">→</span></button><button type="button" class="btn home-secondary" data-view="home" data-scroll-target="cong-cu-lam-sang">Công cụ lâm sàng</button></div>
+          <button type="button" class="home-editor-button" data-home-edit="intro" hidden>✎ Chỉnh sửa</button>
         </div>
+        <aside class="home-quick-panel" aria-labelledby="home-quick-title">
+          <div class="home-quick-heading"><h2 id="home-quick-title">Thông tin nhanh</h2><button type="button" class="home-editor-button" data-home-edit="quick" hidden>✎ Chỉnh sửa</button></div>
+          <dl class="home-quick-grid">
+            <div class="home-quick-hours"><dt>Giờ làm việc</dt><dd class="home-hours"><span>Mùa hè<b data-home-content="summerHours">07:00 – 17:00</b><small data-home-content="workingDays">Thứ 2 đến Chủ nhật</small></span><span>Mùa đông<b data-home-content="winterHours">07:00 – 16:30</b><small data-home-content="workingDays">Thứ 2 đến Chủ nhật</small></span></dd></div>
+            <div><dt>Vị trí</dt><dd data-home-content="location">Tầng 3, Nhà A</dd></div>
+            <div><dt>Trưởng khoa</dt><dd data-home-content="headName">DS. VŨ THỊ TUYÊN</dd></div>
+            <div><dt>Trực thường trú</dt><dd><a data-home-phone href="tel:0986386576" data-home-content="phone">0986.386.576</a></dd></div>
+          </dl>
+        </aside>
       </div>
-    </div>
-
-    <section class="section-card">
-      <div class="section-heading"><div><span class="kicker">Công cụ lâm sàng</span></div></div>
+    </section>
+    <section class="home-responsibility-note home-responsibility-note--compact" aria-label="Tuyên bố trách nhiệm">
+      <span>⚠️ Công cụ hỗ trợ quyết định lâm sàng, không thay thế đánh giá chuyên môn trực tiếp.</span>
+      <button type="button" class="home-responsibility-reopen" id="reopenDisclaimerBtn">Xem lại Tuyên bố trách nhiệm</button>
+    </section>
+    <section class="home-section" id="chuc-nang" aria-labelledby="home-functions-title">
+      <span class="home-eyebrow">Chuyên môn & Trách nhiệm</span><div class="home-section-heading"><h2 class="home-section-title" id="home-functions-title" data-home-content="functionsTitle">Chức năng – nhiệm vụ</h2><button type="button" class="home-editor-button" data-home-edit="functions" hidden>✎ Chỉnh sửa</button></div>
+      <p class="home-section-lead" data-home-content="functionsLead">Khoa Dược là khoa chuyên môn, trực thuộc sự quản lý và chỉ đạo trực tiếp của Ban Giám đốc Bệnh viện VPMED Tân Hưng; quản lý và tham mưu toàn bộ công tác dược trong bệnh viện.</p>
+      <div class="home-functions-grid"><article class="home-function"><span class="home-function-number">01</span><h3 data-home-content="function1Title">Cung ứng và quản lý thuốc</h3><p data-home-content="function1Body">Lập kế hoạch, tổ chức mua sắm, cấp phát và bảo quản thuốc, hóa chất, vật tư y tế theo đúng quy định.</p></article><article class="home-function"><span class="home-function-number">02</span><h3 data-home-content="function2Title">Dược lâm sàng</h3><p data-home-content="function2Body">Tư vấn sử dụng thuốc an toàn, hợp lý cho bác sĩ và điều dưỡng; tham gia bình bệnh án, hội chẩn khi cần.</p></article><article class="home-function"><span class="home-function-number">03</span><h3 data-home-content="function3Title">Thông tin thuốc & Cảnh giác dược</h3><p data-home-content="function3Body">Cập nhật thông tin thuốc, cảnh báo an toàn; theo dõi và báo cáo phản ứng có hại của thuốc (ADR).</p></article><article class="home-function"><span class="home-function-number">04</span><h3 data-home-content="function4Title">Kiểm nghiệm & Kiểm soát chất lượng</h3><p data-home-content="function4Body">Kiểm tra chất lượng thuốc trước khi nhập kho và trong quá trình bảo quản, lưu hành nội viện.</p></article><article class="home-function"><span class="home-function-number">05</span><h3 data-home-content="function5Title">Nghiên cứu khoa học & Đào tạo</h3><p data-home-content="function5Body">Tham gia nghiên cứu, huấn luyện chuyên môn dược cho nhân viên y tế và sinh viên thực tập.</p></article><article class="home-function"><span class="home-function-number">06</span><h3 data-home-content="function6Title">Quản lý thuốc kiểm soát đặc biệt</h3><p data-home-content="function6Body">Quản lý thuốc gây nghiện, hướng thần, tiền chất theo đúng quy chế của Bộ Y tế.</p></article></div></section><section class="home-organization" id="to-chuc" aria-labelledby="home-organization-title"><div class="home-section"><span class="home-eyebrow">Phối hợp chuyên môn</span><div class="home-section-heading"><h2 class="home-section-title" id="home-organization-title" data-home-content="organizationTitle">Cơ cấu tổ chức</h2><button type="button" class="home-editor-button" data-home-edit="organization" hidden>✎ Chỉnh sửa</button></div><p class="home-section-lead" data-home-content="organizationLead">Các đơn vị chuyên trách phối hợp trong toàn bộ chuỗi cung ứng và sử dụng thuốc.</p><div class="home-organization-grid"><article class="home-organization-card"><span>ĐƠN VỊ 01</span><h3 data-home-content="unit1Title">Kho & Cấp phát</h3><p data-home-content="unit1Body">Quản lý kho thuốc, hóa chất, vật tư; cấp phát cho các khoa lâm sàng và nhà thuốc bệnh viện.</p></article><article class="home-organization-card"><span>ĐƠN VỊ 02</span><h3 data-home-content="unit2Title">Dược lâm sàng</h3><p data-home-content="unit2Body">Đồng hành cùng bác sĩ tại các khoa điều trị, tư vấn liều dùng và tương tác thuốc.</p></article><article class="home-organization-card"><span>ĐƠN VỊ 03</span><h3 data-home-content="unit3Title">Thông tin thuốc</h3><p data-home-content="unit3Body">Biên soạn bản tin dược lâm sàng, cập nhật thông tin và hướng dẫn sử dụng thuốc.</p></article><article class="home-organization-card"><span>ĐƠN VỊ 04</span><h3 data-home-content="unit4Title">Kiểm nghiệm</h3><p data-home-content="unit4Body">Kiểm tra chất lượng thuốc, theo dõi điều kiện bảo quản tại kho và tủ trực khoa phòng.</p></article></div></div></section>
+    <section class="home-section home-tools-section" id="cong-cu-lam-sang" aria-labelledby="home-tools-title">
+      <span class="home-eyebrow">Hỗ trợ thực hành</span>
+      <div class="home-section-heading"><h2 id="home-tools-title" class="home-section-title" data-home-content="toolsTitle">Công cụ lâm sàng</h2><button type="button" class="home-editor-button" data-home-edit="headings" hidden>✎ Chỉnh sửa</button></div>
+      <p class="home-section-lead" data-home-content="toolsLead">Tra cứu thuốc, tính liều và hỗ trợ an toàn trong sử dụng thuốc.</p>
       <div class="feature-grid">
         <!-- Module cấp cứu được mở trong luồng điều hướng chung của hệ thống -->
         <button type="button" class="feature-card emergency-feature" data-open="cap-cuu-phan-ve" aria-label="Mở module Cấp cứu phản vệ">
@@ -369,11 +169,76 @@ html.system-loading body > :not(#systemLoader):not(script):not(style) {
       </div>
     </section>
 
-    <section class="home-responsibility-note home-responsibility-note--compact" aria-label="Tuyên bố trách nhiệm">
-      <span>⚠️ Công cụ hỗ trợ quyết định lâm sàng, không thay thế đánh giá chuyên môn trực tiếp.</span>
-      <button type="button" class="home-responsibility-reopen" id="reopenDisclaimerBtn">Xem lại Tuyên bố trách nhiệm</button>
+    <section class="section-card pharmacy-library" id="danh-muc-tai-lieu" aria-labelledby="library-hub-title">
+      <div class="library-heading"><h2 id="library-hub-title" data-home-content="libraryTitle">Thông tin thuốc &amp; Hướng dẫn sử dụng</h2></div>
+      <div class="library-hub">
+        <button type="button" class="library-hub-card" data-open="thong-tin-thuoc"><span aria-hidden="true">💊</span><span><strong>Thông tin thuốc</strong><small>Tài liệu thuốc và tờ hướng dẫn sử dụng.</small><em data-library-count="drug">Đang tải…</em></span><span class="library-hub-arrow" aria-hidden="true">→</span></button>
+        <button type="button" class="library-hub-card library-hub-card--guide" data-open="huong-dan-su-dung"><span aria-hidden="true">📖</span><span><strong>Hướng dẫn sử dụng</strong><small>Quy trình và hướng dẫn thao tác.</small><em data-library-count="guide">Đang tải…</em></span><span class="library-hub-arrow" aria-hidden="true">→</span></button>
+      </div>
+    </section>
+    <section class="section-card pharmacy-library" id="ban-tin" aria-labelledby="library-bulletin-title" style="scroll-margin-top:130px">
+      <div class="library-heading"><h2 id="library-bulletin-title" data-home-content="bulletinTitle">Bản tin Dược</h2><button type="button" class="btn btn-primary" data-library-upload="bulletin" hidden>+ Tải PDF bản tin</button></div>
+      <div class="library-bulletin-layout">
+        <div class="pharmacy-library" data-documents-kind="bulletin">
+          <div class="library-toolbar">
+            <label>Tìm kiếm tài liệu<input type="search" data-library-query placeholder="Nhập tên tài liệu, thuốc hoặc từ khóa…" autocomplete="off"></label>
+            <label>Chuyên mục<select data-library-category><option value="">Tất cả chuyên mục</option></select></label>
+          </div>
+          <div class="library-results-meta"><span data-library-result-count aria-live="polite">Đang xác minh tài khoản…</span><button type="button" class="btn btn-soft" data-library-refresh>Làm mới</button><button type="button" class="btn btn-soft" data-library-clear-month hidden>Bỏ lọc tháng</button></div>
+          <div class="library-list" data-library-list><div class="library-empty">Đang xác minh tài khoản…</div></div>
+          <nav class="library-pagination" data-library-pagination aria-label="Phân trang tài liệu" hidden>
+            <button type="button" class="btn btn-soft" data-library-previous>← Trang trước</button><span data-library-page-label aria-live="polite">Trang 1</span><button type="button" class="btn btn-soft" data-library-next>Trang sau →</button>
+          </nav>
+        </div>
+        <aside class="library-sidebar" aria-label="Thông tin bản tin">
+          <div class="library-sidebar-block"><h3>Chuyên mục bản tin</h3><ul id="library-bulletin-categories"></ul></div>
+          <div class="library-sidebar-block"><h3>Bài viết mới</h3><ul id="library-bulletin-recent"></ul></div>
+          <div class="library-sidebar-block"><h3>Lưu trữ</h3><ul id="library-bulletin-archives"></ul></div>
+        </aside>
+      </div>
     </section>
 
+    <section class="home-contact-band" id="lien-he" aria-labelledby="home-contact-title"><div class="home-section home-contact-grid">
+      <div><h2 id="home-contact-title" data-home-content="contactTitle">Khoa Dược · VPMED Tân Hưng</h2><p data-home-content="address">Số 1 Tô Ngọc Vân, Phường Tân Hưng, TP. Hải Phòng, Việt Nam</p><p><a data-home-email href="mailto:khoaduoc@vpmed.vn" data-home-content="contactEmail">khoaduoc@vpmed.vn</a></p><button type="button" class="home-editor-button" data-home-edit="contact" hidden>✎ Chỉnh sửa</button></div>
+      <div><h3>Liên hệ nhanh</h3><p>Tổng đài: <a data-home-hotline href="tel:1900588858" data-home-content="hotline">1900 58 88 58</a></p><p>Trực thường trú: <a data-home-phone href="tel:0986386576" data-home-content="phone">0986.386.576</a></p><p data-home-content="contactPerson">DS. Tuyên</p></div>
+      <div><h3>Liên kết</h3><div class="home-contact-links"><button type="button" data-view="home" data-scroll-target="gioi-thieu">Giới thiệu khoa</button><button type="button" data-view="home" data-scroll-target="to-chuc">Cơ cấu tổ chức</button><button type="button" data-view="sources">Nguồn dữ liệu hệ thống</button><a href="phieu-danh-gia.html" target="_blank" rel="noopener">Phiếu đánh giá</a></div></div>
+    </div></section>
+
+  </section>
+
+
+  <section class="view pharmacy-library" id="view-thong-tin-thuoc">
+    <div class="back-home-wrap"><button type="button" class="back-home-btn" data-go="home">← Quay lại Trang chủ</button></div>
+    <div class="library-heading"><h1>Thông tin thuốc</h1><button type="button" class="btn btn-primary" data-library-upload="drug" hidden>+ Thêm PDF</button></div>
+    <button type="button" class="btn btn-soft" data-open="huong-dan-su-dung">Hướng dẫn sử dụng →</button>
+    <section class="section-card"><div class="pharmacy-library" data-documents-kind="drug">
+          <div class="library-toolbar">
+            <label>Tìm kiếm tài liệu<input type="search" data-library-query placeholder="Nhập tên tài liệu, thuốc hoặc từ khóa…" autocomplete="off"></label>
+            <label>Chuyên mục<select data-library-category><option value="">Tất cả chuyên mục</option></select></label>
+          </div>
+          <div class="library-results-meta"><span data-library-result-count aria-live="polite">Đang xác minh tài khoản…</span><button type="button" class="btn btn-soft" data-library-refresh>Làm mới</button><button type="button" class="btn btn-soft" data-library-clear-month hidden>Bỏ lọc tháng</button></div>
+          <div class="library-list" data-library-list><div class="library-empty">Đang xác minh tài khoản…</div></div>
+          <nav class="library-pagination" data-library-pagination aria-label="Phân trang tài liệu" hidden>
+            <button type="button" class="btn btn-soft" data-library-previous>← Trang trước</button><span data-library-page-label aria-live="polite">Trang 1</span><button type="button" class="btn btn-soft" data-library-next>Trang sau →</button>
+          </nav>
+        </div></section>
+  </section>
+
+  <section class="view pharmacy-library" id="view-huong-dan-su-dung">
+    <div class="back-home-wrap"><button type="button" class="back-home-btn" data-go="home">← Quay lại Trang chủ</button></div>
+    <div class="library-heading"><h1>Hướng dẫn sử dụng</h1><button type="button" class="btn btn-primary" data-library-upload="guide" hidden>+ Thêm PDF</button></div>
+    <button type="button" class="btn btn-soft" data-open="thong-tin-thuoc">Thông tin thuốc →</button>
+    <section class="section-card"><div class="pharmacy-library" data-documents-kind="guide">
+          <div class="library-toolbar">
+            <label>Tìm kiếm tài liệu<input type="search" data-library-query placeholder="Nhập tên tài liệu, thuốc hoặc từ khóa…" autocomplete="off"></label>
+            <label>Chuyên mục<select data-library-category><option value="">Tất cả chuyên mục</option></select></label>
+          </div>
+          <div class="library-results-meta"><span data-library-result-count aria-live="polite">Đang xác minh tài khoản…</span><button type="button" class="btn btn-soft" data-library-refresh>Làm mới</button><button type="button" class="btn btn-soft" data-library-clear-month hidden>Bỏ lọc tháng</button></div>
+          <div class="library-list" data-library-list><div class="library-empty">Đang xác minh tài khoản…</div></div>
+          <nav class="library-pagination" data-library-pagination aria-label="Phân trang tài liệu" hidden>
+            <button type="button" class="btn btn-soft" data-library-previous>← Trang trước</button><span data-library-page-label aria-live="polite">Trang 1</span><button type="button" class="btn btn-soft" data-library-next>Trang sau →</button>
+          </nav>
+        </div></section>
   </section>
 
   <section class="view clinical-tool-view" id="view-cap-cuu-phan-ve">
@@ -1318,8 +1183,31 @@ Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối
   </section>
 </main>
 
+
+<dialog class="library-dialog" id="home-content-dialog" aria-labelledby="home-content-title">
+  <div class="library-dialog-header"><h2 id="home-content-title">Chỉnh sửa nội dung</h2><button type="button" class="library-dialog-close" data-home-close aria-label="Đóng chỉnh sửa">×</button></div>
+  <form class="home-cms-form" id="home-content-form">
+    <label>Phần nội dung<select id="home-content-group"><option value="intro">Giới thiệu chung</option><option value="quick">Thông tin nhanh</option><option value="functions">Chức năng – nhiệm vụ</option><option value="organization">Cơ cấu tổ chức</option><option value="headings">Tiêu đề chuyên mục</option><option value="contact">Liên hệ</option></select></label>
+    <div class="home-cms-form" id="home-content-fields"></div><p class="library-message" id="home-content-message" role="status" aria-live="polite"></p>
+    <div class="library-dialog-actions"><button type="button" class="btn btn-soft" data-home-close>Hủy</button><button type="submit" class="btn btn-primary" id="home-content-save">Lưu thay đổi</button></div>
+  </form>
+</dialog>
+
+<dialog class="library-dialog" id="library-upload-dialog" aria-labelledby="library-upload-title">
+  <div class="library-dialog-header"><h2 id="library-upload-title">Thêm PDF</h2><button type="button" class="library-dialog-close" data-library-close aria-label="Đóng">×</button></div>
+  <form class="library-form" id="library-upload-form">
+    <label><span id="library-file-label">Tệp PDF</span><input id="library-pdf-file" type="file" accept="application/pdf,.pdf" required><small class="library-file-note">Tối đa 20 MB</small></label>
+    <button type="button" class="btn btn-soft" id="library-preview-button" disabled>Xem PDF trong tab mới</button>
+    <label>Tiêu đề<input id="library-upload-name" type="text" maxlength="240" required></label>
+    <label>Chuyên mục<select id="library-upload-category" required></select></label>
+    <label>Mô tả ngắn<textarea id="library-upload-summary" rows="3" maxlength="1500"></textarea></label>
+    <p class="library-message" id="library-upload-status" role="status" aria-live="polite"></p>
+    <div class="library-dialog-actions"><button type="button" class="btn btn-soft" data-library-close>Hủy</button><button type="submit" class="btn btn-primary" id="library-upload-submit">Đăng tài liệu</button></div>
+  </form>
+</dialog>
+
 <footer class="site-footer">
-  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v5.7.8</span></div>
+  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v5.8.2</span></div>
   <div><a class="nav-evaluation" href="phieu-danh-gia.html" target="_blank" rel="noopener">Phiếu đánh giá phần mềm</a> · <a href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a> · Công cụ hỗ trợ, không thay thế đánh giá lâm sàng.</div>
   <details class="site-policy" id="sitePolicy">
     <summary>Chính sách sử dụng và minh bạch nguồn</summary>
@@ -1336,8 +1224,8 @@ Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối
   </details>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3" integrity="sha384-l8ah+VgaWtk1mvOe9VC+OirC6qHFF4yH7l7mKRidV9MSti3E9F463bMp6ZVN4kuC" crossorigin="anonymous"></script>
-<script defer src="assets/vpmed-access.js?v=20260817-admin-delete-v1"></script>
-<script defer src="assets/platform-shell.js?v=20260829-frame-scroll-v5"></script>
+<script defer src="assets/vpmed-access.js?v=20261117-permissions-v1"></script>
+<script defer src="assets/platform-shell.js?v=20261118-direct-pdf"></script>
 <script defer src="assets/disclaimer-gate.js?v=20260822-disclaimer-gate-v1"></script>
 <script defer src="assets/update-notifier.js?v=20260822-installed-data-channel-v1"></script>
 </body>

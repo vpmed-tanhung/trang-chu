@@ -46,6 +46,9 @@
   }
 
   async function api(action, payload={}){
+    if (['saveDrug','approveDrug'].includes(action)) {
+      if (!window.VPMED_ADMIN_GUARD || !(await window.VPMED_ADMIN_GUARD.canEdit())) throw new Error('Tài khoản chưa có quyền biên tập nội dung.');
+    }
     if(!WEB_APP_URL || WEB_APP_URL.includes('DAN_URL')) throw new Error('Chưa cấu hình WEB_APP_URL trong clinical-update-secure-client.js');
     const token = sessionStorage.getItem(TOKEN_KEY) || '';
     const controller = new AbortController();

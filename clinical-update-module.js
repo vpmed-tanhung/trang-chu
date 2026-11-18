@@ -65,7 +65,7 @@
   }
 
   function render(){
-    if(isAdminPage() || !isHome()) { removeTile(); return; }
+    if(isAdminPage() || !isHome() || window.VPMED_AUTH?.canEditContent !== true) { removeTile(); return; }
     addStyles();
     if(document.getElementById(TILE_ID)) return;
     const tile = createTile();

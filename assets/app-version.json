@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.31.70",
-  "displayVersion": "5.7.8",
-  "updatedAt": "2026-08-31T14:50:36+07:00",
-  "note": "Rà soát toàn bộ 51 liên kết nguồn; mở trực tiếp tệp PDF và giữ duy nhất công cụ tra cứu gốc Cục Quản lý Dược.",
-  "buildId": "v5.7.8-all-direct-source-pdfs-20260831-70",
+  "version": "2026.11.18.74",
+  "displayVersion": "5.8.2",
+  "updatedAt": "2026-11-18T08:13:30+07:00",
+  "note": "Bỏ màn hình loading khi mở trang chủ. Mở PDF trực tiếp trong tab mới của trình duyệt.",
+  "buildId": "v5.8.2-2026.11.18.74",
   "clinicalDataVersion": "sha256-1bc2f235f51777c20dcd040f",
-  "previousVersion": "2026.08.31.69",
-  "previousDisplayVersion": "5.7.7"
+  "previousVersion": "2026.08.31.70",
+  "previousDisplayVersion": "5.7.8"
 }

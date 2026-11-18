@@ -201,23 +201,15 @@ def test_inpatient_order_has_deterministic_renal_safety_layer():
     assert 'liều nạp' in gs
 
 
-def test_splash_screen_is_restored_and_waits_for_real_init_events():
+def test_homepage_has_no_splash_screen_and_keeps_auth_gate():
     html = (ROOT / 'index.html').read_text(encoding='utf-8')
-    loader = (ROOT / 'assets' / 'system-loader.js').read_text(encoding='utf-8')
-    assert 'id="systemLoader"' in html
-    assert 'id="systemLoaderBar"' in html
-    assert 'id="systemLoaderPercent"' in html
-    assert "classList.add('vpmed-auth-checking','system-loading')" in html
-    assert 'assets/system-loader.js?v=20260828-init-flow-v3' in html
-    for event_name in ['vpmed-auth-ready', 'vpmed-auth-offline', 'vpmed:shell-ready', 'vpmed:feature-open']:
-        assert event_name in loader
-    assert "detail.source !== 'initial'" in loader
-    assert 'state.windowLoaded' in loader
-    assert 'MIN_VISIBLE_MS = 2800' in loader
-    assert "return 'Hệ thống đã sẵn sàng'" in loader
-    assert 'allInitReady()' in loader
-    assert 'target = 100' in loader
-    assert 'finishIfReady()' in loader
+    access = (ROOT / 'assets' / 'vpmed-access.js').read_text(encoding='utf-8')
+    assert 'systemLoader' not in html
+    assert 'system-loader' not in html
+    assert 'system-loading' not in html
+    assert '<html lang="vi" class="vpmed-auth-checking">' in html
+    assert 'assets/vpmed-access.js' in html
+    assert "classList.remove('vpmed-auth-checking')" in access
 
 
 def test_inpatient_order_restores_automatic_pipeline_and_parser_fallback():
