@@ -1,58 +1,7 @@
-function num(id){const x=parseFloat(document.getElementById(id).value); return isFinite(x)?x:NaN;}
-function val(id){return document.getElementById(id).value;}
 function fmt(x,d=2){return isFinite(x)?Number(x).toLocaleString('vi-VN',{maximumFractionDigits:d,minimumFractionDigits:d}):'--';}
-function mbq(mci){return mci*37;}
-function mci(mbq){return mbq/37;}
-function expDecay(dt,half){return Math.exp(-Math.log(2)*dt/half);}
-function getDelta(){
-  const manual=num('deltaManual');
-  if(isFinite(manual)) return manual;
-  const dd=val('drawDate'), dt=val('drawTime'), id=val('injectDate'), it=val('injectTime');
-  if(dd && dt && id && it){
-    const a=new Date(dd+'T'+dt), b=new Date(id+'T'+it);
-    return (b-a)/60000;
-  }
-  return NaN;
-}
 function setText(id,t){document.getElementById(id).innerHTML=t;}
 function alertBox(type,text){return `<div class="${type}">${text}</div>`;}
-const tracerData={
-  F18:{name:'F-18 FDG',half:109.8,range:'3,5–5,0 MBq/kg',mid:4.0,use:'Ung thư, tim mạch, thần kinh'},
-  GA68:{name:'Ga-68 DOTATATE',half:68.3,range:'2,0–2,5 MBq/kg',mid:2.25,use:'U thần kinh nội tiết'},
-  C11:{name:'C-11 Choline',half:20.4,range:'4,0–7,0 MBq/kg',mid:5.5,use:'Tái phát ung thư tuyến tiền liệt'},
-  N13:{name:'N-13 Ammonia',half:10.0,range:'10,0–15,0 MBq/kg',mid:12.5,use:'Tưới máu cơ tim'},
-  CUSTOM:{name:'Khác',half:109.8,range:'Tự nhập theo SOP',mid:4.0,use:'Tự nhập'}
-};
-function chooseTracer(key){
-  const d=tracerData[key]||tracerData.F18;
-  const sel=document.getElementById('tracerSelect');
-  if(sel) sel.value=key;
-  document.getElementById('half').value=d.half;
-  const range=document.getElementById('doseRangeText');
-  if(range) range.value=d.range;
-  const use=document.getElementById('clinicalUseText');
-  if(use) use.value=d.use;
-  calc();
-}
-function useTracerMidDose(){
-  const key=document.getElementById('tracerSelect') ? document.getElementById('tracerSelect').value : 'F18';
-  const d=tracerData[key]||tracerData.F18;
-  document.getElementById('k').value=d.mid;
-  document.getElementById('kUnit').value='MBqKg';
-  document.getElementById('half').value=d.half;
-  chooseTracer(key);
-  calc();
-}
-function useMci(value){
-  document.getElementById('k').value=value.toFixed(2);
-  document.getElementById('kUnit').value='mCiKg';
-  calc();
-}
-function useFourMBq(){
-  document.getElementById('k').value='4.0';
-  document.getElementById('kUnit').value='MBqKg';
-  calc();
-}
+
 function buildQuickTable(){
   const weights=[40,45,50,55,60,65,70,75,80,85,90];
 
@@ -89,91 +38,6 @@ function buildQuickTable(){
   if(tbMci) tbMci.innerHTML=rowsMci;
 }
 
-function calc(){
-  const W=num('weight'), k=num('k'), unit=val('kUnit'), half=num('half'), dt=getDelta();
-  const minC=num('minCheck'), maxC=num('maxCheck');
-  const mode=val('mode'), drawn=num('drawnMci');
-  const stockA=num('stockA'), stockV=num('stockV'), concD=num('concDirect');
-  const preA=num('preA'), resA=num('resA'), resDt=num('resDelta');
-
-  let targetMci = unit==='mCiKg' ? W*k : mci(W*k);
-  const decay = expDecay(dt,half);
-  const drawNeed = targetMci / decay;
-  const remain = drawn * decay;
-  let conc = isFinite(concD) && concD>0 ? concD : stockA/stockV;
-  let vol = drawNeed/conc;
-
-  let actual=NaN, resAtPre=NaN, diff=NaN;
-  if(isFinite(preA)&&isFinite(resA)&&isFinite(resDt)&&isFinite(half)){
-    resAtPre = resA / expDecay(resDt,half);
-    actual = preA - resAtPre;
-    diff = actual - targetMci;
-  }
-
-  setText('target',`${fmt(targetMci)} mCi`);
-  setText('targetMbq',`${fmt(mbq(targetMci),0)} MBq`);
-  setText('dt',`${fmt(dt,0)} phút`);
-  setText('decay',`Sau thời gian chờ còn ${fmt(decay*100,1)}% hoạt độ`);
-  setText('drawNeed',`${fmt(drawNeed)} mCi`);
-  setText('drawNeedMbq',`${fmt(mbq(drawNeed),0)} MBq`);
-  setText('volNeed',`${fmt(vol)} mL`);
-  setText('concShow',`Nồng độ = ${fmt(conc)} mCi/mL`);
-  setText('remain',`${fmt(remain)} mCi`);
-  setText('remainMbq',`${fmt(mbq(remain),0)} MBq`);
-  setText('actual',`${fmt(actual)} mCi`);
-  setText('actualMbq',`${fmt(mbq(actual),0)} MBq`);
-  setText('diff',`${fmt(diff)} mCi`);
-  setText('action', mode==='targetToDraw' ? 'Dùng lượng cần rút ban đầu' : 'So với liều mục tiêu');
-
-  const alerts=[];
-  const singleCond=document.getElementById('singleCondition')?.value;
-  const singleGlu=parseFloat(document.getElementById('singleGlucose')?.value);
-  const singleBp=petctParseBloodPressure(document.getElementById('singleBloodPressure')?.value);
-  if(singleCond==='diabetes'){
-    if(isFinite(singleGlu) && singleGlu>=11.1) alerts.push(alertBox('warn','Đái tháo đường: đường huyết ≥ 11,1 mmol/L, cần báo bác sĩ/YHHN và xử trí theo SOP trước tiêm FDG.'));
-    else if(!isFinite(singleGlu)) alerts.push(alertBox('warn','Tiểu đường: cần nhập/kiểm tra đường huyết trước tiêm.'));
-  }
-  else if(singleCond==='hypertension') alerts.push(alertBox('warn','Bệnh tăng huyết áp: cần nhập/kiểm tra chỉ số huyết áp, thuốc đang dùng và triệu chứng kèm theo.'));
-  else if(singleCond==='cardiac') alerts.push(alertBox('warn','Chỉ định tim mạch: kiểm tra protocol tim mạch riêng của đơn vị.'));
-  else if(singleCond==='neuro') alerts.push(alertBox('warn','Chỉ định thần kinh/não: cần nghỉ yên, hạn chế kích thích theo SOP.'));
-  if(singleBp && (singleBp.sys>=180 || singleBp.dia>=110)) alerts.push(alertBox('err','Huyết áp rất cao: cần báo bác sĩ/YHHN trước khi tiếp tục.'));
-  else if(singleBp && (singleBp.sys>=140 || singleBp.dia>=90)) alerts.push(alertBox('warn','Chỉ số huyết áp tăng: ghi nhận và theo dõi theo SOP.'));
-  const hasSingleInput = (isFinite(W)&&W>0) || (isFinite(k)&&k>0) || isFinite(dt) || (isFinite(conc)&&conc>0) || (isFinite(preA)&&preA>0) || (isFinite(resA)&&resA>0);
-  if(hasSingleInput){
-    if(!isFinite(W)||W<=0) alerts.push(alertBox('err','Cần nhập cân nặng bệnh nhân.'));
-    if(!isFinite(k)||k<=0) alerts.push(alertBox('err','Cần nhập hệ số liều theo SOP của đơn vị.'));
-    if(!isFinite(dt)||dt<0) alerts.push(alertBox('err','Cần nhập thời gian chờ hợp lệ. Nếu dùng ngày/giờ, kiểm tra ngày giờ tiêm phải sau ngày giờ đo/rút.'));
-    if(!isFinite(half)||half<=0) alerts.push(alertBox('err','Cần nhập chu kỳ bán rã hợp lệ. Với 18F-FDG thường dùng 109,8 phút.'));
-    if(isFinite(targetMci)&&isFinite(minC)&&isFinite(maxC)){
-      if(targetMci<minC || targetMci>maxC) alerts.push(alertBox('warn',`Liều cần có lúc tiêm là ${fmt(targetMci)} mCi, nằm ngoài ngưỡng kiểm tra ${fmt(minC,1)}–${fmt(maxC,1)} mCi. Cần đối chiếu SOP/bác sĩ Y học hạt nhân.`));
-      else alerts.push(alertBox('ok',`Liều cần có lúc tiêm là ${fmt(targetMci)} mCi, nằm trong ngưỡng kiểm tra đang đặt.`));
-    }
-    if(!isFinite(conc)||conc<=0) alerts.push(alertBox('warn','Chưa đủ dữ liệu tính nồng độ hoạt độ, nên chưa tính được thể tích cần rút.'));
-  }
-  if(isFinite(vol)&&vol<0.1) alerts.push(alertBox('warn','Thể tích cần rút nhỏ hơn 0,1 mL: nguy cơ sai số thao tác cao.'));
-  if(isFinite(actual)&&actual<0) alerts.push(alertBox('err','Liều thực tiêm âm: kiểm tra lại số đo trước tiêm, số đo còn dư và thời điểm đo.'));
-  if(isFinite(diff)&&isFinite(targetMci)&&Math.abs(diff/targetMci)>0.15) alerts.push(alertBox('warn',`Liều thực tiêm lệch ${fmt(diff)} mCi so với mục tiêu, vượt 15%. Cần đánh giá lại trước khi ghi nhận.`));
-  setText('alerts',alerts.join(''));
-
-  const rows=[
-    ['1. Liều cần có lúc tiêm', `Cân nặng × hệ số liều = ${fmt(W,1)} × ${fmt(k,3)} ${unit==='mCiKg'?'mCi/kg':'MBq/kg'}`, `${fmt(targetMci)} mCi = ${fmt(mbq(targetMci),0)} MBq`],
-    ['2. Hệ số còn lại', `e^[-0,693 × ${fmt(dt,0)} / ${fmt(half,1)}]`, `${fmt(decay*100,1)}%`],
-    ['3. Lượng cần rút ban đầu', `Liều cần tiêm / hệ số còn lại = ${fmt(targetMci)} / ${fmt(decay,4)}`, `${fmt(drawNeed)} mCi`],
-    ['4. Nồng độ hoạt độ', isFinite(concD)?'Dùng nồng độ nhập trực tiếp':`Tổng hoạt độ / tổng thể tích = ${fmt(stockA)} / ${fmt(stockV)}`, `${fmt(conc)} mCi/mL`],
-    ['5. Thể tích cần rút', `Lượng cần rút / nồng độ = ${fmt(drawNeed)} / ${fmt(conc)}`, `${fmt(vol)} mL`],
-    ['6. Nếu đã rút sẵn', `Hoạt độ đã rút × hệ số còn lại = ${fmt(drawn)} × ${fmt(decay,4)}`, `${fmt(remain)} mCi lúc tiêm`],
-    ['7. Liều thực tiêm', `Hoạt độ trước tiêm - hoạt độ còn dư đã quy đổi = ${fmt(preA)} - ${fmt(resAtPre)}`, `${fmt(actual)} mCi`]
-  ];
-  setText('table',rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td><b>${r[2]}</b></td></tr>`).join(''));
-  if(isFinite(W)&&W>0&&isFinite(k)&&k>0&&isFinite(dt)&&dt>=0&&isFinite(half)&&half>0){
-    window.VPMED_PLATFORM?.calculationComplete({feature:'petct-dose',mode:'single',targetMci});
-  }
-}
-
-
-function roundUpTo(value, step){ if(!isFinite(value)||!isFinite(step)||step<=0) return NaN; return Math.ceil(value/step)*step; }
-function timeToMinutes(t){ if(!t||!t.includes(':')) return NaN; const p=t.split(':').map(Number); return p[0]*60+p[1]; }
-function minutesToTime(mins){ if(!isFinite(mins)) return '--'; mins=((Math.round(mins)%1440)+1440)%1440; const h=Math.floor(mins/60), m=mins%60; return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0'); }
 function addBatchRows(n=5){
   const body=document.getElementById('batchTableBody'); if(!body) return;
   const maxPatients=window.PetctBatchCalculator?.MAX_PATIENTS||12;
@@ -236,15 +100,6 @@ function normalizePetctTimeInput(el){
     let mn=Math.min(59,Math.max(0,parseInt(m[2],10)));
     el.value=String(h).padStart(2,'0')+':'+String(mn).padStart(2,'0');
   }
-}
-
-
-function petctParseBloodPressure(v){
-  const txt=String(v||'').trim();
-  if(!txt) return {text:'', sys:NaN, dia:NaN};
-  const m=txt.match(/(\d{2,3})\s*[\/\-]\s*(\d{2,3})/);
-  if(!m) return {text:txt, sys:NaN, dia:NaN};
-  return {text:txt, sys:parseFloat(m[1]), dia:parseFloat(m[2])};
 }
 
 function calcBatchDose(){
@@ -398,25 +253,14 @@ function calcBatchDose(){
   setText('batchAlerts',alerts.join(''));
 }
 
-function clearPatient(){
-  ['weight','k','drawDate','drawTime','injectDate','injectTime','deltaManual','drawnMci','stockA','stockV','concDirect','preA','resA','note'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('half').value='109.8';
-  document.getElementById('minCheck').value='5';
-  document.getElementById('maxCheck').value='20';
-  document.getElementById('resDelta').value='0';
-  calc();
-}
-document.querySelectorAll('#view-petct-dose .petct-inline input,#view-petct-dose .petct-inline select,#view-petct-dose .petct-inline textarea').forEach(x=>x.addEventListener('input',calc));
-const tracerSel=document.getElementById('tracerSelect');
-if(tracerSel){tracerSel.addEventListener('change',()=>chooseTracer(tracerSel.value));}
 buildQuickTable();
-chooseTracer('F18');
-['batchOrderedActivity','batchHospitalReceive','batchFactor','batchUnit','batchUptake','batchHalf'].forEach(id=>{const el=document.getElementById(id); if(el) el.addEventListener('input',calcBatchDose);});
+['batchOrderedActivity','batchHospitalReceive','batchFactor','batchUnit','batchUptake','batchHalf'].forEach(id=>{
+  document.getElementById(id)?.addEventListener('input',calcBatchDose);
+});
 
-document.querySelectorAll('#view-petct-dose input[placeholder="HH:mm"]').forEach(el=>{
-  el.addEventListener('blur',()=>{ normalizePetctTimeInput(el); if(typeof calcBatchDose==='function') calcBatchDose(); if(typeof calc==='function') calc(); });
+document.getElementById('batchHospitalReceive')?.addEventListener('blur',event=>{
+  normalizePetctTimeInput(event.currentTarget);
+  calcBatchDose();
 });
 
 calcBatchDose();
-calc();
-

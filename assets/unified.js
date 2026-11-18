@@ -10,7 +10,7 @@ if(!window.VPMED_PLATFORM){
   $$('[data-go]').forEach(b=>b.onclick=e=>{e.preventDefault();showView(b.dataset.go)});
   if($('#menuBtn'))$('#menuBtn').onclick=()=>$('#mainNav')?.classList.toggle('open');
   const initial=location.hash.replace('#','');
-  if(['home','dose','petct-dose','antibiotics','diseases','prescription-check','inpatient-order','interactions','hepatotoxicity','pregnancy-lactation','icd10-bhyt','pediatric-dose','injectable-guide','pharmacovigilance','sources'].includes(initial))showView(initial);
+  if(['home','dose','petct-dose','antibiotics','diseases','prescription-check','inpatient-order','hepatotoxicity','pregnancy-lactation','icd10-bhyt','pediatric-dose','injectable-guide','pharmacovigilance','sources'].includes(initial))showView(initial);
 }
 const statDrugs=$('#statDrugs'),statInteractions=$('#statInteractions');if(statDrugs)statDrugs.textContent=D.length;if(statInteractions)statInteractions.textContent=I.length;
 
@@ -104,8 +104,8 @@ function renderProfile(){const x=D.find(v=>v.id===selected)||filtered()[0];if(!x
 <div class="tabpane" id="t1"><div class="profile-grid"><div class="info-box"><h3>Liều chi tiết</h3><p>${esc(x.doseDetail||x.standard)}</p><h3>Liều tối đa</h3><p>${esc(x.maxDose)}</p><h3>Hiệu chỉnh theo CrCl</h3>${renalDoseTableHtml(x)}</div><div class="info-box"><h3>HD</h3><p>${esc(x.hd)}</p><h3>CRRT</h3><p>${esc(x.crrt)}</p><h3>Nguồn liều trực tiếp</h3>${directDoseSources(x)}</div></div></div>
 <div class="tabpane" id="t2"><div class="info-box"><h3>Pha truyền</h3>${infusionSections(x)}<div class="source-note"><b>Nguồn áp dụng:</b> ${esc(x.infusionSourceNote||x.clinicalSourceNote||'Tờ HDSD của đúng chế phẩm.')}</div></div></div>
 <div class="tabpane" id="t3">${window.VPMED_CONTRA_ADR_HTML?window.VPMED_CONTRA_ADR_HTML(x):''}</div>
-<div class="tabpane" id="t4"><div class="profile-grid"><div class="info-box"><h3>Tương tác thuốc – thuốc</h3><div class="clinical-stack">${ddiCards(x)}</div></div><div class="info-box"><h3>Tương tác thuốc – bệnh lý</h3>${detailList(x.diseaseInteractions||[])}<button class="btn btn-primary" id="openInteractionFromDrug">Mở công cụ kiểm tra hai thuốc</button></div></div></div>
-<div class="tabpane" id="t5"><div class="info-box"><h3>TDM/theo dõi</h3><p>${esc(x.tdm)}</p><p>Theo dõi chức năng thận, gan, huyết học, điện giải, ECG và độc tính đặc hiệu tùy thuốc.</p></div></div>`;$$('.tab').forEach(b=>b.onclick=()=>{$$('.tab,.tabpane').forEach(z=>z.classList.remove('active'));b.classList.add('active');$('#'+b.dataset.tab).classList.add('active')});$('#openInteractionFromDrug')?.addEventListener('click',()=>{$('#a').value=x.brand;showView('interactions')})}
+<div class="tabpane" id="t4"><div class="profile-grid"><div class="info-box"><h3>Tương tác thuốc – thuốc</h3><div class="clinical-stack">${ddiCards(x)}</div></div><div class="info-box"><h3>Tương tác thuốc – bệnh lý</h3>${detailList(x.diseaseInteractions||[])}</div></div></div>
+<div class="tabpane" id="t5"><div class="info-box"><h3>TDM/theo dõi</h3><p>${esc(x.tdm)}</p><p>Theo dõi chức năng thận, gan, huyết học, điện giải, ECG và độc tính đặc hiệu tùy thuốc.</p></div></div>`;$$('.tab').forEach(b=>b.onclick=()=>{$$('.tab,.tabpane').forEach(z=>z.classList.remove('active'));b.classList.add('active');$('#'+b.dataset.tab).classList.add('active')})}
 $('#q').oninput=()=>{renderDrugList();const f=filtered();if(f.length&&!f.some(x=>x.id===selected)){selected=f[0].id;renderProfile()}};$('#group').onchange=$('#q').oninput;groups();renderDrugList();renderProfile();
 
 // Dose
@@ -232,69 +232,6 @@ $('#calc').onclick=()=>{
   saveHist(h);renderHist();
   setTimeout(scrollDoseResultIntoView,80);
   window.VPMED_PLATFORM?.calculationComplete({feature:'dose',patientCode,drug:d.active});
-};
-
-// Interactions - dữ liệu Bảng 3.1 Quyết định 5948/QĐ-BYT
-const aliases={};
-D.forEach(x=>{
-  aliases[norm(x.brand)]=x.active;
-  aliases[norm(x.active)]=x.active;
-});
-const canonical=v=>aliases[norm(v)]||String(v||'').trim();
-const interactionDrugNames=x=>[x.drug1||'',x.drug2||''];
-function flexibleMatch(input,target){
-  const a=norm(canonical(input)),b=norm(canonical(target));
-  if(!a||!b)return false;
-  return a===b||a.includes(b)||b.includes(a);
-}
-function matchPair(a,b,i){
-  const d1=i.drug1||'',d2=i.drug2||'';
-  return (flexibleMatch(a,d1)&&flexibleMatch(b,d2))||(flexibleMatch(a,d2)&&flexibleMatch(b,d1));
-}
-const meds=[...new Set([
-  ...D.flatMap(x=>[x.brand,x.active]),
-  ...I.flatMap(x=>interactionDrugNames(x))
-].filter(Boolean))].sort((a,b)=>a.localeCompare(b,'vi'));
-$('#meds').innerHTML=meds.map(x=>`<option value="${esc(x)}">`).join('');
-$('#icount').textContent=I.length;
-$('#mcount').textContent=new Set(I.flatMap(x=>interactionDrugNames(x).map(norm))).size;
-
-function intCard(x){
-  const levelClass=x.conditional?'conditional':'contra';
-  return `<div class="int">
-    <div class="int-title">
-      <b><span class="int-stt">#${esc(x.stt||'')}</span> ${esc(x.drug1||'')} + ${esc(x.drug2||'')}</b>
-      <span class="interaction-level ${levelClass}">${esc(x.level)}</span>
-      <span class="hint">Xem chi tiết →</span>
-    </div>
-    <div class="detail">
-      <p><b>Cơ chế:</b> ${esc(x.mechanism)}</p>
-      <p><b>Hậu quả:</b> ${esc(x.consequence)}</p>
-      <p><b>Xử trí:</b> ${esc(x.management)}</p>
-      <p><b>Nguồn:</b> ${esc(x.source)}</p>
-    </div>
-  </div>`;
-}
-function attachInt(){$$('.int').forEach(e=>e.onclick=()=>e.classList.toggle('open'))}
-function renderInteractions(){
-  const q=norm($('#iq').value);
-  const f=I.filter(x=>!q||norm([
-    x.stt,x.drug1,x.drug2,x.level,x.mechanism,x.consequence,x.management,x.source
-  ].join(' ')).includes(q));
-  $('#ilist').innerHTML=f.map(intCard).join('')||'<div class="alert">Không có kết quả.</div>';
-  attachInt();
-}
-$('#iq').oninput=renderInteractions;
-renderInteractions();
-$('#swap').onclick=()=>{const t=$('#a').value;$('#a').value=$('#b').value;$('#b').value=t};
-$('#check').onclick=()=>{
-  const a=$('#a').value,b=$('#b').value;
-  if(!a||!b){$('#result').innerHTML='Vui lòng nhập đủ hai thuốc.';return}
-  const m=I.filter(x=>matchPair(a,b,x));
-  $('#result').innerHTML=m.length
-    ?m.map(intCard).join('')
-    :'<b>Không tìm thấy cặp này trong Bảng 3.1 của Quyết định 5948/QĐ-BYT.</b><br>Điều này không khẳng định phối hợp an toàn; cần tiếp tục kiểm tra tờ hướng dẫn sử dụng và nguồn chuyên môn hiện hành.';
-  attachInt();
 };
 
 // Antibiotics by disease

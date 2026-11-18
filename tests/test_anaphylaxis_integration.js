@@ -55,7 +55,6 @@ const orderedModules = [
   'Cấp cứu phản vệ',
   'Phân tích y lệnh nội trú',
   'Rà soát đơn thuốc BHYT',
-  'Kiểm tra tương tác thuốc',
   'Tính liều kháng sinh & CrCl/eGFR',
   'Tính liều kháng sinh Nhi',
   'Danh mục kháng sinh nội trú',
@@ -74,6 +73,11 @@ for (const title of orderedModules) {
   assert(position > previousPosition, `Thứ tự module chưa đúng tại: ${title}`);
   previousPosition = position;
 }
+assert(!index.includes('data-open="interactions"') && !index.includes('id="view-interactions"'),
+  'Trang chủ đã gỡ module tương tác thuốc riêng');
+const bulletinLibrary = fs.readFileSync(path.join(root, 'assets/pharmacy-library.js'), 'utf8');
+assert(bulletinLibrary.includes("'Tương tác thuốc'"),
+  'Bản tin Dược phải giữ chuyên mục Tương tác thuốc');
 assert(index.indexOf('assets/navy-theme.css') > index.indexOf('assets/platform-shell.css'),
   'Theme Navy phải được nạp cuối để đồng bộ các module hiện có');
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const APP_VERSION = '2026.11.18.78';
+const APP_VERSION = '2026.11.18.79';
 const CLINICAL_DATA_VERSION = 'sha256-e6ce8a404fec507be513e915';
 const APP_SHELL_CACHE = `vpmed-shell-${APP_VERSION}`;
 const RUNTIME_CACHE = `vpmed-runtime-${APP_VERSION}`;

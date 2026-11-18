@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.11.18.78';
+  const BUILD_VERSION = '2026.11.18.79';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -36,14 +36,12 @@
       'assets/antibiotic_38_complete.js?v=20260716-38-drugs',
       'assets/renal_database_20260723.js?v=20260723-renal-only-v4',
       'assets/diseases.js',
-      'assets/unified.js?v=20260829-scroll-guard-v1',
+      'assets/unified.js?v=20261118-hub-no-interactions',
       'assets/vpmed-renal-audit.js?v=20260814-module-history-v5',
       'assets/antibiotic_consultation.js?v=20260814-short-module-copy-v1',
       'assets/dose_24h_summary.js?v=20260822-renal-layout-v4-large-clean',
       'assets/vancomycin_renal_v2.js?v=20260723-renal-only-v6',
-      'vpmed-interaction-compact.js',
       'vpmed-dose-reset.js',
-      'vpmed-remove-quick-two-drug.js',
       'assets/disease_updates_2026.js',
       'vpmed-approved-data-bridge.js'
     ]
@@ -85,7 +83,6 @@
     },
     antibiotics: CORE_CLINICAL,
     diseases: CORE_CLINICAL,
-    interactions: CORE_CLINICAL,
     'prescription-check': {
       styles: ['assets/prescription-check.css?v=20260821-rx-actions-v9'],
       scripts: [
@@ -118,8 +115,7 @@
       styles: [],
       scripts: [
         'assets/petct_batch_calculator.js?v=20260802-formula-only',
-        'assets/petct-tool.js?v=20260822-lazy-v1',
-        'assets/petct_step_form.js?v=20260713'
+        'assets/petct-tool.js?v=20261118-batch-only'
       ]
     },
     hepatotoxicity: {
@@ -408,6 +404,12 @@
   }
 
   async function openFeature(requestedName, options = {}) {
+    if (requestedName === 'interactions') {
+      await openFeature('home', {...options, fromHistory: false, preserveScroll: true});
+      document.getElementById('ban-tin')?.scrollIntoView();
+      return;
+    }
+
     const name = requestedName;
     if (!FEATURE_BUNDLES[name]) {
       toast('Công cụ này chưa sẵn sàng.', {tone: 'warning'});
