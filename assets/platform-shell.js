@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.11.18.74';
+  const BUILD_VERSION = '2026.11.18.77';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -148,10 +148,10 @@
       styles: [],
       scripts: [
         'assets/pharmacovigilance_alerts_data.js?v=20260711',
-        'assets/pharmacovigilance_auto_data.js?v=20261118091914',
+        'assets/pharmacovigilance_auto_data.js',
         'assets/pharmacovigilance_bulletin_76_data.js?v=20260804',
         'assets/pharmacovigilance_auto_editor.js?v=20260823-concise-summary-v2',
-        'assets/pharmacovigilance_integration.js?v=20260823-concise-summary-v2'
+        'assets/pharmacovigilance_integration.js?v=20261118-silent-adr'
       ]
     },
     'icd10-bhyt': {
@@ -175,10 +175,7 @@
   let deferredInstallPrompt = null;
   let calculationCompleted = false;
   let serviceWorkerRegistration = null;
-  let isReloadingForWorker = false;
-  let hadServiceWorkerController = Boolean(navigator.serviceWorker?.controller);
   let cachedClinicalState = null;
-  let activeClinicalFeature = false;
   let announcedDataVersion = '';
 
   function clientAwareUrl(url) {
@@ -417,7 +414,6 @@
       return;
     }
     setCardLoading(name, true);
-    if (name !== 'home' && name !== 'sources') activeClinicalFeature = true;
     emit(EVENT_NAMES.featureOpen, {feature: name, phase: 'loading', source: options.source || 'navigation'});
     try {
       await loadBundle(name);
@@ -549,44 +545,22 @@
     maybeShowInstallBanner();
   }
 
-  function showWorkerUpdateBanner(registration, detail = {}) {
+  function showWorkerUpdateBanner(detail) {
     let banner = document.getElementById('vpmedUpdateBanner');
     if (!banner) {
       banner = document.createElement('aside');
       banner.id = 'vpmedUpdateBanner';
       banner.className = 'vpmed-shell-banner vpmed-update-banner';
-      banner.innerHTML = '<div><strong data-update-title>Có phiên bản ứng dụng mới</strong><span data-update-copy>Tải lại để dùng phiên bản mới nhất.</span></div><div class="vpmed-shell-banner-actions"><button type="button" data-refresh>Cập nhật ngay</button><button type="button" class="secondary" data-dismiss>Để sau</button></div>';
+      banner.innerHTML = '<div><strong>Có phiên bản ứng dụng mới</strong><span data-update-copy></span></div><div class="vpmed-shell-banner-actions"><button type="button" data-refresh>Cập nhật ngay</button><button type="button" class="secondary" data-dismiss>Để sau</button></div>';
       document.body.appendChild(banner);
-      banner.querySelector('[data-dismiss]').addEventListener('click', () => { banner.hidden = true; });
     }
-    const version = String(detail.version || '').trim();
-    const dataVersion = String(detail.dataVersion || '').trim();
-    const displayVersion = String(detail.displayVersion || '').trim();
-    const isClinicalDataUpdate = detail.kind === 'clinical-data';
-    const title = banner.querySelector('[data-update-title]');
-    const copy = banner.querySelector('[data-update-copy]');
-    if (title) title.textContent = isClinicalDataUpdate
-      ? 'Nguồn dữ liệu tra cứu có cập nhật'
-      : 'Có phiên bản ứng dụng mới';
-    if (copy) copy.textContent = isClinicalDataUpdate
-      ? 'Cập nhật để ứng dụng dùng cùng nguồn dữ liệu chuyên môn mới như bản web.'
-      : (displayVersion
-        ? `Phiên bản v${displayVersion} đã sẵn sàng. Tải lại để sử dụng.`
-        : 'Tải lại để dùng phiên bản mới nhất.');
-    banner.hidden = false;
-    banner.querySelector('[data-refresh]').onclick = () => {
-      if (isClinicalDataUpdate && dataVersion && window.VPMED_UPDATE_NOTIFIER?.applyDataUpdate) {
-        window.VPMED_UPDATE_NOTIFIER.applyDataUpdate(dataVersion, version);
-        return;
-      }
-      if (version && window.VPMED_UPDATE_NOTIFIER?.applyUpdate) {
-        window.VPMED_UPDATE_NOTIFIER.applyUpdate(version);
-        return;
-      }
-      const waiting = registration?.waiting || serviceWorkerRegistration?.waiting;
-      if (waiting) waiting.postMessage({type: 'SKIP_WAITING'});
-      else location.reload();
+    banner.querySelector('[data-update-copy]').textContent = `Phiên bản v${detail.displayVersion} đã sẵn sàng.`;
+    banner.querySelector('[data-refresh]').onclick = () => window.VPMED_UPDATE_NOTIFIER?.applyUpdate(detail.version);
+    banner.querySelector('[data-dismiss]').onclick = () => {
+      window.VPMED_UPDATE_NOTIFIER?.dismissUpdate(detail.majorUpdateVersion);
+      banner.hidden = true;
     };
+    banner.hidden = false;
   }
 
   function handleWorkerMessage(event) {
@@ -596,53 +570,24 @@
       renderConnectivity('cached-data', message);
       toast('Đang dùng bản dữ liệu y khoa ngoại tuyến.', {tone: 'warning', persistent: true});
     }
+    // Tương thích với service worker cũ còn hoạt động trên bản cài.
     if (message.type === 'VPMED_DATA_VERSION_AVAILABLE' && IS_INSTALLED_APP) {
-      const nextVersion = String(message.version || '').trim();
-      const previousVersion = String(message.previousVersion || '').trim();
-      if (!nextVersion || nextVersion === previousVersion || nextVersion === announcedDataVersion) return;
-      announcedDataVersion = nextVersion;
-      emit(EVENT_NAMES.dataVersionChanged, {
-        previousVersion,
-        version: nextVersion,
-        source: 'service-worker'
-      });
-      showWorkerUpdateBanner(serviceWorkerRegistration, {
-        kind: 'clinical-data',
-        dataVersion: nextVersion,
-        version: String(message.buildVersion || '').trim()
+      navigator.serviceWorker.controller?.postMessage({
+        type: 'APPLY_DATA_VERSION', version: message.version, clientMode: CLIENT_MODE
       });
       return;
     }
-    if (message.type === 'VPMED_DATA_VERSION_CHANGED') {
+    if (message.type === 'VPMED_DATA_VERSION_CHANGED' || message.type === 'VPMED_DATA_VERSION_APPLIED') {
       const nextVersion = String(message.version || '').trim();
       const previousVersion = String(message.previousVersion || '').trim();
       if (!nextVersion || nextVersion === previousVersion || nextVersion === announcedDataVersion) return;
       announcedDataVersion = nextVersion;
       renderConnectivity(navigator.onLine ? 'online' : 'offline');
       emit(EVENT_NAMES.dataVersionChanged, {
-        previousVersion: message.previousVersion,
-        version: message.version,
+        previousVersion,
+        version: nextVersion,
         source: 'service-worker'
       });
-      /* Khi người dùng còn ở trang chủ, áp dụng dữ liệu mới ngay bằng đúng một
-         lần tải lại. Nếu đã vào công cụ, chỉ nhắc một lần để tránh làm mất dữ liệu nhập. */
-      const autoReloadKey = 'vpmed_auto_data_reload_version_v1';
-      if (!activeClinicalFeature && navigator.onLine && sessionStorage.getItem(autoReloadKey) !== nextVersion) {
-        sessionStorage.setItem(autoReloadKey, nextVersion);
-        location.reload();
-        return;
-      }
-      /* Chờ notifier chính xử lý trước. Chỉ hiện cảnh báo dữ liệu riêng khi
-         không có bản ứng dụng mới, bảo đảm cùng lúc chỉ có một thông báo cập nhật. */
-      window.setTimeout(() => {
-        if (document.getElementById('vpmedUpdateBanner') || serviceWorkerRegistration?.waiting) return;
-        toast('Dữ liệu y khoa trên máy chủ đã có phiên bản mới. Tải lại trước khi tiếp tục đối chiếu điều trị.', {
-          tone: 'warning',
-          persistent: true,
-          actionLabel: 'Tải lại dữ liệu',
-          onAction: () => location.reload()
-        });
-      }, 350);
     }
   }
 
@@ -656,24 +601,9 @@
       navigator.serviceWorker.ready.then(() => {
         navigator.serviceWorker.controller?.postMessage({type: 'REGISTER_CLIENT_MODE', clientMode: CLIENT_MODE});
       }).catch(() => {});
-      if (!IS_INSTALLED_APP && registration.waiting && navigator.serviceWorker.controller) showWorkerUpdateBanner(registration);
-      registration.addEventListener('updatefound', () => {
-        const worker = registration.installing;
-        worker?.addEventListener('statechange', () => {
-          if (!IS_INSTALLED_APP && worker.state === 'installed' && navigator.serviceWorker.controller) showWorkerUpdateBanner(registration);
-        });
-      });
       navigator.serviceWorker.addEventListener('message', handleWorkerMessage);
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         navigator.serviceWorker.controller?.postMessage({type: 'REGISTER_CLIENT_MODE', clientMode: CLIENT_MODE});
-        if (IS_INSTALLED_APP) return;
-        if (!hadServiceWorkerController) {
-          hadServiceWorkerController = true;
-          return;
-        }
-        if (isReloadingForWorker) return;
-        isReloadingForWorker = true;
-        location.reload();
       });
     } catch (error) {
       console.warn('[VPMED] Không đăng ký được Service Worker:', error);
@@ -711,9 +641,7 @@
     window.addEventListener('message', handleFeatureFrameMessage);
     window.addEventListener('vpmed:app-update-available', (event) => {
       const detail = event.detail || {};
-      if (!IS_INSTALLED_APP || detail.kind === 'clinical-data') {
-        showWorkerUpdateBanner(serviceWorkerRegistration, detail);
-      }
+      if (detail.kind === 'application' && detail.majorUpdateVersion) showWorkerUpdateBanner(detail);
     });
     window.addEventListener('online', () => {
       renderConnectivity('online');

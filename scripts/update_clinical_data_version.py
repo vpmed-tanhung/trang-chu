@@ -22,21 +22,11 @@ CLINICAL_NAME = re.compile(
     r"hepatotoxicity|injectable|stock|source)",
     re.IGNORECASE,
 )
+# Dữ liệu cảnh báo định kỳ được tải riêng, không tạo bản cập nhật ứng dụng.
 PHARMACOVIGILANCE_AUTO_FILES = {
     "pharmacovigilance_auto.json",
     "pharmacovigilance_auto_data.js",
 }
-NON_CLINICAL_METADATA_FIELDS = {
-    "generated_at",
-    "source_listing_count",
-    "newly_fetched_count",
-    "retained_history_count",
-    "detail_error_count",
-}
-AUTO_DATA_ASSIGNMENT_RE = re.compile(
-    r"\s*window\.VPMED_PHARMACOVIGILANCE_AUTO_DATA\s*=\s*(\{.*\});\s*",
-    re.DOTALL,
-)
 
 
 def clinical_files() -> list[Path]:
@@ -47,36 +37,11 @@ def clinical_files() -> list[Path]:
             if path.is_file()
             and path.suffix.lower() in {".js", ".json", ".csv"}
             and path.name != VERSION_FILE.name
+            and path.name not in PHARMACOVIGILANCE_AUTO_FILES
             and CLINICAL_NAME.search(path.name)
         ),
         key=lambda path: path.relative_to(ROOT).as_posix(),
     )
-
-
-def clinical_file_bytes(path: Path) -> bytes:
-    if path.name not in PHARMACOVIGILANCE_AUTO_FILES:
-        return path.read_bytes()
-
-    if path.suffix.lower() == ".json":
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    else:
-        source = path.read_text(encoding="utf-8")
-        match = AUTO_DATA_ASSIGNMENT_RE.fullmatch(source)
-        if not match:
-            raise RuntimeError(f"Không đọc được dữ liệu cảnh báo dược trong {path}.")
-        payload = json.loads(match.group(1))
-
-    if not isinstance(payload, dict):
-        raise RuntimeError(f"Dữ liệu cảnh báo dược trong {path} không phải object.")
-    normalized_payload = dict(payload)
-    for field in NON_CLINICAL_METADATA_FIELDS:
-        normalized_payload.pop(field, None)
-    return json.dumps(
-        normalized_payload,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-    ).encode("utf-8")
 
 
 def clinical_digest(paths: list[Path]) -> str:
@@ -85,7 +50,7 @@ def clinical_digest(paths: list[Path]) -> str:
         relative = path.relative_to(ROOT).as_posix().encode("utf-8")
         digest.update(relative)
         digest.update(b"\0")
-        digest.update(clinical_file_bytes(path))
+        digest.update(path.read_bytes())
         digest.update(b"\0")
     return digest.hexdigest()
 

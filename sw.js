@@ -1,7 +1,7 @@
 'use strict';
 
-const APP_VERSION = '2026.11.18.74';
-const CLINICAL_DATA_VERSION = 'sha256-d1146c68de7a050f8518d9d2';
+const APP_VERSION = '2026.11.18.77';
+const CLINICAL_DATA_VERSION = 'sha256-fcf5381e4178c9129824dd27';
 const APP_SHELL_CACHE = `vpmed-shell-${APP_VERSION}`;
 const RUNTIME_CACHE = `vpmed-runtime-${APP_VERSION}`;
 const CLINICAL_WEB_CACHE_PREFIX = 'vpmed-clinical-web-';
@@ -28,14 +28,14 @@ const APP_SHELL = [
   './assets/platform-shell.css?v=20260822-pwa-v1',
   './assets/navy-theme.css?v=20260828-original-colors-pulse-v2',
   './assets/vpmed-access.js?v=20261117-permissions-v1',
-  './assets/platform-shell.js?v=20261118-direct-pdf',
+  './assets/platform-shell.js?v=20261118-silent-adr',
   './assets/pharmacy-library.css?v=20261118-direct-pdf',
   './assets/pharmacy-library.js?v=20261118-direct-pdf',
   './assets/pharmacy-home.js?v=20261117-home-v1',
   './assets/pharmacy-home.css?v=20261117-home-v1',
   './assets/pharmacy-admin-guard.js?v=20261117-permissions-v1',
   './assets/disclaimer-gate.js?v=20260822-disclaimer-gate-v1',
-  './assets/update-notifier.js?v=20260822-installed-data-channel-v1',
+  './assets/update-notifier.js?v=20261118-major-only',
   './assets/logo-vpmed.png',
   './assets/icon-192.png',
   './assets/icon-512.png',
@@ -45,6 +45,7 @@ const APP_SHELL = [
 ];
 
 const CLINICAL_PATH_PATTERN = /(?:^|\/)(?:data|sources)\/|\/assets\/(?:.*(?:data|database|profile|medicine|alert|icd10|disease|contra|renal|infusion|clinical|dosing|interaction|antibiotic|pharmacovigilance|pregnancy|hepatotoxicity|injectable|stock|source).*)\.(?:js|json|csv)$/i;
+const ADVISORY_FEED_PATH_PATTERN = /\/assets\/pharmacovigilance_auto(?:\.json|_data\.js)$/;
 const AUTH_PATH_PATTERN = /(?:supabase|auth|token|session|login|logout)/i;
 let currentDataVersion = '';
 let currentInstalledDataVersion = '';
@@ -117,6 +118,10 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(cacheFirst(request, APP_SHELL_CACHE));
     return;
   }
+  if (ADVISORY_FEED_PATH_PATTERN.test(url.pathname)) {
+    event.respondWith(networkFirstRuntime(request, {fresh: true}));
+    return;
+  }
   if (CLINICAL_PATH_PATTERN.test(url.pathname)) {
     event.respondWith(resolveClientMode(event, url).then((clientMode) => clientMode === 'installed'
       ? cacheFirstInstalledClinical(request)
@@ -171,25 +176,17 @@ async function networkOnlyVersioned(request, clientMode = 'web') {
     const clone = response.clone();
     const payload = await clone.json().catch(() => null);
     const dataVersion = payload?.clinicalDataVersion || payload?.version;
-    if (dataVersion) await observeServerDataVersion(String(dataVersion), clientMode, String(payload?.version || ''));
+    if (dataVersion) await observeServerDataVersion(String(dataVersion), clientMode);
   }
   return response;
 }
 
-async function observeServerDataVersion(version, clientMode, buildVersion = '') {
+async function observeServerDataVersion(version, clientMode) {
   clientMode = normalizeClientMode(clientMode);
   lastDataVersionCheckAt[clientMode] = Date.now();
   if (clientMode === 'installed') {
     await hydrateInstalledDataVersion();
-    if (version !== currentInstalledDataVersion) {
-      await notifyClients({
-        type: 'VPMED_DATA_VERSION_AVAILABLE',
-        targetMode: 'installed',
-        previousVersion: currentInstalledDataVersion,
-        version,
-        buildVersion
-      });
-    }
+    if (version !== currentInstalledDataVersion) await applyInstalledDataVersion(version);
     return version;
   }
   await hydrateDataVersion();
@@ -256,14 +253,7 @@ async function checkDataVersion({notify = true, force = false, clientMode = 'web
       const version = await fetchServerDataVersion();
       const shouldNotify = pendingDataVersionNotifications[clientMode];
       if (clientMode === 'installed') {
-        if (version !== currentInstalledDataVersion && shouldNotify) {
-          await notifyClients({
-            type: 'VPMED_DATA_VERSION_AVAILABLE',
-            targetMode: 'installed',
-            previousVersion: currentInstalledDataVersion,
-            version
-          });
-        }
+        if (version !== currentInstalledDataVersion) await applyInstalledDataVersion(version);
       } else if (version !== currentDataVersion) {
         await switchClinicalVersion(version, shouldNotify);
       }
@@ -292,17 +282,20 @@ async function applyInstalledDataVersion(version, source) {
   version = String(version || '').trim();
   if (!/^[0-9A-Za-z._-]{1,80}$/.test(version)) return false;
   const previousVersion = await hydrateInstalledDataVersion();
+  if (version === previousVersion) return true;
   currentInstalledDataVersion = version;
   await storeDataVersion(STORED_INSTALLED_DATA_VERSION_URL, currentInstalledDataVersion);
   const keep = `${CLINICAL_INSTALLED_CACHE_PREFIX}${currentInstalledDataVersion}`;
   const names = await caches.keys();
   await Promise.all(names.map((name) => name.startsWith(CLINICAL_INSTALLED_CACHE_PREFIX) && name !== keep ? caches.delete(name) : Promise.resolve(false)));
-  source?.postMessage?.({
+  const message = {
     type: 'VPMED_DATA_VERSION_APPLIED',
     targetMode: 'installed',
     previousVersion,
     version: currentInstalledDataVersion
-  });
+  };
+  if (source) source.postMessage(message);
+  else await notifyClients(message);
   return true;
 }
 
@@ -416,14 +409,17 @@ async function networkFirstNavigation(request) {
   }
 }
 
-async function networkFirstRuntime(request) {
+async function networkFirstRuntime(request, {fresh = false} = {}) {
   const cache = await caches.open(RUNTIME_CACHE);
+  const url = new URL(request.url);
+  const cacheKey = fresh ? url.origin + url.pathname : request;
   try {
-    const response = await fetch(request);
-    if (response.ok) await cache.put(request, response.clone());
+    const response = await fetch(fresh ? new Request(request, {cache: 'no-store'}) : request);
+    if (fresh && !response.ok) throw new Error(`Advisory HTTP ${response.status}`);
+    if (response.ok) await cache.put(cacheKey, response.clone());
     return response;
   } catch (error) {
-    const cached = await cache.match(request, {ignoreSearch: true});
+    const cached = await cache.match(cacheKey, {ignoreSearch: true});
     if (cached) return cached;
     throw error;
   }

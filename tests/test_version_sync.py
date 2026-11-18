@@ -46,45 +46,20 @@ def test_manifest_clinical_version_matches_current_data_hash():
     assert version["clinicalDataVersion"] == expected
 
 
-def test_operational_metadata_does_not_create_a_new_clinical_version(tmp_path):
-    original = {
-        "generated_at": "2026-08-26T06:00:00+07:00",
-        "source": "https://example.test/source",
-        "source_listing_count": 10,
-        "newly_fetched_count": 1,
-        "retained_history_count": 2,
-        "detail_error_count": 0,
-        "review_status": "Đã kiểm tra.",
-        "alerts": [{"id": "auto-1", "title": "Cảnh báo không đổi"}],
-    }
-    next_check = {
-        **original,
-        "generated_at": "2026-08-27T06:00:00+07:00",
-        "source_listing_count": 11,
-        "newly_fetched_count": 0,
-        "retained_history_count": 3,
-        "detail_error_count": 1,
-    }
+def test_automated_advisories_do_not_generate_a_new_clinical_version(tmp_path, monkeypatch):
+    monkeypatch.setattr(VERSIONER, "ROOT", tmp_path)
+    monkeypatch.setattr(VERSIONER, "ASSETS", tmp_path / "assets")
+    assets = VERSIONER.ASSETS
+    assets.mkdir()
+    reference = assets / "renal_data.json"
+    reference.write_text('{"revision":1}', encoding="utf-8")
+    before = VERSIONER.clinical_digest(VERSIONER.clinical_files())
 
-    for filename in (
-        "pharmacovigilance_auto.json",
-        "pharmacovigilance_auto_data.js",
-    ):
-        first = tmp_path / "first" / filename
-        second = tmp_path / "second" / filename
-        first.parent.mkdir(parents=True, exist_ok=True)
-        second.parent.mkdir(parents=True, exist_ok=True)
-        if filename.endswith(".json"):
-            first.write_text(json.dumps(original, ensure_ascii=False), encoding="utf-8")
-            second.write_text(json.dumps(next_check, ensure_ascii=False), encoding="utf-8")
-        else:
-            prefix = "window.VPMED_PHARMACOVIGILANCE_AUTO_DATA = "
-            first.write_text(
-                prefix + json.dumps(original, ensure_ascii=False) + ";\n",
-                encoding="utf-8",
-            )
-            second.write_text(
-                prefix + json.dumps(next_check, ensure_ascii=False) + ";\n",
-                encoding="utf-8",
-            )
-        assert VERSIONER.clinical_file_bytes(first) == VERSIONER.clinical_file_bytes(second)
+    (assets / "pharmacovigilance_auto.json").write_text('{"alerts":[{"id":"new"}]}', encoding="utf-8")
+    (assets / "pharmacovigilance_auto_data.js").write_text(
+        'window.VPMED_PHARMACOVIGILANCE_AUTO_DATA = {"alerts":[{"id":"new"}]};',
+        encoding="utf-8",
+    )
+    assert VERSIONER.clinical_digest(VERSIONER.clinical_files()) == before
+    reference.write_text('{"revision":2}', encoding="utf-8")
+    assert VERSIONER.clinical_digest(VERSIONER.clinical_files()) != before

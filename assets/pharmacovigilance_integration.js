@@ -210,17 +210,26 @@
       this.alerts = [];
       this.activeCategory = 'Tất cả';
       this.abortController = null;
+      this.lastFetchAt = 0;
       this.lastSyncDate = '';
+      this.onFeatureOpen = (event) => {
+        if (event.detail?.feature === VIEW_NAME && event.detail.phase === 'opened') this.loadData();
+      };
     }
 
     connectedCallback() {
       this.shadowRoot.innerHTML = `<style>${STYLE}</style>${TEMPLATE}`;
       this.bindEvents();
+      window.addEventListener('vpmed:feature-open', this.onFeatureOpen);
       this.loadData();
     }
 
     disconnectedCallback() {
       this.abortController?.abort();
+      this.abortController = null;
+      this.lastFetchAt = 0;
+      window.removeEventListener('vpmed:feature-open', this.onFeatureOpen);
+      document.removeEventListener('keydown', this.onKeydown);
     }
 
     $(selector) { return this.shadowRoot.querySelector(selector); }
@@ -253,12 +262,16 @@
     }
 
     async loadData() {
-      this.abortController = new AbortController();
+      if (this.abortController || Date.now() - this.lastFetchAt < 60_000) return;
+      const controller = new AbortController();
+      this.abortController = controller;
       try {
         const [staticPayload, autoPayload] = await Promise.all([
           this.fetchJson(STATIC_DATA_URL, true),
           this.fetchJson(AUTO_DATA_URL, false)
         ]);
+        if (controller.signal.aborted) return;
+        this.lastFetchAt = Date.now();
         const fetchedStaticAlerts = unwrapAlerts(staticPayload);
         const embeddedStaticAlerts = unwrapAlerts(window.VPMED_PHARMACOVIGILANCE_STATIC_DATA);
         const bulletin76Alerts = unwrapAlerts(window.VPMED_PHARMACOVIGILANCE_BULLETIN_76_DATA);
@@ -282,8 +295,11 @@
           : `${staticAlerts.length} cảnh báo biên tập · Chưa tải được tệp bản tin tự động.`;
         this.updateFeatureCard();
       } catch (error) {
-        this.$('#cards').innerHTML = '<div class="empty"><b>Không tải được dữ liệu cảnh báo.</b><br>Vui lòng tải lại trang hoặc kiểm tra các tệp dữ liệu trong thư mục assets.</div>';
+        if (controller.signal.aborted) return;
+        if (!this.alerts.length) this.$('#cards').innerHTML = '<div class="empty"><b>Không tải được dữ liệu cảnh báo.</b></div>';
         this.$('#syncNote').textContent = `Lỗi tải dữ liệu: ${error.message}`;
+      } finally {
+        if (this.abortController === controller) this.abortController = null;
       }
     }
 
@@ -308,14 +324,21 @@
     }
 
     populateFilters() {
+      const system = this.$('#systemFilter');
+      const year = this.$('#yearFilter');
+      const selectedSystem = system.value;
+      const selectedYear = year.value;
       const systems = [...new Set(this.alerts.flatMap((item) => String(item.system || '').split('·').map((value) => value.trim())).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'vi'));
-      this.$('#systemFilter').innerHTML = '<option value="">Tất cả hệ cơ quan</option>' + systems.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join('');
+      system.innerHTML = '<option value="">Tất cả hệ cơ quan</option>' + systems.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join('');
       const years = [...new Set(this.alerts.map((item) => String(item.year || '')).filter(Boolean))].sort((a, b) => Number(b) - Number(a));
-      this.$('#yearFilter').innerHTML = '<option value="">Tất cả năm</option>' + years.map((year) => `<option value="${escapeHtml(year)}">${escapeHtml(year)}</option>`).join('');
+      year.innerHTML = '<option value="">Tất cả năm</option>' + years.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join('');
+      if (systems.includes(selectedSystem)) system.value = selectedSystem;
+      if (years.includes(selectedYear)) year.value = selectedYear;
     }
 
     renderCategories() {
       const categories = ['Tất cả', ...new Set(this.alerts.map((item) => item.category).filter(Boolean))];
+      if (!categories.includes(this.activeCategory)) this.activeCategory = 'Tất cả';
       this.$('#categoryList').innerHTML = categories.map((category) => `<button type="button" class="${category === this.activeCategory ? 'active' : ''}" data-category="${escapeHtml(category)}">${escapeHtml(category)}</button>`).join('');
       this.$$('#categoryList button').forEach((button) => button.addEventListener('click', () => {
         this.activeCategory = button.dataset.category;

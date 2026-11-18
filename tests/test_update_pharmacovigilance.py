@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import importlib.util
 import unittest
+from tempfile import TemporaryDirectory
+from unittest.mock import patch
 from pathlib import Path
 
 
@@ -158,14 +160,15 @@ class PharmacovigilanceUpdaterTests(unittest.TestCase):
         self.assertEqual([item["id"] for item in merged], ["auto-new", "auto-old"])
         self.assertEqual(retained, 1)
 
-    def test_updates_lazy_shell_cache_buster_without_depending_on_format(self) -> None:
-        source = "scripts: [\n  'assets/pharmacovigilance_auto_data.js?v=old-build',\n]"
-        updated = updater.update_shell_cache_buster(source, "20260822183000")
-        self.assertIn(
-            "assets/pharmacovigilance_auto_data.js?v=20260822183000",
-            updated,
-        )
-        self.assertNotIn("old-build", updated)
+    def test_writes_only_advisory_data(self) -> None:
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            data = root / "pharmacovigilance_auto.json"
+            fallback = root / "pharmacovigilance_auto_data.js"
+            with patch.multiple(updater, OUTPUT_PATH=data, OUTPUT_JS_PATH=fallback):
+                updater.write_payload({"alerts": [{"id": "new"}]})
+            self.assertEqual(sorted(root.iterdir()), sorted([data, fallback]))
+            self.assertIn('"id":"new"', fallback.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

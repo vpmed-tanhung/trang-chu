@@ -1,8 +1,14 @@
-VPMED — GHI CHÚ CẬP NHẬT HỆ THỐNG (cập nhật gần nhất: 18/11/2026, bản 5.8.2)
+VPMED — GHI CHÚ CẬP NHẬT HỆ THỐNG (cập nhật gần nhất: 18/11/2026, bản 5.8.5)
 
 Tài liệu này tóm tắt các thay đổi đang có hiệu lực trên website, viết theo đúng
 những gì mã nguồn hiện triển khai. Xem chi tiết kỹ thuật/lịch sử đầy đủ trong
 thư mục docs/changelog/.
+
+ĐIỂM MỚI TRONG BẢN 5.8.5
+- Cảnh giác dược tự lấy dữ liệu mới khi mở công cụ. Lượt cập nhật dữ liệu
+  định kỳ không hiển thị lời nhắc cập nhật ứng dụng hay tải lại trang.
+- Lời nhắc chỉ hiện cho bản phát hành lớn được đánh dấu bằng tùy chọn
+  --manual-activation trong scripts/bump_app_version.py.
 
 ĐIỂM MỚI TRONG BẢN 5.8.2
 - Trang chủ Khoa Dược có các mục Thông tin thuốc, Hướng dẫn sử dụng và

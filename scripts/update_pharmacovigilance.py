@@ -24,7 +24,6 @@ SOURCE_NAME = "Trung tâm Quốc gia về Thông tin thuốc và Theo dõi phả
 OUTPUT_PATH = Path("assets/pharmacovigilance_auto.json")
 OUTPUT_JS_PATH = Path("assets/pharmacovigilance_auto_data.js")
 STATIC_PATH = Path("assets/pharmacovigilance_alerts.json")
-SHELL_PATH = Path("assets/platform-shell.js")
 MAX_ITEMS = 30
 HISTORY_LIMIT = 120
 DETAIL_LINK_RE = re.compile(r"/CanhGiacDuoc/DiemTin/\d+/", re.IGNORECASE)
@@ -766,24 +765,7 @@ def existing_check_is_fresh(now: datetime) -> bool:
         return False
 
 
-def update_shell_cache_buster(shell_text: str, version: str) -> str:
-    updated, replacements = re.subn(
-        r'(["\']assets/pharmacovigilance_auto_data\.js)(?:\?v=[^"\']*)?(["\'])',
-        rf"\g<1>?v={version}\g<2>",
-        shell_text,
-        count=1,
-    )
-    if replacements != 1:
-        raise RuntimeError("Không tìm thấy pharmacovigilance_auto_data.js trong Platform Shell.")
-    return updated
-
-
-def write_payload(payload: dict[str, Any], version: str) -> None:
-    shell_text = update_shell_cache_buster(
-        SHELL_PATH.read_text(encoding="utf-8"),
-        version,
-    )
-
+def write_payload(payload: dict[str, Any]) -> None:
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
@@ -795,7 +777,6 @@ def write_payload(payload: dict[str, Any], version: str) -> None:
         + ";\n",
         encoding="utf-8",
     )
-    SHELL_PATH.write_text(shell_text, encoding="utf-8")
 
 
 def compact_existing_payload() -> int:
@@ -816,8 +797,7 @@ def compact_existing_payload() -> int:
         "Bản tin được tự động trích xuất thành tóm tắt ngắn; nội dung đầy đủ "
         "được giữ tại liên kết nguồn để kiểm chứng trước khi áp dụng lâm sàng."
     )
-    now = datetime.now(ZoneInfo("Asia/Ho_Chi_Minh"))
-    write_payload(payload, now.strftime("%Y%m%d%H%M%S"))
+    write_payload(payload)
     print(f"Đã rút gọn {len(payload['alerts'])} bản tin hiện có.")
     return 0
 
@@ -897,7 +877,7 @@ def main(skip_if_fresh: bool = False) -> int:
         "alerts": alerts,
     }
 
-    write_payload(payload, now.strftime("%Y%m%d%H%M%S"))
+    write_payload(payload)
 
     print(f"Đã tạo {len(alerts)} bản tin tự động tại {OUTPUT_PATH} và {OUTPUT_JS_PATH}.")
     if errors:

@@ -38,7 +38,7 @@ def main():
     ap.add_argument(
         "--manual-activation",
         action="store_true",
-        help="Giữ mốc phiên bản trước để trình thông báo cập nhật thủ công",
+        help="Đánh dấu bản phát hành lớn để hiển thị lời nhắc cập nhật",
     )
     args = ap.parse_args()
 
@@ -47,12 +47,10 @@ def main():
     old_display = str(data.get("displayVersion", "")).strip()
     data["version"] = args.build
     data["displayVersion"] = args.display
+    data["previousVersion"] = args.previous_build or old_build
+    data["previousDisplayVersion"] = args.previous_display or old_display
     if args.manual_activation:
-        data["previousVersion"] = args.previous_build or old_build
-        data["previousDisplayVersion"] = args.previous_display or old_display
-    else:
-        data.pop("previousVersion", None)
-        data.pop("previousDisplayVersion", None)
+        data["majorUpdateVersion"] = args.build
     data["updatedAt"] = datetime.now(ZoneInfo("Asia/Ho_Chi_Minh")).isoformat(timespec="seconds")
     data["note"] = args.note
     data["buildId"] = args.build_id or f"v{args.display}-{args.build}"

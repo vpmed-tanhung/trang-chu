@@ -12,8 +12,7 @@ assert(source.includes('await hydrateDataVersion();'), 'Mọi lần so phiên b�
 assert(source.includes('DATA_VERSION_CHECK_INTERVAL_MS'), 'Kiểm tra phiên bản phải có thời gian chống gọi lặp');
 assert(source.includes('dataVersionCheckPromise'), 'Các yêu cầu dữ liệu đồng thời phải dùng chung một lần kiểm tra phiên bản');
 assert(source.includes('CLINICAL_INSTALLED_CACHE_PREFIX'), 'Bản cài phải có bộ nhớ dữ liệu tách khỏi tab web');
-assert(source.includes('VPMED_DATA_VERSION_AVAILABLE'), 'Bản cài phải được báo khi nguồn dữ liệu thay đổi');
-assert(source.includes('APPLY_DATA_VERSION'), 'Nguồn dữ liệu mới chỉ được áp dụng sau thao tác cập nhật');
+assert(source.includes('VPMED_DATA_VERSION_APPLIED'), 'Worker thông báo dữ liệu đã được áp dụng trong nền');
 assert(source.indexOf("if (request.mode === 'navigate')") < source.indexOf('if (isAppShellRequest(request, url))'), 'Điều hướng trực tuyến phải ưu tiên HTML mới trước App Shell');
 assert(source.includes('const cached = await cache.match(request);'), 'Cache buster của tài nguyên mới không được bị bỏ qua');
 
@@ -46,9 +45,13 @@ const cachesStub = {
   async delete() { return true; }
 };
 
+const handlers = new Map();
+let advisoryRequests = 0;
+let offline = false;
 const selfStub = {
   registration: {scope},
-  addEventListener() {},
+  location: new URL(scope),
+  addEventListener(name, handler) { handlers.set(name, handler); },
   clients: {
     async claim() {},
     async matchAll() {
@@ -60,10 +63,14 @@ const selfStub = {
 const sandbox = {
   self: selfStub,
   caches: cachesStub,
-  fetch: async () => new Response(JSON.stringify({
-    version: '2026.08.22.45',
-    clinicalDataVersion: clinicalVersion
-  }), {status: 200, headers: {'Content-Type': 'application/json'}}),
+  fetch: async (request) => {
+    if (new URL(request.url).pathname === '/assets/pharmacovigilance_auto.json') {
+      if (offline) throw new Error('offline');
+      assert.strictEqual(request.cache, 'no-store');
+      return new Response(String(++advisoryRequests));
+    }
+    return new Response(JSON.stringify({version: '2026.08.22.45', clinicalDataVersion: clinicalVersion}));
+  },
   URL,
   Request,
   Response,
@@ -83,12 +90,26 @@ vm.runInContext(source, sandbox);
   assert.deepStrictEqual(messages, [], 'Không được báo dữ liệu mới khi phiên bản máy chủ đã có trong bộ nhớ');
 
   await sandbox.networkOnlyVersioned(request, 'installed');
-  const installedMessage = messages.find(message => message.type === 'VPMED_DATA_VERSION_AVAILABLE');
+  const installedMessage = messages.find(message => message.type === 'VPMED_DATA_VERSION_APPLIED');
   assert.ok(installedMessage, 'Bản cài phải nhận thông báo khi nguồn máy chủ thay đổi');
   assert.strictEqual(installedMessage.previousVersion, installedOldVersion);
   const storedInstalled = cacheValues.get(installedStoredVersionUrl);
-  assert.strictEqual(await storedInstalled.clone().text(), installedOldVersion,
-    'Chưa bấm cập nhật thì worker không được tự đổi mốc dữ liệu của bản cài');
+  assert.strictEqual(await storedInstalled.clone().text(), clinicalVersion);
+
+  async function advisory(query) {
+    let result;
+    handlers.get('fetch')({
+      request: new Request(scope + 'assets/pharmacovigilance_auto.json?' + query),
+      respondWith(response) { result = response; }
+    });
+    return (await result).text();
+  }
+  assert.strictEqual(await advisory('vpmed_client=installed&v=1'), '1');
+  assert.strictEqual(await advisory('vpmed_client=installed&v=2'), '2');
+  offline = true;
+  assert.strictEqual(await advisory('vpmed_client=installed&v=3'), '2');
+  assert.strictEqual(messages.length, 1, 'Bản tin tự động không đổi phiên bản ứng dụng hoặc dữ liệu lâm sàng');
+
   console.log('Service worker data-version tests: OK');
 })().catch((error) => {
   console.error(error);

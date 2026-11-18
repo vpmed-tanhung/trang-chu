@@ -106,16 +106,11 @@ async function runNotifier() {
 
 (async () => {
   await runNotifier();
-  assert.strictEqual(localStorage.getItem('vpmed_installed_clinical_data_version_v1'), 'sha256-source-a');
-  assert.strictEqual(events.some(event => event.type === 'vpmed:app-update-available'), false,
-    'Đổi build nhưng nguồn dữ liệu giữ nguyên không được báo cập nhật trong bản cài');
+  assert.strictEqual(events.length, 0, 'Bản bảo trì không được báo cập nhật trong bản cài');
 
   clinicalDataVersion = 'sha256-source-b';
   await runNotifier();
-  const update = events.find(event => event.type === 'vpmed:app-update-available');
-  assert.ok(update, 'Bản cài phải báo khi phiên bản nguồn dữ liệu thay đổi');
-  assert.strictEqual(update.detail.kind, 'clinical-data');
-  assert.strictEqual(update.detail.dataVersion, 'sha256-source-b');
+  assert.strictEqual(events.length, 0, 'Bản cài không hiện lời nhắc khi dữ liệu đổi');
   assert.strictEqual(localStorage.getItem('vpmed_accepted_app_build_v2'), null,
     'Trạng thái build của tab web không được dùng cho bản cài');
   console.log('Installed data-only update tests: OK');

@@ -36,6 +36,7 @@ class Element {
 const oldBuild = '2026.08.21.32';
 const newBuild = '2026.08.21.35';
 let loadedMetaBuild = oldBuild;
+let majorUpdateVersion = '';
 const footer = new Element('span');
 footer.id = 'vpmedLatestVersion';
 footer.textContent = '· v5.0';
@@ -121,6 +122,7 @@ const fetchStub = async () => ({
     return {
       version: newBuild,
       displayVersion: '5.1',
+      majorUpdateVersion,
       previousVersion: oldBuild,
       previousDisplayVersion: '5.0',
       note: 'Bản phát hành mới'
@@ -153,9 +155,24 @@ vm.runInContext(code, sandbox);
 
   const notice = documentStub.getElementById('vpmedUpdateNotice');
   assert.strictEqual(notice, null, 'Không được tạo thông báo cập nhật nhỏ ở góc');
+  assert.ok(!dispatchedEvents.length, 'Bản bảo trì không được hiện lời nhắc');
+  // Bản bảo trì giữ lại mốc phát hành lớn cho người dùng còn ở bản cũ.
+  majorUpdateVersion = '2026.08.21.33';
+  const openWithMajor = {...sandbox};
+  vm.createContext(openWithMajor);
+  vm.runInContext(code, openWithMajor);
+  await new Promise(resolve => setTimeout(resolve, 0));
   const updateEvent = dispatchedEvents.find(event => event.type === 'vpmed:app-update-available');
   assert.ok(updateEvent, 'Phải chuyển phiên bản mới sang banner lớn');
   assert.strictEqual(updateEvent.detail.displayVersion, '5.1');
+
+  windowStub.VPMED_UPDATE_NOTIFIER.dismissUpdate(majorUpdateVersion);
+  dispatchedEvents.length = 0;
+  const afterDismissal = {...sandbox};
+  vm.createContext(afterDismissal);
+  vm.runInContext(code, afterDismissal);
+  await new Promise(resolve => setTimeout(resolve, 0));
+  assert.ok(!dispatchedEvents.length, 'Để sau phải ẩn lời nhắc trong phiên hiện tại');
 
   windowStub.VPMED_UPDATE_NOTIFIER.applyUpdate(newBuild);
   assert.strictEqual(windowStub.sessionStorage.getItem('vpmed_update_reload_target_v1'), newBuild);

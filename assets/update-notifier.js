@@ -1,4 +1,4 @@
-/* VPMED - chỉ tải phiên bản mới sau khi người dùng chủ động bấm Cập nhật. */
+/* VPMED - chỉ hiện lời nhắc đối với bản phát hành lớn. */
 (function () {
   'use strict';
 
@@ -19,8 +19,8 @@
   var ACCEPTED_VERSION_KEY = 'vpmed_accepted_app_build_v2';
   var ACCEPTED_DISPLAY_KEY = 'vpmed_accepted_app_display_v2';
   var RELOAD_TARGET_KEY = 'vpmed_update_reload_target_v1';
-  var INSTALLED_DATA_VERSION_KEY = 'vpmed_installed_clinical_data_version_v1';
-  var INSTALLED_DATA_RELOAD_TARGET_KEY = 'vpmed_installed_data_reload_target_v1';
+  var DISMISSED_UPDATE_KEY = 'vpmed_dismissed_major_update_v1';
+  var dismissedMajorVersion = '';
   var UPDATE_QUERY_KEY = 'vpmed_update';
   var CHECK_INTERVAL_MS = 5 * 60 * 1000;
   var checking = false;
@@ -156,44 +156,19 @@
     });
   }
 
-  function reloadForDataUpdate(dataVersion, buildVersion) {
-    dataVersion = validVersion(dataVersion);
-    buildVersion = validVersion(buildVersion) || loadedVersion || dataVersion;
-    if (!dataVersion) return;
-    writeStorage(window.sessionStorage, INSTALLED_DATA_RELOAD_TARGET_KEY, dataVersion);
+  function isNewerBuild(candidate, current) {
+    var buildPattern = /^\d+\.\d+\.\d+\.\d+$/;
+    if (!buildPattern.test(candidate)) return false;
+    if (!buildPattern.test(current)) return candidate !== current;
+    var currentParts = current.split('.').map(Number);
+    var candidateParts = candidate.split('.').map(Number);
+    var difference = candidateParts.findIndex(function (part, index) { return part !== currentParts[index]; });
+    return difference >= 0 && candidateParts[difference] > currentParts[difference];
+  }
 
-    var serviceWorker = window.navigator && window.navigator.serviceWorker;
-    if (!serviceWorker || typeof serviceWorker.getRegistration !== 'function') {
-      navigateToVersion(buildVersion);
-      return;
-    }
-
-    serviceWorker.getRegistration().then(function (registration) {
-      var navigated = false;
-      var navigateOnce = function () {
-        if (navigated) return;
-        navigated = true;
-        navigateToVersion(buildVersion);
-      };
-      if (serviceWorker.controller) {
-        serviceWorker.controller.postMessage({
-          type: 'APPLY_DATA_VERSION',
-          version: dataVersion,
-          clientMode: 'installed'
-        });
-      }
-      if (registration && registration.waiting) {
-        serviceWorker.addEventListener('controllerchange', navigateOnce, {once: true});
-        window.setTimeout(function () {
-          registration.waiting.postMessage({type: 'SKIP_WAITING'});
-        }, 120);
-        window.setTimeout(navigateOnce, 1500);
-        return;
-      }
-      window.setTimeout(navigateOnce, 180);
-    }).catch(function () {
-      navigateToVersion(buildVersion);
-    });
+  function dismissUpdate(version) {
+    dismissedMajorVersion = validVersion(version);
+    writeStorage(window.sessionStorage, DISMISSED_UPDATE_KEY, dismissedMajorVersion);
   }
 
   function showUpdate(data) {
@@ -205,9 +180,9 @@
     removeLegacyNotice();
     if (typeof window.CustomEvent === 'function' && typeof window.dispatchEvent === 'function') {
       window.dispatchEvent(new CustomEvent('vpmed:app-update-available', {detail: {
-        kind: data.kind || 'application',
+        kind: 'application',
         version: version,
-        dataVersion: data.dataVersion || '',
+        majorUpdateVersion: data.majorUpdateVersion,
         displayVersion: displayVersion,
         currentDisplayVersion: data.currentDisplayVersion || '',
         note: data.note || ''
@@ -215,57 +190,10 @@
     }
   }
 
-  function applyInstalledVersion(data, version, displayVersion) {
-    var dataVersion = validVersion(data && data.clinicalDataVersion);
-    if (!dataVersion) return;
-    var acceptedDataVersion = validVersion(readStorage(window.localStorage, INSTALLED_DATA_VERSION_KEY));
-    var reloadTarget = validVersion(readStorage(window.sessionStorage, INSTALLED_DATA_RELOAD_TARGET_KEY));
-
-    /* Lần đầu nhận diện bản cài: ghi mốc nguồn hiện hành, không coi thay đổi
-       giao diện/mã nguồn của website là một bản cập nhật dữ liệu. */
-    if (!acceptedDataVersion) {
-      writeStorage(window.localStorage, INSTALLED_DATA_VERSION_KEY, dataVersion);
-      removeStorage(window.sessionStorage, INSTALLED_DATA_RELOAD_TARGET_KEY);
-      cleanUpdateQuery();
-      removeLegacyNotice();
-      return;
-    }
-
-    /* Chỉ xác nhận mốc nguồn mới sau thao tác Cập nhật của chính bản cài. */
-    if (reloadTarget === dataVersion) {
-      writeStorage(window.localStorage, INSTALLED_DATA_VERSION_KEY, dataVersion);
-      removeStorage(window.sessionStorage, INSTALLED_DATA_RELOAD_TARGET_KEY);
-      cleanUpdateQuery();
-      if (loadedVersion === version) setFooterVersion(displayVersion);
-      removeLegacyNotice();
-      return;
-    }
-    if (reloadTarget) removeStorage(window.sessionStorage, INSTALLED_DATA_RELOAD_TARGET_KEY);
-
-    if (acceptedDataVersion !== dataVersion) {
-      showUpdate({
-        kind: 'clinical-data',
-        version: version,
-        dataVersion: dataVersion,
-        displayVersion: displayVersion,
-        currentDisplayVersion: getFooterDisplayVersion(),
-        note: data.note
-      });
-      return;
-    }
-
-    cleanUpdateQuery();
-    removeLegacyNotice();
-  }
-
   function applyVersion(data) {
     var version = validVersion(data && data.version);
     if (!version) return;
     var displayVersion = validVersion(data && data.displayVersion) || version;
-    if (IS_INSTALLED_APP) {
-      applyInstalledVersion(data, version, displayVersion);
-      return;
-    }
     var previousVersion = validVersion(data && data.previousVersion);
     var previousDisplayVersion = validVersion(data && data.previousDisplayVersion);
     var reloadTarget = readStorage(window.sessionStorage, RELOAD_TARGET_KEY);
@@ -283,7 +211,7 @@
       acceptedDisplayVersion = previousDisplayVersion;
     }
 
-    var currentDisplayVersion = acceptedDisplayVersion || previousDisplayVersion || getFooterDisplayVersion();
+    var currentDisplayVersion = getFooterDisplayVersion() || acceptedDisplayVersion || previousDisplayVersion;
 
     /* HTML đang chạy đã đúng build máy chủ: không hiển thị lời mời cập nhật giả. */
     if (loadedVersion === version && !reloadTarget) {
@@ -315,8 +243,14 @@
     /* Chưa bấm: luôn giữ nhãn phiên bản cũ và chỉ hiện nút Cập nhật. */
     if (currentDisplayVersion) setFooterVersion(currentDisplayVersion);
     cleanUpdateQuery();
+    var majorUpdateVersion = validVersion(data.majorUpdateVersion);
+    if (!isNewerBuild(majorUpdateVersion, loadedVersion || acceptedVersion)) return;
+    if (isNewerBuild(majorUpdateVersion, version)) return;
+    if (majorUpdateVersion === dismissedMajorVersion ||
+        majorUpdateVersion === readStorage(window.sessionStorage, DISMISSED_UPDATE_KEY)) return;
     showUpdate({
       version: version,
+      majorUpdateVersion: majorUpdateVersion,
       displayVersion: displayVersion,
       currentDisplayVersion: currentDisplayVersion,
       note: data.note
@@ -349,7 +283,7 @@
 
   window.VPMED_UPDATE_NOTIFIER = Object.freeze({
     applyUpdate: reloadForUpdate,
-    applyDataUpdate: reloadForDataUpdate,
+    dismissUpdate: dismissUpdate,
     isInstalledApp: IS_INSTALLED_APP
   });
   removeLegacyNotice();
