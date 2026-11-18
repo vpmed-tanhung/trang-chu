@@ -1,10 +1,10 @@
 {
-  "version": "2026.11.18.77",
-  "displayVersion": "5.8.5",
-  "updatedAt": "2026-11-18T09:28:45+07:00",
-  "note": "Cảnh giác dược tải dữ liệu mới trong nền. Chỉ nhắc cập nhật ứng dụng cho bản phát hành lớn.",
-  "buildId": "v5.8.5-2026.11.18.77",
-  "clinicalDataVersion": "sha256-fcf5381e4178c9129824dd27",
-  "previousVersion": "2026.11.18.74",
-  "previousDisplayVersion": "5.8.2"
+  "version": "2026.11.18.78",
+  "displayVersion": "5.8.6",
+  "updatedAt": "2026-11-18T09:51:31+07:00",
+  "note": "Bổ sung thuốc và ID kho nội trú ngày 18/11/2026. Ghép bản ký và hướng dẫn sử dụng cùng chế phẩm.",
+  "buildId": "v5.8.6-2026.11.18.78",
+  "clinicalDataVersion": "sha256-e6ce8a404fec507be513e915",
+  "previousVersion": "2026.11.18.77",
+  "previousDisplayVersion": "5.8.5"
 }

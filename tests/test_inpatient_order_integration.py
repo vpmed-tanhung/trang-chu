@@ -16,14 +16,14 @@ def test_inpatient_order_feature_is_wired_without_regressing_rx_review():
     assert inpatient_bundle.index(shared_layout_css) < inpatient_bundle.index(module_css)
     assert 'data-open="inpatient-order"' in html
     assert 'id="view-inpatient-order"' in html
-    assert 'assets/inpatient-order-review.js?v=20260829-ai-availability-v1' in shell
+    assert 'assets/inpatient-order-review.js?v=20261118-stock-ids' in shell
     assert "'inpatient-order'" in unified
 
     # Các sửa mới nhất của module rà soát đơn BHYT phải được giữ nguyên khi merge.
     assert 'phân biệt thiếu mã bệnh với mã bệnh chưa thật sự phù hợp' in html
     assert 'HDSD/SPC Cục QLD · Dược thư QGVN III · Phác đồ/Hướng dẫn BYT' in html
     assert 'TT20/2022 · TT37/2024 · TT01/2025 · NĐ188/2025' in html
-    assert 'assets/prescription-check.js?v=20260827-ocr-complete-v1' in shell
+    assert 'assets/prescription-check.js?v=20261118-stock-ids' in shell
 
 
 def test_inpatient_order_artifacts_are_present():
@@ -85,9 +85,9 @@ def test_inpatient_ai_identity_is_catalog_grounded_and_not_hardcoded():
     client = (ROOT / 'assets' / 'inpatient-order-review.js').read_text(encoding='utf-8')
     gs = (ROOT / 'apps-script' / 'inpatient-order-review.gs').read_text(encoding='utf-8')
 
-    catalog_asset = 'assets/inpatient_medicines_20260707.js?v=20260828-ai-identity-v1'
-    identity_asset = 'assets/inpatient-drug-identity.js?v=20260828-brand-preserve-v3'
-    review_asset = 'assets/inpatient-order-review.js?v=20260829-ai-availability-v1'
+    catalog_asset = 'assets/inpatient_medicines_20260707.js?v=20261118-stock-ids'
+    identity_asset = 'assets/inpatient-drug-identity.js?v=20261118-stock-ids'
+    review_asset = 'assets/inpatient-order-review.js?v=20261118-stock-ids'
     inpatient_bundle = shell.split("'inpatient-order': {", 1)[1].split("'petct-dose':", 1)[0]
     assert inpatient_bundle.index(catalog_asset) < inpatient_bundle.index(identity_asset) < inpatient_bundle.index(review_asset)
     assert 'VPMED_INPATIENT_MEDICINES_20260707' in identity

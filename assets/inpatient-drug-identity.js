@@ -56,7 +56,7 @@
 
   function inventoryRows() {
     return Array.isArray(root.VPMED_INPATIENT_MEDICINES_20260707)
-      ? root.VPMED_INPATIENT_MEDICINES_20260707 : [];
+      ? root.VPMED_INPATIENT_MEDICINES_20260707.filter(row => !row.stockOnly) : [];
   }
 
   function toCatalogEntry(row, index) {

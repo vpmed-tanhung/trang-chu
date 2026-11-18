@@ -10,6 +10,18 @@
     guide: {title:'Hướng dẫn sử dụng', categories:['Hướng dẫn sử dụng','Quy trình thao tác','Hướng dẫn phần mềm']},
     bulletin: {title:'Bản tin Dược', categories:['Cảnh báo an toàn','Tương tác thuốc','Thông báo nội bộ','Bản tin Dược']}
   };
+  // Hai PDF nguồn được mở riêng để giữ nguyên bản có chữ ký.
+  const GUIDE_BY_SIGNED_FILE = new Map([
+    ['BFS-DEPARA.pdf', 'BFS-DEPARA_HDSD.pdf'],
+    ['Meropenem 1g.pdf', 'Meropenem_1g_HDSD.pdf'],
+    ['Metformin 500.pdf', 'Metformin 500 - VN-20289-17.pdf'],
+    ['Minicef 400mg.pdf', 'Minicef_400mg_HDSD.pdf'],
+    ['Pharmox IMP 500mg.pdf', 'PHARMOX_IMP_500mg_HDSD.pdf'],
+    ['SADAPRON TABLETS.pdf', 'Sadapron_HDSD.pdf'],
+    ['Thuốc REAMBERIN 1,5%.pdf', 'ThuốcREAMBERIN 1,5%.pdf'],
+    ['Thuốc kháng sinh Cefoperazon 1000 mg.pdf', 'Cefoperazone_HDSD.pdf'],
+    ['Thuốc xịt mũi BENITA.pdf', 'Benita - VD-23879-15.pdf']
+  ]);
   let auth = null, records = [], loading = false, loadError = '', loadSequence = 0;
   let uploadBusy = false, uploadKind = 'bulletin', fileSequence = 0, selectedFile = null, editingRecord = null;
   const panels = new Map();
@@ -89,17 +101,26 @@
       (!panel.month || monthKey(documentDate(record)) === panel.month));
   }
   function renderItem(record) {
+    const guideFile = record.kind === 'drug' ? GUIDE_BY_SIGNED_FILE.get(record.file_name) : '';
+    const matchingGuides = guideFile ? records.filter(item => item.kind === 'guide' && item.file_name === guideFile) : [];
+    const guide = matchingGuides.length === 1 ? matchingGuides[0] : null;
     const article = node('article','library-item');
     const copy = node('div','library-item-copy');
     copy.append(button(record.title,'library-item-title',() => openPdf(record)));
     const meta = node('div','library-item-meta');
-    meta.append(node('span','library-category',record.category),node('time','',formatDate(documentDate(record))),
-      node('span','',(record.file_size/1024/1024).toLocaleString('vi-VN',{maximumFractionDigits:1})+' MB'));
+    if (guide) {
+      meta.append(node('time','','Ngày ký ban hành: '+formatDate(documentDate(record))));
+    } else {
+      meta.append(node('span','library-category',record.category),node('time','',formatDate(documentDate(record))),
+        node('span','',(record.file_size/1024/1024).toLocaleString('vi-VN',{maximumFractionDigits:1})+' MB'));
+    }
     if (record.author) meta.append(node('span','',record.author));
     copy.append(meta);
+    if (guide) copy.append(node('span','library-paired-badge','Bản có chữ ký + Hướng dẫn sử dụng'));
     if (record.summary) copy.append(node('p','',record.summary));
     const actions = node('div','library-item-actions');
-    actions.append(button('Xem PDF','btn btn-soft',() => openPdf(record)));
+    actions.append(button(guide ? 'Bản có chữ ký' : 'Xem PDF','btn btn-soft',() => openPdf(record)));
+    if (guide) actions.append(button('Hướng dẫn sử dụng','btn btn-soft',() => openPdf(guide)));
     if (isAdmin()) {
       actions.append(button('Chỉnh sửa','btn btn-soft',() => openUpload(record.kind,record)));
       actions.append(button('Xóa','btn btn-danger-soft',(event) => removeRecord(record,event.currentTarget)));

@@ -212,7 +212,7 @@
     // Nhánh dự phòng chỉ chuyển đổi nguyên văn danh mục chính thức đã nạp.
     // Không tra gần đúng và không tự bổ sung hoạt chất từ tên biệt dược.
     const inpatientRows = typeof window !== 'undefined' && Array.isArray(window.VPMED_INPATIENT_MEDICINES_20260707)
-      ? window.VPMED_INPATIENT_MEDICINES_20260707 : [];
+      ? window.VPMED_INPATIENT_MEDICINES_20260707.filter(row => !row.stockOnly) : [];
     const verifiedRows = inpatientRows.length
       ? inpatientRows
       : (typeof window !== 'undefined' && Array.isArray(window.VPMED_DRUGS) ? window.VPMED_DRUGS : []);

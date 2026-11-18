@@ -76,7 +76,10 @@
     "note": "",
     "ids": [
       "32253",
-      "31914"
+      "31914",
+      "36944",
+      "35316",
+      "34519"
     ],
     "lots": [
       {
@@ -147,7 +150,8 @@
     "category": "Giảm đau - kháng viêm",
     "note": "",
     "ids": [
-      "30155"
+      "30155",
+      "37106"
     ],
     "lots": [
       {
@@ -425,7 +429,8 @@
     "ids": [
       "33099",
       "32255",
-      "32256"
+      "32256",
+      "37036"
     ],
     "lots": [
       {
@@ -598,7 +603,8 @@
     "note": "",
     "ids": [
       "31038",
-      "29632"
+      "29632",
+      "35683"
     ],
     "lots": [
       {
@@ -633,7 +639,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31383"
+      "31383",
+      "36638"
     ],
     "lots": [
       {
@@ -664,7 +671,8 @@
     "note": "",
     "ids": [
       "32195",
-      "31255"
+      "31255",
+      "36907"
     ],
     "lots": [
       {
@@ -700,7 +708,10 @@
     "note": "",
     "ids": [
       "32194",
-      "31662"
+      "31662",
+      "37688",
+      "37185",
+      "35388"
     ],
     "lots": [
       {
@@ -736,7 +747,8 @@
     "note": "",
     "ids": [
       "33103",
-      "31638"
+      "31638",
+      "37037"
     ],
     "lots": [
       {
@@ -817,7 +829,10 @@
     ],
     "expiry": "26/08/2027",
     "id": 25,
-    "lotCount": 2
+    "lotCount": 2,
+    "alternateCodes": [
+      "TD30-002874"
+    ]
   },
   {
     "code": "BACI001",
@@ -956,7 +971,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31712"
+      "31712",
+      "36977"
     ],
     "lots": [
       {
@@ -986,7 +1002,8 @@
     "category": "Tim mạch",
     "note": "",
     "ids": [
-      "29247"
+      "29247",
+      "37660"
     ],
     "lots": [
       {
@@ -997,7 +1014,10 @@
     ],
     "expiry": "13/05/2028",
     "id": 31,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "BETA001"
+    ]
   },
   {
     "code": "BFSA001",
@@ -1016,7 +1036,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31160"
+      "31160",
+      "35313"
     ],
     "lots": [
       {
@@ -1105,7 +1126,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31219"
+      "31219",
+      "36911"
     ],
     "lots": [
       {
@@ -1135,7 +1157,10 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31162"
+      "31162",
+      "35311",
+      "36915",
+      "36290"
     ],
     "lots": [
       {
@@ -1257,7 +1282,9 @@
     "ids": [
       "32519",
       "32191",
-      "32190"
+      "32190",
+      "36672",
+      "35207"
     ],
     "lots": [
       {
@@ -1327,7 +1354,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31300"
+      "31300",
+      "33580"
     ],
     "lots": [
       {
@@ -1357,7 +1385,9 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "30867"
+      "30867",
+      "36936",
+      "35376"
     ],
     "lots": [
       {
@@ -1430,7 +1460,8 @@
     "note": "",
     "ids": [
       "33100",
-      "28731"
+      "28731",
+      "35715"
     ],
     "lots": [
       {
@@ -1531,7 +1562,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "32361"
+      "32361",
+      "33578"
     ],
     "lots": [
       {
@@ -1741,7 +1773,8 @@
     "category": "Kháng sinh / kháng nấm / kháng virus",
     "note": "",
     "ids": [
-      "28500"
+      "28500",
+      "35082"
     ],
     "lots": [
       {
@@ -1771,7 +1804,9 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "32880"
+      "32880",
+      "35646",
+      "36930"
     ],
     "lots": [
       {
@@ -1831,7 +1866,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31691"
+      "31691",
+      "35373"
     ],
     "lots": [
       {
@@ -1891,7 +1927,8 @@
     "category": "Kháng sinh / kháng nấm / kháng virus",
     "note": "",
     "ids": [
-      "29848"
+      "29848",
+      "35662"
     ],
     "lots": [
       {
@@ -2017,7 +2054,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "28887"
+      "28887",
+      "35321"
     ],
     "lots": [
       {
@@ -2028,7 +2066,10 @@
     ],
     "expiry": "01/10/2027",
     "id": 63,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "COVE004"
+    ]
   },
   {
     "code": "COVE002",
@@ -2047,7 +2088,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "33043"
+      "33043",
+      "35320"
     ],
     "lots": [
       {
@@ -2322,7 +2364,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "33121"
+      "33121",
+      "37015"
     ],
     "lots": [
       {
@@ -2352,7 +2395,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "33024"
+      "33024",
+      "34518"
     ],
     "lots": [
       {
@@ -2412,7 +2456,8 @@
     "category": "Nội tiết - chuyển hóa",
     "note": "",
     "ids": [
-      "32151"
+      "32151",
+      "36940"
     ],
     "lots": [
       {
@@ -2472,7 +2517,8 @@
     "category": "Nội tiết - chuyển hóa",
     "note": "",
     "ids": [
-      "32254"
+      "32254",
+      "36938"
     ],
     "lots": [
       {
@@ -2532,7 +2578,8 @@
     "category": "Giảm đau - kháng viêm",
     "note": "",
     "ids": [
-      "30385"
+      "30385",
+      "34697"
     ],
     "lots": [
       {
@@ -2628,7 +2675,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "32176"
+      "32176",
+      "34621"
     ],
     "lots": [
       {
@@ -2718,7 +2766,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "33144"
+      "33144",
+      "36904"
     ],
     "lots": [
       {
@@ -2814,7 +2863,9 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "30973"
+      "30973",
+      "37377",
+      "34671"
     ],
     "lots": [
       {
@@ -2874,7 +2925,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31713"
+      "31713",
+      "36981"
     ],
     "lots": [
       {
@@ -2957,7 +3009,10 @@
     ],
     "expiry": "12/06/2027",
     "id": 93,
-    "lotCount": 2
+    "lotCount": 2,
+    "alternateCodes": [
+      "TD01-000006"
+    ]
   },
   {
     "code": "TD30-002761",
@@ -3102,7 +3157,9 @@
     "category": "Tim mạch",
     "note": "",
     "ids": [
-      "32182"
+      "32182",
+      "20544",
+      "36399"
     ],
     "lots": [
       {
@@ -3113,7 +3170,11 @@
     ],
     "expiry": "06/03/2028",
     "id": 98,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "TD30-003742",
+      "EDIW001"
+    ]
   },
   {
     "code": "TD30-003606",
@@ -3162,7 +3223,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "20547"
+      "20547",
+      "36639"
     ],
     "lots": [
       {
@@ -3258,7 +3320,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31714"
+      "31714",
+      "34280"
     ],
     "lots": [
       {
@@ -3444,7 +3507,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31784"
+      "31784",
+      "37141"
     ],
     "lots": [
       {
@@ -3571,7 +3635,8 @@
     "note": "",
     "ids": [
       "33016",
-      "32184"
+      "32184",
+      "36540"
     ],
     "lots": [
       {
@@ -3643,7 +3708,8 @@
     "note": "",
     "ids": [
       "20566",
-      "28579"
+      "28579",
+      "37367"
     ],
     "lots": [
       {
@@ -3738,7 +3804,9 @@
     "note": "",
     "ids": [
       "32384",
-      "32385"
+      "32385",
+      "36914",
+      "34951"
     ],
     "lots": [
       {
@@ -3773,7 +3841,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "30870"
+      "30870",
+      "34872"
     ],
     "lots": [
       {
@@ -3803,7 +3872,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "32178"
+      "32178",
+      "37038"
     ],
     "lots": [
       {
@@ -3833,7 +3903,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "27971"
+      "27971",
+      "37426"
     ],
     "lots": [
       {
@@ -3844,7 +3915,10 @@
     ],
     "expiry": "29/07/2028",
     "id": 121,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "HADU005"
+    ]
   },
   {
     "code": "TD30-003806",
@@ -3863,7 +3937,9 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "28964"
+      "28964",
+      "37183",
+      "36668"
     ],
     "lots": [
       {
@@ -3874,7 +3950,10 @@
     ],
     "expiry": "06/03/2029",
     "id": 122,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "HADU004"
+    ]
   },
   {
     "code": "HADU002",
@@ -3893,7 +3972,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "32197"
+      "32197",
+      "35380"
     ],
     "lots": [
       {
@@ -4014,7 +4094,9 @@
     "note": "",
     "ids": [
       "30903",
-      "28175"
+      "28175",
+      "36634",
+      "36635"
     ],
     "lots": [
       {
@@ -4079,7 +4161,9 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31494"
+      "31494",
+      "36541",
+      "37182"
     ],
     "lots": [
       {
@@ -4145,7 +4229,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31847"
+      "31847",
+      "33854"
     ],
     "lots": [
       {
@@ -4156,7 +4241,10 @@
     ],
     "expiry": "03/09/2029",
     "id": 131,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "HERT001"
+    ]
   },
   {
     "code": "TD30-003283",
@@ -4175,7 +4263,10 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "33112"
+      "33112",
+      "35586",
+      "37390",
+      "37337"
     ],
     "lots": [
       {
@@ -4205,7 +4296,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "20586"
+      "20586",
+      "36976"
     ],
     "lots": [
       {
@@ -4235,7 +4327,9 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "28076"
+      "28076",
+      "35378",
+      "35377"
     ],
     "lots": [
       {
@@ -4246,7 +4340,10 @@
     ],
     "expiry": "07/12/2027",
     "id": 134,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "IBUP002"
+    ]
   },
   {
     "code": "IBUP001",
@@ -4296,7 +4393,9 @@
     "note": "",
     "ids": [
       "28638",
-      "30465"
+      "30465",
+      "33617",
+      "35314"
     ],
     "lots": [
       {
@@ -4392,7 +4491,8 @@
     "note": "",
     "ids": [
       "30387",
-      "33088"
+      "33088",
+      "36902"
     ],
     "lots": [
       {
@@ -4464,7 +4564,8 @@
     "note": "",
     "ids": [
       "32528",
-      "32382"
+      "32382",
+      "37531"
     ],
     "lots": [
       {
@@ -4589,7 +4690,9 @@
     "category": "Giảm đau - kháng viêm",
     "note": "",
     "ids": [
-      "28675"
+      "28675",
+      "36291",
+      "34062"
     ],
     "lots": [
       {
@@ -4649,7 +4752,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "32005"
+      "32005",
+      "36734"
     ],
     "lots": [
       {
@@ -4679,7 +4783,8 @@
     "category": "Dịch truyền - điện giải - dinh dưỡng",
     "note": "",
     "ids": [
-      "31401"
+      "31401",
+      "33598"
     ],
     "lots": [
       {
@@ -4739,7 +4844,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31039"
+      "31039",
+      "25315"
     ],
     "lots": [
       {
@@ -4769,7 +4875,8 @@
     "category": "Kháng sinh / kháng nấm / kháng virus",
     "note": "",
     "ids": [
-      "30715"
+      "30715",
+      "35713"
     ],
     "lots": [
       {
@@ -4799,7 +4906,9 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "30654"
+      "30654",
+      "37151",
+      "35312"
     ],
     "lots": [
       {
@@ -4829,7 +4938,9 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "28951"
+      "28951",
+      "37016",
+      "36861"
     ],
     "lots": [
       {
@@ -4840,7 +4951,10 @@
     ],
     "expiry": "05/11/2028",
     "id": 153,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "LIDO001"
+    ]
   },
   {
     "code": "TD30-003487",
@@ -4860,7 +4974,8 @@
     "note": "",
     "ids": [
       "20610",
-      "26303"
+      "26303",
+      "35122"
     ],
     "lots": [
       {
@@ -4926,7 +5041,11 @@
     "note": "",
     "ids": [
       "32196",
-      "31661"
+      "31661",
+      "37689",
+      "37184",
+      "35710",
+      "35387"
     ],
     "lots": [
       {
@@ -4961,7 +5080,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "30810"
+      "30810",
+      "36905"
     ],
     "lots": [
       {
@@ -4992,7 +5112,9 @@
     "note": "",
     "ids": [
       "32362",
-      "32189"
+      "32189",
+      "34637",
+      "36979"
     ],
     "lots": [
       {
@@ -5028,7 +5150,8 @@
     "note": "",
     "ids": [
       "32363",
-      "31711"
+      "31711",
+      "36980"
     ],
     "lots": [
       {
@@ -5093,7 +5216,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "33160"
+      "33160",
+      "33241"
     ],
     "lots": [
       {
@@ -5123,7 +5247,8 @@
     "note": "",
     "ids": [
       "33047",
-      "30560"
+      "30560",
+      "36542"
     ],
     "lots": [
       {
@@ -5225,7 +5350,8 @@
     "note": "",
     "ids": [
       "33166",
-      "31112"
+      "31112",
+      "36933"
     ],
     "lots": [
       {
@@ -5261,7 +5387,10 @@
     "note": "",
     "ids": [
       "33137",
-      "32202"
+      "32202",
+      "36929",
+      "37034",
+      "35297"
     ],
     "lots": [
       {
@@ -5362,7 +5491,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "28637"
+      "28637",
+      "35295"
     ],
     "lots": [
       {
@@ -5586,7 +5716,8 @@
     "ids": [
       "22828",
       "31088",
-      "33102"
+      "33102",
+      "36934"
     ],
     "lots": [
       {
@@ -5626,7 +5757,9 @@
     "category": "Dịch truyền - điện giải - dinh dưỡng",
     "note": "",
     "ids": [
-      "30638"
+      "30638",
+      "35549",
+      "36935"
     ],
     "lots": [
       {
@@ -5688,7 +5821,10 @@
     "ids": [
       "32529",
       "32530",
-      "31047"
+      "31047",
+      "36908",
+      "36637",
+      "35298"
     ],
     "lots": [
       {
@@ -5758,7 +5894,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "30430"
+      "30430",
+      "36337"
     ],
     "lots": [
       {
@@ -6022,7 +6159,9 @@
     "category": "Dịch truyền - điện giải - dinh dưỡng",
     "note": "",
     "ids": [
-      "32955"
+      "32955",
+      "34496",
+      "34494"
     ],
     "lots": [
       {
@@ -6052,7 +6191,8 @@
     "category": "Dịch truyền - điện giải - dinh dưỡng",
     "note": "",
     "ids": [
-      "30784"
+      "30784",
+      "35711"
     ],
     "lots": [
       {
@@ -6083,7 +6223,8 @@
     "note": "",
     "ids": [
       "30714",
-      "28811"
+      "28811",
+      "35712"
     ],
     "lots": [
       {
@@ -6118,7 +6259,8 @@
     "category": "Tim mạch",
     "note": "",
     "ids": [
-      "33044"
+      "33044",
+      "33624"
     ],
     "lots": [
       {
@@ -6148,7 +6290,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "32982"
+      "32982",
+      "34528"
     ],
     "lots": [
       {
@@ -6178,7 +6321,8 @@
     "category": "Giảm đau - kháng viêm",
     "note": "",
     "ids": [
-      "31280"
+      "31280",
+      "36720"
     ],
     "lots": [
       {
@@ -6239,7 +6383,8 @@
     "note": "",
     "ids": [
       "32498",
-      "30872"
+      "30872",
+      "37035"
     ],
     "lots": [
       {
@@ -6274,7 +6419,8 @@
     "category": "Tiêu hóa",
     "note": "",
     "ids": [
-      "31215"
+      "31215",
+      "34723"
     ],
     "lots": [
       {
@@ -6364,7 +6510,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31176"
+      "31176",
+      "36937"
     ],
     "lots": [
       {
@@ -6424,7 +6571,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31639"
+      "31639",
+      "35716"
     ],
     "lots": [
       {
@@ -6550,7 +6698,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "28961"
+      "28961",
+      "23867"
     ],
     "lots": [
       {
@@ -6580,7 +6729,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31281"
+      "31281",
+      "37143"
     ],
     "lots": [
       {
@@ -6611,7 +6761,8 @@
     "note": "",
     "ids": [
       "31640",
-      "33104"
+      "33104",
+      "37040"
     ],
     "lots": [
       {
@@ -6953,7 +7104,8 @@
     "note": "",
     "ids": [
       "32258",
-      "32259"
+      "32259",
+      "35717"
     ],
     "lots": [
       {
@@ -7018,7 +7170,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31507"
+      "31507",
+      "36941"
     ],
     "lots": [
       {
@@ -7029,7 +7182,10 @@
     ],
     "expiry": "04/11/2027",
     "id": 221,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "OXAL002"
+    ]
   },
   {
     "code": "TD99-000001",
@@ -7054,7 +7210,8 @@
       "28142",
       "31179",
       "31091",
-      "27495"
+      "27495",
+      "33257"
     ],
     "lots": [
       {
@@ -7103,7 +7260,8 @@
     "category": "Kháng sinh / kháng nấm / kháng virus",
     "note": "",
     "ids": [
-      "25122"
+      "25122",
+      "36745"
     ],
     "lots": [
       {
@@ -7133,7 +7291,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31100"
+      "31100",
+      "33619"
     ],
     "lots": [
       {
@@ -7260,7 +7419,8 @@
     "note": "",
     "ids": [
       "33138",
-      "32387"
+      "32387",
+      "34532"
     ],
     "lots": [
       {
@@ -7331,7 +7491,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "32540"
+      "32540",
+      "37552"
     ],
     "lots": [
       {
@@ -7342,7 +7503,10 @@
     ],
     "expiry": "16/02/2029",
     "id": 230,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "PDSO002"
+    ]
   },
   {
     "code": "TD30-003530",
@@ -7631,7 +7795,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "33045"
+      "33045",
+      "36982"
     ],
     "lots": [
       {
@@ -7661,7 +7826,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "32918"
+      "32918",
+      "37512"
     ],
     "lots": [
       {
@@ -7692,7 +7858,9 @@
     "note": "",
     "ids": [
       "32381",
-      "31065"
+      "31065",
+      "37142",
+      "36888"
     ],
     "lots": [
       {
@@ -7823,7 +7991,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "30729"
+      "30729",
+      "34673"
     ],
     "lots": [
       {
@@ -7854,7 +8023,8 @@
     "note": "",
     "ids": [
       "30730",
-      "30559"
+      "30559",
+      "37104"
     ],
     "lots": [
       {
@@ -7890,7 +8060,9 @@
     "note": "",
     "ids": [
       "32198",
-      "30637"
+      "30637",
+      "35382",
+      "33978"
     ],
     "lots": [
       {
@@ -7926,7 +8098,8 @@
     "note": "",
     "ids": [
       "31283",
-      "31282"
+      "31282",
+      "34628"
     ],
     "lots": [
       {
@@ -8021,7 +8194,9 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "28858"
+      "28858",
+      "37150",
+      "36828"
     ],
     "lots": [
       {
@@ -8032,7 +8207,10 @@
     ],
     "expiry": "19/12/2028",
     "id": 252,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "STIP002"
+    ]
   },
   {
     "code": "SUAE002",
@@ -8111,7 +8289,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "32179"
+      "32179",
+      "37705"
     ],
     "lots": [
       {
@@ -8173,7 +8352,8 @@
     "ids": [
       "33122",
       "33123",
-      "31665"
+      "31665",
+      "37017"
     ],
     "lots": [
       {
@@ -8274,7 +8454,8 @@
     "note": "",
     "ids": [
       "30744",
-      "32997"
+      "32997",
+      "36978"
     ],
     "lots": [
       {
@@ -8311,7 +8492,9 @@
     "ids": [
       "31796",
       "25196",
-      "26262"
+      "26262",
+      "37690",
+      "37691"
     ],
     "lots": [
       {
@@ -8412,7 +8595,8 @@
     "note": "",
     "ids": [
       "32201",
-      "33097"
+      "33097",
+      "33728"
     ],
     "lots": [
       {
@@ -8507,7 +8691,8 @@
     "note": "",
     "ids": [
       "28394",
-      "28393"
+      "28393",
+      "37570"
     ],
     "lots": [
       {
@@ -8542,7 +8727,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31205"
+      "31205",
+      "37569"
     ],
     "lots": [
       {
@@ -8602,7 +8788,8 @@
     "category": "Tim mạch",
     "note": "",
     "ids": [
-      "33046"
+      "33046",
+      "36563"
     ],
     "lots": [
       {
@@ -8613,7 +8800,10 @@
     ],
     "expiry": "08/12/2028",
     "id": 270,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "TRIP002"
+    ]
   },
   {
     "code": "TD29-000018",
@@ -8632,7 +8822,9 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31222"
+      "31222",
+      "36945",
+      "35315"
     ],
     "lots": [
       {
@@ -8663,7 +8855,8 @@
     "note": "",
     "ids": [
       "30226",
-      "33101"
+      "33101",
+      "34718"
     ],
     "lots": [
       {
@@ -8728,7 +8921,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "25119"
+      "25119",
+      "36903"
     ],
     "lots": [
       {
@@ -8909,7 +9103,8 @@
     "note": "",
     "ids": [
       "32998",
-      "31213"
+      "31213",
+      "35206"
     ],
     "lots": [
       {
@@ -8944,7 +9139,8 @@
     "category": "Hô hấp",
     "note": "",
     "ids": [
-      "28808"
+      "28808",
+      "36946"
     ],
     "lots": [
       {
@@ -9004,7 +9200,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "32984"
+      "32984",
+      "35383"
     ],
     "lots": [
       {
@@ -9070,7 +9267,9 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "28842"
+      "28842",
+      "36949",
+      "33243"
     ],
     "lots": [
       {
@@ -9081,7 +9280,10 @@
     ],
     "expiry": "18/01/2029",
     "id": 285,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "VINC003"
+    ]
   },
   {
     "code": "VINC001",
@@ -9131,7 +9333,9 @@
     "note": "",
     "ids": [
       "31285",
-      "31257"
+      "31257",
+      "36950",
+      "35326"
     ],
     "lots": [
       {
@@ -9166,7 +9370,9 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31066"
+      "31066",
+      "37144",
+      "35327"
     ],
     "lots": [
       {
@@ -9196,7 +9402,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "30971"
+      "30971",
+      "35328"
     ],
     "lots": [
       {
@@ -9323,7 +9530,8 @@
     "note": "",
     "ids": [
       "33096",
-      "33098"
+      "33098",
+      "37018"
     ],
     "lots": [
       {
@@ -9358,7 +9566,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "31641"
+      "31641",
+      "35719"
     ],
     "lots": [
       {
@@ -9423,7 +9632,10 @@
     ],
     "expiry": "13/10/2027",
     "id": 295,
-    "lotCount": 5
+    "lotCount": 5,
+    "alternateCodes": [
+      "VITA001"
+    ]
   },
   {
     "code": "TD30-003549",
@@ -9538,7 +9750,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "30466"
+      "30466",
+      "36943"
     ],
     "lots": [
       {
@@ -9568,7 +9781,8 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "20774"
+      "20774",
+      "33832"
     ],
     "lots": [
       {
@@ -9579,7 +9793,10 @@
     ],
     "expiry": "09/07/2027",
     "id": 300,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "VORI001"
+    ]
   },
   {
     "code": "WOSU001",
@@ -9598,7 +9815,9 @@
     "category": "Nội tiết - chuyển hóa",
     "note": "",
     "ids": [
-      "31060"
+      "31060",
+      "36449",
+      "37557"
     ],
     "lots": [
       {
@@ -9628,7 +9847,9 @@
     "category": "Nội tiết - chuyển hóa",
     "note": "",
     "ids": [
-      "31717"
+      "31717",
+      "37382",
+      "35047"
     ],
     "lots": [
       {
@@ -9688,7 +9909,8 @@
     "category": "Hô hấp",
     "note": "",
     "ids": [
-      "31040"
+      "31040",
+      "36912"
     ],
     "lots": [
       {
@@ -9718,7 +9940,9 @@
     "category": "Hô hấp",
     "note": "",
     "ids": [
-      "31042"
+      "31042",
+      "36917",
+      "36913"
     ],
     "lots": [
       {
@@ -9729,7 +9953,10 @@
     ],
     "expiry": "01/02/2028",
     "id": 305,
-    "lotCount": 1
+    "lotCount": 1,
+    "alternateCodes": [
+      "TD30-003243"
+    ]
   },
   {
     "code": "ZENT001",
@@ -9748,7 +9975,9 @@
     "category": "Thuốc nội trú khác",
     "note": "",
     "ids": [
-      "30650"
+      "30650",
+      "36292",
+      "34952"
     ],
     "lots": [
       {
@@ -9850,5 +10079,1677 @@
     "expiry": "02/05/2028",
     "id": 309,
     "lotCount": 1
+  },
+  {
+    "code": "AGIC001",
+    "name": "Agicardi 3,75 VT-26",
+    "active": "Bisoprolol fumarat",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "3,75mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36448"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36448",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 310,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "AGID001",
+    "name": "Agidopa 500 TTKN-25",
+    "active": "Methyldopa",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "500mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36703"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36703",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 311,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "TD30-003452",
+    "name": "Albiomin 20%",
+    "active": "Albumin",
+    "pack": "",
+    "route": "Tiêm truyền tĩnh mạch",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "200g/l",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "37217"
+    ],
+    "lots": [
+      {
+        "idThuoc": "37217",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 312,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "TD30-002997",
+    "name": "Aminoplasmal B.Braun 10%E 250ml",
+    "active": "Acid amin*",
+    "pack": "",
+    "route": "Truyền tĩnh mạch",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "15,8 g/l 10%250ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "37673"
+    ],
+    "lots": [
+      {
+        "idThuoc": "37673",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 313,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "ASIC001",
+    "name": "Asicurin 5000",
+    "active": "L-Omithine-L-Aspartate",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "5000mg/10ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "34057"
+    ],
+    "lots": [
+      {
+        "idThuoc": "34057",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 314,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "BAIT001",
+    "name": "Bài thạch TP TTKN-25",
+    "active": "Kim tiền thảo, Chỉ thực, Nhân trần, Hậu phác, Hoàng cầm, Bạch mao căn, Nghệ, Binh lang, Mộc hương, Đại hoàng",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "1,5g; 150mg; 375mg; 150mg; 225mg; 750mg; 375mg; 150mg; 150mg; 75mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36562"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36562",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 315,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "BETA002",
+    "name": "Betaloc Zok 25mg VT-26",
+    "active": "Metoprolol",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "23,75mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "37659"
+    ],
+    "lots": [
+      {
+        "idThuoc": "37659",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 316,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "BFSD001",
+    "name": "BFS-Depara DV-26",
+    "active": "Acetylcystein",
+    "pack": "",
+    "route": "Tiêm tĩnh mạch",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "2000mg/10ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "34641"
+    ],
+    "lots": [
+      {
+        "idThuoc": "34641",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 317,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "BILU001",
+    "name": "Biluracil 500 DV-26",
+    "active": "Fluorouracil (5-FU)",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "500mg/10ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36798"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36798",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 318,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "BIOL001",
+    "name": "Biolusty TTKN-25",
+    "active": "Men bia ép tinh chế",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "4g/10ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36476"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36476",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 319,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "BISO002",
+    "name": "Bisoprolol Plus DWP 10/6,25mg TTKN-25",
+    "active": "Bisoprolol fumarat + Hydroclorothiazid",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "10mg + 6.25mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "35652"
+    ],
+    "lots": [
+      {
+        "idThuoc": "35652",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 320,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "BISO001",
+    "name": "Bisoprolol Plus DWP 5/12,5mg VT-26",
+    "active": "Bisoprolol + hydroclorothiazid",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "5mg + 12,5mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36910",
+      "35653"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36910",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "35653",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 321,
+    "lotCount": 2,
+    "stockOnly": true
+  },
+  {
+    "code": "BOGA001",
+    "name": "BOGA-LIVER TTKN-25",
+    "active": "Diệp hạ châu",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "Mỗi 3g thuốc cốm chứa 300mg cao đặc Diệp hạ châu",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36478"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36478",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 322,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "CALC001",
+    "name": "Calci Folinat 10ml TTKN-25",
+    "active": "Acid folinic (dưới dạng calci folinat 108mg/10ml)",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "100mg/10ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36947"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36947",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 323,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "CALC002",
+    "name": "Calci Folinat 5ml TTKN-25",
+    "active": "Acid folinic (dưới dạng Calci folinat 54mg/5ml)",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "50mg/5ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "35018"
+    ],
+    "lots": [
+      {
+        "idThuoc": "35018",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 324,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "CARB001",
+    "name": "Carbogo (than hoạt)",
+    "active": "",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "300mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "33856"
+    ],
+    "lots": [
+      {
+        "idThuoc": "33856",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 325,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "CONC001",
+    "name": "Concor 5mg VT-26",
+    "active": "Bisoprolol fumarate",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "5mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36402"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36402",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 326,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "CONI001",
+    "name": "Conipa Pure BVN-26",
+    "active": "Kẽm gluconat",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "70mg/10ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "37551"
+    ],
+    "lots": [
+      {
+        "idThuoc": "37551",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 327,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "DAIT002",
+    "name": "Đại tràng TP TTKN-25",
+    "active": "Bạch truật, Mộc hương, Hoàng Đằng, Hoài sơn, Trần bì, Hoàng liên, Bạch linh, Sa nhân, Bạch thược, Cam thảo, Đảng sâm",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "0,325g; 0,175g; 0,2g; 0,21g; 0,125g; 0,27g; 0,175g; 0,175g; 0,175g; 0,02g; 0,11g",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36561",
+      "36560"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36561",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "36560",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 328,
+    "lotCount": 2,
+    "stockOnly": true
+  },
+  {
+    "code": "DEGA001",
+    "name": "Degas",
+    "active": "Ondansetron (dưới dạng Ondansetron HCl)",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "8mg/4ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36948"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36948",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 329,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "DEME001",
+    "name": "Demedin-BFS DV-26",
+    "active": "Dexmedetomidin",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "0.1mg/ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "37530"
+    ],
+    "lots": [
+      {
+        "idThuoc": "37530",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 330,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "DEPO001",
+    "name": "Depo-medrol",
+    "active": "methylprednisolone acetate",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "40mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "34536",
+      "33229"
+    ],
+    "lots": [
+      {
+        "idThuoc": "34536",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "33229",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 331,
+    "lotCount": 2,
+    "stockOnly": true
+  },
+  {
+    "code": "ENDO001",
+    "name": "Endoxan 500mg",
+    "active": "Cyclophosphamid",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "500mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "35046"
+    ],
+    "lots": [
+      {
+        "idThuoc": "35046",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 332,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "GLIC002",
+    "name": "Gliclada 30mg VT-26",
+    "active": "Gliclazid",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "30mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36702"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36702",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 333,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "TD30-003797",
+    "name": "Gliclada 60mg modified - release tablets",
+    "active": "Gliclazid",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "60mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "29253",
+      "34776",
+      "34886"
+    ],
+    "lots": [
+      {
+        "idThuoc": "29253",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "34776",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "34886",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 334,
+    "lotCount": 3,
+    "stockOnly": true,
+    "alternateCodes": [
+      "GLIC001"
+    ]
+  },
+  {
+    "code": "GLUC002",
+    "name": "Glucose 5% TTKN-25",
+    "active": "Glucose khan (dưới dạng glucose monohydrat)",
+    "pack": "",
+    "route": "Tiêm truyền",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "5g/100ml x 500ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36528",
+      "36529"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36528",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "36529",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 335,
+    "lotCount": 2,
+    "stockOnly": true
+  },
+  {
+    "code": "HAPA002",
+    "name": "Hapacol 150 TTKN-25",
+    "active": "Paracetamol",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "150mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36932"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36932",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 336,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "HAPA001",
+    "name": "Hapacol 80mg DV-26",
+    "active": "Paracetamol",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "80mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36612"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36612",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 337,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "HOAT002",
+    "name": "Hoạt huyết Thephaco TTYT-26",
+    "active": "Ngưu tất, Đương quy, Xuyên khung, Ích mẫu,Sinh địa",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "140mg; 300mg; 60mg; 140mg; 300mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36477"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36477",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 338,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "KLAM001",
+    "name": "Klamentin 250/31.25 TTKN-25",
+    "active": "Amoxicilin + acid clavulanic",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "250mg+31,25mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36931",
+      "36700"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36931",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "36700",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 339,
+    "lotCount": 2,
+    "stockOnly": true
+  },
+  {
+    "code": "MAZZ001",
+    "name": "Mazzgin (Magnesi B6) DV-26",
+    "active": "Magnesi;Vitamin B6",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "470mg+5mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36833"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36833",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 340,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "MEPO001",
+    "name": "Mepoly TTKN-25",
+    "active": "Neomycin + polymyxin B + dexamethason",
+    "pack": "",
+    "route": "Nhỏ mắt",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "(10mg; 35mg; 100.000IU)/10ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36564"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36564",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 341,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "METF002",
+    "name": "Metformin 500 TTKN-25",
+    "active": "Metformin hydrochlorid 500mg",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "500mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "34421"
+    ],
+    "lots": [
+      {
+        "idThuoc": "34421",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 342,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "TD30-003395",
+    "name": "Metronidazol Kabi",
+    "active": "Metronidazol",
+    "pack": "",
+    "route": "Truyền tĩnh mạch",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "500mg/ 100ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "37738"
+    ],
+    "lots": [
+      {
+        "idThuoc": "37738",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 343,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "MINI001",
+    "name": "Minicef 400mg TTYT-26",
+    "active": "Cefixim (dưới dạng Cefixim trihydrat)",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "400mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "37470",
+      "37469"
+    ],
+    "lots": [
+      {
+        "idThuoc": "37470",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "37469",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 344,
+    "lotCount": 2,
+    "stockOnly": true
+  },
+  {
+    "code": "NORA001",
+    "name": "Noradrenalin 4mg/4ml",
+    "active": "noradrenalin",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "4mg/4ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "33518"
+    ],
+    "lots": [
+      {
+        "idThuoc": "33518",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 345,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "NUOC001",
+    "name": "Nước cất ống nhựa TTKN-25",
+    "active": "Nước cất pha tiêm",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "10ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "35257"
+    ],
+    "lots": [
+      {
+        "idThuoc": "35257",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 346,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "OCTR002",
+    "name": "Octreotid TTKN-25",
+    "active": "Octreotid (dưới dạng octreotid acetat)",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "0,1mg/1ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "35325",
+      "35180",
+      "36722"
+    ],
+    "lots": [
+      {
+        "idThuoc": "35325",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "35180",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "36722",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 347,
+    "lotCount": 3,
+    "stockOnly": true
+  },
+  {
+    "code": "ONDA001",
+    "name": "Ondansetron Kabi",
+    "active": "Ondansetron",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "2mg/ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36942",
+      "35317"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36942",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "35317",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 348,
+    "lotCount": 2,
+    "stockOnly": true
+  },
+  {
+    "code": "TD30-003665",
+    "name": "Osaphine",
+    "active": "Morphin",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "10mg/1ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36494"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36494",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 349,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "PHAR001",
+    "name": "Pharmox IMP 500mg TTKN-25",
+    "active": "Amoxicilin (dưới dạng Amoxicilin trihydrat)",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "500mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "34917"
+    ],
+    "lots": [
+      {
+        "idThuoc": "34917",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 350,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "RELA001",
+    "name": "Relaxven-Plus TTKN-25",
+    "active": "Lá sen, Lá vông,Rotundin",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "80mg, 95mg, 15mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36475"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36475",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 351,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "RIXA001",
+    "name": "Rixathon TTKN-25",
+    "active": "Rituximab",
+    "pack": "",
+    "route": "Tiêm truyền tĩnh mạch",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "500mg/50ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "34516"
+    ],
+    "lots": [
+      {
+        "idThuoc": "34516",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 352,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "SADA001",
+    "name": "Sadapron 100 VT-26",
+    "active": "Allopurinol",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "100mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "34885"
+    ],
+    "lots": [
+      {
+        "idThuoc": "34885",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 353,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "TD30-003630",
+    "name": "Savi Acarbose 100",
+    "active": "Acarbose",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "100mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "20712",
+      "28363",
+      "36819"
+    ],
+    "lots": [
+      {
+        "idThuoc": "20712",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "28363",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "36819",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 354,
+    "lotCount": 3,
+    "stockOnly": true,
+    "alternateCodes": [
+      "TD30-003885",
+      "SAVI001"
+    ]
+  },
+  {
+    "code": "TD30-003646",
+    "name": "SaviProlol Plus HCT 2.5/6.25",
+    "active": "Bisoprolol + hydroclorothiazid",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "2,5mg+6,25mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "20714"
+    ],
+    "lots": [
+      {
+        "idThuoc": "20714",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 355,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "SYSE001",
+    "name": "Syseye TTKN-25",
+    "active": "Hydroxypropyl methylcellulose",
+    "pack": "",
+    "route": "Nhỏ mắt",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "0,3% (w/v) - Lọ 15ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36565"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36565",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 356,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "TENA001",
+    "name": "Tenafotin 1000",
+    "active": "Cefoxitin",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "1000mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36816"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36816",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 357,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "THIA001",
+    "name": "Thiaject DV-26",
+    "active": "Glutathion",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "900mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "37044"
+    ],
+    "lots": [
+      {
+        "idThuoc": "37044",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 358,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "TD30-003483",
+    "name": "Vecmid 1GM",
+    "active": "Vancomycin",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "1G",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "36990",
+      "36991",
+      "36817"
+    ],
+    "lots": [
+      {
+        "idThuoc": "36990",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "36991",
+        "expiry": ""
+      },
+      {
+        "idThuoc": "36817",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 359,
+    "lotCount": 3,
+    "stockOnly": true
+  },
+  {
+    "code": "VINF001",
+    "name": "Vinfadin LP 40 DV-26",
+    "active": "Famotidin",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "40mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "35330"
+    ],
+    "lots": [
+      {
+        "idThuoc": "35330",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 360,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "VINR001",
+    "name": "Vinropin 0.5% DV-26",
+    "active": "Ropivacain hydroclorid",
+    "pack": "",
+    "route": "Tiêm",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "0.5% 5mg/ml",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "35019"
+    ],
+    "lots": [
+      {
+        "idThuoc": "35019",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 361,
+    "lotCount": 1,
+    "stockOnly": true
+  },
+  {
+    "code": "VINZ001",
+    "name": "Vinzix TTKN-25",
+    "active": "Furosemid",
+    "pack": "",
+    "route": "Uống",
+    "routeBHYT": "",
+    "regNumber": "",
+    "concentration": "",
+    "strength": "40mg",
+    "manufacturer": "",
+    "country": "",
+    "unit": "",
+    "dosageForm": "",
+    "category": "Chưa phân nhóm",
+    "note": "",
+    "ids": [
+      "33519"
+    ],
+    "lots": [
+      {
+        "idThuoc": "33519",
+        "expiry": ""
+      }
+    ],
+    "expiry": "",
+    "id": 362,
+    "lotCount": 1,
+    "stockOnly": true
   }
 ]

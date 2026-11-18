@@ -26,6 +26,7 @@
 .library-item-title:hover { color:var(--blue); text-decoration:underline; text-underline-offset:3px; }
 .library-item-meta { display:flex; gap:9px; flex-wrap:wrap; margin-top:7px; color:var(--muted); font-size:12px; align-items:center; }
 .library-category { background:#edf5fc; color:#235c83; border-radius:5px; padding:3px 7px; }
+.library-paired-badge { display:inline-block; margin-top:8px; padding:4px 8px; color:#07654f; background:#eefaf5; border:1px solid #a8dcce; border-radius:5px; font-size:12px; font-weight:750; }
 .library-item-copy p { margin:9px 0 0; color:var(--muted); font-size:13px; line-height:1.55; overflow-wrap:anywhere; }
 .library-item-actions { display:flex; gap:7px; align-items:center; flex-wrap:wrap; }
 .library-item-actions .btn { font-size:12px; padding:9px 11px; }

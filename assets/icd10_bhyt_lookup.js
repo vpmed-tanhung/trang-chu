@@ -23,7 +23,9 @@
       .replace(/hydrochloride|hydroclorid|hydroclodrid|sodium|natri|calcium|calci/gi,' '));
   }
 
-  function makeMedText(m){ return [m.name,m.active,m.strength,m.route,m.regNumber,m.code,m.category,m.pack].join(' '); }
+  function makeMedText(m){
+    return [m.name,m.active,m.strength,m.route,m.regNumber,m.code,m.category,m.pack,...arr(m.alternateCodes),...arr(m.ids)].join(' ');
+  }
   function medFilter(){
     const q = norm($('#icdMedQ')?.value || '');
     const cat = $('#icdMedCat')?.value || '';
@@ -106,6 +108,7 @@
   }
 
   function findClinicalProfile(med){
+    if(med.stockOnly) return null;
     const full = findFullProfile(med);
     const verified = findVerifiedProfile(med);
     const base = findBaseProfile(med);
@@ -365,7 +368,9 @@
     const profile = findClinicalProfile(med);
     const displayActive = profile?.active || med.active || 'Chưa có';
     const displayRoute = profile?.productRoute || med.route || 'Chưa có';
-    box.innerHTML = `<div class="icd-profile-head"><span class="kicker">Danh mục thuốc nội trú · ${esc(med.category)}</span><h2>${esc(med.name)}</h2><p><b>Hoạt chất:</b> ${esc(displayActive)} &nbsp; <b>Hàm lượng:</b> ${esc(profile?.strength || med.strength || med.concentration || 'Chưa có')}</p><div class="icd-meta"><span>SĐK: <b>${esc(med.regNumber || arr(profile?.regNumbers)[0] || 'Chưa có')}</b></span><span>Đường dùng: <b>${esc(displayRoute)}</b></span></div></div>
+    const inventoryCodes = [med.code,...arr(med.alternateCodes)].filter(Boolean).join(', ');
+    const inventoryIds = arr(med.ids).join(', ');
+    box.innerHTML = `<div class="icd-profile-head"><span class="kicker">Danh mục thuốc nội trú · ${esc(med.category)}</span><h2>${esc(med.name)}</h2><p><b>Hoạt chất:</b> ${esc(displayActive)} &nbsp; <b>Hàm lượng:</b> ${esc(profile?.strength || med.strength || med.concentration || 'Chưa có')}</p><div class="icd-meta"><span>SĐK: <b>${esc(med.regNumber || arr(profile?.regNumbers)[0] || 'Chưa có')}</b></span><span>Đường dùng: <b>${esc(displayRoute)}</b></span>${inventoryCodes?`<span>Mã thuốc: <b>${esc(inventoryCodes)}</b></span>`:''}${inventoryIds?`<span>ID thuốc: <b>${esc(inventoryIds)}</b></span>`:''}</div></div>
     ${profile?.qualityNote?`<details class="icd-quality-note"><summary>Ghi chú kiểm soát dữ liệu</summary><p>${esc(profile.qualityNote)}</p></details>`:''}
     ${clinicalHtml(med, profile)}
     ${renderSources(profile)}

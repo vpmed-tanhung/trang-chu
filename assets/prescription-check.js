@@ -139,7 +139,7 @@
     if(dataPromise)return dataPromise;
     setDataState('','Đang chuẩn bị dữ liệu','');
     dataPromise=Promise.all([
-      loadScript('assets/inpatient_medicines_20260707.js',()=>Array.isArray(window.VPMED_INPATIENT_MEDICINES_20260707)),
+      loadScript('assets/inpatient_medicines_20260707.js?v=20261118-stock-ids',()=>Array.isArray(window.VPMED_INPATIENT_MEDICINES_20260707)),
       loadScript('assets/service_medicines_20260818.js',()=>Array.isArray(window.VPMED_SERVICE_MEDICINES_20260818)),
       loadScript('assets/drug_profiles_305_vpmed_20260710.js',()=>Array.isArray(window.VPMED_FULL_DRUG_PROFILES_305)),
       loadScript('assets/icd10_verified_profiles_20260710.js',()=>Array.isArray(window.VPMED_VERIFIED_DRUG_PROFILES)),
@@ -164,7 +164,7 @@
   let mergedMedsCache=null;
   function getMeds(){
     if(mergedMedsCache)return mergedMedsCache;
-    const inpatient=Array.isArray(window.VPMED_INPATIENT_MEDICINES_20260707)?window.VPMED_INPATIENT_MEDICINES_20260707:[];
+    const inpatient=Array.isArray(window.VPMED_INPATIENT_MEDICINES_20260707)?window.VPMED_INPATIENT_MEDICINES_20260707.filter(med=>!med.stockOnly):[];
     const service=Array.isArray(window.VPMED_SERVICE_MEDICINES_20260818)?window.VPMED_SERVICE_MEDICINES_20260818:[];
     const seen=new Set(inpatient.map(med=>norm(med.name)));
     const extraService=service.filter(med=>{

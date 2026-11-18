@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.11.18.77';
+  const BUILD_VERSION = '2026.11.18.78';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -61,8 +61,8 @@
   });
 
   const PHARMACY_LIBRARY = Object.freeze({
-    styles: ['assets/pharmacy-library.css?v=20261118-direct-pdf','assets/pharmacy-home.css?v=20261117-home-v1'],
-    scripts: ['assets/pharmacy-library.js?v=20261118-direct-pdf','assets/pharmacy-home.js?v=20261117-home-v1']
+    styles: ['assets/pharmacy-library.css?v=20261118-document-pairs','assets/pharmacy-home.css?v=20261117-home-v1'],
+    scripts: ['assets/pharmacy-library.js?v=20261118-document-pairs','assets/pharmacy-home.js?v=20261117-home-v1']
   });
   const FEATURE_BUNDLES = Object.freeze({
     home: PHARMACY_LIBRARY,
@@ -96,7 +96,7 @@
         'assets/icd-clinical-match.js?v=20260817-tt06-2026',
         'assets/prescription-diagnosis-ocr.js?v=20260817-exact-icd-v2',
         'assets/prescription-result-model.js?v=20260822-behavior-tests-v1',
-        'assets/prescription-check.js?v=20260827-ocr-complete-v1'
+        'assets/prescription-check.js?v=20261118-stock-ids'
       ]
     },
     'inpatient-order': {
@@ -109,9 +109,9 @@
         'assets/rx-official-sources.js?v=20260819-rx-official-v1',
         'assets/interaction-regulatory-data.js?v=20260817-rx-regulatory-v2',
         'assets/renal_database_20260723.js?v=20260723-renal-only-v4',
-        'assets/inpatient_medicines_20260707.js?v=20260828-ai-identity-v1',
-        'assets/inpatient-drug-identity.js?v=20260828-brand-preserve-v3',
-        'assets/inpatient-order-review.js?v=20260829-ai-availability-v1'
+        'assets/inpatient_medicines_20260707.js?v=20261118-stock-ids',
+        'assets/inpatient-drug-identity.js?v=20261118-stock-ids',
+        'assets/inpatient-order-review.js?v=20261118-stock-ids'
       ]
     },
     'petct-dose': {
@@ -158,12 +158,12 @@
       styles: [],
       scripts: [
         'assets/data.js',
-        'assets/inpatient_medicines_20260707.js',
+        'assets/inpatient_medicines_20260707.js?v=20261118-stock-ids',
         'assets/drug_profiles_305_vpmed_20260710.js',
         'assets/icd10_verified_profiles_20260710.js',
         'assets/infusion_guide_update_20260709.js',
         'assets/icd10_byt2026_data.js?v=20260824-icd10-bhyt-enable-v1',
-        'assets/icd10_bhyt_lookup.js?v=20260824-icd10-bhyt-enable-v1'
+        'assets/icd10_bhyt_lookup.js?v=20261118-stock-ids'
       ]
     }
   });

@@ -1,7 +1,7 @@
 'use strict';
 
-const APP_VERSION = '2026.11.18.77';
-const CLINICAL_DATA_VERSION = 'sha256-fcf5381e4178c9129824dd27';
+const APP_VERSION = '2026.11.18.78';
+const CLINICAL_DATA_VERSION = 'sha256-e6ce8a404fec507be513e915';
 const APP_SHELL_CACHE = `vpmed-shell-${APP_VERSION}`;
 const RUNTIME_CACHE = `vpmed-runtime-${APP_VERSION}`;
 const CLINICAL_WEB_CACHE_PREFIX = 'vpmed-clinical-web-';
@@ -28,9 +28,9 @@ const APP_SHELL = [
   './assets/platform-shell.css?v=20260822-pwa-v1',
   './assets/navy-theme.css?v=20260828-original-colors-pulse-v2',
   './assets/vpmed-access.js?v=20261117-permissions-v1',
-  './assets/platform-shell.js?v=20261118-silent-adr',
-  './assets/pharmacy-library.css?v=20261118-direct-pdf',
-  './assets/pharmacy-library.js?v=20261118-direct-pdf',
+  './assets/platform-shell.js?v=20261118-stock-ids',
+  './assets/pharmacy-library.css?v=20261118-document-pairs',
+  './assets/pharmacy-library.js?v=20261118-document-pairs',
   './assets/pharmacy-home.js?v=20261117-home-v1',
   './assets/pharmacy-home.css?v=20261117-home-v1',
   './assets/pharmacy-admin-guard.js?v=20261117-permissions-v1',
