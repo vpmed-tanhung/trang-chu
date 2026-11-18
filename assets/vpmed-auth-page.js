@@ -14,6 +14,7 @@
   var card=document.getElementById('authCard');
   var adminShell=document.getElementById('adminShell');
   var recoveryMode=false;
+  var signingOutForGuest=false;
   var passwordResetSucceeded=new URLSearchParams(window.location.search).get('password_reset')==='success';
   var accountDeletedNotice=new URLSearchParams(window.location.search).get('account_deleted')==='1';
   var currentSession=null;
@@ -112,7 +113,21 @@
 
   document.querySelectorAll('[data-view]').forEach(function(button){button.addEventListener('click',function(){showView(button.dataset.view);});});
   document.querySelectorAll('[data-toggle-password]').forEach(function(button){button.addEventListener('click',function(){var input=document.getElementById(button.dataset.togglePassword);var visible=input.type==='text';input.type=visible?'password':'text';button.textContent=visible?'Hiện':'Ẩn';button.setAttribute('aria-label',visible?'Hiện mật khẩu':'Ẩn mật khẩu');});});
-  document.querySelectorAll('[data-sign-out]').forEach(function(button){button.addEventListener('click',async function(){button.disabled=true;await client.auth.signOut();window.location.replace('tai-khoan.html');});});
+  document.querySelectorAll('[data-sign-out]').forEach(function(button){
+    button.addEventListener('click',async function(){
+      if(signingOutForGuest)return;
+      signingOutForGuest=true;button.disabled=true;
+      try{
+        var result=await client.auth.signOut();
+        if(result.error)throw result.error;
+        try{localStorage.removeItem('vpmed_verified_offline_access_v1');}catch(error){}
+        window.location.replace('./');
+      }catch(error){
+        signingOutForGuest=false;button.disabled=false;
+        window.alert('Chưa đăng xuất được. Vui lòng thử lại.');
+      }
+    });
+  });
 
   document.getElementById('loginForm').addEventListener('submit',async function(event){
     event.preventDefault();var form=event.currentTarget;setMessage('loginMessage','');
@@ -282,7 +297,7 @@
 
   client.auth.onAuthStateChange(function(event,session){
     if(event==='PASSWORD_RECOVERY'){recoveryMode=true;currentSession=session;setTimeout(function(){showView('reset');},0);return;}
-    if(event==='SIGNED_OUT'){currentSession=null;currentProfile=null;setTimeout(function(){showView('login');},0);}
+    if(event==='SIGNED_OUT'){currentSession=null;currentProfile=null;if(!signingOutForGuest)setTimeout(function(){showView('login');},0);}
   });
   client.auth.getSession().then(function(result){routeSession(result.data&&result.data.session);}).catch(function(){showFatal('Không thể kiểm tra phiên đăng nhập.');});
 })();

@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 
 const access = fs.readFileSync(require.resolve('../assets/vpmed-access.js'), 'utf8');
+const authPage = fs.readFileSync(require.resolve('../assets/vpmed-auth-page.js'), 'utf8');
 const toolEntry = fs.readFileSync(require.resolve('../assets/vpmed-tool-entry.js'), 'utf8');
 const library = fs.readFileSync(require.resolve('../assets/pharmacy-library.js'), 'utf8');
 const html = fs.readFileSync(require.resolve('../index.html'), 'utf8');
@@ -27,29 +28,37 @@ for (const id of ['gioi-thieu','chuc-nang','to-chuc','danh-muc-tai-lieu','ban-ti
   assert.ok(html.includes(`id="${id}"`));
 }
 
-async function openPage(path = '', {approved = false, cdnAvailable = true, cachedProfile = false} = {}) {
+async function openPage(path = '', {approved = false, cdnAvailable = true, cachedProfile = false,
+  offline = false, standalone = false, signOutError = null} = {}) {
   const urls = [];
   const classes = new Set(['vpmed-auth-checking']);
   const listeners = new Map();
+  const removed = [];
+  const alerts = [];
+  const logout = {addEventListener: (event, handler) => listeners.set('logout:'+event,handler)};
   const node = {addEventListener() {}};
   const location = new URL(path, publicUrl);
   location.replace = (target) => urls.push(target);
   const document = {
     documentElement: {classList: {
-      add: (name) => classes.add(name),
+      add: (...names) => names.forEach((name) => classes.add(name)),
       contains: (name) => classes.has(name),
       remove: (name) => classes.delete(name),
       toggle: (name, force) => force ? classes.add(name) : classes.delete(name)
     }},
-    getElementById: () => node,
+    getElementById: (id) => id === 'homeUserLogout' ? logout : node,
     addEventListener() {},
     querySelectorAll: () => []
   };
-  const navigator = {onLine: true};
+  const navigator = {onLine: !offline, standalone};
   const user = approved ? {id: 'test-user', email: 'test@vpmed.vn'} : null;
   const client = {
     auth: {
       getUser: async () => ({data: {user}}),
+      signOut: async () => {
+        if (!signOutError) listeners.get('auth')('SIGNED_OUT');
+        return {error: signOutError};
+      },
       onAuthStateChange: (handler) => listeners.set('auth', handler)
     },
     from: () => ({select: () => ({eq: () => ({maybeSingle: async () => ({data: {status: 'approved'}})})})}),
@@ -63,12 +72,14 @@ async function openPage(path = '', {approved = false, cdnAvailable = true, cache
     dispatchEvent: (event) => listeners.get(event.type)?.(event),
     matchMedia: () => ({matches: false}),
     setInterval() {},
+    clearInterval() {},
+    alert: (message) => alerts.push(message),
     supabase: cdnAvailable ? {createClient: () => client} : undefined
   };
   const localStorage = {
     getItem: () => cachedProfile ? JSON.stringify({status: 'approved', verifiedAt: Date.now(), email: 'test@vpmed.vn'}) : null,
     setItem() {},
-    removeItem() {}
+    removeItem: (key) => removed.push(key)
   };
   class CustomEvent {
     constructor(type, options) {
@@ -76,11 +87,38 @@ async function openPage(path = '', {approved = false, cdnAvailable = true, cache
       this.detail = options.detail;
     }
   }
-  const context = vm.createContext({window, document, navigator, location, localStorage, URLSearchParams, CustomEvent});
+  const context = vm.createContext({window, document, navigator, location, localStorage, URL, URLSearchParams, CustomEvent});
   vm.runInContext(headGate, context);
   vm.runInContext(access, context);
   await new Promise((resolve) => setImmediate(resolve));
-  return {classes, listeners, location, urls, window};
+  return {classes, listeners, location, urls, window, logout, removed, alerts};
+}
+
+async function signOutFromAccountPage() {
+  const urls = [];
+  const removed = [];
+  const listeners = new Map();
+  const node = {addEventListener() {}};
+  const logout = {addEventListener: (name, handler) => listeners.set(name, handler)};
+  const document = {
+    getElementById: () => node,
+    querySelectorAll: (selector) => selector === '[data-sign-out]' ? [logout] : [],
+    documentElement: {classList: {remove() {}}},
+    body: {classList: {remove() {}}}
+  };
+  const location = new URL('tai-khoan.html#admin',publicUrl);
+  location.replace = (target) => urls.push(target);
+  const auth = {
+    getSession: async () => ({data:{session:null}}),
+    onAuthStateChange: (handler) => listeners.set('auth',handler),
+    signOut: async () => {listeners.get('auth')('SIGNED_OUT');return {error:null};}
+  };
+  const window = {location,scrollTo() {},supabase:{createClient: () => ({auth})}};
+  const localStorage = {removeItem: (key) => removed.push(key)};
+  vm.runInNewContext(authPage,{window,document,localStorage,URLSearchParams});
+  await new Promise((resolve) => setImmediate(resolve));
+  await listeners.get('click')();
+  return {urls,removed};
 }
 
 async function openStandaloneTool({host, user, profileStatus} = {}) {
@@ -133,6 +171,9 @@ async function openStandaloneTool({host, user, profileStatus} = {}) {
   const installed = await openPage('index.html?vpmed_app=installed');
   assert.equal(installed.classes.has('vpmed-private-entry'), true);
   assert.deepEqual(installed.urls, ['tai-khoan.html?next=index.html%3Fvpmed_app%3Dinstalled']);
+  const signedOutInstalled = await openPage('', {standalone:true});
+  assert.equal(signedOutInstalled.classes.has('vpmed-private-entry'),false);
+  assert.deepEqual(signedOutInstalled.urls,[]);
 
   const noCdn = await openPage('', {cdnAvailable: false});
   assert.deepEqual(noCdn.urls, []);
@@ -149,7 +190,26 @@ async function openStandaloneTool({host, user, profileStatus} = {}) {
   assert.deepEqual(member.urls, []);
   member.listeners.get('auth')('SIGNED_OUT');
   assert.equal(member.classes.has('vpmed-auth-checking'), true);
-  assert.deepEqual(member.urls, ['tai-khoan.html?next=index.html%23pediatric-dose']);
+  assert.deepEqual(member.urls, ['./']);
+
+  for (const path of ['', '#pediatric-dose', 'index.html?vpmed_app=installed#home']) {
+    const signedIn = await openPage(path,{approved:true});
+    await signedIn.listeners.get('logout:click')();
+    assert.deepEqual(signedIn.urls,['./']);
+    assert.ok(signedIn.removed.includes('vpmed_verified_offline_access_v1'));
+  }
+  const offlineMember = await openPage('#pediatric-dose',{cdnAvailable:false,cachedProfile:true,offline:true});
+  await offlineMember.listeners.get('logout:click')();
+  assert.deepEqual(offlineMember.urls,['./']);
+  assert.ok(offlineMember.removed.includes('sb-jaswtdcgrfbygmdxvumu-auth-token'));
+  assert.ok(offlineMember.removed.includes('vpmed_verified_offline_access_v1'));
+
+  const signOutFailure = await openPage('#pediatric-dose',{approved:true,signOutError:new Error('Offline')});
+  await signOutFailure.listeners.get('logout:click')();
+  assert.deepEqual(signOutFailure.urls,[]);
+  assert.equal(signOutFailure.logout.disabled,false);
+  assert.equal(signOutFailure.alerts.length,1);
+  assert.deepEqual(await signOutFromAccountPage(),{urls:['./'],removed:['vpmed_verified_offline_access_v1']});
 
   assert.deepEqual(await openStandaloneTool(), {redirects: ['tai-khoan.html?next=petct-dose-tool.html'], visible: false});
   const clinician = {id: 'test-user', email: 'test@vpmed.vn'};

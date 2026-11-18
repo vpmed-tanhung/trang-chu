@@ -35,8 +35,7 @@
     }
     showPublicGuideRoute();
     window.addEventListener('hashchange', showPublicGuideRoute);
-    if (!window.VPMED_IS_PUBLIC_ROUTE(location.hash) || new URLSearchParams(location.search).get('vpmed_app') === 'installed' ||
-        navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches) {
+    if (!window.VPMED_IS_PUBLIC_ROUTE(location.hash) || new URLSearchParams(location.search).get('vpmed_app') === 'installed') {
       document.documentElement.classList.add('vpmed-private-entry');
     }
   </script>
@@ -1039,7 +1038,7 @@ Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối
   </details>
 </footer>
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3" integrity="sha384-l8ah+VgaWtk1mvOe9VC+OirC6qHFF4yH7l7mKRidV9MSti3E9F463bMp6ZVN4kuC" crossorigin="anonymous"></script>
-<script defer src="assets/vpmed-access.js?v=20261118-public-layout"></script>
+<script defer src="assets/vpmed-access.js?v=20261118-guest-logout"></script>
 <script defer src="assets/platform-shell.js?v=20261118-public-guides"></script>
 <script defer src="assets/disclaimer-gate.js?v=20260822-disclaimer-gate-v1"></script>
 <script defer src="assets/update-notifier.js?v=20261118-major-only"></script>
