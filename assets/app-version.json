@@ -4,7 +4,7 @@
   "updatedAt": "2026-11-18T08:13:30+07:00",
   "note": "Bỏ màn hình loading khi mở trang chủ. Mở PDF trực tiếp trong tab mới của trình duyệt.",
   "buildId": "v5.8.2-2026.11.18.74",
-  "clinicalDataVersion": "sha256-1bc2f235f51777c20dcd040f",
+  "clinicalDataVersion": "sha256-d1146c68de7a050f8518d9d2",
   "previousVersion": "2026.08.31.70",
   "previousDisplayVersion": "5.7.8"
 }
