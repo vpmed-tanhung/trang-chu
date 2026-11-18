@@ -1,6 +1,6 @@
 'use strict';
 
-const APP_VERSION = '2026.11.18.80';
+const APP_VERSION = '2026.11.18.81';
 const CLINICAL_DATA_VERSION = 'sha256-e6ce8a404fec507be513e915';
 const APP_SHELL_CACHE = `vpmed-shell-${APP_VERSION}`;
 const RUNTIME_CACHE = `vpmed-runtime-${APP_VERSION}`;
@@ -28,9 +28,9 @@ const APP_SHELL = [
   './assets/platform-shell.css?v=20260822-pwa-v1',
   './assets/navy-theme.css?v=20260828-original-colors-pulse-v2',
   './assets/vpmed-access.js?v=20261117-permissions-v1',
-  './assets/platform-shell.js?v=20261118-bulletin-interactions',
-  './assets/pharmacy-library.css?v=20261118-bulletin-interactions',
-  './assets/pharmacy-library.js?v=20261118-bulletin-interactions',
+  './assets/platform-shell.js?v=20261118-imported-interactions',
+  './assets/pharmacy-library.css?v=20261118-imported-interactions',
+  './assets/pharmacy-library.js?v=20261118-imported-interactions',
   './assets/pharmacy-home.js?v=20261117-home-v1',
   './assets/pharmacy-home.css?v=20261117-home-v1',
   './assets/pharmacy-admin-guard.js?v=20261117-permissions-v1',

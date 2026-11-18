@@ -1,10 +1,10 @@
 {
-  "version": "2026.11.18.80",
-  "displayVersion": "5.8.8",
-  "updatedAt": "2026-11-18T13:16:59+07:00",
-  "note": "Tra cứu 633 cặp tương tác thuốc theo dạng thẻ trong Bản tin Dược.",
-  "buildId": "v5.8.8-2026.11.18.80",
+  "version": "2026.11.18.81",
+  "displayVersion": "5.8.9",
+  "updatedAt": "2026-11-18T13:31:53+07:00",
+  "note": "Hiển thị đúng 37 cặp tương tác từ bảng nhập và đếm số cặp trong chuyên mục.",
+  "buildId": "v5.8.9-2026.11.18.81",
   "clinicalDataVersion": "sha256-e6ce8a404fec507be513e915",
-  "previousVersion": "2026.11.18.79",
-  "previousDisplayVersion": "5.8.7"
+  "previousVersion": "2026.11.18.80",
+  "previousDisplayVersion": "5.8.8"
 }
