@@ -299,3 +299,9 @@
   .stock-result-heading>span{justify-self:start}
   .stock-ped-patient-row{grid-template-columns:1fr}
 }
+
+.stock-ped-reference{margin-block:12px;}
+.stock-ped-reference > summary{cursor:pointer;font-weight:700;}
+.stock-ped-reference > section{margin-top:12px;padding-top:12px;border-top:1px solid var(--line,#dbe4ed);}
+.stock-ped-reference > section h3{margin:0;}
+.stock-pediatric-form [hidden]{display:none;}

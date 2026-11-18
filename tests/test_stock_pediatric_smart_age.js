@@ -79,7 +79,7 @@ assert.match(get('stockPedResult').innerHTML,/Lựa chọn đặc biệt/);
 assert.match(get('stockPedResult').innerHTML,/Bệnh viện Nhi Trung ương/);
 assert.match(get('stockPedResult').innerHTML,/Bệnh cảnh áp dụng/);
 assert.match(get('stockPedResult').innerHTML,/Chỉ chuyển sang mức này khi/);
-assert.match(get('stockPedResult').innerHTML,/Nguồn tính liều trực tiếp/);
+assert.match(get('stockPedResult').innerHTML,/Nguồn tính liều và giới hạn sử dụng/);
 assert.match(get('stockPedResult').innerHTML,/450 mg\/24 giờ/);
 assert.doesNotMatch(get('stockPedResult').innerHTML,/Nhập MIC dương/);
 assert.doesNotMatch(get('stockPedResult').innerHTML,/2147\/QĐ-BYT/,'Không được dùng phác đồ viêm phổi người lớn cho công cụ Nhi');
@@ -241,6 +241,68 @@ assert.doesNotMatch(get('stockPedResult').innerHTML,/70 mg/);
 change('stockPedPma',52);
 calculate();
 assert.match(get('stockPedResult').innerHTML,/70 mg/);
+
+change('stockPedAgeValue',72);
+change('stockPedPma','');
+change('stockPedWeight',10);
+change('stockPedDrug','cefoxitin','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/200–400 mg/);
+assert.match(get('stockPedResult').innerHTML,/800–1\.600 mg\/24 giờ/);
+assert.match(get('stockPedResult').innerHTML,/TENA001 · HIS 36816/);
+
+change('stockPedDrug','cefoperazone','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/166,7–666,7 mg/);
+assert.match(get('stockPedResult').innerHTML,/500–2\.000 mg\/24 giờ/);
+assert.match(get('stockPedResult').innerHTML,/Cục Quản lý Dược/);
+
+change('stockPedDrug','amoxicillin','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/PHAR001 · HIS 34917/);
+assert.match(get('stockPedResult').innerHTML,/Viêm họng liên cầu nhóm A/);
+
+change('stockPedDrug','ceftriaxone','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/Medivernol/);
+assert.match(get('stockPedResult').innerHTML,/Viêm màng não/);
+
+change('stockPedDrug','benzathine-benzylpenicillin','change');
+change('stockPedWeight',26.9);
+calculate();
+assert.match(get('stockPedResult').innerHTML,/600\.000 IU/);
+assert.match(get('stockPedResult').innerHTML,/Một liều duy nhất/);
+assert.doesNotMatch(get('stockPedResult').innerHTML,/mg\/24 giờ/);
+change('stockPedWeight',27);
+calculate();
+assert.match(get('stockPedResult').innerHTML,/1\.200\.000 IU/);
+assert.doesNotMatch(get('stockPedResult').innerHTML,/600\.000 IU/);
+
+change('stockPedDrug','colistimethate-sodium','change');
+change('stockPedWeight',40);
+calculate();
+assert.match(get('stockPedResult').innerHTML,/Kiểm tra và xác nhận/);
+get('stockPedConfirmation').checked=true;
+calculate();
+assert.match(get('stockPedResult').innerHTML,/1\.000\.000–2\.000\.000 IU/);
+change('stockPedWeight',40.01);
+calculate();
+assert.doesNotMatch(get('stockPedResult').innerHTML,/stock-regimen-card/);
+change('stockPedDrug','cefoxitin','change');
+assert.strictEqual(get('stockPedConfirmation').checked,false);
+
+change('stockPedAgeUnit','day','change');
+change('stockPedAgeValue',10);
+change('stockPedPma',34);
+change('stockPedWeight',3);
+change('stockPedDrug','cefazolin','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/75 mg/);
+assert.match(get('stockPedResult').innerHTML,/Bảng liều Sơ sinh/);
+change('stockPedDrug','amoxicillin-clavulanate','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/45–60 mg/);
+assert.match(get('stockPedResult').innerHTML,/ANMF/);
 
 get('stockPedReset').dispatch('click');
 assert.strictEqual(get('stockPedPma').value,'');

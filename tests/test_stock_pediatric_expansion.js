@@ -5,8 +5,15 @@ require('../assets/stock_clinical_data_20260814.js');
 const data=global.window.VPMED_STOCK_CLINICAL;
 
 assert.strictEqual(data.meta.generatedAt,'2026-08-22');
-assert.strictEqual(data.meta.counts.pediatricActives,16);
-assert.strictEqual(data.meta.counts.pediatricStockProducts,27);
+assert.strictEqual(data.meta.pediatricReviewedAt,'2026-11-18');
+assert.strictEqual(data.meta.counts.pediatricActives,23);
+assert.strictEqual(data.meta.counts.pediatricStockProducts,38);
+const rules=data.pediatric.flatMap((item)=>[...item.childRules,...item.neonatalRules]);
+assert.strictEqual(rules.length,data.meta.counts.pediatricDoseRules);
+assert.ok(rules.every((rule)=>rule.sources?.length&&rule.sources.every((source)=>source.scope&&source.url.startsWith('https://'))));
+assert.ok(rules.every((rule)=>rule.route&&(rule.singleDose?rule.fixedDose>0:rule.intervalHours>0)));
+assert.ok(rules.filter((rule)=>rule.dosePerKgDay!=null).every((rule)=>24%rule.intervalHours===0));
+assert.deepStrictEqual(data.pediatricReferenceOnly.map((item)=>item.id),['fosfomycin','spiramycin-metronidazole','moxifloxacin','ofloxacin-eye','itraconazole']);
 
 const amoxicillin=data.pediatric.find((item)=>item.id==='amoxicillin-clavulanate');
 assert.deepStrictEqual(amoxicillin.childRules.map(({doseMgKg,intervalHours})=>[doseMgKg,intervalHours]),[[15,12],[12.5,12],[22.5,12],[45,12]]);
@@ -18,7 +25,13 @@ const expected={
   cefixime:'TD29-000023',
   cefotaxime:'TD29-000014',
   cefpodoxime:'TD30-003873',
-  'imipenem-cilastatin':'CEPE001'
+  'imipenem-cilastatin':'CEPE001',
+  cefazolin:'N44003TD29-000008',
+  cefoperazone:'CEFO002',
+  cefoxitin:'TENA001',
+  amoxicillin:'PHAR001',
+  'benzathine-benzylpenicillin':'TD30-003777',
+  'colistimethate-sodium':'COLI001'
 };
 
 for(const [id,code] of Object.entries(expected)){

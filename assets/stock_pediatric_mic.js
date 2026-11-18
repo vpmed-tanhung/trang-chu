@@ -3,7 +3,8 @@
 
   const betaLactams=new Set([
     'amoxicillin-clavulanate','ampicillin-sulbactam','ceftazidime','meropenem',
-    'piperacillin-tazobactam','cefixime','cefotaxime','cefpodoxime','imipenem-cilastatin'
+    'piperacillin-tazobactam','cefixime','cefotaxime','cefpodoxime','imipenem-cilastatin',
+    'amoxicillin','cefazolin','cefoperazone','cefoxitin','ceftriaxone'
   ]);
   const aminoglycosides=new Set(['amikacin','gentamicin']);
   const fluoroquinolones=new Set(['ciprofloxacin','levofloxacin']);
