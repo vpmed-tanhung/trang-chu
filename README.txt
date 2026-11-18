@@ -1,8 +1,20 @@
-VPMED — GHI CHÚ CẬP NHẬT HỆ THỐNG (cập nhật gần nhất: 23/08/2026, bản 5.5.0)
+VPMED — GHI CHÚ CẬP NHẬT HỆ THỐNG (cập nhật gần nhất: 18/11/2026, bản 5.8.2)
 
 Tài liệu này tóm tắt các thay đổi đang có hiệu lực trên website, viết theo đúng
 những gì mã nguồn hiện triển khai. Xem chi tiết kỹ thuật/lịch sử đầy đủ trong
 thư mục docs/changelog/.
+
+ĐIỂM MỚI TRONG BẢN 5.8.2
+- Trang chủ Khoa Dược có các mục Thông tin thuốc, Hướng dẫn sử dụng và
+  Bản tin Dược. Các bản tin đã chuyển từ kho cũ được đưa vào mục Bản tin Dược.
+- Nút Xem PDF mở tài liệu trong tab mới của trình duyệt. Màn hình loading
+  toàn trang đã được bỏ.
+- Tài khoản quản trị và email Khoa Dược được đăng, chỉnh sửa nội dung trang
+  chủ, tài liệu và bản tin. Tài khoản các khoa/phòng khác đã được duyệt có
+  quyền xem nội dung và sử dụng các công cụ được cấp quyền.
+- GitHub Actions cập nhật dữ liệu Cảnh giác dược hằng ngày. Lịch đặt lúc
+  06:07, 06:37 và 07:17 theo giờ Việt Nam. Các lượt sau bỏ qua bước lấy dữ
+  liệu nếu dữ liệu trong ngày đã được cập nhật thành công.
 
 
 1. HỆ THỐNG TÀI KHOẢN KHOA/PHÒNG
