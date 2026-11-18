@@ -1,0 +1,35 @@
+BẢN CẬP NHẬT 5.8.2 — 18/11/2026
+
+CẬP NHẬT WEBSITE
+1. Giải nén ZIP, lấy nội dung trong thư mục trang-chu-main để cập nhật lên
+   nơi đang lưu mã nguồn hotrolamsang.io.vn. Giữ nguyên cấu trúc thư mục.
+2. Mở website, bấm cập nhật ứng dụng khi được thông báo hoặc tải lại trang.
+3. Trang chủ mới có Giới thiệu, Thông tin nhanh, Chức năng – nhiệm vụ,
+   Cơ cấu tổ chức, Công cụ lâm sàng, Tài liệu, Bản tin Dược và Liên hệ.
+
+PHÂN QUYỀN
+- Tài khoản quản trị cá nhân: giữ nguyên toàn quyền quản trị và biên tập.
+- khoaduoc@vpmed.vn: đăng, sửa, thay PDF và xóa tài liệu/bản tin;
+  sửa các phần nội dung trang chủ bằng nút Chỉnh sửa.
+- Tài khoản các khoa khác đã được duyệt: chỉ xem nội dung và sử dụng công cụ;
+  không được đăng, sửa hoặc xóa nội dung trang chủ, tài liệu, bản tin.
+- Quyền ghi nội dung và PDF được kiểm tra tại Supabase, không chỉ ẩn nút.
+- Quyền quản trị tài khoản và các công cụ lâm sàng cũ được giữ lại.
+
+SỬ DỤNG
+Nhấn Chỉnh sửa tại phần muốn sửa trên trang chủ. Trong hộp thoại có thể
+chuyển sang phần khác, rồi bấm Lưu thay đổi.
+Trong danh sách PDF, dùng Chỉnh sửa để đổi tiêu đề, mô tả, chuyên mục hoặc
+thay PDF. Có thể giữ nguyên tệp khi chỉ sửa thông tin. Tệp tối đa 20 MB. Khi bấm Xem PDF, trình duyệt mở tệp trong tab mới.
+Hai phiên sửa cùng một nội dung sẽ được kiểm tra phiên bản để tránh ghi đè.
+
+Kho PDF, nội dung trang chủ và quyền đã được cấu hình trên Supabase
+vpmed-clinpharm (jaswtdcgrfbygmdxvumu); không chạy lại SQL trên dự án này.
+Các file SQL đi kèm dành cho tham khảo/khởi tạo dự án tương thích khác.
+Trang cập nhật dữ liệu chuyên môn cũ vẫn dùng cơ chế đăng nhập riêng của
+Google Apps Script; website kiểm tra quyền Khoa Dược/admin trước khi mở.
+
+Đã chuyển 55 mục Thông tin thuốc, 216 Hướng dẫn sử dụng và 18 Bản tin Dược
+từ kho cũ. Các PDF nằm trong kho riêng của website, cùng ngày tài liệu,
+tiêu đề, chuyên mục và từ khóa gốc. Mã nguồn lấy dữ liệu qua Supabase.
+Với dự án mới, chạy thêm SQL lưu thông tin tài liệu gốc trước khi triển khai.
