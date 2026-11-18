@@ -4,6 +4,7 @@ const vm = require('node:vm');
 
 const access = fs.readFileSync(require.resolve('../assets/vpmed-access.js'), 'utf8');
 const toolEntry = fs.readFileSync(require.resolve('../assets/vpmed-tool-entry.js'), 'utf8');
+const library = fs.readFileSync(require.resolve('../assets/pharmacy-library.js'), 'utf8');
 const html = fs.readFileSync(require.resolve('../index.html'), 'utf8');
 const headGate = html.match(/<script>\s*(window\.VPMED_IS_PUBLIC_ROUTE[\s\S]*?)<\/script>/)[1];
 const homeSchema = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
@@ -19,6 +20,8 @@ assert.doesNotMatch(html.match(/<section[^>]+id="danh-muc-tai-lieu"[^>]*>/)[0], 
 assert.match(html, /<h2 data-guest-only>Hướng dẫn sử dụng<\/h2>/);
 assert.match(html, /data-open="thong-tin-thuoc" data-internal-only/);
 assert.doesNotMatch(html.match(/<a[^>]+data-open="huong-dan-su-dung"[^>]*>/)[0], /data-internal-only/);
+assert.match(html, /\.vpmed-public-guide[^{}]*#view-huong-dan-su-dung\s*\{\s*display:\s*block/);
+assert.match(library, /const PUBLIC_CATEGORIES = \{bulletin:\['Bản tin Dược'\], guide:\['Hướng dẫn sử dụng'\]\};/);
 assert.doesNotMatch(html.match(/<section[^>]+id="ban-tin"[^>]*>/)[0], /data-internal-only/);
 for (const id of ['gioi-thieu','chuc-nang','to-chuc','danh-muc-tai-lieu','ban-tin','lien-he']) {
   assert.ok(html.includes(`id="${id}"`));
@@ -35,7 +38,8 @@ async function openPage(path = '', {approved = false, cdnAvailable = true, cache
     documentElement: {classList: {
       add: (name) => classes.add(name),
       contains: (name) => classes.has(name),
-      remove: (name) => classes.delete(name)
+      remove: (name) => classes.delete(name),
+      toggle: (name, force) => force ? classes.add(name) : classes.delete(name)
     }},
     getElementById: () => node,
     addEventListener() {},
@@ -52,7 +56,10 @@ async function openPage(path = '', {approved = false, cdnAvailable = true, cache
     rpc: async () => ({data: false})
   };
   const window = {
-    addEventListener: (name, handler) => listeners.set(name, handler),
+    addEventListener: (name, handler) => {
+      const previous = listeners.get(name);
+      listeners.set(name, (...args) => {previous?.(...args);handler(...args);});
+    },
     dispatchEvent: (event) => listeners.get(event.type)?.(event),
     matchMedia: () => ({matches: false}),
     setInterval() {},
@@ -95,10 +102,11 @@ async function openStandaloneTool({host, user, profileStatus} = {}) {
 }
 
 (async () => {
-  for (const path of ['', 'index.html', '#gioi-thieu', '#danh-muc-tai-lieu', '#ban-tin', '#lien-he']) {
+  for (const path of ['', 'index.html', '#gioi-thieu', '#danh-muc-tai-lieu', '#huong-dan-su-dung', '#ban-tin', '#lien-he']) {
     const visitor = await openPage(path);
     assert.equal(visitor.classes.has('vpmed-private-entry'), false);
     assert.equal(visitor.classes.has('vpmed-auth-checking'), true);
+    assert.equal(visitor.classes.has('vpmed-public-guide'), path === '#huong-dan-su-dung');
     assert.deepEqual(visitor.urls, []);
     visitor.listeners.get('auth')('SIGNED_OUT');
     assert.deepEqual(visitor.urls, []);
@@ -107,10 +115,17 @@ async function openStandaloneTool({host, user, profileStatus} = {}) {
   const deepLink = await openPage('#pediatric-dose');
   assert.equal(deepLink.classes.has('vpmed-private-entry'), true);
   assert.deepEqual(deepLink.urls, ['tai-khoan.html?next=index.html%23pediatric-dose']);
-  for (const hash of ['thong-tin-thuoc','huong-dan-su-dung']) {
-    const internalLibrary = await openPage('#'+hash);
-    assert.deepEqual(internalLibrary.urls, ['tai-khoan.html?next=index.html%23'+hash]);
-  }
+  const internalLibrary = await openPage('#thong-tin-thuoc');
+  assert.deepEqual(internalLibrary.urls, ['tai-khoan.html?next=index.html%23thong-tin-thuoc']);
+  const guideNavigation = await openPage();
+  guideNavigation.location.hash = 'huong-dan-su-dung';
+  guideNavigation.listeners.get('hashchange')();
+  assert.equal(guideNavigation.classes.has('vpmed-public-guide'), true);
+  assert.deepEqual(guideNavigation.urls, []);
+  guideNavigation.location.hash = 'danh-muc-tai-lieu';
+  guideNavigation.listeners.get('hashchange')();
+  assert.equal(guideNavigation.classes.has('vpmed-public-guide'), false);
+  assert.deepEqual(guideNavigation.urls, []);
   const cachedButSignedOut = await openPage('#pediatric-dose', {cachedProfile: true});
   assert.equal(cachedButSignedOut.classes.has('vpmed-auth-checking'), true);
   assert.deepEqual(cachedButSignedOut.urls, deepLink.urls);

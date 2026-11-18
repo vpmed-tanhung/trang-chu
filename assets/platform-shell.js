@@ -60,7 +60,7 @@
 
   const PHARMACY_LIBRARY = Object.freeze({
     styles: ['assets/pharmacy-library.css?v=20261118-imported-interactions','assets/pharmacy-home.css?v=20261118-public-layout'],
-    scripts: ['assets/pharmacy-library.js?v=20261118-public-layout','assets/pharmacy-home.js?v=20261117-home-v1']
+    scripts: ['assets/pharmacy-library.js?v=20261118-public-guides','assets/pharmacy-home.js?v=20261117-home-v1']
   });
   const FEATURE_BUNDLES = Object.freeze({
     home: PHARMACY_LIBRARY,
@@ -648,7 +648,7 @@
   function openLocation(source) {
     const hash = location.hash;
     const options = {source, fromHistory: true, preserveScroll: source === 'initial'};
-    if (hash && (window.VPMED_IS_PUBLIC_ROUTE?.(hash) || hash === '#danh-muc-tai-lieu')) {
+    if (hash && hash !== '#huong-dan-su-dung' && (window.VPMED_IS_PUBLIC_ROUTE?.(hash) || hash === '#danh-muc-tai-lieu')) {
       return openFeature('home', {...options, preserveScroll: true}).then(() => {
         document.getElementById(hash.slice(1))?.scrollIntoView();
       });

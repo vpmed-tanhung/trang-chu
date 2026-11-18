@@ -29,7 +29,12 @@
   }
   </script>
   <script>
-    window.VPMED_IS_PUBLIC_ROUTE = (hash) => /^(?:#(?:gioi-thieu|chuc-nang|to-chuc|danh-muc-tai-lieu|ban-tin|lien-he|sitePolicy))?$/.test(hash);
+    window.VPMED_IS_PUBLIC_ROUTE = (hash) => /^(?:#(?:gioi-thieu|chuc-nang|to-chuc|danh-muc-tai-lieu|huong-dan-su-dung|ban-tin|lien-he|sitePolicy))?$/.test(hash);
+    function showPublicGuideRoute() {
+      document.documentElement.classList.toggle('vpmed-public-guide', location.hash === '#huong-dan-su-dung');
+    }
+    showPublicGuideRoute();
+    window.addEventListener('hashchange', showPublicGuideRoute);
     if (!window.VPMED_IS_PUBLIC_ROUTE(location.hash) || new URLSearchParams(location.search).get('vpmed_app') === 'installed' ||
         navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches) {
       document.documentElement.classList.add('vpmed-private-entry');
@@ -47,6 +52,9 @@
   <style>
     html:not(.vpmed-auth-checking) [data-guest-only] { display: none !important; }
     html.vpmed-auth-checking #danh-muc-tai-lieu .library-hub { grid-template-columns: minmax(0, 1fr); }
+    html.vpmed-auth-checking.vpmed-public-guide:not(.vpmed-private-entry) .app-shell { max-width: 1184px; padding: 20px 16px 38px; }
+    html.vpmed-auth-checking.vpmed-public-guide:not(.vpmed-private-entry) #view-home { display: none !important; }
+    html.vpmed-auth-checking.vpmed-public-guide:not(.vpmed-private-entry) #view-huong-dan-su-dung { display: block !important; }
   </style>
 </head>
 <body class="pharmacy-home-active">
@@ -63,7 +71,7 @@
       <button type="button" data-view="home" data-scroll-target="cong-cu-lam-sang" data-internal-only>Công cụ lâm sàng</button>
       <button type="button" class="nav-emergency" data-view="cap-cuu-phan-ve" data-internal-only>Cấp cứu phản vệ</button>
       <a href="#danh-muc-tai-lieu" data-view="home" data-scroll-target="danh-muc-tai-lieu" data-internal-only>Tài liệu</a>
-      <a href="#danh-muc-tai-lieu" data-guest-only>Hướng dẫn sử dụng</a>
+      <a href="#huong-dan-su-dung" data-guest-only>Hướng dẫn sử dụng</a>
       <a href="#ban-tin" data-view="home" data-scroll-target="ban-tin">Bản tin Dược</a>
       <a href="#lien-he" data-view="home" data-scroll-target="lien-he">Liên hệ</a>
     </nav>
@@ -207,7 +215,7 @@
       </div>
       <div class="library-hub">
         <a class="library-hub-card" href="#thong-tin-thuoc" data-open="thong-tin-thuoc" data-internal-only><span aria-hidden="true">💊</span><span><strong>Thông tin thuốc</strong><small>Tài liệu thuốc và tờ hướng dẫn sử dụng.</small><em data-library-count="drug">Đăng nhập để xem</em></span><span class="library-hub-arrow" aria-hidden="true">→</span></a>
-        <a class="library-hub-card library-hub-card--guide" href="#huong-dan-su-dung" data-open="huong-dan-su-dung"><span aria-hidden="true">📖</span><span><strong>Hướng dẫn sử dụng</strong><small>Quy trình và hướng dẫn thao tác.</small><em data-library-count="guide">Đăng nhập để xem</em></span><span class="library-hub-arrow" aria-hidden="true">→</span></a>
+        <a class="library-hub-card library-hub-card--guide" href="#huong-dan-su-dung" data-open="huong-dan-su-dung"><span aria-hidden="true">📖</span><span><strong>Hướng dẫn sử dụng</strong><small>Quy trình và hướng dẫn thao tác.</small><em data-library-count="guide">Xem tài liệu</em></span><span class="library-hub-arrow" aria-hidden="true">→</span></a>
       </div>
     </section>
     <section class="section-card pharmacy-library" id="ban-tin" aria-labelledby="library-bulletin-title" style="scroll-margin-top:130px">
@@ -266,16 +274,16 @@
   </section>
 
   <section class="view pharmacy-library" id="view-huong-dan-su-dung">
-    <div class="back-home-wrap"><button type="button" class="back-home-btn" data-go="home">← Quay lại Trang chủ</button></div>
+    <div class="back-home-wrap"><a href="#danh-muc-tai-lieu" class="back-home-btn" data-go="home" data-scroll-target="danh-muc-tai-lieu">← Quay lại Trang chủ</a></div>
     <div class="library-heading"><h1>Hướng dẫn sử dụng</h1><button type="button" class="btn btn-primary" data-library-upload="guide" hidden>+ Thêm PDF</button></div>
-    <button type="button" class="btn btn-soft" data-open="thong-tin-thuoc">Thông tin thuốc →</button>
+    <button type="button" class="btn btn-soft" data-open="thong-tin-thuoc" data-internal-only>Thông tin thuốc →</button>
     <section class="section-card"><div class="pharmacy-library" data-documents-kind="guide">
           <div class="library-toolbar">
             <label>Tìm kiếm tài liệu<input type="search" data-library-query placeholder="Nhập tên tài liệu, thuốc hoặc từ khóa…" autocomplete="off"></label>
             <label>Chuyên mục<select data-library-category><option value="">Tất cả chuyên mục</option></select></label>
           </div>
-          <div class="library-results-meta"><span data-library-result-count aria-live="polite">Đang xác minh tài khoản…</span><button type="button" class="btn btn-soft" data-library-refresh>Làm mới</button><button type="button" class="btn btn-soft" data-library-clear-month hidden>Bỏ lọc tháng</button></div>
-          <div class="library-list" data-library-list><div class="library-empty">Đang xác minh tài khoản…</div></div>
+          <div class="library-results-meta"><span data-library-result-count aria-live="polite">Đang tải tài liệu…</span><button type="button" class="btn btn-soft" data-library-refresh>Làm mới</button><button type="button" class="btn btn-soft" data-library-clear-month hidden>Bỏ lọc tháng</button></div>
+          <div class="library-list" data-library-list><div class="library-empty">Đang tải tài liệu…</div></div>
           <nav class="library-pagination" data-library-pagination aria-label="Phân trang tài liệu" hidden>
             <button type="button" class="btn btn-soft" data-library-previous>← Trang trước</button><span data-library-page-label aria-live="polite">Trang 1</span><button type="button" class="btn btn-soft" data-library-next>Trang sau →</button>
           </nav>
@@ -1032,7 +1040,7 @@ Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối
 </footer>
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3" integrity="sha384-l8ah+VgaWtk1mvOe9VC+OirC6qHFF4yH7l7mKRidV9MSti3E9F463bMp6ZVN4kuC" crossorigin="anonymous"></script>
 <script defer src="assets/vpmed-access.js?v=20261118-public-layout"></script>
-<script defer src="assets/platform-shell.js?v=20261118-public-layout"></script>
+<script defer src="assets/platform-shell.js?v=20261118-public-guides"></script>
 <script defer src="assets/disclaimer-gate.js?v=20260822-disclaimer-gate-v1"></script>
 <script defer src="assets/update-notifier.js?v=20261118-major-only"></script>
 </body>

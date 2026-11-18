@@ -7,8 +7,8 @@
   const PAGE_SIZE = 6;
   const INTERACTION_CATEGORY = 'Tương tác thuốc';
   const INTERACTION_BULLETIN_ID = 'a787af00-1f05-5b9d-bbc9-484df524b84c';
-  const PUBLIC_BULLETIN_CATEGORIES = ['Bản tin Dược'];
-  const PUBLIC_BULLETIN_FIELDS = 'id,kind,title,summary,category,file_size,storage_path,created_at,document_date';
+  const PUBLIC_CATEGORIES = {bulletin:['Bản tin Dược'], guide:['Hướng dẫn sử dụng']};
+  const PUBLIC_FIELDS = 'id,kind,title,summary,category,file_size,storage_path,created_at,document_date';
   const KINDS = {
     drug: {title:'Thông tin thuốc', categories:['Thông tin thuốc','Tờ hướng dẫn sử dụng thuốc','Cảnh báo an toàn']},
     guide: {title:'Hướng dẫn sử dụng', categories:['Hướng dẫn sử dụng','Quy trình thao tác','Hướng dẫn phần mềm']},
@@ -38,7 +38,7 @@
   const normalize = (value) => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase();
   const isAdmin = () => auth?.canEditContent === true && auth?.profile?.status === 'approved';
   const readClient = () => auth?.client || window.VPMED_PUBLIC_LIBRARY_CLIENT;
-  const categoriesFor = (kind) => auth ? KINDS[kind].categories : kind === 'bulletin' ? PUBLIC_BULLETIN_CATEGORIES : [];
+  const categoriesFor = (kind) => auth ? KINDS[kind].categories : PUBLIC_CATEGORIES[kind] || [];
   const node = (tag, className, text) => {
     const element = document.createElement(tag);
     if (className) element.className = className;
@@ -72,22 +72,23 @@
   }
   async function refresh() {
     const client = readClient();
-    if (!client) {loadError = 'Cần kết nối mạng để tải bản tin.';renderAll();return;}
+    if (!client) {loadError = 'Cần kết nối mạng để tải tài liệu.';renderAll();return;}
     const guest = !auth;
     const sequence = ++loadSequence;
     loading = true; loadError = ''; renderAll();
     try {
       const all = [];
       for (let offset = 0; ; offset += 200) {
-        let query = client.from(TABLE).select(guest ? PUBLIC_BULLETIN_FIELDS : PUBLIC_BULLETIN_FIELDS+',file_name,keywords,author,revision,updated_at,interaction_pairs');
-        if (guest) query = query.eq('kind','bulletin').in('category',PUBLIC_BULLETIN_CATEGORIES);
+        let query = client.from(TABLE).select(guest ? PUBLIC_FIELDS : PUBLIC_FIELDS+',file_name,keywords,author,revision,updated_at,interaction_pairs');
+        if (guest) query = query.in('kind',Object.keys(PUBLIC_CATEGORIES)).in('category',Object.values(PUBLIC_CATEGORIES).flat());
         const result = await query.order('created_at',{ascending:false}).order('id',{ascending:false}).range(offset,offset+199);
         if (sequence !== loadSequence) return;
         if (result.error) throw result.error;
         all.push(...result.data);
         if (result.data.length < 200) break;
       }
-      records = all.sort((a,b) => new Date(documentDate(b)) - new Date(documentDate(a)));
+      records = (guest ? all.filter((record) => PUBLIC_CATEGORIES[record.kind]?.includes(record.category)) : all)
+        .sort((a,b) => new Date(documentDate(b)) - new Date(documentDate(a)));
     } catch (error) {
       if (sequence === loadSequence) loadError = errorMessage(error);
     } finally {
@@ -232,7 +233,7 @@
     }
     if (loading) { panel.count.textContent = 'Đang tải…'; emptyState(panel.list,'Đang tải tài liệu…'); return; }
     if (loadError) { panel.count.textContent = ''; emptyState(panel.list,'Chưa tải được tài liệu',loadError,refresh); return; }
-    if (!auth && panel.kind !== 'bulletin') { panel.count.textContent = ''; emptyState(panel.list,'Đăng nhập để xem tài liệu'); return; }
+    if (!auth && !PUBLIC_CATEGORIES[panel.kind]) { panel.count.textContent = ''; emptyState(panel.list,'Đăng nhập để xem tài liệu'); return; }
     const entries = matching(panel);
     panel.page = Math.min(panel.page,Math.max(1,Math.ceil(entries.length/PAGE_SIZE)));
     panel.count.textContent = entries.length+' tài liệu'+(panel.month ? ' · Tháng '+panel.month.slice(5)+'/'+panel.month.slice(0,4) : '');
@@ -307,7 +308,7 @@
     }
     for (const kind of ['drug','guide']) {
       const count = document.querySelector(`[data-library-count="${kind}"]`);
-      if (count) count.textContent = !auth ? 'Đăng nhập để xem' : loading ? 'Đang tải…' : loadError ? 'Chưa tải được số liệu' : records.filter(r=>r.kind===kind).length+' tài liệu';
+      if (count) count.textContent = !auth && !PUBLIC_CATEGORIES[kind] ? 'Đăng nhập để xem' : loading ? 'Đang tải…' : loadError ? 'Chưa tải được số liệu' : records.filter(r=>r.kind===kind).length+' tài liệu';
     }
     renderSidebar(); updateAdminControls();
   }
@@ -411,19 +412,19 @@
       window.VPMED_PLATFORM?.toast(cleanupError ? 'Đã gỡ tài liệu. Tệp lưu trữ cần được quản trị viên kiểm tra lại.' : 'Đã xóa tài liệu.',{tone:cleanupError?'warning':'info'});
     } catch(error) {window.VPMED_PLATFORM?.toast(errorMessage(error),{tone:'error'}); trigger.disabled=false;}
   }
-  function reportPdfError(message) {
+  function reportPdfError(message, kind) {
     if (uploadDialog.open) {
       formStatus.textContent = message;
     } else {
       if (window.VPMED_PLATFORM) window.VPMED_PLATFORM.toast(message, {tone:'error'});
-      else if (panels.has('bulletin')) panels.get('bulletin').count.textContent = message;
+      else if (panels.has(kind)) panels.get(kind).count.textContent = message;
     }
   }
   async function openPdf(source) {
     // Open during the click so the signed URL request does not trigger a popup block.
     const tab = window.open('about:blank','_blank');
     if (!tab) {
-      reportPdfError('Trình duyệt đã chặn tab mới. Cho phép mở tab rồi bấm lại.');
+      reportPdfError('Trình duyệt đã chặn tab mới. Cho phép mở tab rồi bấm lại.',source.kind);
       return;
     }
     tab.opener = null;
@@ -452,7 +453,7 @@
       if (localUrl) URL.revokeObjectURL(localUrl);
       if (tab.closed) return;
       tab.close();
-      reportPdfError('Chưa mở được PDF. Vui lòng thử lại.');
+      reportPdfError('Chưa mở được PDF. Vui lòng thử lại.',source.kind);
     }
   }
   function initPanels() {
