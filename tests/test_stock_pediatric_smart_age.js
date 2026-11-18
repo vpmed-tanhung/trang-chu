@@ -81,7 +81,7 @@ assert.match(get('stockPedResult').innerHTML,/Nguồn tính liều trực tiếp
 assert.doesNotMatch(get('stockPedResult').innerHTML,/2147\/QĐ-BYT/,'Không được dùng phác đồ viêm phổi người lớn cho công cụ Nhi');
 assert.doesNotMatch(get('stockPedResult').innerHTML,/cap-nhat-bo-sung-huong-dan-su-dung-khang-sinh/,'Không được trỏ tới bài giới thiệu hướng dẫn 2024');
 assert.doesNotMatch(get('stockPedResult').innerHTML,/tai-lieu-huong-dan-su-dung-khang-sinh/,'Không được dùng trang hồ sơ/tải tài liệu làm nguồn trực tiếp của mức liều');
-assert.strictEqual(get('stockPedPmaWrap').hidden,true);
+assert.strictEqual(get('stockPedPmaWrap').hidden,false,'PMA phải có sẵn cho trẻ nhỏ từng sinh non');
 
 change('stockPedAgeValue',2);
 change('stockPedAgeUnit','year','change');
@@ -153,6 +153,58 @@ for(const [value,unit,expected] of [[14,'day','Sơ sinh'],[2,'week','Sơ sinh'],
   change('stockPedAgeUnit',unit,'change');
   assert.match(get('stockPedAgeMode').textContent,new RegExp(expected));
 }
+
+change('stockPedAgeUnit','day','change');
+change('stockPedAgeValue',28);
+calculate();
+assert.match(get('stockPedResult').innerHTML,/Bảng Sơ sinh cần PMA/);
+
+change('stockPedBirthWeeks',36);
+change('stockPedBirthDays',6);
+assert.match(get('stockPedAgeMode').textContent,/PMA 40 tuần tròn/);
+change('stockPedDrug','ceftazidime','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/28 ngày sau sinh · PMA 40 tuần/);
+
+change('stockPedPma',40);
+calculate();
+assert.match(get('stockPedResult').innerHTML,/Chọn một cách nhập PMA/);
+change('stockPedPma','');
+change('stockPedBirthWeeks','');
+change('stockPedBirthDays','');
+
+for(const days of [29,30]){
+  change('stockPedAgeValue',days);
+  assert.match(get('stockPedAgeMode').textContent,/Nhi khoa/);
+  assert.strictEqual(get('stockPedPmaWrap').hidden,false);
+  change('stockPedDrug','amoxicillin-clavulanate','change');
+  calculate();
+  assert.match(get('stockPedResult').innerHTML,/stock-regimen-card/);
+  assert.doesNotMatch(get('stockPedResult').innerHTML,/Chưa thể tính/);
+}
+
+change('stockPedAgeValue',42);
+change('stockPedPma',39);
+assert.match(get('stockPedAgeMode').textContent,/Sơ sinh/,'Trẻ trên 28 ngày và còn dưới 45 tuần PMA vẫn có thể tra bảng sơ sinh');
+change('stockPedDrug','ceftazidime','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/42 ngày sau sinh · PMA 39 tuần/);
+
+change('stockPedAgeValue',28);
+change('stockPedPma',45);
+calculate();
+assert.match(get('stockPedResult').innerHTML,/chỉ có dữ liệu dưới 45 tuần PMA/);
+assert.doesNotMatch(get('stockPedResult').innerHTML,/stock-regimen-card/);
+
+change('stockPedAgeValue',29);
+change('stockPedDrug','amoxicillin-clavulanate','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/stock-regimen-card/);
+
+get('stockPedReset').dispatch('click');
+assert.strictEqual(get('stockPedPma').value,'');
+assert.strictEqual(get('stockPedBirthWeeks').value,'');
+assert.strictEqual(get('stockPedBirthDays').value,'');
 
 const toolSource=fs.readFileSync(require.resolve('../assets/stock_clinical_tools.js'),'utf8');
 const renalAuditSource=fs.readFileSync(require.resolve('../assets/vpmed-renal-audit.js'),'utf8');

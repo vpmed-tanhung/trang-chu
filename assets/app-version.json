@@ -1,10 +1,10 @@
 {
-  "version": "2026.11.18.82",
-  "displayVersion": "5.8.10",
-  "updatedAt": "2026-11-18T14:12:05+07:00",
-  "note": "Khắc phục trình duyệt giữ bản web cũ khi mở danh mục Tương tác thuốc.",
-  "buildId": "v5.8.10-2026.11.18.82",
-  "clinicalDataVersion": "sha256-e6ce8a404fec507be513e915",
-  "previousVersion": "2026.11.18.81",
-  "previousDisplayVersion": "5.8.9"
+  "version": "2026.11.18.83",
+  "displayVersion": "5.8.11",
+  "updatedAt": "2026-11-18T19:16:24+07:00",
+  "note": "Sửa phân nhóm tuổi và bổ sung cách nhập PMA trong công cụ Tính liều kháng sinh Nhi.",
+  "buildId": "v5.8.11-2026.11.18.83",
+  "clinicalDataVersion": "sha256-dfdb2ebbd6b10379721438e1",
+  "previousVersion": "2026.11.18.82",
+  "previousDisplayVersion": "5.8.10"
 }

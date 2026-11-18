@@ -202,10 +202,20 @@
               <small class="stock-field-hint" id="stockPedAgeMode">Nhập tuổi để tự xác định bảng liều.</small>
             </label>
           </div>
-          <label id="stockPedPmaWrap" hidden>PMA (tuần) — chỉ nhập nếu trẻ còn &lt;45 tuần
-            <input id="stockPedPma" type="number" min="20" max="44" step="1" inputmode="numeric" placeholder="34">
-            <small class="stock-field-hint">Trẻ dưới 1 tháng cần PMA để tra bảng liều Sơ sinh.</small>
-          </label>
+          <div id="stockPedPmaWrap" hidden>
+            <label>Tuổi sau kinh (PMA, tuần tròn)
+              <input id="stockPedPma" type="number" min="20" step="1" inputmode="numeric" placeholder="Ví dụ: 40" aria-describedby="stockPedPmaHint">
+            </label>
+            <small id="stockPedPmaHint" class="stock-field-hint">Cần nhập cho trẻ 0–28 ngày hoặc trẻ sinh non còn dưới 45 tuần PMA.</small>
+            <details>
+              <summary>Tính PMA từ tuổi thai lúc sinh</summary>
+              <div class="form-row">
+                <label>Tuần thai lúc sinh<input id="stockPedBirthWeeks" type="number" min="20" max="44" step="1" inputmode="numeric"></label>
+                <label>Ngày lẻ lúc sinh<input id="stockPedBirthDays" type="number" min="0" max="6" step="1" inputmode="numeric"></label>
+              </div>
+              <small class="stock-field-hint">Để trống ô PMA và nhập cả hai ô tuổi thai (ngày lẻ là 0 nếu tròn tuần). Dùng tuổi sau sinh chính xác theo ngày hoặc tuần tròn.</small>
+            </details>
+          </div>
           <label>Kháng sinh<select id="stockPedDrug"></select></label>
           <p class="stock-ped-form-note">Hệ thống tự lọc bảng Nhi khoa/Sơ sinh và hiển thị bệnh cảnh áp dụng cho từng mức liều; không yêu cầu người dùng chọn “chỉ định/phác đồ”.</p>
           <button class="btn btn-primary full" id="stockPedCalculate" type="button">Tính liều và gợi ý theo nguồn</button>
@@ -228,6 +238,8 @@
     const ageMode=root.querySelector('#stockPedAgeMode');
     const pmaWrap=root.querySelector('#stockPedPmaWrap');
     const pmaInput=root.querySelector('#stockPedPma');
+    const birthWeeksInput=root.querySelector('#stockPedBirthWeeks');
+    const birthDaysInput=root.querySelector('#stockPedBirthDays');
     const weightInput=root.querySelector('#stockPedWeight');
     const patientCodeInput=root.querySelector('#stockPedPatientCode');
     const result=root.querySelector('#stockPedResult');
@@ -237,18 +249,41 @@
     const historyModule='Tính liều kháng sinh Nhi';
 
     function ageContext(){
-      const ageRaw=String(ageInput.value||'').trim();
-      const pmaRaw=String(pmaInput.value||'').trim();
-      const ageValue=ageRaw===''?NaN:Number(ageRaw);
+      const ageValue=ageInput.value===''?NaN:Number(ageInput.value);
       const months=ageInMonths(ageValue,ageUnit.value);
       const days=ageInDays(ageValue,ageUnit.value);
-      const pma=pmaRaw===''?NaN:Number(pmaRaw);
       const hasValidAge=Number.isFinite(ageValue)&&ageValue>=0&&Number.isFinite(months);
-      const hasValidPma=Number.isInteger(pma)&&pma>=20&&pma<=44;
-      let mode=null;
-      if(hasValidPma)mode='neonate';
-      else if(hasValidAge)mode=months<1?'neonate':'child';
-      return {ageRaw,pmaRaw,ageValue,months,days,pma,hasValidAge,hasValidPma,mode};
+      const exactPna=['day','week'].includes(ageUnit.value)&&Number.isInteger(days);
+      const showPma=hasValidAge&&days<=(45-20)*7;
+      const pmaRaw=showPma?pmaInput.value:'';
+      const birthWeeks=showPma?birthWeeksInput.value:'';
+      const birthDays=showPma?birthDaysInput.value:'';
+      const usesBirthAge=birthWeeks!==''||birthDays!=='';
+      let pma=NaN;
+      let pmaError='';
+      if(pmaRaw!==''&&usesBirthAge){
+        pmaError='Chọn một cách nhập PMA. Nếu dùng tuổi thai lúc sinh, hãy để trống ô PMA.';
+      }else if(pmaRaw!==''){
+        pma=Number(pmaRaw);
+        if(!Number.isInteger(pma)||pma<20+Math.floor(days/7)||pma>44+Math.ceil(days/7)){
+          pmaError='Kiểm tra lại PMA. Nhập số tuần tròn phù hợp với tuổi sau sinh.';
+        }
+      }else if(usesBirthAge){
+        const weeks=Number(birthWeeks);
+        const extraDays=Number(birthDays);
+        if(birthWeeks===''||birthDays===''||!Number.isInteger(weeks)||weeks<20||weeks>44||
+          !Number.isInteger(extraDays)||extraDays<0||extraDays>6){
+          pmaError='Nhập đủ tuần thai lúc sinh (20–44 tuần) và số ngày lẻ (0–6).';
+        }else if(!exactPna){
+          pmaError='Nhập tuổi sau sinh chính xác theo ngày hoặc tuần tròn để tính PMA từ tuổi thai lúc sinh.';
+        }else{
+          pma=Math.floor((weeks*7+extraDays+days)/7);
+        }
+      }
+      const hasValidPma=Number.isFinite(pma)&&!pmaError;
+      const isNeonate=days<29||(hasValidPma&&pma<45);
+      const mode=hasValidAge?(isNeonate?'neonate':'child'):null;
+      return {ageValue,months,days,pma,hasValidAge,hasValidPma,mode,showPma,exactPna,pmaError};
     }
 
     function availableDrugs(context){
@@ -258,13 +293,17 @@
     }
 
     function renderAgeMode(context){
-      pmaWrap.hidden=!(context.mode==='neonate'||context.pmaRaw!=='');
+      pmaWrap.hidden=!context.showPma;
       if(!context.hasValidAge){
         ageMode.textContent='Nhập tuổi để tự xác định bảng liều.';
+      }else if(context.pmaError){
+        ageMode.textContent=context.pmaError;
       }else if(context.mode==='neonate'){
-        ageMode.textContent=context.hasValidPma?'Đã chọn bảng Sơ sinh (<45 tuần PMA).':'Bảng Sơ sinh — cần nhập thêm PMA.';
+        ageMode.textContent=!context.hasValidPma?'Bảng Sơ sinh — cần nhập thêm PMA.'
+          :context.pma>=45?'Bảng Sơ sinh hiện chỉ có dữ liệu dưới 45 tuần PMA.'
+          :`Bảng Sơ sinh · PMA ${context.pma} tuần tròn.`;
       }else{
-        ageMode.textContent='Đã chọn bảng Nhi khoa (từ 1 tháng tuổi).';
+        ageMode.textContent='Đã chọn bảng Nhi khoa (từ ngày 29 sau sinh).';
       }
     }
 
@@ -289,18 +328,23 @@
       const patientCode=String(patientCodeInput.value||'').trim();
       if(!patientCode)return showError('Hãy nhập mã bệnh nhân trên HIS; không nhập họ tên người bệnh.');
       if(patientCode.length>30)return showError('Mã bệnh nhân tối đa 30 ký tự.');
-      if(!drug)return showError('Không tìm thấy kháng sinh đã chọn.');
       if(!Number.isFinite(weight)||weight<0.2||weight>200)return showError('Cân nặng phải trong khoảng 0,2–200 kg.');
       if(!contextData.hasValidAge)return showError('Hãy nhập tuổi sau sinh từ 0 trở lên.');
       if(contextData.months>216)return showError('Công cụ chỉ áp dụng đến 18 tuổi.');
-      if(contextData.pmaRaw!==''&&!contextData.hasValidPma)return showError('PMA chỉ nhập số tuần nguyên từ 20 đến 44; từ 45 tuần trở lên hãy để trống.');
+      if(contextData.pmaError)return showError(contextData.pmaError);
       let context='';
       if(contextData.mode==='child'){
         context=ageLabel(contextData.ageValue,ageUnit.value);
       }else{
-        if(!contextData.hasValidPma)return showError('Trẻ dưới 1 tháng hoặc còn dưới 45 tuần PMA cần nhập PMA để tra bảng liều Sơ sinh.');
+        if(!contextData.hasValidPma){
+          pmaInput.focus?.();
+          return showError('Bảng Sơ sinh cần PMA. Nhập số tuần PMA tròn hoặc mở “Tính PMA từ tuổi thai lúc sinh”.');
+        }
+        if(contextData.pma>=45)return showError('Bảng Sơ sinh hiện chỉ có dữ liệu dưới 45 tuần PMA. Cần đối chiếu phác đồ của đơn vị cho bệnh nhi này.');
+        if(!contextData.exactPna)return showError('Bảng Sơ sinh cần tuổi sau sinh chính xác theo ngày hoặc tuần tròn.');
         context=`${ageLabel(contextData.ageValue,ageUnit.value)} sau sinh · PMA ${contextData.pma} tuần`;
       }
+      if(!drug)return showError('Danh mục chưa có kháng sinh phù hợp với bảng tuổi đã chọn.');
       const matches=eligibleRules(drug,contextData);
       if(!matches.length)return showError('Không có quy tắc liều phù hợp với tuổi/PMA đã nhập trong nguồn tính liều.');
       const loading=contextData.mode==='neonate'&&drug.neonatalLoadingDoseMgKg?weight*drug.neonatalLoadingDoseMgKg:null;
@@ -348,6 +392,7 @@
 
     function resetCase(){
       patientCodeInput.value='';weightInput.value='';ageInput.value='';ageUnit.value='month';pmaInput.value='';
+      birthWeeksInput.value='';birthDaysInput.value='';
       result.className='empty-state';
       result.innerHTML='<div>🧪</div><b>Chưa có kết quả</b><span>Nhập mã HIS, tuổi, cân nặng và chọn kháng sinh để bắt đầu.</span>';
       renderDrugs();patientCodeInput.focus&&patientCodeInput.focus();
@@ -418,10 +463,10 @@
 
     ageInput.addEventListener('input',renderDrugs);
     ageUnit.addEventListener('change',renderDrugs);
-    pmaInput.addEventListener('input',renderDrugs);
+    [pmaInput,birthWeeksInput,birthDaysInput].forEach((input)=>input.addEventListener('input',renderDrugs));
     root.querySelector('#stockPedCalculate').addEventListener('click',calculate);
     root.querySelector('#stockPedReset').addEventListener('click',resetCase);
-    [patientCodeInput,weightInput,ageInput,pmaInput].forEach((input)=>input.addEventListener('keydown',(event)=>{if(event.key==='Enter')calculate();}));
+    [patientCodeInput,weightInput,ageInput,pmaInput,birthWeeksInput,birthDaysInput].forEach((input)=>input.addEventListener('keydown',(event)=>{if(event.key==='Enter')calculate();}));
     if(typeof window.addEventListener==='function')window.addEventListener('vpmed-auth-ready',(event)=>bindPediatricAudit(event.detail));
     if(window.VPMED_AUTH)bindPediatricAudit(window.VPMED_AUTH);
     renderDrugs();

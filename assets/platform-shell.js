@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.11.18.82';
+  const BUILD_VERSION = '2026.11.18.83';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -130,7 +130,7 @@
       styles: ['assets/stock_clinical_tools.css?v=20260814-direct-sources-v6'],
       scripts: [
         'assets/stock_clinical_data_20260814.js?v=20260822-pediatric-expansion-v1',
-        'assets/stock_clinical_tools.js?v=20260822-pediatric-expansion-v1'
+        'assets/stock_clinical_tools.js?v=20261118-pediatric-pma'
       ]
     },
     'injectable-guide': {
