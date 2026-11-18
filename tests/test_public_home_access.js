@@ -5,7 +5,7 @@ const vm = require('node:vm');
 const access = fs.readFileSync(require.resolve('../assets/vpmed-access.js'), 'utf8');
 const toolEntry = fs.readFileSync(require.resolve('../assets/vpmed-tool-entry.js'), 'utf8');
 const html = fs.readFileSync(require.resolve('../index.html'), 'utf8');
-const headGate = html.match(/<script>\s*(if \(location.hash[\s\S]*?)<\/script>/)[1];
+const headGate = html.match(/<script>\s*(window\.VPMED_IS_PUBLIC_ROUTE[\s\S]*?)<\/script>/)[1];
 const homeSchema = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
 const publicUrl = 'https://hotrolamsang.io.vn/';
 
@@ -13,6 +13,13 @@ assert.equal(homeSchema.url, publicUrl);
 assert.equal(homeSchema['@type'], 'WebSite');
 assert.ok(html.includes(`rel="canonical" href="${publicUrl}"`));
 assert.match(html, /name="description" content="[^"]*Hỗ trợ Dược lâm sàng/);
+assert.doesNotMatch(html, /class="vpmed-public-home"/);
+assert.match(html, /id="cong-cu-lam-sang"[^>]*data-internal-only/);
+assert.match(html, /id="danh-muc-tai-lieu"[^>]*data-internal-only/);
+assert.doesNotMatch(html.match(/<section[^>]+id="ban-tin"[^>]*>/)[0], /data-internal-only/);
+for (const id of ['gioi-thieu','chuc-nang','to-chuc','danh-muc-tai-lieu','ban-tin','lien-he']) {
+  assert.ok(html.includes(`id="${id}"`));
+}
 
 async function openPage(path = '', {approved = false, cdnAvailable = true, cachedProfile = false} = {}) {
   const urls = [];
@@ -85,7 +92,7 @@ async function openStandaloneTool({host, user, profileStatus} = {}) {
 }
 
 (async () => {
-  for (const path of ['', 'index.html']) {
+  for (const path of ['', 'index.html', '#gioi-thieu', '#ban-tin', '#lien-he']) {
     const visitor = await openPage(path);
     assert.equal(visitor.classes.has('vpmed-private-entry'), false);
     assert.equal(visitor.classes.has('vpmed-auth-checking'), true);
@@ -97,6 +104,10 @@ async function openStandaloneTool({host, user, profileStatus} = {}) {
   const deepLink = await openPage('#pediatric-dose');
   assert.equal(deepLink.classes.has('vpmed-private-entry'), true);
   assert.deepEqual(deepLink.urls, ['tai-khoan.html?next=index.html%23pediatric-dose']);
+  for (const hash of ['danh-muc-tai-lieu','thong-tin-thuoc','huong-dan-su-dung']) {
+    const internalLibrary = await openPage('#'+hash);
+    assert.deepEqual(internalLibrary.urls, ['tai-khoan.html?next=index.html%23'+hash]);
+  }
   const cachedButSignedOut = await openPage('#pediatric-dose', {cachedProfile: true});
   assert.equal(cachedButSignedOut.classes.has('vpmed-auth-checking'), true);
   assert.deepEqual(cachedButSignedOut.urls, deepLink.urls);
@@ -106,6 +117,9 @@ async function openStandaloneTool({host, user, profileStatus} = {}) {
   assert.deepEqual(installed.urls, ['tai-khoan.html?next=index.html%3Fvpmed_app%3Dinstalled']);
 
   const noCdn = await openPage('', {cdnAvailable: false});
+  assert.deepEqual(noCdn.urls, []);
+  noCdn.location.hash = 'to-chuc';
+  noCdn.listeners.get('hashchange')();
   assert.deepEqual(noCdn.urls, []);
   noCdn.location.hash = 'dose';
   noCdn.listeners.get('hashchange')();

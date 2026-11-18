@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.11.18.86';
+  const BUILD_VERSION = '2026.11.18.87';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -59,8 +59,8 @@
   });
 
   const PHARMACY_LIBRARY = Object.freeze({
-    styles: ['assets/pharmacy-library.css?v=20261118-imported-interactions','assets/pharmacy-home.css?v=20261117-home-v1'],
-    scripts: ['assets/pharmacy-library.js?v=20261118-imported-interactions','assets/pharmacy-home.js?v=20261117-home-v1']
+    styles: ['assets/pharmacy-library.css?v=20261118-imported-interactions','assets/pharmacy-home.css?v=20261118-public-layout'],
+    scripts: ['assets/pharmacy-library.js?v=20261118-public-layout','assets/pharmacy-home.js?v=20261117-home-v1']
   });
   const FEATURE_BUNDLES = Object.freeze({
     home: PHARMACY_LIBRARY,
@@ -394,8 +394,12 @@
     if (!target) throw new Error(`Thiếu vùng hiển thị cho module ${name}`);
     const viewChanged = !target.classList.contains('active');
     document.querySelectorAll('.view').forEach((view) => view.classList.toggle('active', view === target));
-    document.querySelectorAll('.main-nav button').forEach((button) => button.classList.toggle('active', button.dataset.view === name && !button.dataset.scrollTarget));
+    document.querySelectorAll('.main-nav [data-view]').forEach((item) => {
+      const active = item.dataset.view === name && (!item.dataset.scrollTarget || item.dataset.scrollTarget === 'gioi-thieu');
+      item.classList.toggle('active', active);
+    });
     document.getElementById('mainNav')?.classList.remove('open');
+    document.getElementById('menuBtn')?.setAttribute('aria-expanded','false');
     if (!options.fromHistory) history.replaceState(null, '', `#${name}`);
     const frame = target.querySelector('[data-feature-frame]');
     if (frame) scheduleFeatureFrameMeasure(frame);
@@ -631,7 +635,6 @@
         }
       });
     }, true);
-    document.getElementById('menuBtn')?.addEventListener('click', () => document.getElementById('mainNav')?.classList.toggle('open'));
     const intentHandler = (event) => {
       const trigger = event.target.closest?.('[data-open]');
       if (trigger && !trigger.disabled) schedulePrefetch(trigger.dataset.open);
@@ -639,7 +642,18 @@
     document.addEventListener('pointerenter', intentHandler, true);
     document.addEventListener('focusin', intentHandler);
     document.addEventListener('touchstart', intentHandler, {passive: true, capture: true});
-    window.addEventListener('popstate', () => openFeature(location.hash.slice(1) || 'home', {source: 'history', fromHistory: true}));
+    window.addEventListener('popstate', () => openLocation('history'));
+  }
+
+  function openLocation(source) {
+    const hash = location.hash;
+    const options = {source, fromHistory: true, preserveScroll: source === 'initial'};
+    if (hash && (window.VPMED_IS_PUBLIC_ROUTE?.(hash) || hash === '#danh-muc-tai-lieu')) {
+      return openFeature('home', {...options, preserveScroll: true}).then(() => {
+        document.getElementById(hash.slice(1))?.scrollIntoView();
+      });
+    }
+    return openFeature(hash.slice(1) || 'home', options);
   }
 
   function bindLifecycle() {
@@ -692,7 +706,7 @@
     renderConnectivity(navigator.onLine ? 'online' : 'offline');
     registerServiceWorker();
     emit(EVENT_NAMES.shellReady, {features: Object.keys(FEATURE_BUNDLES)});
-    openFeature(location.hash.slice(1) || 'home', {source: 'initial', fromHistory: true, preserveScroll: true});
+    openLocation('initial');
     /* Làm ấm bộ dữ liệu dùng chung của mô-đun liều thận khi mạng đủ nhanh.
        Việc này diễn ra lúc trình duyệt rảnh, không chặn hiển thị trang chủ. */
     schedulePrefetch('dose');
@@ -709,6 +723,24 @@
     initialize();
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startAfterAuthorization, {once: true});
-  else startAfterAuthorization();
+  function start() {
+    const nav = document.getElementById('mainNav');
+    const toggle = document.getElementById('menuBtn');
+    toggle?.addEventListener('click', () => toggle.setAttribute('aria-expanded', String(nav.classList.toggle('open'))));
+    nav?.addEventListener('click', (event) => {
+      if (event.target.closest('a[href^="#"]')) {
+        nav.classList.remove('open');
+        toggle?.setAttribute('aria-expanded','false');
+      }
+    });
+    const state = document.documentElement.classList;
+    if (state.contains('vpmed-auth-checking') && !state.contains('vpmed-private-entry')) {
+      markInitialResources();
+      loadBundle('home').catch((error) => console.error('[VPMED] Không thể tải trang Khoa Dược', error));
+    }
+    startAfterAuthorization();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, {once: true});
+  else start();
 })();

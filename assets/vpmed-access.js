@@ -8,8 +8,9 @@
   function authUrl(){var next=(location.pathname.split('/').pop()||'index.html')+location.search+location.hash;return 'tai-khoan.html?next='+encodeURIComponent(next);}
   function redirect(){location.replace(authUrl());}
   function requireSignInOnPrivateEntry(){
-    if(location.hash||document.documentElement.classList.contains('vpmed-private-entry')||
-      !document.getElementById('public-home-title'))redirect();
+    if(!(window.VPMED_IS_PUBLIC_ROUTE?.(location.hash) ?? !location.hash)||
+      document.documentElement.classList.contains('vpmed-private-entry')||
+      !document.getElementById('home-hero-title'))redirect();
   }
   function readOfflineAccess(){
     try{
@@ -51,6 +52,7 @@
   });
   if(!window.supabase){if(!revealOfflineAccess())requireSignInOnPrivateEntry();return;}
   var client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  window.VPMED_PUBLIC_LIBRARY_CLIENT=client;
   var trigger=document.getElementById('homeUserTrigger'),menu=document.getElementById('homeUserMenu');
   var avatar=document.getElementById('homeUserAvatar'),nameEl=document.getElementById('homeUserName'),metaEl=document.getElementById('homeUserMeta');
   var menuName=document.getElementById('homeUserMenuName'),menuDetail=document.getElementById('homeUserMenuDetail');

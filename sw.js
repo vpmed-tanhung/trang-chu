@@ -1,6 +1,6 @@
 'use strict';
 
-const APP_VERSION = '2026.11.18.86';
+const APP_VERSION = '2026.11.18.87';
 const NAVIGATION_CACHE_RECOVERY_BUILD = '2026.11.18.82';
 const CLINICAL_DATA_VERSION = 'sha256-656039bef5cf6036c52c9085';
 const APP_SHELL_CACHE = `vpmed-shell-${APP_VERSION}`;
@@ -24,16 +24,16 @@ const APP_SHELL = [
   './manifest.json',
   './assets/style.css?v=20260829-scroll-layout-v2',
   './assets/disclaimer-gate.css?v=20260822-disclaimer-gate-v1',
-  './assets/vpmed-access.css?v=20261118-public-home',
+  './assets/vpmed-access.css?v=20261118-public-layout',
   './assets/responsive-polish.css?v=20260712-balanced',
   './assets/platform-shell.css?v=20260822-pwa-v1',
   './assets/navy-theme.css?v=20260828-original-colors-pulse-v2',
-  './assets/vpmed-access.js?v=20261118-public-home',
-  './assets/platform-shell.js?v=20261118-public-home',
+  './assets/vpmed-access.js?v=20261118-public-layout',
+  './assets/platform-shell.js?v=20261118-public-layout',
   './assets/pharmacy-library.css?v=20261118-imported-interactions',
-  './assets/pharmacy-library.js?v=20261118-imported-interactions',
+  './assets/pharmacy-library.js?v=20261118-public-layout',
   './assets/pharmacy-home.js?v=20261117-home-v1',
-  './assets/pharmacy-home.css?v=20261117-home-v1',
+  './assets/pharmacy-home.css?v=20261118-public-layout',
   './assets/pharmacy-admin-guard.js?v=20261117-permissions-v1',
   './assets/disclaimer-gate.js?v=20260822-disclaimer-gate-v1',
   './assets/update-notifier.js?v=20261118-major-only',

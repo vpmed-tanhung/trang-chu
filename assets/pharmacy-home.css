@@ -7,12 +7,12 @@ body { background:#f5f8fa; }
 .topbar .brand strong { font-size:23px; letter-spacing:-.5px; color:#123b52; }
 .topbar .brand span { color:#607984; text-transform:uppercase; font-size:10px; font-weight:750; letter-spacing:1.1px; margin-top:5px; }
 .topbar .main-nav { gap:3px; flex-wrap:wrap; align-items:center; }
-.topbar .main-nav button { font-weight:650; font-size:13px; padding:10px 12px; border-radius:8px; box-shadow:none; }
-.topbar .main-nav button:hover,.topbar .main-nav button.active { background:#e9f6f4; color:#086967; box-shadow:none; }
+.topbar .main-nav :is(a,button) { font-weight:650; font-size:13px; padding:10px 12px; border-radius:8px; box-shadow:none; }
+.topbar .main-nav :is(a,button):hover,.topbar .main-nav :is(a,button).active { background:#e9f6f4; color:#086967; box-shadow:none; }
 .topbar .home-user-account { margin-left:0; }
 .pharmacy-home-active .app-shell { max-width:none; padding:0 0 38px; }
 #view-home { --home-width:1240px; color:#173d50; }
-#view-home :is(#gioi-thieu,#chuc-nang,#to-chuc,#cong-cu-lam-sang,#lien-he) { scroll-margin-top:110px; }
+#view-home :is(#gioi-thieu,#chuc-nang,#to-chuc,#cong-cu-lam-sang,#danh-muc-tai-lieu,#lien-he) { scroll-margin-top:110px; }
 .home-section { max-width:var(--home-width); margin:0 auto; padding:64px 28px; }
 .home-section + .home-section { border-top:1px solid #dde8eb; }
 .home-eyebrow { color:#087d7b; font-size:11px; text-transform:uppercase; letter-spacing:1.8px; font-weight:800; display:block; margin-bottom:13px; }

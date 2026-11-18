@@ -1,10 +1,10 @@
 {
-  "version": "2026.11.18.86",
-  "displayVersion": "5.8.14",
-  "updatedAt": "2026-11-18T20:38:07+07:00",
-  "note": "Trang chủ giới thiệu công khai, bổ sung thông tin tìm kiếm và sitemap. Công cụ lâm sàng tiếp tục yêu cầu tài khoản đã duyệt.",
-  "buildId": "v5.8.14-2026.11.18.86",
+  "version": "2026.11.18.87",
+  "displayVersion": "5.8.15",
+  "updatedAt": "2026-11-18T21:04:55+07:00",
+  "note": "Khôi phục bố cục trang Khoa Dược và 18 bản tin công khai. Thông tin thuốc nội bộ và công cụ lâm sàng yêu cầu đăng nhập.",
+  "buildId": "v5.8.15-2026.11.18.87",
   "clinicalDataVersion": "sha256-656039bef5cf6036c52c9085",
-  "previousVersion": "2026.11.18.85",
-  "previousDisplayVersion": "5.8.13"
+  "previousVersion": "2026.11.18.86",
+  "previousDisplayVersion": "5.8.14"
 }
