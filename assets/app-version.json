@@ -1,10 +1,10 @@
 {
-  "version": "2026.11.18.79",
-  "displayVersion": "5.8.7",
-  "updatedAt": "2026-11-18T10:14:10+07:00",
-  "note": "Cập nhật nguồn chuyên môn, rút gọn PET/CT và gỡ mục tương tác thuốc riêng trên trang chủ.",
-  "buildId": "v5.8.7-2026.11.18.79",
+  "version": "2026.11.18.80",
+  "displayVersion": "5.8.8",
+  "updatedAt": "2026-11-18T13:16:59+07:00",
+  "note": "Tra cứu 633 cặp tương tác thuốc theo dạng thẻ trong Bản tin Dược.",
+  "buildId": "v5.8.8-2026.11.18.80",
   "clinicalDataVersion": "sha256-e6ce8a404fec507be513e915",
-  "previousVersion": "2026.11.18.78",
-  "previousDisplayVersion": "5.8.6"
+  "previousVersion": "2026.11.18.79",
+  "previousDisplayVersion": "5.8.7"
 }

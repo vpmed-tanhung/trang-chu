@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD_VERSION = '2026.11.18.79';
+  const BUILD_VERSION = '2026.11.18.80';
   const IS_INSTALLED_APP = (() => {
     try {
       return new URL(location.href).searchParams.get('vpmed_app') === 'installed' ||
@@ -59,8 +59,8 @@
   });
 
   const PHARMACY_LIBRARY = Object.freeze({
-    styles: ['assets/pharmacy-library.css?v=20261118-document-pairs','assets/pharmacy-home.css?v=20261117-home-v1'],
-    scripts: ['assets/pharmacy-library.js?v=20261118-document-pairs','assets/pharmacy-home.js?v=20261117-home-v1']
+    styles: ['assets/pharmacy-library.css?v=20261118-bulletin-interactions','assets/pharmacy-home.css?v=20261117-home-v1'],
+    scripts: ['assets/pharmacy-library.js?v=20261118-bulletin-interactions','assets/pharmacy-home.js?v=20261117-home-v1']
   });
   const FEATURE_BUNDLES = Object.freeze({
     home: PHARMACY_LIBRARY,
@@ -405,8 +405,10 @@
 
   async function openFeature(requestedName, options = {}) {
     if (requestedName === 'interactions') {
-      await openFeature('home', {...options, fromHistory: false, preserveScroll: true});
-      document.getElementById('ban-tin')?.scrollIntoView();
+      await openFeature('home', {...options, fromHistory: true, preserveScroll: true});
+      const bulletin = document.getElementById('ban-tin');
+      bulletin?.dispatchEvent(new Event('vpmed-show-bulletin-interactions'));
+      bulletin?.scrollIntoView();
       return;
     }
 
@@ -679,6 +681,7 @@
       events: EVENT_NAMES,
       openFeature,
       prefetchFeature,
+      loadInteractionCatalog: () => loadScript('assets/data.js').then(() => window.VPMED_INTERACTIONS),
       emit,
       toast,
       calculationComplete,

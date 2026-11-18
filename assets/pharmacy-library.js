@@ -5,10 +5,14 @@
   const BUCKET = 'pharmacy-pdfs';
   const MAX_BYTES = 20 * 1024 * 1024;
   const PAGE_SIZE = 6;
+  const INTERACTION_PAGE_SIZE = 20;
+  const INTERACTION_CATEGORY = 'Tương tác thuốc';
+  const INTERACTION_BULLETIN_ID = 'a787af00-1f05-5b9d-bbc9-484df524b84c';
+  const INTERACTION_SOURCE = 'https://storage-vnportal.vnpt.vn/bte-khdn/4336/vanban/quyet-dinh-5948-qd-byt.pdf#page=11';
   const KINDS = {
     drug: {title:'Thông tin thuốc', categories:['Thông tin thuốc','Tờ hướng dẫn sử dụng thuốc','Cảnh báo an toàn']},
     guide: {title:'Hướng dẫn sử dụng', categories:['Hướng dẫn sử dụng','Quy trình thao tác','Hướng dẫn phần mềm']},
-    bulletin: {title:'Bản tin Dược', categories:['Cảnh báo an toàn','Tương tác thuốc','Thông báo nội bộ','Bản tin Dược']}
+    bulletin: {title:'Bản tin Dược', categories:['Cảnh báo an toàn',INTERACTION_CATEGORY,'Thông báo nội bộ','Bản tin Dược']}
   };
   // Hai PDF nguồn được mở riêng để giữ nguyên bản có chữ ký.
   const GUIDE_BY_SIGNED_FILE = new Map([
@@ -24,6 +28,7 @@
   ]);
   let auth = null, records = [], loading = false, loadError = '', loadSequence = 0;
   let uploadBusy = false, uploadKind = 'bulletin', fileSequence = 0, selectedFile = null, editingRecord = null;
+  let interactionData, interactionLoad, interactionLoadFailed = false;
   const panels = new Map();
   const uploadDialog = document.getElementById('library-upload-dialog');
   const uploadForm = document.getElementById('library-upload-form');
@@ -86,19 +91,98 @@
       if (sequence === loadSequence) { loading = false; renderAll(); }
     }
   }
-  function emptyState(container, title, message, retry = false) {
+  function emptyState(container, title, message, retry) {
     const state = node('div','library-empty');
     state.append(node('b','',title));
     if (message) state.append(node('p','',message));
-    if (retry) state.append(button('Thử lại','btn btn-soft',refresh));
+    if (retry) state.append(button('Thử lại','btn btn-soft',retry));
     container.replaceChildren(state);
   }
   function matching(panel) {
-    const query = normalize(panel.query.value.trim());
+    const query = panel.category.value === INTERACTION_CATEGORY ? '' : normalize(panel.query.value.trim());
     return records.filter((record) => record.kind === panel.kind &&
       (!query || normalize([record.title,record.summary,record.keywords,record.category,record.file_name].join(' ')).includes(query)) &&
       (!panel.category.value || record.category === panel.category.value) &&
       (!panel.month || monthKey(documentDate(record)) === panel.month));
+  }
+  function interactionSearch(value) {
+    return normalize(value).replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+  function interactionKey(a, b) {
+    const aliases = {'domperidone': 'domperidon', 'tranexamic acid': 'acid tranexamic'};
+    return [a,b].map(drug => {
+      const key = interactionSearch(drug);
+      return aliases[key] || key;
+    }).sort().join(' + ');
+  }
+  function updatedInteractionKeys() {
+    const bulletin = records.find(record => record.id === INTERACTION_BULLETIN_ID && record.category === INTERACTION_CATEGORY);
+    const names = (bulletin?.keywords || '').split(' | ').map(term => term.split(' + '));
+    return new Set(names.filter(pair => pair.length === 2).map(([a,b]) => interactionKey(a,b)));
+  }
+  function loadInteractions(panel) {
+    if (interactionLoad) return;
+    interactionLoadFailed = false;
+    interactionLoad = window.VPMED_PLATFORM.loadInteractionCatalog()
+      .then(rows => {
+        if (!Array.isArray(rows) || !rows.length) throw new Error('Thiếu danh mục tương tác');
+        interactionData = rows.map(pair => ({
+          pair,
+          key: interactionKey(pair.drug1, pair.drug2),
+          text: interactionSearch([pair.stt, pair.drug1, pair.drug2, pair.consequence, pair.mechanism, pair.management, pair.level].join(' '))
+        })).sort((a,b) => a.pair.stt - b.pair.stt);
+      })
+      .catch(() => { interactionLoadFailed = true; })
+      .finally(() => { interactionLoad = null; renderPanel(panel); });
+    renderInteractions(panel);
+  }
+  function interactionCard(pair) {
+    const card = node('details','library-interaction-card');
+    const summary = node('summary','');
+    const title = node('strong','library-interaction-name');
+    title.append(node('small','',`#${pair.stt}`), document.createTextNode(` ${pair.drug1} + ${pair.drug2}`));
+    const action = node('span','library-interaction-action');
+    action.append(node('span','library-interaction-more','Xem chi tiết →'), node('span','library-interaction-less','Thu gọn ↑'));
+    summary.append(title, node('span','library-interaction-level',pair.level), action);
+    const details = node('dl','library-interaction-detail');
+    for (const [label,value] of [['Hậu quả',pair.consequence],['Cơ chế',pair.mechanism],['Cách xử trí',pair.management]]) {
+      if (value) details.append(node('dt','',label), node('dd','',value));
+    }
+    const citation = node('a','',`Quyết định 5948/QĐ-BYT · Bảng 3.1 · STT ${pair.stt} ↗`);
+    citation.href = INTERACTION_SOURCE;
+    citation.target = '_blank';
+    citation.rel = 'noopener noreferrer';
+    card.append(summary, details, citation);
+    return card;
+  }
+  function renderInteractions(panel) {
+    const catalog = panel.catalog;
+    catalog.pagination.hidden = true;
+    if (!interactionData) {
+      catalog.count.textContent = interactionLoadFailed ? '' : 'Đang tải danh mục…';
+      catalog.scope.parentElement.hidden = true;
+      catalog.grid.replaceChildren();
+      if (interactionLoadFailed) emptyState(catalog.grid,'Chưa tải được danh mục','',() => loadInteractions(panel));
+      return;
+    }
+    const updatedKeys = updatedInteractionKeys();
+    catalog.scope.parentElement.hidden = updatedKeys.size === 0;
+    const words = interactionSearch(panel.query.value).split(' ').filter(Boolean);
+    const chosen = interactionData.filter(row => (!catalog.scope.checked || !updatedKeys.size || updatedKeys.has(row.key)) &&
+      words.every(word => row.text.includes(word)));
+    const pages = Math.max(1,Math.ceil(chosen.length/INTERACTION_PAGE_SIZE));
+    catalog.page = Math.min(catalog.page,pages);
+    catalog.count.textContent = chosen.length+' cặp tương tác';
+    if (!chosen.length) {
+      emptyState(catalog.grid,'Không tìm thấy cặp tương tác','Thử tên hoạt chất hoặc từ khóa khác.');
+      return;
+    }
+    const start = (catalog.page-1)*INTERACTION_PAGE_SIZE;
+    catalog.grid.replaceChildren(...chosen.slice(start,start+INTERACTION_PAGE_SIZE).map(row => interactionCard(row.pair)));
+    catalog.pagination.hidden = pages <= 1;
+    catalog.label.textContent = `Trang ${catalog.page} / ${pages}`;
+    catalog.previous.disabled = catalog.page <= 1;
+    catalog.next.disabled = catalog.page >= pages;
   }
   function renderItem(record) {
     const guideFile = record.kind === 'drug' ? GUIDE_BY_SIGNED_FILE.get(record.file_name) : '';
@@ -129,11 +213,24 @@
     return article;
   }
   function renderPanel(panel) {
+    const catalog = panel.catalog;
+    const showCatalog = Boolean(catalog && auth?.profile?.status === 'approved' && panel.category.value === INTERACTION_CATEGORY);
+    if (catalog) {
+      catalog.root.hidden = !showCatalog;
+      catalog.heading.hidden = !showCatalog;
+      catalog.pdfs.hidden = !showCatalog;
+      catalog.searchLabel.textContent = showCatalog ? 'Tìm theo tên thuốc, hậu quả, cơ chế hoặc cách xử trí' : 'Tìm kiếm tài liệu';
+      panel.query.placeholder = showCatalog ? 'Nhập từ khóa…' : 'Nhập tên tài liệu, thuốc hoặc từ khóa…';
+      if (showCatalog) {
+        if (!interactionData && !interactionLoadFailed && !interactionLoad) loadInteractions(panel);
+        else renderInteractions(panel);
+      }
+    }
     panel.root.setAttribute('aria-busy',String(loading));
     panel.refresh.disabled = loading;
     panel.pagination.hidden = true;
     if (loading) { panel.count.textContent = 'Đang tải…'; emptyState(panel.list,'Đang tải tài liệu…'); return; }
-    if (loadError) { panel.count.textContent = ''; emptyState(panel.list,'Chưa tải được tài liệu',loadError,true); return; }
+    if (loadError) { panel.count.textContent = ''; emptyState(panel.list,'Chưa tải được tài liệu',loadError,refresh); return; }
     if (!auth) { panel.count.textContent = ''; emptyState(panel.list,'Đang xác minh tài khoản…'); return; }
     const entries = matching(panel);
     panel.page = Math.min(panel.page,Math.max(1,Math.ceil(entries.length/PAGE_SIZE)));
@@ -152,6 +249,16 @@
     panel.previous.disabled = panel.page <= 1;
     panel.next.disabled = panel.page >= pages;
   }
+  function selectCategory(panel, category) {
+    if (panel.category.value === category) return;
+    panel.category.value = category;
+    applyCategory(panel);
+  }
+  function applyCategory(panel) {
+    panel.page = 1;
+    if (panel.catalog) panel.catalog.page = 1;
+    renderPanel(panel);
+  }
   function renderSidebar() {
     const entries = records.filter((record) => record.kind === 'bulletin');
     const categories = $('library-bulletin-categories'), recent = $('library-bulletin-recent'), archives = $('library-bulletin-archives');
@@ -162,9 +269,14 @@
     for (const category of [...new Set([...KINDS.bulletin.categories,...counts.keys()])]) {
       const item = node('li');
       const link = button('','library-filter-link',() => {
-        const panel = panels.get('bulletin'); panel.category.value = category; panel.page = 1; renderPanel(panel);
+        const panel = panels.get('bulletin');
+        selectCategory(panel,category);
+        if (category === INTERACTION_CATEGORY) {
+          panel.query.focus({preventScroll:true});
+          $('ban-tin').scrollIntoView();
+        }
       });
-      link.append(node('span','',category),node('span','',String(counts.get(category)||0)));
+      link.append(node('span','',category),node('span','',category === INTERACTION_CATEGORY ? 'Tra cứu' : String(counts.get(category)||0)));
       item.append(link); categories.append(item);
     }
     for (const record of entries.slice(0,5)) {
@@ -344,9 +456,27 @@
       const panel={root,kind:root.dataset.documentsKind,page:1,month:'',query:part('query'),category:part('category'),
         list:part('list'),count:part('result-count'),refresh:part('refresh'),pagination:part('pagination'),
         previous:part('previous'),next:part('next'),label:part('page-label'),clearMonth:part('clear-month')};
+      if (panel.kind === 'bulletin') {
+        const catalog = panel.catalog = {
+          root:part('interactions'),heading:part('interaction-heading'),pdfs:part('interaction-pdfs'),
+          searchLabel:part('search-label'),count:part('interaction-count'),
+          scope:part('interaction-scope').querySelector('input'),grid:part('interaction-grid'),
+          pagination:part('interaction-pagination'),label:part('interaction-page'),
+          previous:part('interaction-previous'),next:part('interaction-next'),page:1
+        };
+        catalog.scope.addEventListener('change',()=>{catalog.page=1;renderInteractions(panel);});
+        for (const [control,step] of [[catalog.previous,-1],[catalog.next,1]]) {
+          control.addEventListener('click',()=>{
+            catalog.page += step;
+            renderInteractions(panel);
+            catalog.heading.scrollIntoView({block:'start'});
+          });
+        }
+        $('ban-tin').addEventListener('vpmed-show-bulletin-interactions',()=>selectCategory(panel,INTERACTION_CATEGORY));
+      }
       panels.set(panel.kind,panel);
-      panel.query.addEventListener('input',()=>{panel.page=1;renderPanel(panel);});
-      panel.category.addEventListener('change',()=>{panel.page=1;renderPanel(panel);});
+      panel.query.addEventListener('input',()=>applyCategory(panel));
+      panel.category.addEventListener('change',()=>applyCategory(panel));
       panel.refresh.addEventListener('click',refresh);
       panel.clearMonth.addEventListener('click',()=>{panel.month='';panel.page=1;renderPanel(panel);});
       panel.previous.addEventListener('click',()=>{panel.page--;renderPanel(panel);});

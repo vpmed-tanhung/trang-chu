@@ -2,7 +2,7 @@
 <html lang="vi" class="vpmed-auth-checking">
 <head>
   <meta charset="utf-8">
-  <meta name="vpmed-build-version" content="2026.11.18.79">
+  <meta name="vpmed-build-version" content="2026.11.18.80">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#075f9f">
   <meta name="application-name" content="VPMED Dược lâm sàng">
@@ -179,11 +179,25 @@
       <div class="library-heading"><h2 id="library-bulletin-title" data-home-content="bulletinTitle">Bản tin Dược</h2><button type="button" class="btn btn-primary" data-library-upload="bulletin" hidden>+ Tải PDF bản tin</button></div>
       <div class="library-bulletin-layout">
         <div class="pharmacy-library" data-documents-kind="bulletin">
+          <h3 class="library-interaction-heading" data-library-interaction-heading hidden>Tra cứu tất cả tương tác</h3>
           <div class="library-toolbar">
-            <label>Tìm kiếm tài liệu<input type="search" data-library-query placeholder="Nhập tên tài liệu, thuốc hoặc từ khóa…" autocomplete="off"></label>
+            <label><span data-library-search-label>Tìm kiếm tài liệu</span><input type="search" data-library-query placeholder="Nhập tên tài liệu, thuốc hoặc từ khóa…" autocomplete="off"></label>
             <label>Chuyên mục<select data-library-category><option value="">Tất cả chuyên mục</option></select></label>
           </div>
           <div class="library-results-meta"><span data-library-result-count aria-live="polite">Đang xác minh tài khoản…</span><button type="button" class="btn btn-soft" data-library-refresh>Làm mới</button><button type="button" class="btn btn-soft" data-library-clear-month hidden>Bỏ lọc tháng</button></div>
+          <section class="library-interactions" data-library-interactions aria-label="Danh mục tương tác thuốc" hidden>
+            <div class="library-interaction-tools">
+              <span data-library-interaction-count role="status"></span>
+              <label data-library-interaction-scope hidden><input type="checkbox"> Chỉ hiện 37 cặp vừa bổ sung</label>
+            </div>
+            <div class="library-interaction-grid" data-library-interaction-grid></div>
+            <nav class="library-pagination" data-library-interaction-pagination aria-label="Phân trang tương tác thuốc" hidden>
+              <button type="button" class="btn btn-soft" data-library-interaction-previous>← Trang trước</button>
+              <span data-library-interaction-page aria-live="polite"></span>
+              <button type="button" class="btn btn-soft" data-library-interaction-next>Trang sau →</button>
+            </nav>
+          </section>
+          <h4 class="library-interaction-pdfs" data-library-interaction-pdfs hidden>Tài liệu PDF của chuyên mục</h4>
           <div class="library-list" data-library-list><div class="library-empty">Đang xác minh tài khoản…</div></div>
           <nav class="library-pagination" data-library-pagination aria-label="Phân trang tài liệu" hidden>
             <button type="button" class="btn btn-soft" data-library-previous>← Trang trước</button><span data-library-page-label aria-live="polite">Trang 1</span><button type="button" class="btn btn-soft" data-library-next>Trang sau →</button>
@@ -972,7 +986,7 @@ Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối
 </dialog>
 
 <footer class="site-footer">
-  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v5.8.7</span></div>
+  <div>© 2026 Khoa Dược · Bệnh viện VPMED Tân Hưng <span id="vpmedLatestVersion" class="site-version" aria-live="polite">· v5.8.8</span></div>
   <div><a class="nav-evaluation" href="phieu-danh-gia.html" target="_blank" rel="noopener">Phiếu đánh giá phần mềm</a> · <a href="https://www.facebook.com/KhoaDuoc.VPMEDTanHung/" target="_blank" rel="noopener noreferrer">Facebook</a> · Công cụ hỗ trợ, không thay thế đánh giá lâm sàng.</div>
   <details class="site-policy" id="sitePolicy">
     <summary>Chính sách sử dụng và minh bạch nguồn</summary>
@@ -990,7 +1004,7 @@ Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3" integrity="sha384-l8ah+VgaWtk1mvOe9VC+OirC6qHFF4yH7l7mKRidV9MSti3E9F463bMp6ZVN4kuC" crossorigin="anonymous"></script>
 <script defer src="assets/vpmed-access.js?v=20261117-permissions-v1"></script>
-<script defer src="assets/platform-shell.js?v=20261118-stock-ids"></script>
+<script defer src="assets/platform-shell.js?v=20261118-bulletin-interactions"></script>
 <script defer src="assets/disclaimer-gate.js?v=20260822-disclaimer-gate-v1"></script>
 <script defer src="assets/update-notifier.js?v=20261118-major-only"></script>
 </body>
