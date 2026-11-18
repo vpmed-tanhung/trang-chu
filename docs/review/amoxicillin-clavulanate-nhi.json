@@ -1,0 +1,1594 @@
+{
+  "phien_ban_schema": "1.1.0",
+  "phien_ban_du_lieu": "2026-11-18",
+  "ten_hoat_chat": "Amoxicillin/clavulanic acid",
+  "ten_viet_nam": "Amoxicilin và acid clavulanic",
+  "co_so_ham_luong": "Hoạt lực tương đương amoxicillin và acid clavulanic. Không lấy khối lượng muối hoặc tổng hai thành phần làm nền liều.",
+  "trang_thai": "ban_mau_cho_khoa_duoc_va_khoa_nhi_so_sinh_duyet",
+  "cho_phep_su_dung_lam_y_lenh": false,
+  "quy_uoc_dieu_kien": {
+    "min_inclusive": ">=",
+    "min_exclusive": ">",
+    "max_inclusive": "<=",
+    "max_exclusive": "<",
+    "mot_trong": "OR",
+    "ket_hop": "Các điều kiện ở cùng cấp được kết hợp AND. Mục mot_trong chứa các nhánh OR.",
+    "dieu_kien_thieu": "Không coi điều kiện trống là đã đạt. Hỏi bổ sung khi dữ liệu thiếu có thể đổi nhóm tuổi hoặc cách dùng."
+  },
+  "phan_nhom_tuoi": [
+    {
+      "id": "so_sinh",
+      "ten": "Bảng Sơ sinh",
+      "dieu_kien": {
+        "tuoi_sau_sinh_ngay_tron": {
+          "min_inclusive": 0,
+          "max_inclusive": 28
+        }
+      },
+      "dau_vao_can_them": [
+        "tuoi_thai_luc_sinh_tuan_va_ngay",
+        "tinh_trang_than"
+      ],
+      "pma_ngay": "7 * tuoi_thai_luc_sinh_tuan + tuoi_thai_luc_sinh_ngay_le + tuoi_sau_sinh_ngay_tron",
+      "canh_bao": "Ngưỡng đủ tháng từ 37 tuần trong dữ liệu là giới hạn thận trọng của mẫu, không phải ngưỡng PMA do ANMF hoặc FDA chỉ định. Trẻ sinh non hoặc chưa rõ tuổi thai chuyển chuyên khoa Sơ sinh."
+    },
+    {
+      "id": "nhi_khoa",
+      "ten": "Bảng Nhi khoa",
+      "dieu_kien": {
+        "tuoi_sau_sinh_ngay_tron": {
+          "min_inclusive": 29
+        },
+        "tuoi_nam_tron": {
+          "max_exclusive": 18
+        }
+      },
+      "canh_bao": "Tuổi trên 28 ngày vẫn có thể dưới 3 tháng. Sinh non còn theo chương trình sơ sinh hoặc tuổi hiệu chỉnh có thể còn quan trọng cần chuyên khoa đánh giá."
+    }
+  ],
+  "dau_vao": {
+    "toi_thieu_de_liet_ke": [
+      "can_nang_kg",
+      "tuoi_sau_sinh",
+      "don_vi_tuoi",
+      "khang_sinh"
+    ],
+    "don_vi_tuoi": [
+      "ngay",
+      "thang",
+      "nam"
+    ],
+    "ngay_sinh_va_ngay_danh_gia": "Ưu tiên ngày sinh và ngày đánh giá để tính chính xác cả số ngày tròn, tháng lịch tròn và tuổi năm.",
+    "can_xac_nhan_truoc_khi_dung": [
+      "tinh_trang_than",
+      "tien_su_di_ung",
+      "tien_su_ton_thuong_gan_do_thuoc",
+      "duong_dung",
+      "chi_dinh",
+      "tinh_trang_san_co_che_pham",
+      "ma_kho_va_id_his",
+      "so_dang_ky_va_hdsd_dung_che_pham"
+    ],
+    "can_nang_kg": "Số hữu hạn lớn hơn 0. Không tự chuyển pound thành kg nếu người dùng không chọn đơn vị.",
+    "xu_ly_tuoi_thang_nam": "Hiểu giá trị tháng/năm nguyên là số tháng/năm đã tròn. Với ngày sinh và ngày đánh giá, tính theo lịch. Khi chỉ có một đơn vị tuổi, dùng các cận chắc chắn của tuổi đó. Nếu khoảng tuổi cắt qua ngày 28/29 hay mốc của mức liều (ví dụ đủ 3 tháng), yêu cầu ngày sinh hoặc xác nhận đã qua mốc. Không lấy tháng × 30 hoặc năm × 365 để quyết định.",
+    "xu_ly_gia_tri_khong_hop_le": "Tuổi âm, ngày sinh sau ngày đánh giá, cân nặng thiếu/không dương, tuổi đơn vị tháng/năm phân số không có ngày sinh đi kèm hoặc thông tin tuổi nhập mâu thuẫn: báo kiểm tra đầu vào."
+  },
+  "cac_muc_lieu": [
+    {
+      "id": "SS_PO_FDA_30",
+      "ten_muc_lieu": "Sơ sinh · uống theo nhãn 4:1",
+      "nhom_tuoi": "so_sinh",
+      "duong_dung": "PO",
+      "dieu_kien": {
+        "tuoi_thai_luc_sinh_ngay": {
+          "min_inclusive": 259
+        }
+      },
+      "lieu_min": 30,
+      "lieu_max": 30,
+      "don_vi_lieu": "mg/kg/ngay",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": null,
+      "lieu_toi_da_ngay": null,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "Nguồn của mức liều này chưa xác lập trần tuyệt đối mg/lần và mg/ngày cho đối tượng/chế phẩm đang xét.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 12,
+      "so_lan_chia": 2,
+      "benh_canh_ap_dung": [
+        "Điều trị đích nhiễm khuẩn do vi khuẩn nhạy cảm với phối hợp nhưng amoxicillin đơn chất không phù hợp, do chuyên khoa Sơ sinh xác nhận.",
+        "Không gán tự động cho sốt sơ sinh, nhiễm khuẩn huyết hoặc viêm màng não nghi ngờ."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "tham_chieu_po_125_31_25_5ml"
+      ],
+      "clavulanic_acid": null,
+      "nguon_trich_dan": [
+        {
+          "id": "FDA_AUGMENTIN_2026",
+          "muc": "§2.3 và §8.4"
+        },
+        {
+          "id": "ANMF_NEONATAL_V13",
+          "muc": "Chỉ định điều trị đích"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Đòi hỏi tuổi thai, PMA, đánh giá thận và xác nhận của chuyên khoa Sơ sinh. Hỗn dịch tham chiếu chưa xác nhận trong Excel kho."
+      ],
+      "chinh_sach_gioi_han": {
+        "kien_truc": "chua_xac_minh_tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    },
+    {
+      "id": "SS_PO_ANMF_15_20",
+      "ten_muc_lieu": "Sơ sinh · uống theo ANMF",
+      "nhom_tuoi": "so_sinh",
+      "duong_dung": "PO",
+      "dieu_kien": {
+        "tuoi_thai_luc_sinh_ngay": {
+          "min_inclusive": 259
+        }
+      },
+      "lieu_min": 15,
+      "lieu_max": 20,
+      "don_vi_lieu": "mg/kg/lan",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": null,
+      "lieu_toi_da_ngay": null,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "Nguồn của mức liều này chưa xác lập trần tuyệt đối mg/lần và mg/ngày cho đối tượng/chế phẩm đang xét.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 12,
+      "so_lan_chia": 2,
+      "benh_canh_ap_dung": [
+        "Điều trị đích nhiễm khuẩn do vi khuẩn nhạy cảm với phối hợp nhưng amoxicillin đơn chất không phù hợp, do chuyên khoa Sơ sinh xác nhận.",
+        "Không gán tự động cho sốt sơ sinh, nhiễm khuẩn huyết hoặc viêm màng não nghi ngờ."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "tham_chieu_po_125_31_25_5ml"
+      ],
+      "clavulanic_acid": null,
+      "nguon_trich_dan": [
+        {
+          "id": "ANMF_NEONATAL_V13",
+          "muc": "Dosage và Maximum dose trang 1"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Lựa chọn tham chiếu riêng, không cộng với SS_PO_FDA_30. Mức tối đa đường uống 90 mg/kg/ngày được ANMF nêu không phải liều dùng thường quy và không phải trần tuyệt đối mg/ngày."
+      ],
+      "chinh_sach_gioi_han": {
+        "kien_truc": "chua_xac_minh_tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    },
+    {
+      "id": "SS_IV_ANMF_25",
+      "ten_muc_lieu": "Sơ sinh · truyền IV theo ANMF",
+      "nhom_tuoi": "so_sinh",
+      "duong_dung": "IV_TRUYEN",
+      "dieu_kien": {
+        "tuoi_thai_luc_sinh_ngay": {
+          "min_inclusive": 259
+        }
+      },
+      "lieu_min": 25,
+      "lieu_max": 25,
+      "don_vi_lieu": "mg/kg/lan",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": null,
+      "lieu_toi_da_ngay": null,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "Nguồn của mức liều này chưa xác lập trần tuyệt đối mg/lần và mg/ngày cho đối tượng/chế phẩm đang xét.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 12,
+      "so_lan_chia": 2,
+      "benh_canh_ap_dung": [
+        "Điều trị đích nhiễm khuẩn do vi khuẩn nhạy cảm với phối hợp nhưng amoxicillin đơn chất không phù hợp, do chuyên khoa Sơ sinh xác nhận.",
+        "Không gán tự động cho sốt sơ sinh, nhiễm khuẩn huyết hoặc viêm màng não nghi ngờ."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "tham_chieu_iv_1000_200"
+      ],
+      "clavulanic_acid": {
+        "lieu_tuong_ung_mg_kg_lan": 5,
+        "lieu_tuong_ung_mg_kg_ngay": 10
+      },
+      "nguon_trich_dan": [
+        {
+          "id": "ANMF_NEONATAL_V13",
+          "muc": "Dosage và Administration trang 1–2"
+        },
+        {
+          "id": "PCH_CHAMP",
+          "muc": "Lưu ý trẻ sinh non trang 3"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Truyền theo HDSD và quy trình sơ sinh của đúng sản phẩm. Tỷ lệ IV 5:1 tương ứng 5 mg/kg/lần clavulanic acid. Không áp quy tắc này cho lọ Axuka đang ghi nhận."
+      ],
+      "chinh_sach_gioi_han": {
+        "kien_truc": "chua_xac_minh_tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    },
+    {
+      "id": "NHI_PO_FDA_TRE_NHO_30",
+      "ten_muc_lieu": "Trẻ trên 28 ngày, dưới 3 tháng · uống 4:1",
+      "nhom_tuoi": "nhi_khoa",
+      "duong_dung": "PO",
+      "dieu_kien": {
+        "tuoi_thang_tron": {
+          "max_exclusive": 3
+        },
+        "can_nang_kg": {
+          "max_exclusive": 40
+        }
+      },
+      "lieu_min": 30,
+      "lieu_max": 30,
+      "don_vi_lieu": "mg/kg/ngay",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": null,
+      "lieu_toi_da_ngay": null,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "Nguồn của mức liều này chưa xác lập trần tuyệt đối mg/lần và mg/ngày cho đối tượng/chế phẩm đang xét.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 12,
+      "so_lan_chia": 2,
+      "benh_canh_ap_dung": [
+        "Điều trị nhiễm khuẩn nhạy cảm khi chuyên khoa xác định còn phù hợp dùng đường uống."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "tham_chieu_po_125_31_25_5ml"
+      ],
+      "clavulanic_acid": null,
+      "nguon_trich_dan": [
+        {
+          "id": "FDA_AUGMENTIN_2026",
+          "muc": "§2.3 và §8.4"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Vẫn phải đánh giá như nhũ nhi nhỏ tuổi. Sốt hoặc nghi nhiễm khuẩn nặng ở nhũ nhi cần đánh giá theo quy trình bệnh viện."
+      ],
+      "chinh_sach_gioi_han": {
+        "kien_truc": "chua_xac_minh_tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    },
+    {
+      "id": "NHI_PO_FDA_25",
+      "ten_muc_lieu": "Uống 7:1 · nhiễm khuẩn nhẹ/vừa",
+      "nhom_tuoi": "nhi_khoa",
+      "duong_dung": "PO",
+      "dieu_kien": {
+        "tuoi_thang_tron": {
+          "min_inclusive": 3
+        },
+        "can_nang_kg": {
+          "max_exclusive": 40
+        }
+      },
+      "lieu_min": 25,
+      "lieu_max": 25,
+      "don_vi_lieu": "mg/kg/ngay",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": null,
+      "lieu_toi_da_ngay": null,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "Bảng 2 của nhãn được chọn không nêu trần nhi khoa tuyệt đối cho phác đồ này. Mốc người lớn tương ứng được lưu riêng để cảnh báo.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 12,
+      "so_lan_chia": 2,
+      "benh_canh_ap_dung": [
+        "Nhiễm khuẩn nhẹ đã có chỉ định dùng phối hợp, ví dụ một số nhiễm khuẩn da/mô mềm do vi khuẩn nhạy cảm."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "tham_chieu_po_400_57_5ml"
+      ],
+      "clavulanic_acid": null,
+      "nguon_trich_dan": [
+        {
+          "id": "FDA_AUGMENTIN_2026",
+          "muc": "§2.4 bảng 2 và mốc tham chiếu §2.2 bảng 1"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Chọn đúng hàm lượng và tỷ lệ của hỗn dịch. Viên 500/125 mg trong kho cần thẩm định riêng."
+      ],
+      "moc_ra_soat_theo_lieu_nguoi_lon": {
+        "amoxicillin_mg_lan": 500,
+        "amoxicillin_mg_ngay": 1000,
+        "nguon_trich_dan": [
+          {
+            "id": "FDA_AUGMENTIN_2026",
+            "muc": "§2.2, Bảng 1, phác đồ người lớn tương ứng"
+          }
+        ],
+        "hanh_dong": "can_duyet_khi_vuot"
+      },
+      "chinh_sach_gioi_han": {
+        "kien_truc": "chua_xac_minh_tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    },
+    {
+      "id": "NHI_PO_FDA_20",
+      "ten_muc_lieu": "Uống 4:1 · nhiễm khuẩn nhẹ/vừa",
+      "nhom_tuoi": "nhi_khoa",
+      "duong_dung": "PO",
+      "dieu_kien": {
+        "tuoi_thang_tron": {
+          "min_inclusive": 3
+        },
+        "can_nang_kg": {
+          "max_exclusive": 40
+        }
+      },
+      "lieu_min": 20,
+      "lieu_max": 20,
+      "don_vi_lieu": "mg/kg/ngay",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": null,
+      "lieu_toi_da_ngay": null,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "Bảng 2 của nhãn được chọn không nêu trần nhi khoa tuyệt đối cho phác đồ này. Mốc người lớn tương ứng được lưu riêng để cảnh báo.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 8,
+      "so_lan_chia": 3,
+      "benh_canh_ap_dung": [
+        "Nhiễm khuẩn nhẹ đã có chỉ định dùng phối hợp, ví dụ một số nhiễm khuẩn da/mô mềm do vi khuẩn nhạy cảm."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "tham_chieu_po_125_31_25_5ml",
+        "tham_chieu_po_250_62_5_5ml"
+      ],
+      "clavulanic_acid": null,
+      "nguon_trich_dan": [
+        {
+          "id": "FDA_AUGMENTIN_2026",
+          "muc": "§2.4 bảng 2 và mốc tham chiếu §2.2 bảng 1"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Chọn đúng hàm lượng và tỷ lệ của hỗn dịch. Viên 500/125 mg trong kho cần thẩm định riêng."
+      ],
+      "moc_ra_soat_theo_lieu_nguoi_lon": {
+        "amoxicillin_mg_lan": 250,
+        "amoxicillin_mg_ngay": 750,
+        "nguon_trich_dan": [
+          {
+            "id": "FDA_AUGMENTIN_2026",
+            "muc": "§2.2, Bảng 1, phác đồ người lớn tương ứng"
+          }
+        ],
+        "hanh_dong": "can_duyet_khi_vuot"
+      },
+      "chinh_sach_gioi_han": {
+        "kien_truc": "chua_xac_minh_tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    },
+    {
+      "id": "NHI_PO_FDA_45",
+      "ten_muc_lieu": "Uống 7:1 · nhiễm khuẩn nặng hơn",
+      "nhom_tuoi": "nhi_khoa",
+      "duong_dung": "PO",
+      "dieu_kien": {
+        "tuoi_thang_tron": {
+          "min_inclusive": 3
+        },
+        "can_nang_kg": {
+          "max_exclusive": 40
+        }
+      },
+      "lieu_min": 45,
+      "lieu_max": 45,
+      "don_vi_lieu": "mg/kg/ngay",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": null,
+      "lieu_toi_da_ngay": null,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "Bảng 2 của nhãn được chọn không nêu trần nhi khoa tuyệt đối cho phác đồ này. Mốc người lớn tương ứng được lưu riêng để cảnh báo.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 12,
+      "so_lan_chia": 2,
+      "benh_canh_ap_dung": [
+        "Viêm tai giữa, viêm xoang, nhiễm khuẩn hô hấp dưới hoặc nhiễm khuẩn nặng hơn khi còn phù hợp điều trị đường uống theo phác đồ.",
+        "Kiểm tra riêng tiêu chí viêm tai giữa liều cao. Viêm phổi nặng, suy hô hấp, sốc hoặc nghi nhiễm khuẩn huyết cần đánh giá phác đồ cấp cứu/nội trú."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "tham_chieu_po_400_57_5ml"
+      ],
+      "clavulanic_acid": null,
+      "nguon_trich_dan": [
+        {
+          "id": "FDA_AUGMENTIN_2026",
+          "muc": "§2.4 bảng 2 và mốc tham chiếu §2.2 bảng 1"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Chọn đúng hàm lượng và tỷ lệ của hỗn dịch. Viên 500/125 mg trong kho cần thẩm định riêng."
+      ],
+      "moc_ra_soat_theo_lieu_nguoi_lon": {
+        "amoxicillin_mg_lan": 875,
+        "amoxicillin_mg_ngay": 1750,
+        "nguon_trich_dan": [
+          {
+            "id": "FDA_AUGMENTIN_2026",
+            "muc": "§2.2, Bảng 1, phác đồ người lớn tương ứng"
+          }
+        ],
+        "hanh_dong": "can_duyet_khi_vuot"
+      },
+      "chinh_sach_gioi_han": {
+        "kien_truc": "chua_xac_minh_tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    },
+    {
+      "id": "NHI_PO_FDA_40",
+      "ten_muc_lieu": "Uống 4:1 · nhiễm khuẩn nặng hơn",
+      "nhom_tuoi": "nhi_khoa",
+      "duong_dung": "PO",
+      "dieu_kien": {
+        "tuoi_thang_tron": {
+          "min_inclusive": 3
+        },
+        "can_nang_kg": {
+          "max_exclusive": 40
+        }
+      },
+      "lieu_min": 40,
+      "lieu_max": 40,
+      "don_vi_lieu": "mg/kg/ngay",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": null,
+      "lieu_toi_da_ngay": null,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "Bảng 2 của nhãn được chọn không nêu trần nhi khoa tuyệt đối cho phác đồ này. Mốc người lớn tương ứng được lưu riêng để cảnh báo.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 8,
+      "so_lan_chia": 3,
+      "benh_canh_ap_dung": [
+        "Viêm tai giữa, viêm xoang, nhiễm khuẩn hô hấp dưới hoặc nhiễm khuẩn nặng hơn khi còn phù hợp điều trị đường uống theo phác đồ.",
+        "Kiểm tra riêng tiêu chí viêm tai giữa liều cao. Viêm phổi nặng, suy hô hấp, sốc hoặc nghi nhiễm khuẩn huyết cần đánh giá phác đồ cấp cứu/nội trú."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "tham_chieu_po_125_31_25_5ml",
+        "tham_chieu_po_250_62_5_5ml"
+      ],
+      "clavulanic_acid": null,
+      "nguon_trich_dan": [
+        {
+          "id": "FDA_AUGMENTIN_2026",
+          "muc": "§2.4 bảng 2 và mốc tham chiếu §2.2 bảng 1"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Chọn đúng hàm lượng và tỷ lệ của hỗn dịch. Viên 500/125 mg trong kho cần thẩm định riêng."
+      ],
+      "moc_ra_soat_theo_lieu_nguoi_lon": {
+        "amoxicillin_mg_lan": 500,
+        "amoxicillin_mg_ngay": 1500,
+        "nguon_trich_dan": [
+          {
+            "id": "FDA_AUGMENTIN_2026",
+            "muc": "§2.2, Bảng 1, phác đồ người lớn tương ứng"
+          }
+        ],
+        "hanh_dong": "can_duyet_khi_vuot"
+      },
+      "chinh_sach_gioi_han": {
+        "kien_truc": "chua_xac_minh_tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    },
+    {
+      "id": "NHI_PO_KLAMENTIN_25",
+      "ten_muc_lieu": "Uống 8:1 · Klamentin, nhiễm khuẩn nhẹ",
+      "nhom_tuoi": "nhi_khoa",
+      "duong_dung": "PO",
+      "dieu_kien": {
+        "tuoi_thang_tron": {
+          "min_inclusive": 3
+        },
+        "can_nang_kg": {
+          "max_exclusive": 40
+        }
+      },
+      "lieu_min": 25,
+      "lieu_max": 25,
+      "don_vi_lieu": "mg/kg/ngay",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": null,
+      "lieu_toi_da_ngay": null,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "Nguồn của mức liều này chưa xác lập trần tuyệt đối mg/lần và mg/ngày cho đối tượng/chế phẩm đang xét.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 12,
+      "so_lan_chia": 2,
+      "benh_canh_ap_dung": [
+        "Nhiễm khuẩn nhẹ trong phạm vi chỉ định của đúng Klamentin 250/31,25 mg, sau khi xác nhận phù hợp dùng phối hợp."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "KLAM001"
+      ],
+      "clavulanic_acid": {
+        "lieu_tuong_ung_mg_kg_ngay": 3.125
+      },
+      "nguon_trich_dan": [
+        {
+          "id": "DHG_KLAMENTIN_250_3125",
+          "muc": "Liều dùng và cách dùng"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Tên kho có hậu tố TTKN-25. Cần đối chiếu bao bì, số đăng ký và HDSD của lô trước khi liên kết quy tắc."
+      ],
+      "chinh_sach_gioi_han": {
+        "kien_truc": "chua_xac_minh_tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    },
+    {
+      "id": "NHI_PO_KLAMENTIN_45",
+      "ten_muc_lieu": "Uống 8:1 · Klamentin, tai mũi họng/hô hấp",
+      "nhom_tuoi": "nhi_khoa",
+      "duong_dung": "PO",
+      "dieu_kien": {
+        "tuoi_thang_tron": {
+          "min_inclusive": 3
+        },
+        "can_nang_kg": {
+          "max_exclusive": 40
+        }
+      },
+      "lieu_min": 45,
+      "lieu_max": 45,
+      "don_vi_lieu": "mg/kg/ngay",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": null,
+      "lieu_toi_da_ngay": null,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "Nguồn của mức liều này chưa xác lập trần tuyệt đối mg/lần và mg/ngày cho đối tượng/chế phẩm đang xét.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 12,
+      "so_lan_chia": 2,
+      "benh_canh_ap_dung": [
+        "Viêm tai giữa, viêm xoang hoặc nhiễm khuẩn hô hấp theo HDSD của đúng chế phẩm khi đường uống phù hợp.",
+        "Viêm tai giữa thuộc tiêu chí cần 90 mg/kg/ngày phải xem quy tắc và chế phẩm tương ứng."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "KLAM001"
+      ],
+      "clavulanic_acid": {
+        "lieu_tuong_ung_mg_kg_ngay": 5.625
+      },
+      "nguon_trich_dan": [
+        {
+          "id": "DHG_KLAMENTIN_250_3125",
+          "muc": "Liều dùng và cách dùng"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Không dùng gói 8:1 để thực hiện quy tắc 90 mg/kg/ngày trong mẫu này."
+      ],
+      "chinh_sach_gioi_han": {
+        "kien_truc": "chua_xac_minh_tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    },
+    {
+      "id": "NHI_PO_AOM_90_VN",
+      "ten_muc_lieu": "Viêm tai giữa cấp · liều cao theo Hội Nhi khoa Việt Nam",
+      "nhom_tuoi": "nhi_khoa",
+      "duong_dung": "PO",
+      "dieu_kien": {
+        "tuoi_thang_tron": {
+          "min_inclusive": 3
+        },
+        "tuoi_nam_tron": {
+          "max_inclusive": 12
+        },
+        "can_nang_kg": {
+          "min_inclusive": 8,
+          "max_exclusive": 40
+        }
+      },
+      "lieu_min": 90,
+      "lieu_max": 90,
+      "don_vi_lieu": "mg/kg/ngay",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": 1500,
+      "lieu_toi_da_ngay": 3000,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "Trần 3.000 mg/ngày theo khuyến nghị 6b. Trần 1.500 mg/lần được tính với hai liều bằng nhau.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 12,
+      "so_lan_chia": 2,
+      "benh_canh_ap_dung": [
+        "Viêm tai giữa cấp đã xác định, có yếu tố cần phối hợp như dùng kháng sinh gần đây, bệnh nặng, chảy mủ tai, viêm kết mạc mủ, tái phát hoặc nguy cơ kháng thuốc.",
+        "Lựa chọn bậc hai khi amoxicillin ban đầu thất bại theo phác đồ đã duyệt."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "tham_chieu_po_600_42_9_5ml"
+      ],
+      "clavulanic_acid": {
+        "lieu_dich_mg_kg_ngay_xap_xi": 6.4,
+        "gioi_han_mg_kg_ngay_theo_khuyen_nghi_6b": 10,
+        "ghi_chu": "6,4 là giá trị nhãn được làm tròn. Từ hàm lượng 600/42,9 và amoxicillin 90 mg/kg/ngày tính được 6,435 trước khi áp trần."
+      },
+      "nguon_trich_dan": [
+        {
+          "id": "VPA_AOM_2024",
+          "muc": "Khuyến nghị 6b, 8, 9"
+        },
+        {
+          "id": "FDA_AUGMENTIN_2026",
+          "muc": "§2.5: hàm lượng, chia q12h và điều kiện sản phẩm"
+        },
+        {
+          "id": "UCSF_MAX",
+          "muc": "So sánh trần thường dùng, không trộn vào quy tắc này"
+        },
+        {
+          "id": "NHI_DONG_1_TMH_2026",
+          "muc": "Bảng so sánh và kết luận về tỷ lệ 14:1"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Cảnh báo khi vượt trần; chỉ chặn tại trần khi phác đồ bệnh viện đã phê duyệt hành vi này.",
+        "Giới hạn cân nặng của mô-đun mẫu là dưới 40 kg. Nhãn ES-600 có điều kiện chỉ định cụ thể và có thể khác phác đồ Việt Nam.",
+        "Hỗn dịch 600/42,9 mg mỗi 5 mL chưa xác nhận có trong file kho.",
+        "Điều kiện tuổi/cân nặng của hàng này là phạm vi lựa chọn chế phẩm và mô-đun mẫu."
+      ],
+      "thoi_gian_dieu_tri_tham_chieu": {
+        "nguon_trich_dan": [
+          {
+            "id": "VPA_AOM_2024",
+            "muc": "Khuyến nghị 8"
+          }
+        ],
+        "nhom": [
+          {
+            "ngay": 10,
+            "benh_canh": "Dưới 2 tuổi hoặc viêm tai giữa nặng, chảy mủ tai, tái phát."
+          },
+          {
+            "ngay_min": 5,
+            "ngay_max": 7,
+            "benh_canh": "Từ 2 tuổi, thể nhẹ, không chảy mủ tai và không tái phát."
+          }
+        ],
+        "tu_dong_chon": false
+      },
+      "chinh_sach_gioi_han": {
+        "kien_truc": "tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    },
+    {
+      "id": "NHI_PO_ES600_ABS_FDA",
+      "ten_muc_lieu": "Viêm xoang cấp do vi khuẩn · ES-600 theo nhãn FDA",
+      "nhom_tuoi": "nhi_khoa",
+      "duong_dung": "PO",
+      "dieu_kien": {
+        "tuoi_thang_tron": {
+          "min_inclusive": 3
+        },
+        "tuoi_nam_tron": {
+          "max_inclusive": 12
+        },
+        "can_nang_kg": {
+          "min_inclusive": 8,
+          "max_exclusive": 40
+        }
+      },
+      "lieu_min": 90,
+      "lieu_max": 90,
+      "don_vi_lieu": "mg/kg/ngay",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": null,
+      "lieu_toi_da_ngay": null,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "§2.5 nêu liều theo kg và phạm vi cân nặng của ES-600. Chưa xác lập trần phác đồ viêm xoang trong mẫu.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 12,
+      "so_lan_chia": 2,
+      "benh_canh_ap_dung": [
+        "Viêm xoang cấp do vi khuẩn đáp ứng chỉ định ES-600 theo §1.3 của nhãn, theo đánh giá chuyên môn.",
+        "Xác nhận tiêu chí lâm sàng, tác nhân nghi ngờ và phù hợp dùng đúng chế phẩm trước khi áp dụng."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "tham_chieu_po_600_42_9_5ml"
+      ],
+      "clavulanic_acid": {
+        "lieu_dich_mg_kg_ngay_xap_xi": 6.4,
+        "gioi_han_mg_kg_ngay_da_xac_minh": null,
+        "ghi_chu": "Tính theo tỷ lệ 600 mg/42,9 mg của ES-600. Trần 10 mg/kg/ngày của nhánh viêm tai giữa không được gán cho nhánh này."
+      },
+      "nguon_trich_dan": [
+        {
+          "id": "FDA_AUGMENTIN_2026",
+          "muc": "§1.3, §1.8, §2.5, §2.6 và §8.4"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Chỉ tham chiếu nhãn FDA. Chưa xác nhận phác đồ địa phương, trần và chế phẩm trong kho.",
+        "Nhãn ES-600 gồm mốc 40 kg. Mẫu chủ động dừng tính theo kg ở 40 kg để rà soát."
+      ],
+      "chinh_sach_gioi_han": {
+        "kien_truc": "chua_xac_minh_tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    },
+    {
+      "id": "NHI_IV_25_Q12",
+      "ten_muc_lieu": "IV 5:1 · nhũ nhi nhỏ hoặc dưới 4 kg theo SmPC tham chiếu",
+      "nhom_tuoi": "nhi_khoa",
+      "duong_dung": "IV_TRUYEN",
+      "dieu_kien": {
+        "can_nang_kg": {
+          "max_exclusive": 40
+        },
+        "mot_trong": [
+          {
+            "tuoi_thang_tron": {
+              "max_exclusive": 3
+            }
+          },
+          {
+            "can_nang_kg": {
+              "max_exclusive": 4
+            }
+          }
+        ]
+      },
+      "lieu_min": 25,
+      "lieu_max": 25,
+      "don_vi_lieu": "mg/kg/lan",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": null,
+      "lieu_toi_da_ngay": null,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "Nguồn của mức liều này chưa xác lập trần tuyệt đối mg/lần và mg/ngày cho đối tượng/chế phẩm đang xét.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 12,
+      "so_lan_chia": 2,
+      "benh_canh_ap_dung": [
+        "Khi phác đồ theo bệnh xác định cần đường IV với amoxicillin/clavulanate: ví dụ một số nhiễm khuẩn tai mũi họng nặng, viêm phổi cộng đồng, hoặc nhiễm khuẩn da/mô mềm.",
+        "Cần xác nhận chẩn đoán, độ nhạy, mức độ nặng, khả năng dùng và loại chế phẩm. Thẻ này không tự chọn phác đồ kinh nghiệm."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "tham_chieu_iv_1000_200"
+      ],
+      "clavulanic_acid": {
+        "lieu_tuong_ung_mg_kg_lan": 5,
+        "lieu_tuong_ung_mg_kg_ngay": 10
+      },
+      "nguon_trich_dan": [
+        {
+          "id": "UK_IV_1000_200",
+          "muc": "§4.1–4.2"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Điều kiện q12h được lấy từ một SmPC có cụm dưới 3 tháng HOẶC dưới 4 kg. PCH dùng quy tắc khác cho trẻ đủ tháng dưới 3 tháng nhưng nặng từ 4 kg. Mỗi lần chạy chọn một bộ quy tắc đã duyệt."
+      ],
+      "chinh_sach_gioi_han": {
+        "kien_truc": "chua_xac_minh_tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    },
+    {
+      "id": "NHI_IV_25_Q8",
+      "ten_muc_lieu": "IV 5:1 · từ 3 tháng và từ 4 kg",
+      "nhom_tuoi": "nhi_khoa",
+      "duong_dung": "IV_TRUYEN",
+      "dieu_kien": {
+        "tuoi_thang_tron": {
+          "min_inclusive": 3
+        },
+        "can_nang_kg": {
+          "min_inclusive": 4,
+          "max_exclusive": 40
+        }
+      },
+      "lieu_min": 25,
+      "lieu_max": 25,
+      "don_vi_lieu": "mg/kg/lan",
+      "thanh_phan_tinh_lieu": "amoxicillin",
+      "lieu_toi_da_lan": 1000,
+      "lieu_toi_da_ngay": 3000,
+      "don_vi_lieu_toi_da": "mg_amoxicillin",
+      "can_cu_lieu_toi_da": "PCH nêu trần 1.000 mg/lần. 3.000 mg/ngày suy ra từ q8h với ba liều bằng nhau.",
+      "xu_ly_vuot_tran": "can_duyet_thay_vi_tu_giam_lieu",
+      "khoang_cach_lieu_gio": 8,
+      "so_lan_chia": 3,
+      "benh_canh_ap_dung": [
+        "Khi phác đồ theo bệnh xác định cần đường IV với amoxicillin/clavulanate: ví dụ một số nhiễm khuẩn tai mũi họng nặng, viêm phổi cộng đồng, hoặc nhiễm khuẩn da/mô mềm.",
+        "Cần xác nhận chẩn đoán, độ nhạy, mức độ nặng, khả năng dùng và loại chế phẩm. Thẻ này không tự chọn phác đồ kinh nghiệm."
+      ],
+      "che_pham_hoac_dang_tuong_thich": [
+        "tham_chieu_iv_1000_200"
+      ],
+      "clavulanic_acid": {
+        "lieu_tuong_ung_mg_kg_lan": 5,
+        "lieu_tuong_ung_mg_kg_ngay": 15,
+        "toi_da_tuong_ung_mg_lan": 200,
+        "toi_da_tuong_ung_mg_ngay": 600
+      },
+      "nguon_trich_dan": [
+        {
+          "id": "UK_IV_1000_200",
+          "muc": "§4.1–4.2"
+        },
+        {
+          "id": "PCH_CHAMP",
+          "muc": "Trang 3, điều trị IV và trần liều"
+        }
+      ],
+      "trang_thai": "tham_chieu_cho_duyet",
+      "ghi_chu": [
+        "Thông số tham chiếu cho chế phẩm IV phù hợp. Axuka trong danh mục đang ở trạng thái chặn quy đổi nhi khoa."
+      ],
+      "chinh_sach_gioi_han": {
+        "kien_truc": "tran_tuyet_doi",
+        "voi_du_lieu_mau": "can_duyet",
+        "tu_dong_chot_lieu": false
+      },
+      "trang_thai_hien_thi": "tham_chieu",
+      "cho_phep_xuat_lieu_cap_phat": false
+    }
+  ],
+  "phac_do_can_doi_chieu_them": [
+    {
+      "id": "CAP_NHI_BYT_3312",
+      "benh_canh": "Viêm phổi do vi khuẩn điều trị ngoại trú, trẻ dưới 5 tuổi, đáp ứng tiêu chí ngoại trú của phác đồ.",
+      "lieu_ghi_trong_nguon": {
+        "gia_tri": 80,
+        "don_vi": "mg/kg/24h",
+        "so_lan_chia": 2,
+        "duong_dung": "PO"
+      },
+      "trang_thai": "chua_khoi_tao_quy_tac",
+      "ly_do": "Chỗ ghi phối hợp không nêu rõ nền mg/hàm lượng chế phẩm và trần. Hội đồng cần xác nhận trước khi tự quy đổi.",
+      "nguon_trich_dan": [
+        "BYT_3312_2015",
+        "NHI_DONG_2_2016"
+      ]
+    },
+    {
+      "id": "CAP_NANG",
+      "benh_canh": "Viêm phổi cộng đồng nặng",
+      "trang_thai": "ra_soat_phac_do_noi_tru",
+      "ly_do": "Chẩn đoán nặng cần xem phác đồ nội trú và HDSD IV. Không gắn mặc định mức uống 90 mg/kg/ngày dành cho nhánh viêm tai giữa.",
+      "nguon_trich_dan": [
+        "BYT_3312_2015",
+        "NHI_DONG_2_2016"
+      ]
+    },
+    {
+      "id": "CAP_NHI_TW_2012",
+      "benh_canh": "Viêm phổi cộng đồng do vi khuẩn ở trẻ trên 1 tháng đến 5 tuổi trong phác đồ 2012.",
+      "trang_thai": "doi_chieu_lich_su_khong_tinh",
+      "ly_do": "Tài liệu cũ ghi phối hợp ở mục chọn kháng sinh nhưng chưa tách quy tắc theo đúng dạng bào chế. Cần đối chiếu phác đồ hiện hành.",
+      "nguon_trich_dan": [
+        "NHI_TW_2012_CAP",
+        "NHI_TW_2024"
+      ]
+    },
+    {
+      "id": "DTQGVN_ORAL_4_1",
+      "benh_canh": "Các mức uống 4:1, 20 hoặc 40 mg amoxicillin/kg/ngày.",
+      "trang_thai": "cho_doi_chieu_ban_goc",
+      "ly_do": "Bản trình bày thứ cấp dẫn Dược thư ghi chia 2 lần, khác q8h trong Bảng 2 của FDA 2026. Giữ riêng nguồn và chỉ dùng số lần chia từ nhãn FDA cho thẻ FDA.",
+      "nguon_trich_dan": [
+        "DTQGVN_III",
+        "DTQGVN_III_DOI_CHIEU_THU_CAP",
+        "FDA_AUGMENTIN_2026"
+      ]
+    }
+  ],
+  "quy_doi_che_pham_kho": {
+    "nguon_kho": "thuốc trong kho nội trú.xls · Data, dòng 26 và 183–185. Đối chiếu danh mục trang web VPMED. Không suy ra tồn kho theo thời gian thực.",
+    "che_pham_kho_va_ban_ghi_can_xac_minh": [
+      {
+        "id": "KOAC001",
+        "ten": "Koact 625",
+        "amoxicillin_mg": 500,
+        "clavulanic_acid_mg": 125,
+        "luong_tham_chieu": 1,
+        "don_vi_tham_chieu": "vien",
+        "ty_le_amoxicillin_tren_clavulanic_acid": 4.0,
+        "duong_dung": "PO",
+        "ma_kho": "KOAC001",
+        "id_his": [
+          "31218"
+        ],
+        "so_dang_ky": "890110517024",
+        "trang_thai": "co_trong_excel_cho_xac_minh_hdsd",
+        "duoc_tu_dong_quy_doi": false,
+        "nguon_trich_dan": [
+          "DAV_KOACT"
+        ],
+        "ghi_chu": [
+          "Viên nén bao phim. Cần HDSD đúng số đăng ký để ra quyết định theo cân nặng và khả năng nuốt.",
+          "Chỉ tính tương đương theo hàm lượng để rà soát. Chưa có căn cứ tự bẻ, nghiền hoặc chia liều."
+        ],
+        "dinh_danh_tung_ban_ghi_kho": [
+          {
+            "ma_kho": "KOAC001",
+            "id_his": "31218"
+          }
+        ],
+        "vi_tri_excel": [
+          185
+        ]
+      },
+      {
+        "id": "KLAM001",
+        "ten": "Klamentin 250/31.25 TTKN-25",
+        "amoxicillin_mg": 250,
+        "clavulanic_acid_mg": 31.25,
+        "luong_tham_chieu": 1,
+        "don_vi_tham_chieu": "goi",
+        "ty_le_amoxicillin_tren_clavulanic_acid": 8.0,
+        "duong_dung": "PO",
+        "ma_kho": "KLAM001",
+        "id_his": [
+          "36931",
+          "36700"
+        ],
+        "so_dang_ky": null,
+        "trang_thai": "co_trong_excel_cho_xac_minh_che_pham",
+        "duoc_tu_dong_quy_doi": false,
+        "nguon_trich_dan": [
+          "DHG_KLAMENTIN_250_3125"
+        ],
+        "ghi_chu": [
+          "File kho có hàm lượng và đường uống. Dạng cốm/gói khớp về hàm lượng với sản phẩm chuẩn của DHG nhưng hậu tố TTKN-25 chưa được định danh bằng bao bì và HDSD.",
+          "Xác minh mã HIS theo đúng lô. Chỉ tính số gói lý thuyết sau khi xác nhận dạng gói.",
+          "Lượng nước nhà sản xuất nêu để dùng nguyên gói không thiết lập nồng độ chuẩn để hút một phần theo mL.",
+          "Giữ 2 ID HIS riêng để truy về đúng bản ghi, không gộp thành một ID dùng chung."
+        ],
+        "dinh_danh_tung_ban_ghi_kho": [
+          {
+            "ma_kho": "KLAM001",
+            "id_his": "36931"
+          },
+          {
+            "ma_kho": "KLAM001",
+            "id_his": "36700"
+          }
+        ],
+        "vi_tri_excel": [
+          183,
+          184
+        ]
+      },
+      {
+        "id": "TD29-000024",
+        "ten": "Axuka",
+        "amoxicillin_mg": 1000,
+        "clavulanic_acid_mg": 200,
+        "luong_tham_chieu": 1,
+        "don_vi_tham_chieu": "lo",
+        "ty_le_amoxicillin_tren_clavulanic_acid": 5.0,
+        "duong_dung": "IV_TRUYEN",
+        "ma_kho": "TD29-000024",
+        "id_his": [
+          "28650"
+        ],
+        "so_dang_ky": "594110072523",
+        "trang_thai": "co_trong_excel_chan_quy_doi_nhi_khoa",
+        "duoc_tu_dong_quy_doi": false,
+        "nguon_trich_dan": [
+          "AXUKA_HDSD_TIM_DUOC",
+          "AXUKA_ID"
+        ],
+        "ghi_chu": [
+          "Bản tờ Axuka tìm được nói không phù hợp cho trẻ dưới 50 kg và nêu phác đồ cho nhóm trên 50 kg.",
+          "Mẫu không gán liều IV tham chiếu theo cân nặng cho Axuka. Đối chiếu HDSD hiện hành đúng SĐK và lô với Khoa Dược.",
+          "Không tính mL pha/rút vì chưa có nồng độ sau hoàn nguyên đã duyệt cho đúng chế phẩm và quy trình của viện.",
+          "Tờ tìm được không làm rõ trường hợp đúng 50 kg. Mẫu để khóa cho toàn bộ nhánh tính liều theo kg."
+        ],
+        "dinh_danh_tung_ban_ghi_kho": [
+          {
+            "ma_kho": "TD29-000024",
+            "id_his": "28650"
+          }
+        ],
+        "vi_tri_excel": [
+          26
+        ]
+      },
+      {
+        "id": "TD29-000021",
+        "ten": "Curam 625 mg",
+        "amoxicillin_mg": 500,
+        "clavulanic_acid_mg": 125,
+        "luong_tham_chieu": 1,
+        "don_vi_tham_chieu": "vien",
+        "ty_le_amoxicillin_tren_clavulanic_acid": 4.0,
+        "duong_dung": "PO",
+        "ma_kho": "TD29-000021",
+        "id_his": [
+          "20512"
+        ],
+        "so_dang_ky": "900110976524",
+        "trang_thai": "co_tren_web_cu_khong_gap_trong_excel",
+        "duoc_tu_dong_quy_doi": false,
+        "nguon_trich_dan": [],
+        "ghi_chu": [
+          "Bản ghi web nội trú có mã và số đăng ký. Chưa xác nhận trong bản Excel được cung cấp lần này. Không coi là tồn hiện hành."
+        ],
+        "dinh_danh_tung_ban_ghi_kho": [
+          {
+            "ma_kho": "TD29-000021",
+            "id_his": "20512"
+          }
+        ],
+        "vi_tri_excel": []
+      }
+    ],
+    "dang_bao_che_tham_chieu": [
+      {
+        "id": "tham_chieu_po_125_31_25_5ml",
+        "ten": "Hỗn dịch 125/31,25 mg mỗi 5 mL",
+        "amoxicillin_mg": 125,
+        "clavulanic_acid_mg": 31.25,
+        "luong_tham_chieu": 5,
+        "don_vi_tham_chieu": "mL_sau_hoan_nguyen",
+        "ty_le_amoxicillin_tren_clavulanic_acid": 4.0,
+        "duong_dung": "PO",
+        "ma_kho": null,
+        "id_his": [],
+        "so_dang_ky": null,
+        "trang_thai": "dang_tham_chieu_chua_xac_nhan_kho",
+        "duoc_tu_dong_quy_doi": false,
+        "nguon_trich_dan": [
+          "FDA_AUGMENTIN_2026",
+          "ANMF_NEONATAL_V13"
+        ],
+        "ghi_chu": [
+          "Nồng độ amoxicillin 25 mg/mL, clavulanic acid 6,25 mg/mL."
+        ]
+      },
+      {
+        "id": "tham_chieu_po_250_62_5_5ml",
+        "ten": "Hỗn dịch 250/62,5 mg mỗi 5 mL",
+        "amoxicillin_mg": 250,
+        "clavulanic_acid_mg": 62.5,
+        "luong_tham_chieu": 5,
+        "don_vi_tham_chieu": "mL_sau_hoan_nguyen",
+        "ty_le_amoxicillin_tren_clavulanic_acid": 4.0,
+        "duong_dung": "PO",
+        "ma_kho": null,
+        "id_his": [],
+        "so_dang_ky": null,
+        "trang_thai": "dang_tham_chieu_chua_xac_nhan_kho",
+        "duoc_tu_dong_quy_doi": false,
+        "nguon_trich_dan": [
+          "FDA_AUGMENTIN_2026"
+        ],
+        "ghi_chu": [
+          "Nồng độ amoxicillin 50 mg/mL, clavulanic acid 12,5 mg/mL. Khác hàm lượng clavulanic acid của gói Klamentin."
+        ]
+      },
+      {
+        "id": "tham_chieu_po_400_57_5ml",
+        "ten": "Hỗn dịch 400/57 mg mỗi 5 mL",
+        "amoxicillin_mg": 400,
+        "clavulanic_acid_mg": 57,
+        "luong_tham_chieu": 5,
+        "don_vi_tham_chieu": "mL_sau_hoan_nguyen",
+        "ty_le_amoxicillin_tren_clavulanic_acid": 7.01754,
+        "duong_dung": "PO",
+        "ma_kho": null,
+        "id_his": [],
+        "so_dang_ky": null,
+        "trang_thai": "dang_tham_chieu_chua_xac_nhan_kho",
+        "duoc_tu_dong_quy_doi": false,
+        "nguon_trich_dan": [
+          "FDA_AUGMENTIN_2026"
+        ],
+        "ghi_chu": [
+          "Nồng độ amoxicillin 80 mg/mL, clavulanic acid 11,4 mg/mL. Dạng 200/28,5 mg mỗi 5 mL cùng tỷ lệ nhưng nồng độ bằng một nửa; cần bản ghi riêng nếu nhập kho."
+        ]
+      },
+      {
+        "id": "tham_chieu_po_600_42_9_5ml",
+        "ten": "Hỗn dịch 600/42,9 mg mỗi 5 mL",
+        "amoxicillin_mg": 600,
+        "clavulanic_acid_mg": 42.9,
+        "luong_tham_chieu": 5,
+        "don_vi_tham_chieu": "mL_sau_hoan_nguyen",
+        "ty_le_amoxicillin_tren_clavulanic_acid": 13.98601,
+        "duong_dung": "PO",
+        "ma_kho": null,
+        "id_his": [],
+        "so_dang_ky": null,
+        "trang_thai": "dang_tham_chieu_chua_xac_nhan_kho",
+        "duoc_tu_dong_quy_doi": false,
+        "nguon_trich_dan": [
+          "FDA_AUGMENTIN_2026"
+        ],
+        "ghi_chu": [
+          "Nồng độ amoxicillin 120 mg/mL, clavulanic acid 8,58 mg/mL. Không dùng cùng thể tích của hỗn dịch tỷ lệ khác."
+        ]
+      },
+      {
+        "id": "tham_chieu_iv_1000_200",
+        "ten": "Co-amoxiclav 1.000/200 mg IV · tham chiếu tương đương tỷ lệ",
+        "amoxicillin_mg": 1000,
+        "clavulanic_acid_mg": 200,
+        "luong_tham_chieu": 1,
+        "don_vi_tham_chieu": "lo",
+        "ty_le_amoxicillin_tren_clavulanic_acid": 5.0,
+        "duong_dung": "IV_TRUYEN",
+        "ma_kho": null,
+        "id_his": [],
+        "so_dang_ky": null,
+        "trang_thai": "dang_tham_chieu_chua_xac_nhan_che_pham_nhi",
+        "duoc_tu_dong_quy_doi": false,
+        "nguon_trich_dan": [
+          "UK_IV_1000_200",
+          "ANMF_NEONATAL_V13",
+          "PCH_CHAMP"
+        ],
+        "ghi_chu": [
+          "Liều tham chiếu chỉ dùng để so sánh. Cần sản phẩm có xác nhận chỉ định, tuổi/cân nặng và bảng pha truyền Nhi."
+        ]
+      }
+    ],
+    "cong_thuc": {
+      "clavulanic_mg_lan": "amoxicillin_mg_lan * clavulanic_acid_mg_che_pham / amoxicillin_mg_che_pham",
+      "clavulanic_mg_kg_ngay": "clavulanic_mg_lan * so_lan_chia / can_nang_kg",
+      "vien_hoac_goi_tuong_duong": "amoxicillin_mg_lan / amoxicillin_mg_moi_vien_hoac_goi",
+      "mL_hon_dich": "amoxicillin_mg_lan / (amoxicillin_mg_che_pham / luong_mL_sau_hoan_nguyen)",
+      "mL_rut_IV": "amoxicillin_mg_lan / nong_do_amoxicillin_mg_mL_sau_hoan_nguyen_da_tham_dinh"
+    },
+    "quy_tac": "Ghép theo mã kho, ID HIS, đường dùng, dạng, hàm lượng của từng thành phần và HDSD đúng số đăng ký/lô. Số viên/gói thập phân là tương đương lý thuyết. mL chỉ được tính với nồng độ thực sau hoàn nguyên đã xác nhận. Không lấy lượng nước pha gói hoặc thể tích dung môi châm vào lọ làm thể tích cuối. Các chế phẩm mẫu đều tắt xuất liều cấp phát.",
+    "kiem_tra_pha_truyen": {
+      "tu_dong_tinh_ml_cho_kho_hien_tai": false,
+      "truong_can_tham_dinh": [
+        "dung_moi_hoan_nguyen",
+        "the_tich_sau_hoan_nguyen_ml",
+        "nong_do_amoxicillin_mg_ml_sau_hoan_nguyen",
+        "dich_pha_loang",
+        "nong_do_truyen_cuoi",
+        "thoi_gian_truyen_phut",
+        "han_dung_sau_pha",
+        "tuong_ky"
+      ]
+    }
+  },
+  "canh_bao_lam_sang": [
+    {
+      "id": "THAN",
+      "muc": "can_duyet",
+      "noi_dung": "Suy thận, AKI, thiểu niệu, lọc máu hoặc thiếu thông tin thận: ngừng quy đổi liều dùng và chuyển kiểm tra theo tuổi, đường dùng và HDSD đúng chế phẩm. Không dùng công thức Cockcroft–Gault người lớn cho Nhi. Không đồng nhất CrCl mL/phút với eGFR chuẩn hóa mL/phút/1,73 m².",
+      "nguon_trich_dan": [
+        "FDA_AUGMENTIN_2026",
+        "ANMF_NEONATAL_V13",
+        "PCH_CHAMP",
+        "UK_IV_1000_200"
+      ]
+    },
+    {
+      "id": "THAN_ES",
+      "muc": "chan",
+      "noi_dung": "Theo nhãn FDA, ES-600 không dùng khi suy thận nặng hoặc lọc máu ngắt quãng. Bảng chỉnh liều tham chiếu IV không chuyển sang dạng uống.",
+      "nguon_trich_dan": [
+        "FDA_AUGMENTIN_2026",
+        "UK_IV_1000_200"
+      ]
+    },
+    {
+      "id": "CLAV",
+      "muc": "can_duyet",
+      "noi_dung": "Kiểm soát clavulanic acid theo từng phác đồ/đường dùng. Ở nhánh viêm tai giữa liều cao, mục tiêu tỷ lệ 14:1 cho khoảng 6,4 mg/kg/ngày và khuyến nghị 6b nêu không vượt 10 mg/kg/ngày. Không áp hai trị số này như trần chung cho sơ sinh, IV hay các chế phẩm khác.",
+      "nguon_trich_dan": [
+        "VPA_AOM_2024",
+        "FDA_AUGMENTIN_2026",
+        "ANMF_NEONATAL_V13"
+      ]
+    },
+    {
+      "id": "CLAV_RATIO",
+      "muc": "chan",
+      "noi_dung": "Ở mức amoxicillin 90 mg/kg/ngày, tỷ lệ 4:1 cho 22,5 mg/kg/ngày clavulanic acid và tỷ lệ 8:1 cho 11,25 mg/kg/ngày. Chặn hai tỷ lệ này trong nhánh 90 mg/kg/ngày của mẫu.",
+      "nguon_trich_dan": [
+        "VPA_AOM_2024",
+        "FDA_AUGMENTIN_2026",
+        "DHG_KLAMENTIN_250_3125"
+      ]
+    },
+    {
+      "id": "DI_UNG_GAN",
+      "muc": "chan",
+      "noi_dung": "Chống chỉ định nếu quá mẫn với thành phần hoặc tiền sử phản ứng nặng với beta-lactam liên quan. Chống chỉ định nếu từng vàng da ứ mật hoặc rối loạn chức năng gan do amoxicillin/clavulanate. Kiểm tra thêm cảnh báo gan và tá dược của đúng nhãn.",
+      "nguon_trich_dan": [
+        "FDA_AUGMENTIN_2026",
+        "UK_IV_1000_200",
+        "DHG_KLAMENTIN_250_3125"
+      ]
+    },
+    {
+      "id": "IV_PHA",
+      "muc": "chan",
+      "noi_dung": "Chế phẩm IV tham chiếu dùng đường tĩnh mạch. Với trẻ dưới 3 tháng, SmPC tham chiếu quy định chỉ truyền, không tiêm bolus. ANMF và SmPC tham chiếu mô tả 30–40 phút nhưng chỉ dùng thời gian, dung môi, nồng độ, thể tích hoàn nguyên, pha loãng, độ ổn định và tương kỵ từ quy trình đã duyệt của đúng sản phẩm. Không tiêm bắp các chế phẩm IV nêu trong mẫu.",
+      "nguon_trich_dan": [
+        "ANMF_NEONATAL_V13",
+        "UK_IV_1000_200",
+        "AXUKA_HDSD_TIM_DUOC"
+      ]
+    },
+    {
+      "id": "NHOM_NGUOI_LON",
+      "muc": "can_duyet",
+      "noi_dung": "Mẫu giới hạn nhánh tính theo kg ở dưới 40 kg. Từ 40 kg, chuyển rà soát liều người lớn theo đúng HDSD. Không suy ra Axuka dùng được từ 40 kg chỉ vì một nhãn IV khác cho phép.",
+      "nguon_trich_dan": [
+        "FDA_AUGMENTIN_2026",
+        "UK_IV_1000_200",
+        "AXUKA_HDSD_TIM_DUOC"
+      ]
+    }
+  ],
+  "tham_chieu_chinh_lieu_than": {
+    "tu_dong_ap_dung": false,
+    "dieu_kien_chung": "Chỉ đối chiếu ở người bệnh có chức năng thận ổn định, sau khi xác nhận giới hạn tuổi và sản phẩm trong nguồn. Không áp bảng này cho sơ sinh, AKI, lọc máu, ECMO hoặc bất kỳ trường hợp nào chưa rõ chức năng thận.",
+    "vi_du_theo_PCH": [
+      {
+        "duong_dung": "IV_TRUYEN",
+        "ty_le_che_pham": "5:1",
+        "don_vi_xet_nghiem": "eGFR mL/phút/1,73 m²",
+        "muc": [
+          {
+            "eGFR": {
+              "min_exclusive": 30
+            },
+            "xu_tri": "Tham chiếu mức liều thường quy theo bệnh và điều kiện vận hành."
+          },
+          {
+            "eGFR": {
+              "min_inclusive": 10,
+              "max_exclusive": 30
+            },
+            "amoxicillin_mg_kg_lan": 25,
+            "khoang_cach_lieu_gio": 12
+          },
+          {
+            "eGFR": {
+              "max_exclusive": 10
+            },
+            "amoxicillin_mg_kg_lan": 25,
+            "khoang_cach_lieu_gio": 24
+          }
+        ],
+        "nguon_trich_dan": [
+          "PCH_CHAMP"
+        ]
+      },
+      {
+        "duong_dung": "PO",
+        "ty_le_che_pham": "4:1",
+        "don_vi_xet_nghiem": "eGFR mL/phút/1,73 m²",
+        "muc": [
+          {
+            "eGFR": {
+              "min_exclusive": 30
+            },
+            "xu_tri": "Tham chiếu mức liều thường quy theo bệnh và điều kiện vận hành."
+          },
+          {
+            "eGFR": {
+              "min_inclusive": 10,
+              "max_exclusive": 30
+            },
+            "amoxicillin_mg_kg_lan": 15,
+            "khoang_cach_lieu_gio": 12
+          },
+          {
+            "eGFR": {
+              "max_exclusive": 10
+            },
+            "amoxicillin_mg_kg_lan": 15,
+            "khoang_cach_lieu_gio": 24
+          }
+        ],
+        "nguon_trich_dan": [
+          "PCH_CHAMP"
+        ]
+      }
+    ],
+    "o_moc_30": "Dược sĩ phân giải theo tài liệu và quy trình áp dụng, do bảng PCH viết ≥30 và 10–30. Dữ liệu mẫu để trống mức đúng 30 nhằm tránh chạy hai nhánh.",
+    "ghi_chu": "Giữ đối chiếu PCH theo đơn vị chuẩn hóa mL/phút/1,73 m². SmPC IV dùng CrCl mL/phút và có bảng riêng gồm lọc máu. Mẫu không tự quy đổi giữa hai cách báo cáo, áp chế độ lọc máu hoặc xác nhận quy đổi cho Axuka."
+  },
+  "logic_tinh_va_hien_thi": {
+    "buoc": [
+      "Chuẩn hóa đầu vào và xác định nhóm 0–28 ngày hay từ ngày 29. PMA sử dụng khi cần đánh giá sơ sinh.",
+      "Với từng thẻ, đánh giá điều kiện nhóm tuổi, tuổi ở mốc chế phẩm, cân nặng và tuổi thai nếu có. Liệt kê thẻ đạt và bệnh cảnh tương ứng mà không yêu cầu người dùng chọn chẩn đoán trước. Thẻ thiếu dữ liệu về tuổi/PMA hiện trạng thái cần bổ sung và chưa trả kết quả liều.",
+      "Các thẻ thay thế theo nguồn, đường dùng, tỷ lệ hoặc tần suất phải hiển thị riêng. Tuổi/cân nặng đủ chỉ xác nhận phù hợp điều kiện tính tham chiếu.",
+      "Tính min và max riêng cho amoxicillin. Nếu mg/kg/ngày: nhân cân nặng để ra mg/ngày, rồi chia số lần. Nếu mg/kg/lần: nhân cân nặng để ra mg/lần, rồi nhân số lần để ra mg/ngày.",
+      "Đối chiếu trần mỗi lần và mỗi ngày theo đúng quy tắc. Dùng số chưa làm tròn khi so ngưỡng. Hiện giá trị thô và lý do cảnh báo. Trần null hoặc mốc người lớn chỉ dẫn sang rà soát.",
+      "Nếu bệnh viện duyệt một quy tắc có trần cứng và liều chia đều, trần hiệu lực mỗi lần là min(trần mỗi lần, trần ngày / số lần). Khi giới hạn làm liều thấp hơn mức tối thiểu hoặc vượt ngưỡng clavulanic acid, yêu cầu rà soát. Tính lại cả hai thành phần sau khi chỉnh.",
+      "Kiểm tra tương thích chế phẩm và tải clavulanic acid. Có thể hiển thị số mg tham chiếu khi thiếu thông tin tồn; để trống kết quả cấp phát, số viên/gói thực dùng và thể tích pha/rút khi chưa xác minh."
+    ],
+    "ket_qua_loc": {
+      "dat": "Hiện thẻ và kết quả tính tham chiếu kèm bệnh cảnh.",
+      "khong_dat": "Ẩn khỏi danh sách phù hợp. Giữ lý do ngoài kết quả nếu cần giải thích.",
+      "can_bo_sung": "Hiện điều kiện thiếu có thể thay đổi lựa chọn. Chưa tính liều ở thẻ này."
+    },
+    "truong_ket_qua_de_goi_y_ui": [
+      "id_muc_lieu",
+      "duong_dung",
+      "khoang_cach_lieu_gio",
+      "amoxicillin_mg_lan_min",
+      "amoxicillin_mg_lan_max",
+      "amoxicillin_mg_ngay_min",
+      "amoxicillin_mg_ngay_max",
+      "benh_canh_ap_dung",
+      "nguon_trich_dan",
+      "canh_bao",
+      "don_vi_cap_phat_da_xac_nhan"
+    ]
+  },
+  "nguon_tham_chieu": {
+    "FDA_AUGMENTIN_2026": {
+      "ten": "FDA · Nhãn AUGMENTIN/AUGMENTIN ES-600, 2026",
+      "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/050720s039lbl.pdf",
+      "muc": "§1, §2.2–2.8, §4, §5.8, §8.4, §8.6",
+      "loai": "nhan_thuoc_quoc_te"
+    },
+    "VPA_AOM_2024": {
+      "ten": "Hội Nhi khoa Việt Nam · Hướng dẫn thực hành lâm sàng viêm tai giữa cấp trẻ em, 2024",
+      "url": "https://hoinhikhoavietnam.org.vn/wp-content/uploads/2024/12/Ruot-Huong-dan-chan-doan-dieu-tri-Viem-tai-giua-cap-_07-2024_compressed.pdf",
+      "muc": "Khuyến nghị 6b, 8, 9",
+      "loai": "huong_dan_hoi_chuyen_nganh_VN"
+    },
+    "PCH_CHAMP": {
+      "ten": "Perth Children's Hospital · ChAMP monograph Amoxicillin/clavulanic acid · rà soát 08/2026",
+      "url": "https://www.healthywa.wa.gov.au/~/media/Files/Hospitals/PCH/General-documents/Health-professionals/ChAMP-Monographs/Amoxicillin-Clavulanic-Acid.pdf",
+      "muc": "Trang 3: điều trị IV, trần liều mỗi lần và suy thận. Trang 4: cách dùng và pha truyền.",
+      "loai": "phac_do_benh_vien_quoc_te"
+    },
+    "UK_IV_1000_200": {
+      "ten": "SmPC Co-amoxiclav 1.000/200 mg · UK electronic medicines compendium",
+      "url": "https://www.medicines.org.uk/emc/product/11108/smpc",
+      "muc": "§4.1–4.4 và §6.6. Chế phẩm tham chiếu, không phải Axuka.",
+      "loai": "nhan_thuoc_quoc_te"
+    },
+    "DHG_KLAMENTIN_250_3125": {
+      "ten": "DHG Pharma · Klamentin 250/31.25",
+      "url": "https://dhgpharma.com.vn/vi/san-pham/khang-sinh/klamentin-2503125",
+      "muc": "Công thức, dạng thuốc, chỉ định, chống chỉ định, liều từ 3 tháng tuổi và cách dùng",
+      "loai": "thong_tin_nha_san_xuat_VN"
+    },
+    "AXUKA_HDSD_TIM_DUOC": {
+      "ten": "Axuka 1.000/200 mg · Tờ hướng dẫn công khai trên DrugBank Việt Nam",
+      "url": "https://cdn.drugbank.vn/1555512610602_98_111.pdf",
+      "muc": "Phần Liều dùng và Cách dùng. Cần xác nhận bản hiện hành đúng SĐK 594110072523 và lô thực tế.",
+      "loai": "hdsd_tham_chieu_can_xac_minh_phien_ban"
+    },
+    "AXUKA_ID": {
+      "ten": "Phụ lục danh mục thuốc trúng thầu do CDC Lâm Đồng công bố",
+      "url": "https://cdc.lamdong.gov.vn/upload/1003509/20260513/61439a4d237f9d2e7c3f7e6fd23764dd_Phu_luc_QD_359_-_2025-04-25T144851_883_260f9.pdf",
+      "muc": "Dòng 124, Axuka 1.000/200 mg, SĐK 594110072523. Dùng đối chiếu định danh.",
+      "loai": "doi_chieu_dinh_danh"
+    },
+    "DAV_KOACT": {
+      "ten": "Cục Quản lý Dược · Quyết định 407/QĐ-QLD năm 2024",
+      "url": "https://dav.gov.vn/upload_images/files/407_QD_QLD%202024_signed.pdf",
+      "muc": "Danh mục kèm theo, Aurobindo, dòng Koact 625, SĐK 890110517024",
+      "loai": "van_ban_cuc_quan_ly_duoc"
+    },
+    "BYT_3312_2015": {
+      "ten": "Bộ Y tế · Hướng dẫn chẩn đoán và điều trị một số bệnh thường gặp ở trẻ em · QĐ 3312/QĐ-BYT, 2015",
+      "url": "https://bvhongduc.vn/public/userfiles/HDDT_BYT/HDDT-Benh-thuong-gap-o-tre-em-3312-QD-BYT-2015.pdf",
+      "muc": "Chương Viêm phổi do vi khuẩn ở trẻ em, trang in 262–264. Chỗ ghi phối hợp chưa nêu rõ nền mg của cả hai thành phần.",
+      "loai": "phac_do_Bo_Y_te_ban_cong_khai"
+    },
+    "NHI_DONG_2_2016": {
+      "ten": "Bệnh viện Nhi Đồng 2 · Phác đồ điều trị nội trú, 2016",
+      "url": "https://benhviennhi.org.vn/files/202503251327-PHAC%20DO%20NOI%20TRU%202016%20.pdf",
+      "muc": "Viêm phổi, trang in 437–438. Tham chiếu phân tầng và lựa chọn thuốc, không gán mức 80–90 của amoxicillin đơn chất cho phối hợp.",
+      "loai": "phac_do_benh_vien_VN"
+    },
+    "DTQGVN_III": {
+      "ten": "Viện Kiểm nghiệm thuốc Trung ương · Dược thư Quốc gia Việt Nam lần xuất bản thứ ba theo QĐ 3445/QĐ-BYT năm 2022",
+      "url": "https://nidqc.gov.vn/thong-bao-phat-hanh-sach-dien-tu-duoc-thu-quoc-gia-viet-nam-lan-xuat-ban-thu-ba",
+      "muc": "Đã xác minh thông báo và quyết định ban hành. Chưa kiểm tra được toàn văn chuyên luận từ kênh phát hành.",
+      "loai": "xac_minh_ban_hanh_chua_xac_minh_lieu"
+    },
+    "NHI_TW_2024": {
+      "ten": "Bệnh viện Nhi Trung ương · Cập nhật hướng dẫn sử dụng kháng sinh, phiên bản 2024",
+      "url": "https://benhviennhitrunguong.gov.vn/cap-nhat-bo-sung-huong-dan-su-dung-khang-sinh.html",
+      "muc": "Trang thông báo công bố. Chưa có toàn văn mục chứa liều để trích dẫn.",
+      "loai": "xac_minh_cong_bo_chua_xac_minh_lieu"
+    },
+    "UCSF_MAX": {
+      "ten": "UCSF IDMP · Maximum Dosing for Amoxicillin and Amoxicillin-Clavulanate",
+      "url": "https://idmp.ucsf.edu/content/maximum-dosing-for-amoxicillin-and-amoxicillin-clavulanate-0",
+      "muc": "Mục Pediatric: trần thường dùng và giảm tải clavulanate. So sánh nguồn, không dùng thay trần của Hội Nhi khoa Việt Nam.",
+      "loai": "doi_chieu_phac_do_quoc_te"
+    },
+    "ANMF_NEONATAL_V13": {
+      "ten": "Australasian Neonatal Medicines Formulary · Amoxicillin-clavulanate, bản 1.3",
+      "url": "https://www.anmfonline.org/wp-content/uploads/2023/07/Amoxicillin-clavulanate_ANMFv1.3_20230726.pdf",
+      "muc": "Trang 1–2: chỉ định điều trị đích, liều, cách dùng và lưu ý ở trẻ sơ sinh",
+      "loai": "chuyen_luan_so_sinh_quoc_te"
+    },
+    "NHI_DONG_1_TMH_2026": {
+      "ten": "Bệnh viện Nhi Đồng 1 · Bài cập nhật viêm tai giữa cấp ở trẻ em, đăng tháng 3/2026",
+      "url": "https://bvndtp.org.vn/wp-content/uploads/2026/03/Ca%CC%A3%CC%82p-nha%CC%A3%CC%82t-%C4%91ie%CC%82%CC%80u-tri%CC%A3-VTG-o%CC%9B%CC%89-tre%CC%89-em-BS-Tra%CC%82%CC%80n-Nam-Khang-1.pdf",
+      "muc": "Bảng so sánh khuyến cáo tại Việt Nam và tổng kết về tỷ lệ 14:1. Tài liệu cập nhật chuyên môn.",
+      "loai": "tai_lieu_cap_nhat_benh_vien_VN"
+    },
+    "NHI_TW_2012_CAP": {
+      "ten": "Bệnh viện Nhi Trung ương · Phác đồ điều trị viêm phổi do vi khuẩn cộng đồng, 2012",
+      "url": "https://benhviennhitrunguong.gov.vn/phac-do-dieu-tri-viem-phoi-do-vi-khuan-cong-dong.html",
+      "muc": "Mục 2, nhóm trên 1 tháng đến 5 tuổi. Tham chiếu lịch sử.",
+      "loai": "phac_do_lich_su_benh_vien_VN"
+    },
+    "DTQGVN_III_DOI_CHIEU_THU_CAP": {
+      "ten": "Bản trình bày thứ cấp chuyên luận Amoxicilin và kali clavulanat, dẫn Dược thư Quốc gia Việt Nam III",
+      "url": "https://trungtamthuoc.com/hoat-chat/amoxicilin-kali-clavulanat",
+      "muc": "Mục 10.2.2 và phần hiệu chỉnh liều. Tài liệu tham khảo của trang ghi chuyên luận trang 208–211. Cần kiểm tra nguyên bản chính thức trước khi trích liều.",
+      "loai": "doi_chieu_thu_cap_chua_xac_minh_ban_goc"
+    }
+  },
+  "nguon_chua_doi_chieu_toan_van": [
+    {
+      "id": "DTQGVN_III",
+      "noi_dung": "Đã xác minh QĐ ban hành, chưa dùng bản thông báo để trích liều. Cần đối chiếu chuyên luận bản đã mua/được phép truy cập."
+    },
+    {
+      "id": "NHI_TW_2024",
+      "noi_dung": "Cần trang/phần liều nguyên bản của phác đồ 2024 để dùng làm nguồn mức liều."
+    },
+    {
+      "ten": "NeoFax",
+      "noi_dung": "Chưa có chuyên luận có quyền truy cập để xác minh. Dữ liệu sơ sinh dùng ANMF và nhãn FDA công khai, mỗi mức liều giữ nguồn riêng."
+    }
+  ],
+  "vi_du_kiem_thu_so_hoc": [
+    {
+      "id": "AGE_D28",
+      "ngay_tuoi": 28,
+      "nhom_ky_vong": "so_sinh"
+    },
+    {
+      "id": "AGE_D29",
+      "ngay_tuoi": 29,
+      "nhom_ky_vong": "nhi_khoa"
+    },
+    {
+      "id": "DOSE_45_12KG",
+      "muc_lieu": "NHI_PO_KLAMENTIN_45",
+      "tuoi_thang_tron": 18,
+      "can_nang_kg": 12,
+      "amoxicillin_mg_ngay": 540,
+      "amoxicillin_mg_lan": 270,
+      "clavulanic_mg_lan_tuong_duong": 33.75,
+      "so_goi_tuong_duong_ly_thuyet": 1.08,
+      "mL_de_cap_phat": null,
+      "ky_vong": "Chỉ tính kiểm thử. Không tự quy đổi 1,08 gói thành liều được phép dùng."
+    },
+    {
+      "id": "AOM_RATIO_8_1",
+      "muc_lieu": "NHI_PO_AOM_90_VN",
+      "can_nang_kg": 12,
+      "ma_kho_thu": "KLAM001",
+      "clavulanic_mg_kg_ngay_neu_gan_nham": 11.25,
+      "ky_vong": "Chặn do không tương thích đúng tỷ lệ và vượt ngưỡng của nhánh AOM."
+    },
+    {
+      "id": "AXUKA_REJECT",
+      "muc_lieu": "NHI_IV_25_Q8",
+      "can_nang_kg": 12,
+      "ma_kho_thu": "TD29-000024",
+      "amoxicillin_mg_lan_tham_chieu": 300,
+      "mL_de_cap_phat": null,
+      "ky_vong": "Không áp dụng cho Axuka và không trả thể tích pha/rút."
+    },
+    {
+      "id": "AGE_NO_DOB_90_DAYS",
+      "tuoi_sau_sinh": 90,
+      "don_vi_tuoi": "ngay",
+      "nhom_ky_vong": "nhi_khoa",
+      "moc_3_thang_ky_vong": "can_bo_sung"
+    },
+    {
+      "id": "AGE_EXACT_3_MONTHS",
+      "ngay_sinh": "2026-08-18",
+      "ngay_danh_gia": "2026-11-18",
+      "tuoi_thang_tron_ky_vong": 3,
+      "nhom_ky_vong": "nhi_khoa",
+      "muc_khong_hien_thi": "NHI_PO_FDA_TRE_NHO_30"
+    },
+    {
+      "id": "SS_GA_UNKNOWN",
+      "ngay_tuoi": 14,
+      "can_nang_kg": 3.2,
+      "tuoi_thai_luc_sinh_ngay": null,
+      "nhom_ky_vong": "so_sinh",
+      "trang_thai_ky_vong": "can_bo_sung"
+    },
+    {
+      "id": "AOM_90_CAP",
+      "muc_lieu": "NHI_PO_AOM_90_VN",
+      "can_nang_kg": 36,
+      "amoxicillin_mg_lan_chua_gioi_han": 1620,
+      "amoxicillin_mg_ngay_chua_gioi_han": 3240,
+      "ky_vong": "Cảnh báo vượt 1.500 mg/lần và 3.000 mg/ngày. Bản mẫu không tự chốt liều."
+    },
+    {
+      "id": "CLAV_RATIO_14_TO_1",
+      "muc_lieu": "NHI_PO_AOM_90_VN",
+      "can_nang_kg": 12,
+      "clavulanic_mg_kg_ngay_ly_thuyet": 6.435,
+      "mL_hon_dich_lan_ly_thuyet": 4.5,
+      "mL_de_cap_phat": null,
+      "ky_vong": "Chỉ kiểm thử công thức với hỗn dịch tham chiếu 600/42,9 mg mỗi 5 mL."
+    }
+  ],
+  "sua_doi_du_lieu": 2
+}
