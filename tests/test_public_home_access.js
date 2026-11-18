@@ -140,7 +140,10 @@ async function openStandaloneTool({host, user, profileStatus} = {}) {
 }
 
 (async () => {
-  for (const path of ['', 'index.html', '#gioi-thieu', '#danh-muc-tai-lieu', '#huong-dan-su-dung', '#ban-tin', '#lien-he']) {
+  const installedStart = JSON.parse(fs.readFileSync(require.resolve('../manifest.json'), 'utf8')).start_url;
+  const publicPaths = ['', 'index.html', '#home', 'index.html#home', installedStart,
+    'index.html?vpmed_app=installed', '#gioi-thieu', '#danh-muc-tai-lieu', '#huong-dan-su-dung', '#ban-tin', '#lien-he'];
+  for (const path of publicPaths) {
     const visitor = await openPage(path);
     assert.equal(visitor.classes.has('vpmed-private-entry'), false);
     assert.equal(visitor.classes.has('vpmed-auth-checking'), true);
@@ -168,9 +171,9 @@ async function openStandaloneTool({host, user, profileStatus} = {}) {
   assert.equal(cachedButSignedOut.classes.has('vpmed-auth-checking'), true);
   assert.deepEqual(cachedButSignedOut.urls, deepLink.urls);
 
-  const installed = await openPage('index.html?vpmed_app=installed');
-  assert.equal(installed.classes.has('vpmed-private-entry'), true);
-  assert.deepEqual(installed.urls, ['tai-khoan.html?next=index.html%3Fvpmed_app%3Dinstalled']);
+  const installedTool = await openPage('index.html?vpmed_app=installed#pediatric-dose');
+  assert.equal(installedTool.classes.has('vpmed-private-entry'), true);
+  assert.deepEqual(installedTool.urls, ['tai-khoan.html?next=index.html%3Fvpmed_app%3Dinstalled%23pediatric-dose']);
   const signedOutInstalled = await openPage('', {standalone:true});
   assert.equal(signedOutInstalled.classes.has('vpmed-private-entry'),false);
   assert.deepEqual(signedOutInstalled.urls,[]);
@@ -183,6 +186,11 @@ async function openStandaloneTool({host, user, profileStatus} = {}) {
   noCdn.location.hash = 'dose';
   noCdn.listeners.get('hashchange')();
   assert.deepEqual(noCdn.urls, ['tai-khoan.html?next=index.html%23dose']);
+  assert.equal(noCdn.classes.has('vpmed-private-entry'), true);
+  noCdn.location.hash = 'home';
+  noCdn.listeners.get('hashchange')();
+  assert.equal(noCdn.classes.has('vpmed-private-entry'), false);
+  assert.equal(noCdn.urls.length, 1);
 
   const member = await openPage('#pediatric-dose', {approved: true});
   assert.equal(member.classes.has('vpmed-auth-checking'), false);

@@ -29,15 +29,13 @@
   }
   </script>
   <script>
-    window.VPMED_IS_PUBLIC_ROUTE = (hash) => /^(?:#(?:gioi-thieu|chuc-nang|to-chuc|danh-muc-tai-lieu|huong-dan-su-dung|ban-tin|lien-he|sitePolicy))?$/.test(hash);
-    function showPublicGuideRoute() {
+    window.VPMED_IS_PUBLIC_ROUTE = (hash) => /^(?:#(?:home|gioi-thieu|chuc-nang|to-chuc|danh-muc-tai-lieu|huong-dan-su-dung|ban-tin|lien-he|sitePolicy))?$/.test(hash);
+    function updateEntryRoute() {
       document.documentElement.classList.toggle('vpmed-public-guide', location.hash === '#huong-dan-su-dung');
+      document.documentElement.classList.toggle('vpmed-private-entry', !window.VPMED_IS_PUBLIC_ROUTE(location.hash));
     }
-    showPublicGuideRoute();
-    window.addEventListener('hashchange', showPublicGuideRoute);
-    if (!window.VPMED_IS_PUBLIC_ROUTE(location.hash) || new URLSearchParams(location.search).get('vpmed_app') === 'installed') {
-      document.documentElement.classList.add('vpmed-private-entry');
-    }
+    updateEntryRoute();
+    window.addEventListener('hashchange', updateEntryRoute);
   </script>
   <link rel="manifest" href="manifest.json?v=20260822-installed-data-channel-v1">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
