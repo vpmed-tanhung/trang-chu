@@ -15,7 +15,10 @@ assert.ok(html.includes(`rel="canonical" href="${publicUrl}"`));
 assert.match(html, /name="description" content="[^"]*Hỗ trợ Dược lâm sàng/);
 assert.doesNotMatch(html, /class="vpmed-public-home"/);
 assert.match(html, /id="cong-cu-lam-sang"[^>]*data-internal-only/);
-assert.match(html, /id="danh-muc-tai-lieu"[^>]*data-internal-only/);
+assert.doesNotMatch(html.match(/<section[^>]+id="danh-muc-tai-lieu"[^>]*>/)[0], /data-internal-only/);
+assert.match(html, /<h2 data-guest-only>Hướng dẫn sử dụng<\/h2>/);
+assert.match(html, /data-open="thong-tin-thuoc" data-internal-only/);
+assert.doesNotMatch(html.match(/<a[^>]+data-open="huong-dan-su-dung"[^>]*>/)[0], /data-internal-only/);
 assert.doesNotMatch(html.match(/<section[^>]+id="ban-tin"[^>]*>/)[0], /data-internal-only/);
 for (const id of ['gioi-thieu','chuc-nang','to-chuc','danh-muc-tai-lieu','ban-tin','lien-he']) {
   assert.ok(html.includes(`id="${id}"`));
@@ -92,7 +95,7 @@ async function openStandaloneTool({host, user, profileStatus} = {}) {
 }
 
 (async () => {
-  for (const path of ['', 'index.html', '#gioi-thieu', '#ban-tin', '#lien-he']) {
+  for (const path of ['', 'index.html', '#gioi-thieu', '#danh-muc-tai-lieu', '#ban-tin', '#lien-he']) {
     const visitor = await openPage(path);
     assert.equal(visitor.classes.has('vpmed-private-entry'), false);
     assert.equal(visitor.classes.has('vpmed-auth-checking'), true);
@@ -104,7 +107,7 @@ async function openStandaloneTool({host, user, profileStatus} = {}) {
   const deepLink = await openPage('#pediatric-dose');
   assert.equal(deepLink.classes.has('vpmed-private-entry'), true);
   assert.deepEqual(deepLink.urls, ['tai-khoan.html?next=index.html%23pediatric-dose']);
-  for (const hash of ['danh-muc-tai-lieu','thong-tin-thuoc','huong-dan-su-dung']) {
+  for (const hash of ['thong-tin-thuoc','huong-dan-su-dung']) {
     const internalLibrary = await openPage('#'+hash);
     assert.deepEqual(internalLibrary.urls, ['tai-khoan.html?next=index.html%23'+hash]);
   }

@@ -29,7 +29,7 @@
   }
   </script>
   <script>
-    window.VPMED_IS_PUBLIC_ROUTE = (hash) => /^(?:#(?:gioi-thieu|chuc-nang|to-chuc|ban-tin|lien-he|sitePolicy))?$/.test(hash);
+    window.VPMED_IS_PUBLIC_ROUTE = (hash) => /^(?:#(?:gioi-thieu|chuc-nang|to-chuc|danh-muc-tai-lieu|ban-tin|lien-he|sitePolicy))?$/.test(hash);
     if (!window.VPMED_IS_PUBLIC_ROUTE(location.hash) || new URLSearchParams(location.search).get('vpmed_app') === 'installed' ||
         navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches) {
       document.documentElement.classList.add('vpmed-private-entry');
@@ -44,6 +44,10 @@
   <link rel="stylesheet" href="assets/platform-shell.css?v=20260822-pwa-v1">
   <!-- Chỉ chuẩn hóa bố cục thẻ và hiệu ứng cảnh báo; giữ nguyên bảng màu sáng gốc -->
   <link rel="stylesheet" href="assets/navy-theme.css?v=20260828-original-colors-pulse-v2">
+  <style>
+    html:not(.vpmed-auth-checking) [data-guest-only] { display: none !important; }
+    html.vpmed-auth-checking #danh-muc-tai-lieu .library-hub { grid-template-columns: minmax(0, 1fr); }
+  </style>
 </head>
 <body class="pharmacy-home-active">
 <header class="topbar">
@@ -59,6 +63,7 @@
       <button type="button" data-view="home" data-scroll-target="cong-cu-lam-sang" data-internal-only>Công cụ lâm sàng</button>
       <button type="button" class="nav-emergency" data-view="cap-cuu-phan-ve" data-internal-only>Cấp cứu phản vệ</button>
       <a href="#danh-muc-tai-lieu" data-view="home" data-scroll-target="danh-muc-tai-lieu" data-internal-only>Tài liệu</a>
+      <a href="#danh-muc-tai-lieu" data-guest-only>Hướng dẫn sử dụng</a>
       <a href="#ban-tin" data-view="home" data-scroll-target="ban-tin">Bản tin Dược</a>
       <a href="#lien-he" data-view="home" data-scroll-target="lien-he">Liên hệ</a>
     </nav>
@@ -195,10 +200,13 @@
       </div>
     </section>
 
-    <section class="section-card pharmacy-library" id="danh-muc-tai-lieu" aria-labelledby="library-hub-title" data-internal-only>
-      <div class="library-heading"><h2 id="library-hub-title" data-home-content="libraryTitle">Thông tin thuốc &amp; Hướng dẫn sử dụng</h2></div>
+    <section class="section-card pharmacy-library" id="danh-muc-tai-lieu" aria-label="Thư viện tài liệu">
+      <div class="library-heading">
+        <h2 id="library-hub-title" data-home-content="libraryTitle" data-internal-only>Thông tin thuốc &amp; Hướng dẫn sử dụng</h2>
+        <h2 data-guest-only>Hướng dẫn sử dụng</h2>
+      </div>
       <div class="library-hub">
-        <a class="library-hub-card" href="#thong-tin-thuoc" data-open="thong-tin-thuoc"><span aria-hidden="true">💊</span><span><strong>Thông tin thuốc</strong><small>Tài liệu thuốc và tờ hướng dẫn sử dụng.</small><em data-library-count="drug">Đăng nhập để xem</em></span><span class="library-hub-arrow" aria-hidden="true">→</span></a>
+        <a class="library-hub-card" href="#thong-tin-thuoc" data-open="thong-tin-thuoc" data-internal-only><span aria-hidden="true">💊</span><span><strong>Thông tin thuốc</strong><small>Tài liệu thuốc và tờ hướng dẫn sử dụng.</small><em data-library-count="drug">Đăng nhập để xem</em></span><span class="library-hub-arrow" aria-hidden="true">→</span></a>
         <a class="library-hub-card library-hub-card--guide" href="#huong-dan-su-dung" data-open="huong-dan-su-dung"><span aria-hidden="true">📖</span><span><strong>Hướng dẫn sử dụng</strong><small>Quy trình và hướng dẫn thao tác.</small><em data-library-count="guide">Đăng nhập để xem</em></span><span class="library-hub-arrow" aria-hidden="true">→</span></a>
       </div>
     </section>
