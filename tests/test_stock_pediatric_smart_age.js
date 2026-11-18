@@ -28,7 +28,7 @@ class FakeRoot extends FakeElement{
   set innerHTML(html){
     this._innerHTML=String(html);
     this.nodes={};
-    for(const match of this._innerHTML.matchAll(/<(input|select|label|button|section|small|div|tbody|th)\b([^>]*\bid="([^"]+)"[^>]*)>/g)){
+    for(const match of this._innerHTML.matchAll(/<(input|select|label|button|section|small|span|details|div|tbody|th)\b([^>]*\bid="([^"]+)"[^>]*)>/g)){
       const element=new FakeElement(match[1]);
       element.hidden=/\bhidden\b/.test(match[2]);
       if(match[1]==='select'){
@@ -48,6 +48,7 @@ const root=new FakeRoot();
 global.window={};
 global.document={getElementById(id){return id==='stockPediatricTool'?root:null;}};
 require('../assets/stock_clinical_data_20260814.js');
+require('../assets/stock_pediatric_mic.js');
 require('../assets/stock_clinical_tools.js');
 
 const get=(id)=>root.querySelector(`#${id}`);
@@ -68,7 +69,8 @@ change('stockPedPatientCode','BN0001');
 change('stockPedWeight',10);
 change('stockPedAgeValue',3);
 assert.match(get('stockPedAgeMode').textContent,/Nhi khoa/);
-assert.strictEqual(get('stockPedDrug').value,'amoxicillin-clavulanate');
+assert.strictEqual(get('stockPedDrug').value,'','Phải chọn thuốc rõ ràng trước khi tính');
+change('stockPedDrug','amoxicillin-clavulanate','change');
 calculate();
 assert.match(get('stockPedResult').innerHTML,/225 mg/);
 assert.match(get('stockPedResult').innerHTML,/450 mg/);
@@ -78,14 +80,28 @@ assert.match(get('stockPedResult').innerHTML,/Bệnh viện Nhi Trung ương/);
 assert.match(get('stockPedResult').innerHTML,/Bệnh cảnh áp dụng/);
 assert.match(get('stockPedResult').innerHTML,/Chỉ chuyển sang mức này khi/);
 assert.match(get('stockPedResult').innerHTML,/Nguồn tính liều trực tiếp/);
+assert.match(get('stockPedResult').innerHTML,/450 mg\/24 giờ/);
+assert.doesNotMatch(get('stockPedResult').innerHTML,/Nhập MIC dương/);
 assert.doesNotMatch(get('stockPedResult').innerHTML,/2147\/QĐ-BYT/,'Không được dùng phác đồ viêm phổi người lớn cho công cụ Nhi');
 assert.doesNotMatch(get('stockPedResult').innerHTML,/cap-nhat-bo-sung-huong-dan-su-dung-khang-sinh/,'Không được trỏ tới bài giới thiệu hướng dẫn 2024');
 assert.doesNotMatch(get('stockPedResult').innerHTML,/tai-lieu-huong-dan-su-dung-khang-sinh/,'Không được dùng trang hồ sơ/tải tài liệu làm nguồn trực tiếp của mức liều');
 assert.strictEqual(get('stockPedPmaWrap').hidden,false,'PMA phải có sẵn cho trẻ nhỏ từng sinh non');
 
+change('stockPedAst','S');
+change('stockPedMicValue','0,5');
+change('stockPedExposure','6');
+change('stockPedMicInterval','8');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/%fT &gt; MIC = 75%/);
+change('stockPedAst','R');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/Kháng \(R\)/);
+assert.doesNotMatch(get('stockPedResult').innerHTML,/stock-regimen-card/);
+
 change('stockPedAgeValue',2);
 change('stockPedAgeUnit','year','change');
 change('stockPedDrug','levofloxacin','change');
+assert.strictEqual(get('stockPedMicValue').value,'','Đổi thuốc phải xóa MIC của thuốc cũ');
 calculate();
 assert.match(get('stockPedResult').innerHTML,/su-dung-khang-sinh-fluoroquinolon-trong-nhi-khoa/);
 assert.doesNotMatch(get('stockPedResult').innerHTML,/fresenius-kabi/,'Trang chỉ nhận diện sản phẩm không được gắn nhãn HDSD trong kết quả Nhi');
@@ -200,6 +216,31 @@ change('stockPedAgeValue',29);
 change('stockPedDrug','amoxicillin-clavulanate','change');
 calculate();
 assert.match(get('stockPedResult').innerHTML,/stock-regimen-card/);
+
+change('stockPedAgeUnit','month','change');
+change('stockPedAgeValue',2);
+change('stockPedPma','');
+change('stockPedDrug','vancomycin','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/cần tuổi sau kinh \(PMA\)/);
+change('stockPedPma',48);
+calculate();
+assert.match(get('stockPedResult').innerHTML,/stock-regimen-card/);
+
+change('stockPedAgeValue',4);
+change('stockPedPma','');
+change('stockPedWeight',10);
+change('stockPedDrug','gentamicin','change');
+calculate();
+assert.match(get('stockPedResult').innerHTML,/Nhập thêm PMA/);
+assert.doesNotMatch(get('stockPedResult').innerHTML,/7 mg\/kg\/lần/);
+change('stockPedPma',51);
+calculate();
+assert.match(get('stockPedResult').innerHTML,/50 mg/);
+assert.doesNotMatch(get('stockPedResult').innerHTML,/70 mg/);
+change('stockPedPma',52);
+calculate();
+assert.match(get('stockPedResult').innerHTML,/70 mg/);
 
 get('stockPedReset').dispatch('click');
 assert.strictEqual(get('stockPedPma').value,'');

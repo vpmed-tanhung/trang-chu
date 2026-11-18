@@ -264,6 +264,10 @@
 .stock-pediatric-form .stock-age-control input,.stock-pediatric-form .stock-age-control select{margin-top:6px}
 .stock-ped-patient-row{grid-template-columns:minmax(100px,.82fr) minmax(0,1.35fr)}
 .stock-ped-form-note{margin:13px 0 0;color:#607887;font-size:11px;line-height:1.5}
+.stock-ped-mic{border:1px solid #d0e0e9;border-radius:9px;padding:10px 12px;margin-top:12px;background:#f7fbfd}
+.stock-ped-mic>summary{cursor:pointer;font-weight:750;color:#075f86}
+.stock-ped-mic label.stock-ped-mic-check{display:flex;align-items:flex-start;gap:.5rem}
+.stock-ped-mic .stock-ped-mic-check input{width:auto;flex:none;margin-top:.15rem}
 .stock-pediatric-form .btn-primary{margin-top:12px}
 .stock-ped-reset{margin-top:8px}
 .stock-ped-footnote{margin-top:15px;padding-left:2px}

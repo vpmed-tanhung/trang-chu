@@ -2,12 +2,13 @@
   'use strict';
   const data=window.VPMED_STOCK_CLINICAL;
   if(!data)return;
+  const micCalculator=window.VPMED_PEDIATRIC_MIC;
 
   const esc=(value)=>String(value??'').replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const norm=(value)=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
   const format=(value,digits=1)=>Number(value).toLocaleString('vi-VN',{maximumFractionDigits:digits,minimumFractionDigits:Number.isInteger(value)?0:Math.min(1,digits)});
   const sourceLinks=(sources)=>`<div class="stock-source-links">${(sources||[]).map((source)=>`<a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(source.title)} ↗</a>`).join('')}</div>`;
-  const stockList=(stock)=>`<div class="stock-stock-list">${stock.map((item)=>`<div class="stock-stock-item"><b>${esc(item.name)} — ${esc(item.strength)}</b><small>${esc(item.code)} · ${esc(item.route)} · ${esc(item.active)}</small></div>`).join('')}</div>`;
+  const stockList=(stock)=>`<div class="stock-stock-list">${stock.map((item)=>`<div class="stock-stock-item"><b>${esc(item.name)} — ${esc(item.strength)}</b><small>${esc(item.code)}${item.hisIds?.length?` · HIS ${esc(item.hisIds.join(', '))}`:''} · ${esc(item.route)} · ${esc(item.active)}</small>${item.note?`<small>${esc(item.note)}</small>`:''}</div>`).join('')}</div>`;
 
   function ruleMatchesAge(rule,ageMonths){
     return (rule.minAgeMonths==null||ageMonths>=rule.minAgeMonths)&&(rule.maxAgeMonths==null||ageMonths<=rule.maxAgeMonths);
@@ -36,6 +37,10 @@
   }
 
   const pediatricClinicalSources={
+    bytAntimicrobial:{title:'Bộ Y tế — Hướng dẫn sử dụng kháng sinh (708/QĐ-BYT)',url:'https://kcb.vn/van-ban/tai-lieu-huong-dan-su-dung-khang-sinh.html',type:'Hướng dẫn Bộ Y tế',scope:'Cơ sở sử dụng PK/PD và kháng sinh đồ.'},
+    eucastAst:{title:'EUCAST — Diễn giải S, I và R',url:'https://www.eucast.org/bacteria/clinical-breakpoints-and-interpretation/definition-of-s-i-and-r/',type:'Chuẩn vi sinh',scope:'Diễn giải EUCAST; giữ nguyên phân loại trên phiếu labo.'},
+    vancoConsensus:{title:'ASHP/IDSA/PIDS/SIDP — TDM vancomycin trong nhiễm MRSA nặng',url:'https://www.idsociety.org/practice-guideline/vancomycin',type:'Đồng thuận chuyên khoa',scope:'Đích AUC₂₄, MIC đo bằng BMD và an toàn trên thận.'},
+    vancoRch:{title:'Royal Children’s Hospital Melbourne — Vancomycin',url:'https://www.rch.org.au/clinicalguide/guideline_index/vancomycin/',type:'Phác đồ Nhi khoa',scope:'Phạm vi TDM, điều kiện hiệu chỉnh và ngưỡng cần hội chẩn.'},
     nhiAmox:{title:'Bệnh viện Nhi Trung ương — Tỷ lệ phối hợp và chế độ liều cao amoxicillin',url:'https://benhviennhitrunguong.gov.vn/ty-le-phoi-hop-amoxicilin-acid-clavulanic-va-che-do-lieu-cao-amoxicilin-trong-nhi-khoa.html',type:'Chuyên khảo bệnh viện',scope:'Liều tính theo amoxicillin; tiêu chí và lựa chọn tỷ lệ clavulanate khi dùng liều cao.'},
     nhiFluoroquinolone:{title:'Bệnh viện Nhi Trung ương — Sử dụng fluoroquinolon trong Nhi khoa',url:'https://benhviennhitrunguong.gov.vn/su-dung-khang-sinh-fluoroquinolon-trong-nhi-khoa.html',type:'Chuyên khảo bệnh viện',scope:'Giới hạn chỉ định, vai trò ciprofloxacin/levofloxacin và yêu cầu cân nhắc lựa chọn an toàn hơn.'},
     nhiTmpSmx:{title:'Bệnh viện Nhi Trung ương — Sử dụng trimethoprim/sulfamethoxazole trên trẻ em',url:'https://benhviennhitrunguong.gov.vn/su-dung-trimethoprim-sulfamethoxazole-tren-tre-em.html',type:'Chuyên khảo bệnh viện',scope:'Chỉ định theo bệnh cảnh; liều được quy đổi theo thành phần trimethoprim.'},
@@ -55,9 +60,10 @@
     'amoxicillin-clavulanate':{
       default:{indication:'Nhiễm khuẩn do vi khuẩn nhạy cảm với amoxicillin/clavulanate; ưu tiên chế phẩm Nhi phù hợp.',criteria:'Xác nhận tuổi, chức năng thận, khả năng uống và hàm lượng amoxicillin/clavulanate của đúng chế phẩm.',sources:['nhiAmox']},
       rules:{
-        'under-3m':{indication:'Nhiễm khuẩn nhạy cảm cần điều trị đường uống ở trẻ từ 1 đến dưới 3 tháng.',criteria:'Chỉ dùng khi có hỗn dịch Nhi phù hợp; kho hiện chỉ có viên 500/125 mg nên không tự bẻ hoặc nghiền để quy đổi.'},
-        standard:{indication:'Liều thường quy cho nhiễm khuẩn nhạy cảm, gồm bệnh cảnh hô hấp khi amoxicillin/clavulanate là lựa chọn phù hợp.',criteria:'Không có tiêu chí dùng liều cao phế cầu; đánh giá dị ứng beta-lactam và kháng sinh đồ nếu có.',sources:['nhiCap','nhiAmox']},
-        'high-dose':{indication:'Liều cao amoxicillin cho bệnh cảnh cần tăng phơi nhiễm với phế cầu giảm nhạy cảm, như một số ca viêm tai giữa, viêm xoang hoặc viêm phổi.',criteria:'Trẻ ≥3 tháng, chức năng thận bình thường và có tiêu chí lâm sàng dùng liều cao; ưu tiên tỷ lệ amoxicillin:clavulanate 14:1 hoặc 16:1 để hạn chế clavulanate.',sources:['nhiAmox']}
+        'under-3m':{indication:'Nhiễm khuẩn nhạy cảm cần điều trị đường uống ở nhũ nhi dưới 3 tháng thuộc bảng Nhi khoa của công cụ.',criteria:'Xác nhận phù hợp điều trị đường uống và có đúng hỗn dịch theo nhãn.'},
+        mild:{indication:'Nhiễm khuẩn nhẹ hoặc vừa có chỉ định amoxicillin/clavulanate.',criteria:'Chọn đúng dạng và tỷ lệ theo nhãn. Đánh giá dị ứng beta-lactam và kháng sinh đồ.'},
+        standard:{indication:'Viêm tai giữa, viêm xoang, nhiễm khuẩn hô hấp dưới hoặc nhiễm khuẩn nặng hơn còn phù hợp đường uống.',criteria:'Đánh giá chỉ định và dùng đúng tỷ lệ của hỗn dịch. Chuyển rà soát chuyên khoa nếu bệnh nhi cần xử trí nội trú.',sources:['nhiAmox']},
+        'high-dose':{indication:'Viêm tai giữa cấp đáp ứng tiêu chí dùng phối hợp liều cao của Hội Nhi khoa Việt Nam hoặc thất bại với amoxicillin ban đầu.',criteria:'Cần đúng chế phẩm 600/42,9 mg mỗi 5 mL và đối chiếu tiêu chí của chế phẩm, chức năng thận và tải clavulanic acid; giới hạn của nhánh này là 10 mg/kg/24 giờ.',sources:['nhiAmox']}
       }
     },
     'ampicillin-sulbactam':{default:{indication:'Nhiễm khuẩn do vi khuẩn nhạy cảm, gồm một số trường hợp viêm phổi cộng đồng Nhi khoa cần đường tĩnh mạch.',criteria:'Chọn khi phổ beta-lactam/beta-lactamase inhibitor phù hợp; lấy bệnh phẩm và xuống thang theo kháng sinh đồ.',sources:['nhiCap']}},
@@ -153,10 +159,24 @@
     return mode==='neonate'?'Liều Sơ sinh theo PMA và tuổi sau sinh':'Liều theo tuổi';
   }
 
-  function eligibleRules(drug,context){
+  function missingPmaForRule(rule,context){
+    return !context.hasValidPma&&(rule.maxPmaWeeks!=null||
+      (rule.minPmaWeeks!=null&&context.minPossiblePma<rule.minPmaWeeks));
+  }
+
+  function childRuleMatches(rule,context,weight){
+    return ruleMatchesAge(rule,context.months)&&
+      (rule.minWeightKg==null||weight>=rule.minWeightKg)&&
+      (rule.maxWeightKgExclusive==null||weight<rule.maxWeightKgExclusive);
+  }
+
+  function eligibleRules(drug,context,weight){
+    const pma=context.hasValidPma?context.pma:context.minPossiblePma;
     const rules=context.mode==='neonate'
       ?drug.neonatalRules.filter((rule)=>neonatalRuleMatches(rule,context.pma,context.days))
-      :drug.childRules.filter((rule)=>ruleMatchesAge(rule,context.months));
+      :drug.childRules.filter((rule)=>childRuleMatches(rule,context,weight)&&!missingPmaForRule(rule,context)&&
+        (rule.minPmaWeeks==null||pma>=rule.minPmaWeeks)&&
+        (rule.maxPmaWeeks==null||pma<=rule.maxPmaWeeks));
     const priority={baseline:0,route:1,conditional:2};
     return rules.map((rule,index)=>({rule,index,kind:ruleKind(rule)}))
       .sort((a,b)=>priority[a.kind]-priority[b.kind]||a.index-b.index);
@@ -217,6 +237,32 @@
             </details>
           </div>
           <label>Kháng sinh<select id="stockPedDrug"></select></label>
+          <details id="stockPedMic" class="stock-ped-mic" hidden>
+            <summary>Đánh giá MIC và PK/PD</summary>
+            <label>Phân loại trên phiếu kháng sinh đồ
+              <select id="stockPedAst">
+                <option value="">Chưa nhập</option><option value="S">S · Nhạy</option>
+                <option value="I-eucast">I · EUCAST</option><option value="I-clsi">I · CLSI</option>
+                <option value="SDD">SDD · CLSI</option><option value="R">R · Kháng</option>
+                <option value="no-breakpoint">Chưa có breakpoint áp dụng</option>
+              </select>
+            </label>
+            <div class="form-row">
+              <label>Dấu trên phiếu<select id="stockPedMicOperator" aria-label="Dấu của kết quả MIC">
+                <option value="=">=</option><option value="&lt;">&lt;</option><option value="≤">≤</option>
+                <option value="&gt;">&gt;</option><option value="≥">≥</option>
+              </select></label>
+              <label>MIC (mg/L)<input id="stockPedMicValue" type="text" inputmode="decimal" placeholder="Ví dụ: 0,5"></label>
+            </div>
+            <label id="stockPedExposureWrap" hidden><span id="stockPedExposureLabel"></span><input id="stockPedExposure" type="text" inputmode="decimal"></label>
+            <label id="stockPedMicIntervalWrap" hidden>Khoảng cách liều của mô hình (giờ)<input id="stockPedMicInterval" type="text" inputmode="decimal"></label>
+            <small class="stock-field-hint" id="stockPedMicHint"></small>
+            <div id="stockPedVancoMic" hidden>
+              <label class="stock-ped-mic-check"><input id="stockPedMrsaBmd" type="checkbox"> MRSA nặng và MIC đo bằng vi pha loãng canh thang (BMD)</label>
+              <label>Liều duy trì hiện tại (mg/24 giờ, tùy chọn)<input id="stockPedCurrentDaily" type="text" inputmode="decimal"></label>
+              <label class="stock-ped-mic-check"><input id="stockPedStableTdm" type="checkbox"> AUC từ cùng phác đồ duy trì ổn định, chức năng thận ổn định, không lọc máu/ECMO</label>
+            </div>
+          </details>
           <p class="stock-ped-form-note">Hệ thống tự lọc bảng Nhi khoa/Sơ sinh và hiển thị bệnh cảnh áp dụng cho từng mức liều; không yêu cầu người dùng chọn “chỉ định/phác đồ”.</p>
           <button class="btn btn-primary full" id="stockPedCalculate" type="button">Tính liều và gợi ý theo nguồn</button>
           <button class="btn btn-soft full stock-ped-reset" id="stockPedReset" type="button">Reset / nhập ca mới</button>
@@ -243,6 +289,16 @@
     const weightInput=root.querySelector('#stockPedWeight');
     const patientCodeInput=root.querySelector('#stockPedPatientCode');
     const result=root.querySelector('#stockPedResult');
+    const micDetails=root.querySelector('#stockPedMic');
+    const astInput=root.querySelector('#stockPedAst');
+    const micOperator=root.querySelector('#stockPedMicOperator');
+    const micInput=root.querySelector('#stockPedMicValue');
+    const exposureInput=root.querySelector('#stockPedExposure');
+    const micInterval=root.querySelector('#stockPedMicInterval');
+    const mrsaBmd=root.querySelector('#stockPedMrsaBmd');
+    const currentDaily=root.querySelector('#stockPedCurrentDaily');
+    const stableTdm=root.querySelector('#stockPedStableTdm');
+    const micFields=[astInput,micOperator,micInput,exposureInput,micInterval,mrsaBmd,currentDaily,stableTdm];
     let auditAuth=null;
     let historyRows=[];
     let historyLoading=false;
@@ -254,7 +310,11 @@
       const days=ageInDays(ageValue,ageUnit.value);
       const hasValidAge=Number.isFinite(ageValue)&&ageValue>=0&&Number.isFinite(months);
       const exactPna=['day','week'].includes(ageUnit.value)&&Number.isInteger(days);
-      const showPma=hasValidAge&&days<=(45-20)*7;
+      // A lower bound avoids inferring a precise calendar age from months or years.
+      const minDays=ageUnit.value==='month'?Math.floor(ageValue)*28
+        :ageUnit.value==='year'?Math.floor(ageValue)*365:Math.floor(days);
+      const minPossiblePma=20+Math.floor(minDays/7);
+      const showPma=hasValidAge&&minPossiblePma<52;
       const pmaRaw=showPma?pmaInput.value:'';
       const birthWeeks=showPma?birthWeeksInput.value:'';
       const birthDays=showPma?birthDaysInput.value:'';
@@ -283,7 +343,7 @@
       const hasValidPma=Number.isFinite(pma)&&!pmaError;
       const isNeonate=days<29||(hasValidPma&&pma<45);
       const mode=hasValidAge?(isNeonate?'neonate':'child'):null;
-      return {ageValue,months,days,pma,hasValidAge,hasValidPma,mode,showPma,exactPna,pmaError};
+      return {ageValue,months,days,pma,minPossiblePma,hasValidAge,hasValidPma,mode,showPma,exactPna,pmaError};
     }
 
     function availableDrugs(context){
@@ -311,9 +371,51 @@
       const context=ageContext();
       const previous=drugSelect.value;
       const drugs=availableDrugs(context);
-      drugSelect.innerHTML=drugs.map((drug)=>`<option value="${esc(drug.id)}">${esc(drug.name)} (${drug.stock.length} thuốc kho)</option>`).join('');
+      drugSelect.innerHTML='<option value="">Chọn kháng sinh</option>'+drugs.map((drug)=>`<option value="${esc(drug.id)}">${esc(drug.name)} (${drug.stock.length} thuốc kho)</option>`).join('');
       if(drugs.some((drug)=>drug.id===previous))drugSelect.value=previous;
+      if(previous!==drugSelect.value)resetMic();
+      renderMicFields();
       renderAgeMode(context);
+    }
+
+    function resetMic(){
+      astInput.value=micInput.value=exposureInput.value=micInterval.value=currentDaily.value='';
+      micOperator.value='=';
+      mrsaBmd.checked=stableTdm.checked=false;
+    }
+
+    function renderMicFields(){
+      micDetails.hidden=!micCalculator||!drugSelect.value;
+      if(micDetails.hidden)return;
+      const group=micCalculator.groupForDrug(drugSelect.value);
+      root.querySelector('#stockPedExposureWrap').hidden=group==='other';
+      root.querySelector('#stockPedMicIntervalWrap').hidden=group!=='beta';
+      root.querySelector('#stockPedVancoMic').hidden=group!=='vancomycin';
+      root.querySelector('#stockPedExposureLabel').textContent=group==='beta'?'Thời gian nồng độ tự do vượt MIC đã nhập (giờ)'
+        :group==='peak'?'Cmax theo TDM (mg/L)':'AUC₂₄ theo TDM/mô hình (mg·giờ/L)';
+      root.querySelector('#stockPedMicHint').textContent=group==='beta'?'Dùng thời gian từ mô hình PK đã thẩm định, cùng MIC và chế độ liều đang đối chiếu.'
+        :group==='peak'?'Nhập nồng độ đỉnh đã lấy đúng thời điểm của phác đồ.'
+        :'Nhập MIC đúng thuốc và kết quả phân loại của labo.';
+    }
+
+    function micPanel(assessment){
+      if(!assessment)return '';
+      const sources=[pediatricClinicalSources.bytAntimicrobial,pediatricClinicalSources.eucastAst];
+      if(assessment.group==='vancomycin')sources.push(pediatricClinicalSources.vancoConsensus,pediatricClinicalSources.vancoRch);
+      return `<section class="stock-note-box ${assessment.block?'warning':''}" aria-label="Kết quả MIC và PK/PD">
+        <h3>MIC và PK/PD</h3>
+        ${assessment.metric?`<p><strong>${esc(assessment.metric)} = ${format(assessment.value,2)}${assessment.unit==='%'?'%':assessment.unit?' '+esc(assessment.unit):''}</strong></p>`:''}
+        ${assessment.categoryNotice?`<p>${esc(assessment.categoryNotice)}</p>`:''}
+        <p>${esc(assessment.notice)}</p>
+        ${assessment.estimate?`<p><strong>Ước tính liều duy trì để rà soát theo AUC: ${format(assessment.estimate,1)} mg/24 giờ</strong></p>`:''}
+        ${assessment.adjustmentNotice?`<p>${esc(assessment.adjustmentNotice)}</p>`:''}
+        ${evidenceCards(sources)}
+      </section>`;
+    }
+
+    function clearResult(){
+      result.className='empty-state';
+      result.innerHTML='<div>🧪</div><b>Chưa có kết quả</b><span>Nhập thông tin rồi bấm Tính liều và gợi ý theo nguồn.</span>';
     }
 
     function showError(message){
@@ -344,9 +446,31 @@
         if(!contextData.exactPna)return showError('Bảng Sơ sinh cần tuổi sau sinh chính xác theo ngày hoặc tuần tròn.');
         context=`${ageLabel(contextData.ageValue,ageUnit.value)} sau sinh · PMA ${contextData.pma} tuần`;
       }
-      if(!drug)return showError('Danh mục chưa có kháng sinh phù hợp với bảng tuổi đã chọn.');
-      const matches=eligibleRules(drug,contextData);
-      if(!matches.length)return showError('Không có quy tắc liều phù hợp với tuổi/PMA đã nhập trong nguồn tính liều.');
+      if(!drug)return showError('Chọn kháng sinh trong danh sách phù hợp với tuổi đã nhập.');
+      const micEntered=[astInput,micInput,exposureInput,micInterval,currentDaily].some((field)=>field.value!=='')||
+        micOperator.value!=='='||mrsaBmd.checked||stableTdm.checked;
+      const micAssessment=micCalculator&&micEntered?
+        micCalculator.assess({
+          drugId:drug.id, category:astInput.value, mic:micInput.value, operator:micOperator.value,
+          exposure:exposureInput.value, interval:micInterval.value, currentDaily:currentDaily.value,
+          severeMrsaBmd:mrsaBmd.checked, stableMaintenance:stableTdm.checked,
+          ageMode:contextData.mode, ageMonths:contextData.months, weight
+        }):null;
+      if(micAssessment?.block){
+        result.className='result-card clinical-result-flow stock-pediatric-result';
+        result.innerHTML=micPanel(micAssessment);
+        return;
+      }
+      const matches=eligibleRules(drug,contextData,weight);
+      const awaitingPma=contextData.mode==='child'&&drug.childRules.some((rule)=>
+        childRuleMatches(rule,contextData,weight)&&missingPmaForRule(rule,contextData));
+      if(!matches.length){
+        if(awaitingPma){
+          pmaInput.focus?.();
+          return showError('Nguồn liều của kháng sinh này cần tuổi sau kinh (PMA). Nhập PMA hoặc tính từ tuổi thai lúc sinh.');
+        }
+        return showError('Không có quy tắc liều phù hợp với tuổi, PMA và cân nặng đã nhập.');
+      }
       const loading=contextData.mode==='neonate'&&drug.neonatalLoadingDoseMgKg?weight*drug.neonatalLoadingDoseMgKg:null;
       const kindLabels={baseline:'Liều nền theo tuổi',route:'Theo đường dùng',conditional:'Lựa chọn đặc biệt'};
       const auditSummaries=[];
@@ -354,17 +478,18 @@
         const rawDose=weight*rule.doseMgKg;
         const finalDose=rule.maxMg?Math.min(rawDose,rule.maxMg):rawDose;
         const capped=rule.maxMg&&rawDose>rule.maxMg;
+        const dailyDose=24%rule.intervalHours===0?finalDose*24/rule.intervalHours:null;
         const clinical=clinicalProfile(drug,rule,contextData.mode);
         const note=[rule.note,kind==='conditional'?'Chỉ áp dụng khi bệnh cảnh đã được xác định và phù hợp với hướng dẫn điều trị của đơn vị.':''].filter(Boolean).join(' ');
         auditSummaries.push(`${ruleLabel(drug,rule,contextData.mode)}: ${format(finalDose,1)} mg mỗi ${rule.intervalHours} giờ`);
         return `<article class="stock-regimen-card ${kind}">
           <div class="stock-regimen-top"><span class="stock-regimen-tag">${esc(kindLabels[kind])}</span><h3>${esc(ruleLabel(drug,rule,contextData.mode))}</h3></div>
           <div class="stock-regimen-main"><div><span>Liều mỗi lần</span><strong>${format(finalDose,1)} mg</strong></div><b>Mỗi ${rule.intervalHours} giờ</b></div>
-          <div class="stock-regimen-meta"><span>${format(rule.doseMgKg,1)} mg/kg/lần</span><span>${esc(rule.route||'Theo nguồn/nhãn')}</span>${rule.maxMg?`<span>Tối đa ${format(rule.maxMg,0)} mg/lần</span>`:''}</div>
+          <div class="stock-regimen-meta"><span>${format(rule.doseMgKg,2)} mg/kg/lần</span><span>${esc(rule.route||'Theo nguồn/nhãn')}</span>${dailyDose!=null?`<span>${format(dailyDose,1)} mg/24 giờ</span>`:''}${rule.maxMg?`<span>Tối đa ${format(rule.maxMg,0)} mg/lần</span>`:''}</div>
           ${capped?`<p class="stock-regimen-warning">Đã giới hạn từ ${format(rawDose,1)} mg xuống liều tối đa của nguồn.</p>`:''}
           ${note?`<p>${esc(note)}</p>`:''}
           <div class="stock-clinical-fit"><p><b>Bệnh cảnh áp dụng:</b> ${esc(clinical.indication)}</p><p><b>Chỉ chuyển sang mức này khi:</b> ${esc(clinical.criteria)}</p></div>
-          ${evidenceCards(clinical.sources)}
+          ${evidenceCards([...(rule.sources||[]),...clinical.sources])}
         </article>`;
       }).join('');
       const productSources=verifiedProductSources(drug);
@@ -376,12 +501,14 @@
         <div class="stock-result-panel">
           <div class="stock-result-heading"><div><h2>${esc(drug.name)}</h2><p>${esc(drug.basis)} · ${esc(context)} · ${format(weight,2)} kg</p></div><span>Đã tự lọc</span></div>
           <div class="stock-auto-summary">${esc(autoSummary)}</div>
+          ${micPanel(micAssessment)}
+          ${awaitingPma?`<div class="stock-note-box warning">Nhập thêm PMA để xem các mức liều phụ thuộc tuổi sau kinh.</div>`:''}
           <div class="stock-regimen-list">${cards}</div>
           ${loading!=null?`<div class="stock-note-box"><strong>Liều nạp:</strong> ${format(loading,1)} mg một lần; ${esc(drug.neonatalNote||'')}</div>`:''}
           ${drug.contraindicationNote?`<div class="stock-note-box warning"><strong>Cảnh báo/giới hạn sử dụng:</strong> ${esc(drug.contraindicationNote)}</div>`:''}
           ${contextData.mode==='neonate'&&drug.neonatalNote&&loading==null?`<div class="stock-note-box"><strong>Lưu ý Sơ sinh:</strong> ${esc(drug.neonatalNote)}</div>`:''}
           <div class="stock-note-box warning"><strong>Không tự suy ra bệnh cảnh:</strong> tuổi và cân nặng không xác định được viêm màng não, nhiễm khuẩn nặng, liều cao hay mục tiêu hiệp đồng. Chỉ dùng lựa chọn đặc biệt khi chẩn đoán và quy trình điều trị phù hợp.</div>
-          <div><h3>Thuốc tương ứng đang có trong kho</h3>${stockList(drug.stock)}</div>
+          <div><h3>Chế phẩm trong danh mục kho để đối chiếu</h3>${stockList(drug.stock)}</div>
           ${productSources.length?`<div><h3>Nguồn đúng chế phẩm có nội dung đọc trực tiếp</h3>${evidenceCards(productSources.map((source)=>({...source,type:productSourceType(source),scope:source.scope||'Đối chiếu đúng chế phẩm và số đăng ký.'})))}</div>`:''}
           <div><h3>Nguồn tính liều trực tiếp</h3>${evidenceCards(drug.sources.map((source)=>({...source,type:'Nguồn tính liều',scope:'Nguồn của con số mg/kg/lần, khoảng cách liều và liều tối đa hiển thị.'})))}</div>
           <p class="stock-audit-line">Chưa hiệu chỉnh theo suy thận, lọc máu, béo phì, bỏng, ECMO hoặc nồng độ thuốc. Vancomycin/aminoglycoside bắt buộc TDM theo quy trình đơn vị.</p>
@@ -392,9 +519,8 @@
 
     function resetCase(){
       patientCodeInput.value='';weightInput.value='';ageInput.value='';ageUnit.value='month';pmaInput.value='';
-      birthWeeksInput.value='';birthDaysInput.value='';
-      result.className='empty-state';
-      result.innerHTML='<div>🧪</div><b>Chưa có kết quả</b><span>Nhập mã HIS, tuổi, cân nặng và chọn kháng sinh để bắt đầu.</span>';
+      birthWeeksInput.value='';birthDaysInput.value='';drugSelect.value='';
+      resetMic();micDetails.open=false;clearResult();
       renderDrugs();patientCodeInput.focus&&patientCodeInput.focus();
     }
 
@@ -461,9 +587,16 @@
       refreshPediatricHistory();
     }
 
-    ageInput.addEventListener('input',renderDrugs);
-    ageUnit.addEventListener('change',renderDrugs);
-    [pmaInput,birthWeeksInput,birthDaysInput].forEach((input)=>input.addEventListener('input',renderDrugs));
+    function refreshAge(){
+      renderDrugs();
+      clearResult();
+    }
+    ageInput.addEventListener('input',refreshAge);
+    ageUnit.addEventListener('change',refreshAge);
+    [pmaInput,birthWeeksInput,birthDaysInput].forEach((input)=>input.addEventListener('input',refreshAge));
+    [patientCodeInput,weightInput].forEach((input)=>input.addEventListener('input',clearResult));
+    drugSelect.addEventListener('change',()=>{resetMic();renderMicFields();clearResult();});
+    micFields.forEach((input)=>input.addEventListener('input',clearResult));
     root.querySelector('#stockPedCalculate').addEventListener('click',calculate);
     root.querySelector('#stockPedReset').addEventListener('click',resetCase);
     [patientCodeInput,weightInput,ageInput,pmaInput,birthWeeksInput,birthDaysInput].forEach((input)=>input.addEventListener('keydown',(event)=>{if(event.key==='Enter')calculate();}));

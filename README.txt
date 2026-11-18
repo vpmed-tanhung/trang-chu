@@ -1,8 +1,16 @@
-VPMED — GHI CHÚ CẬP NHẬT HỆ THỐNG (cập nhật gần nhất: 18/11/2026, bản 5.8.10)
+VPMED — GHI CHÚ CẬP NHẬT HỆ THỐNG (cập nhật gần nhất: 18/11/2026, bản 5.8.12)
 
 Tài liệu này tóm tắt các thay đổi đang có hiệu lực trên website, viết theo đúng
 những gì mã nguồn hiện triển khai. Xem chi tiết kỹ thuật/lịch sử đầy đủ trong
 thư mục docs/changelog/.
+
+ĐIỂM MỚI TRONG BẢN 5.8.12
+- Công cụ Tính liều kháng sinh Nhi hiện tổng liều 24 giờ với lịch chia đều
+  trong ngày. Đã đối chiếu nhánh uống amoxicillin/clavulanate và điều kiện
+  PMA của vancomycin, gentamicin.
+- Phần MIC tùy chọn tính chỉ số PK/PD từ kết quả kháng sinh đồ và dữ liệu
+  phơi nhiễm. Ước tính liều theo AUC chỉ áp dụng trong phạm vi vancomycin đã
+  định rõ trên công cụ. MIC được nhập cùng đơn vị và dấu trên phiếu.
 
 ĐIỂM MỚI TRONG BẢN 5.8.10
 - Trình duyệt kiểm tra bản web mới khi mở trang có mạng và dùng bản đã lưu khi

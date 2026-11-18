@@ -6,7 +6,12 @@ const data=global.window.VPMED_STOCK_CLINICAL;
 
 assert.strictEqual(data.meta.generatedAt,'2026-08-22');
 assert.strictEqual(data.meta.counts.pediatricActives,16);
-assert.strictEqual(data.meta.counts.pediatricStockProducts,26);
+assert.strictEqual(data.meta.counts.pediatricStockProducts,27);
+
+const amoxicillin=data.pediatric.find((item)=>item.id==='amoxicillin-clavulanate');
+assert.deepStrictEqual(amoxicillin.childRules.map(({doseMgKg,intervalHours})=>[doseMgKg,intervalHours]),[[15,12],[12.5,12],[22.5,12],[45,12]]);
+assert.ok(amoxicillin.childRules.every((rule)=>rule.sources.length>0&&rule.maxWeightKgExclusive===40));
+assert.deepStrictEqual(amoxicillin.stock.find(item=>item.code==='KLAM001').hisIds,['36931','36700']);
 
 const expected={
   amikacin:'TD30-003208',

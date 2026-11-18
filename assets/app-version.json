@@ -1,10 +1,10 @@
 {
-  "version": "2026.11.18.83",
-  "displayVersion": "5.8.11",
-  "updatedAt": "2026-11-18T19:16:24+07:00",
-  "note": "Sửa phân nhóm tuổi và bổ sung cách nhập PMA trong công cụ Tính liều kháng sinh Nhi.",
-  "buildId": "v5.8.11-2026.11.18.83",
-  "clinicalDataVersion": "sha256-dfdb2ebbd6b10379721438e1",
-  "previousVersion": "2026.11.18.82",
-  "previousDisplayVersion": "5.8.10"
+  "version": "2026.11.18.84",
+  "displayVersion": "5.8.12",
+  "updatedAt": "2026-11-18T19:36:52+07:00",
+  "note": "Bổ sung đánh giá MIC/PK-PD và đối chiếu liều thuốc trong công cụ Nhi.",
+  "buildId": "v5.8.12-2026.11.18.84",
+  "clinicalDataVersion": "sha256-b0ad82280c91a8fb23932d67",
+  "previousVersion": "2026.11.18.83",
+  "previousDisplayVersion": "5.8.11"
 }
