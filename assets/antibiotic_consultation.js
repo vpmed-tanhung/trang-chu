@@ -2,9 +2,14 @@
   'use strict';
 
   const MODULE_ID = 'antibiotic-consultation';
-  const SOURCE_5631 = 'https://canhgiacduoc.org.vn/SiteData/3/UserFiles/Q%C4%90%205631%20BYT%20Huong%20dan%20thuc%20hien%20quan%20ly%20su%20dung%20khang%20sinh%20trong%20benh%20vien%2031_12_2020.PDF';
+  const SOURCE_5631 = 'sources/QD-5631-QD-BYT-quan-ly-su-dung-khang-sinh.pdf';
   const SOURCE_2115 = 'https://benhvienhatrung.vn/wp-content/uploads/2023/05/Qd2115.pdf';
-  const SOURCE_708 = 'https://kcb.vn/upload/2005611/20210723/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-s%E1%BB%AD-d%E1%BB%A5ng-kh%C3%A1ng-sinh-C%E1%BA%ADp-nh%E1%BA%ADt-l%E1%BA%A7n-cu%E1%BB%91i-khi-in-09.01.2015.pdf';
+  const SOURCE_21 = 'https://datafiles.chinhphu.vn/cpp/files/vbpq/2013/08/tt-21_01.pdf';
+  const SOURCE_43_STATUS = 'https://vbpl.vn/boyte/Pages/vbpq-thuoctinh.aspx?ItemID=47035';
+  const SOURCE_2147 = 'sources/QD-2147-QD-BYT-Huong-dan-viem-phoi-cong-dong-2026.pdf';
+  const SOURCE_3429 = 'sources/QD-3429-QD-BYT-huong-dan-nhiem-nam-xam-lan.pdf';
+  const SOURCE_3651 = 'https://bvdkbaclieu.gov.vn/upload/1000079/20250111/481_Quyet_dinh-3651-QD-BYT_a2efcaf93f.pdf';
+  const SOURCE_1530 = 'https://kcb.vn/upload/2005611/20230421/QD_2023_1530_Quyet_dinh_ban_hanh_tai_lieu_chuyen_mon__Huong_dan_chan_doan_va_dieu_tri_Loet_ban_chan_do_dai_thao_duong__25013.pdf';
   const SOURCE_DAV = 'https://dichvucong.dav.gov.vn/congbothuoc/index';
 
   const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, char => ({
@@ -18,68 +23,122 @@
     .trim();
 
   const allHospitalRanks = 'Hạng đặc biệt, hạng I, hạng II và các hạng thấp hơn';
+  const iv = ['iv'];
+  const ivOrOral = ['iv', 'oral'];
+  const injectable = ['iv', 'im'];
   const priorityCatalog = [
-    { id: 'ceftolozane-tazobactam', name: 'Ceftolozan/tazobactam', aliases: ['ceftolozan', 'ceftolozane'], category: 'antibacterial', route: 'Tiêm/truyền tĩnh mạch', scope: allHospitalRanks },
-    { id: 'tigecycline', name: 'Tigecyclin', aliases: ['tigecyclin', 'tigecycline'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
-    { id: 'colistin', name: 'Colistin', aliases: ['colistin'], category: 'antibacterial', route: 'Truyền tĩnh mạch/khí dung/tiêm nội tủy', scope: allHospitalRanks },
-    { id: 'fosfomycin-iv', name: 'Fosfomycin đường tĩnh mạch', aliases: ['fosfomycin'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks, routeTest: route => !norm(route).includes('uong') },
-    { id: 'linezolid', name: 'Linezolid', aliases: ['linezolid'], category: 'antibacterial', route: 'Truyền tĩnh mạch/uống', scope: allHospitalRanks },
-    { id: 'amphotericin-b-lipid-complex', name: 'Amphotericin B phức hợp lipid', aliases: ['amphotericin b phuc hop lipid', 'amphotericin b lipid complex'], category: 'antifungal', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
-    { id: 'caspofungin', name: 'Caspofungin', aliases: ['caspofungin'], category: 'antifungal', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
-    { id: 'micafungin', name: 'Micafungin', aliases: ['micafungin'], category: 'antifungal', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
-    { id: 'voriconazole', name: 'Voriconazol', aliases: ['voriconazol', 'voriconazole'], category: 'antifungal', route: 'Truyền tĩnh mạch/uống', scope: allHospitalRanks },
-    { id: 'ceftazidime-avibactam', name: 'Ceftazidim/avibactam', aliases: ['ceftazidim avibactam', 'ceftazidime avibactam'], category: 'antibacterial', route: 'Theo dạng dùng được phê duyệt', scope: allHospitalRanks },
-    { id: 'ceftobiprole', name: 'Ceftobiprol', aliases: ['ceftobiprol', 'ceftobiprole'], category: 'antibacterial', route: 'Theo dạng dùng được phê duyệt', scope: allHospitalRanks },
-    { id: 'cefiderocol', name: 'Cefiderocol', aliases: ['cefiderocol'], category: 'antibacterial', route: 'Theo dạng dùng được phê duyệt', scope: allHospitalRanks },
-    { id: 'dalbavancin', name: 'Dalbavancin', aliases: ['dalbavancin'], category: 'antibacterial', route: 'Theo dạng dùng được phê duyệt', scope: allHospitalRanks },
-    { id: 'quinupristin-dalfopristin', name: 'Quinupristin/dalfopristin', aliases: ['quinupristin dalfopristin', 'dalfopristin quinupristin'], category: 'antibacterial', route: 'Theo dạng dùng được phê duyệt', scope: allHospitalRanks },
-    { id: 'eravacycline', name: 'Eravacyclin', aliases: ['eravacyclin', 'eravacycline'], category: 'antibacterial', route: 'Theo dạng dùng được phê duyệt', scope: allHospitalRanks },
-    { id: 'omadacycline', name: 'Omadacyclin', aliases: ['omadacyclin', 'omadacycline'], category: 'antibacterial', route: 'Theo dạng dùng được phê duyệt', scope: allHospitalRanks },
-    { id: 'oritavancin', name: 'Oritavancin', aliases: ['oritavancin'], category: 'antibacterial', route: 'Theo dạng dùng được phê duyệt', scope: allHospitalRanks },
-    { id: 'plazomicin', name: 'Plazomicin', aliases: ['plazomicin'], category: 'antibacterial', route: 'Theo dạng dùng được phê duyệt', scope: allHospitalRanks },
-    { id: 'tedizolid', name: 'Tedizolid', aliases: ['tedizolid'], category: 'antibacterial', route: 'Theo dạng dùng được phê duyệt', scope: allHospitalRanks },
-    { id: 'telavancin', name: 'Telavancin', aliases: ['telavancin'], category: 'antibacterial', route: 'Theo dạng dùng được phê duyệt', scope: allHospitalRanks },
-    { id: 'anidulafungin', name: 'Anidulafungin', aliases: ['anidulafungin', 'anidulafundin'], category: 'antifungal', route: 'Theo dạng dùng được phê duyệt', scope: allHospitalRanks },
-    { id: 'isavuconazole', name: 'Isavuconazol', aliases: ['isavuconazol', 'isavuconazole'], category: 'antifungal', route: 'Theo dạng dùng được phê duyệt', scope: allHospitalRanks },
-    { id: 'liposomal-amphotericin-b', name: 'Amphotericin B dạng liposom', aliases: ['amphotericin b dang liposom', 'liposomal amphotericin b'], category: 'antifungal', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
-    { id: 'imipenem', name: 'Imipenem (kể cả phối hợp cilastatin)', aliases: ['imipenem'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
-    { id: 'meropenem', name: 'Meropenem', aliases: ['meropenem'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
-    { id: 'doripenem', name: 'Doripenem', aliases: ['doripenem'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
-    { id: 'ertapenem', name: 'Ertapenem', aliases: ['ertapenem'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: 'Hạng II và các cơ sở y tế hạng thấp hơn' },
-    { id: 'vancomycin', name: 'Vancomycin đường tĩnh mạch', aliases: ['vancomycin'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: 'Hạng I, hạng II và các cơ sở y tế hạng thấp hơn' },
-    { id: 'teicoplanin', name: 'Teicoplanin', aliases: ['teicoplanin'], category: 'antibacterial', route: 'Tiêm/truyền tĩnh mạch hoặc tiêm bắp', scope: 'Hạng I, hạng II và các cơ sở y tế hạng thấp hơn' },
-    { id: 'amphotericin-b-deoxycholate', name: 'Amphotericin B deoxycholat', aliases: ['amphotericin b deoxycholat', 'amphotericin b deoxycholate'], category: 'antifungal', route: 'Truyền tĩnh mạch', scope: 'Hạng I, hạng II và các cơ sở y tế hạng thấp hơn' },
-    { id: 'aciclovir-iv', name: 'Aciclovir đường tĩnh mạch', aliases: ['aciclovir', 'acyclovir'], category: 'antiviral', route: 'Truyền tĩnh mạch', scope: 'Hạng I, hạng II và các cơ sở y tế hạng thấp hơn', routeTest: route => !norm(route).includes('uong') },
-    { id: 'valganciclovir', name: 'Valganciclovir', aliases: ['valganciclovir'], category: 'antiviral', route: 'Uống', scope: allHospitalRanks },
-    { id: 'posaconazole', name: 'Posaconazol', aliases: ['posaconazol', 'posaconazole'], category: 'antifungal', route: 'Uống', scope: allHospitalRanks }
+    { id: 'ceftolozane-tazobactam', row: 1, name: 'Ceftolozan/tazobactam', aliases: ['ceftolozan tazobactam', 'ceftolozane tazobactam', 'tazobactam ceftolozan', 'tazobactam ceftolozane'], category: 'antibacterial', route: 'Tiêm/truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'tigecycline', row: 2, name: 'Tigecyclin', aliases: ['tigecyclin', 'tigecycline'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'colistin', row: 3, name: 'Colistin', aliases: ['colistin', 'colistimethat', 'colistimethate'], category: 'antibacterial', route: 'Truyền tĩnh mạch/khí dung/tiêm nội tủy', routes: ['iv', 'inhaled', 'intrathecal'], scope: allHospitalRanks },
+    { id: 'fosfomycin-iv', row: 4, name: 'Fosfomycin đường tĩnh mạch', aliases: ['fosfomycin'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'linezolid', row: 5, name: 'Linezolid', aliases: ['linezolid'], category: 'antibacterial', route: 'Truyền tĩnh mạch/uống', routes: ivOrOral, scope: allHospitalRanks },
+    { id: 'amphotericin-b-lipid-complex', row: 6, name: 'Amphotericin B phức hợp lipid', aliases: ['amphotericin b phuc hop lipid', 'amphotericin b lipid complex'], category: 'antifungal', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'caspofungin', row: 7, name: 'Caspofungin', aliases: ['caspofungin'], category: 'antifungal', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'micafungin', row: 8, name: 'Micafungin', aliases: ['micafungin'], category: 'antifungal', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'voriconazole', row: 9, name: 'Voriconazol', aliases: ['voriconazol', 'voriconazole'], category: 'antifungal', route: 'Truyền tĩnh mạch/uống', routes: ivOrOral, scope: allHospitalRanks },
+    { id: 'ceftazidime-avibactam', row: 10, name: 'Ceftazidim/avibactam', aliases: ['ceftazidim avibactam', 'ceftazidime avibactam', 'avibactam ceftazidim', 'avibactam ceftazidime'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'ceftobiprole', row: 10, name: 'Ceftobiprol', aliases: ['ceftobiprol', 'ceftobiprole', 'ceftobiprol medocaril', 'ceftobiprole medocaril'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'cefiderocol', row: 10, name: 'Cefiderocol', aliases: ['cefiderocol'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'dalbavancin', row: 10, name: 'Dalbavancin', aliases: ['dalbavancin'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'quinupristin-dalfopristin', row: 10, name: 'Quinupristin/dalfopristin', aliases: ['quinupristin dalfopristin', 'dalfopristin quinupristin'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'eravacycline', row: 10, name: 'Eravacyclin', aliases: ['eravacyclin', 'eravacycline'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'omadacycline', row: 10, name: 'Omadacyclin', aliases: ['omadacyclin', 'omadacycline'], category: 'antibacterial', route: 'Truyền tĩnh mạch/uống', routes: ivOrOral, scope: allHospitalRanks },
+    { id: 'oritavancin', row: 10, name: 'Oritavancin', aliases: ['oritavancin'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'plazomicin', row: 10, name: 'Plazomicin', aliases: ['plazomicin'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'tedizolid', row: 10, name: 'Tedizolid', aliases: ['tedizolid', 'tedizolid phosphat'], category: 'antibacterial', route: 'Truyền tĩnh mạch/uống', routes: ivOrOral, scope: allHospitalRanks },
+    { id: 'telavancin', row: 10, name: 'Telavancin', aliases: ['telavancin'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'anidulafungin', row: 10, name: 'Anidulafungin', aliases: ['anidulafungin', 'anidulafundin'], category: 'antifungal', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'isavuconazole', row: 10, name: 'Isavuconazol', aliases: ['isavuconazol', 'isavuconazole', 'isavuconazonium'], category: 'antifungal', route: 'Truyền tĩnh mạch/uống', routes: ivOrOral, scope: allHospitalRanks },
+    { id: 'liposomal-amphotericin-b', row: 10, name: 'Amphotericin B dạng liposom', aliases: ['amphotericin b dang liposom', 'amphotericin b liposom', 'amphotericin b liposomal', 'liposomal amphotericin b'], category: 'antifungal', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'imipenem', row: 11, name: 'Imipenem (kể cả phối hợp cilastatin)', aliases: ['imipenem', 'imipenem cilastatin', 'cilastatin imipenem'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'meropenem', row: 11, name: 'Meropenem', aliases: ['meropenem'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'doripenem', row: 11, name: 'Doripenem', aliases: ['doripenem'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: allHospitalRanks },
+    { id: 'ertapenem', row: 12, name: 'Ertapenem', aliases: ['ertapenem'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: 'Hạng II và các cơ sở y tế hạng thấp hơn' },
+    { id: 'vancomycin', row: 13, name: 'Vancomycin đường tĩnh mạch', aliases: ['vancomycin'], category: 'antibacterial', route: 'Truyền tĩnh mạch', scope: 'Hạng I, hạng II và các cơ sở y tế hạng thấp hơn' },
+    { id: 'teicoplanin', row: 14, name: 'Teicoplanin', aliases: ['teicoplanin'], category: 'antibacterial', route: 'Tiêm/truyền tĩnh mạch hoặc tiêm bắp', routes: injectable, scope: 'Hạng I, hạng II và các cơ sở y tế hạng thấp hơn' },
+    { id: 'amphotericin-b-deoxycholate', row: 15, name: 'Amphotericin B deoxycholat', aliases: ['amphotericin b deoxycholat', 'amphotericin b deoxycholate'], category: 'antifungal', route: 'Truyền tĩnh mạch', scope: 'Hạng I, hạng II và các cơ sở y tế hạng thấp hơn' },
+    { id: 'aciclovir-iv', row: 16, name: 'Aciclovir đường tĩnh mạch', aliases: ['aciclovir', 'acyclovir'], category: 'antiviral', route: 'Truyền tĩnh mạch', scope: 'Hạng I, hạng II và các cơ sở y tế hạng thấp hơn' },
+    { id: 'valganciclovir', row: 17, name: 'Valganciclovir', aliases: ['valganciclovir'], category: 'antiviral', route: 'Uống', routes: ['oral'], scope: allHospitalRanks },
+    { id: 'posaconazole', row: 18, name: 'Posaconazol', aliases: ['posaconazol', 'posaconazole'], category: 'antifungal', route: 'Uống', routes: ['oral'], scope: allHospitalRanks }
   ];
 
   const monitoringRules = [
-    {
-      key: 'aminoglycoside',
-      names: ['amikacin', 'gentamicin', 'tobramycin', 'netilmicin', 'neltimicin'],
-      label: 'Aminoglycosid',
-      basis: 'Thuộc Nhóm 2 cần theo dõi, giám sát sử dụng theo Phụ lục 2 Quyết định 5631/QĐ-BYT.'
-    },
-    {
-      key: 'fluoroquinolone',
-      names: ['ciprofloxacin', 'levofloxacin', 'lomefloxacin', 'moxifloxacin', 'norfloxacin', 'ofloxacin', 'pefloxacin', 'sparfloxacin'],
-      label: 'Fluoroquinolon',
-      basis: 'Thuộc Nhóm 2 cần theo dõi, giám sát sử dụng theo Phụ lục 2 Quyết định 5631/QĐ-BYT.'
-    }
+    { label: 'Aminoglycosid', row: 1, routes: injectable, aliases: ['amikacin', 'gentamicin', 'tobramycin', 'netilmicin', 'neltimicin'] },
+    { label: 'Fluoroquinolon', row: 2, routes: ivOrOral, aliases: ['ciprofloxacin', 'levofloxacin', 'lomefloxacin', 'moxifloxacin', 'norfloxacin', 'ofloxacin', 'pefloxacin', 'sparfloxacin'] }
   ];
 
+  const cap = {
+    url: SOURCE_2147 + '#page=40',
+    label: 'QĐ 2147/QĐ-BYT (2026), Chương IV'
+  };
+  const capMrsa = {
+    ...cap,
+    text: 'Viêm phổi cộng đồng nặng ở người lớn: đối chiếu nguy cơ MRSA và kết quả vi sinh.'
+  };
+  const capGramNegative = {
+    ...cap,
+    text: 'Viêm phổi cộng đồng nặng ở người lớn: đối chiếu nguy cơ vi khuẩn Gram âm kháng thuốc và kháng sinh đồ.'
+  };
+  const fungi = {
+    url: SOURCE_3429 + '#page=51',
+    label: 'QĐ 3429/QĐ-BYT (2021), Chương 4',
+    text: 'Nhiễm nấm xâm lấn: tra theo tác nhân, vị trí nhiễm và dạng bào chế.'
+  };
+  const clinicalReferences = {
+    colistin: {
+      url: SOURCE_1530,
+      label: 'QĐ 1530/QĐ-BYT (2023)',
+      text: 'Nhiễm trùng bàn chân đái tháo đường: đối chiếu mức độ nhiễm trùng, nguy cơ vi khuẩn kháng thuốc và kháng sinh đồ.'
+    },
+    'fosfomycin-iv': {
+      url: SOURCE_DAV,
+      label: 'Tờ hướng dẫn sử dụng được phê duyệt',
+      text: 'Tra chế phẩm tĩnh mạch theo số đăng ký để xác minh chỉ định và hướng dẫn sử dụng ghi trên nhãn.'
+    },
+    linezolid: capMrsa,
+    vancomycin: capMrsa,
+    teicoplanin: capMrsa,
+    imipenem: capGramNegative,
+    meropenem: capGramNegative,
+    doripenem: capGramNegative,
+    ertapenem: {
+      ...cap,
+      text: 'Viêm phổi cộng đồng nặng ở người lớn: tra mục vi khuẩn Gram âm đường ruột. Ertapenem không có hoạt tính trên P. aeruginosa.'
+    },
+    'amphotericin-b-lipid-complex': fungi,
+    'amphotericin-b-deoxycholate': fungi,
+    'liposomal-amphotericin-b': fungi,
+    caspofungin: fungi,
+    micafungin: fungi,
+    anidulafungin: fungi,
+    voriconazole: fungi,
+    isavuconazole: fungi,
+    posaconazole: fungi
+  };
+
+  function routeTypes(route) {
+    const labels = String(route || '').split(/[,/;+]/).map(norm);
+    return labels.flatMap(label => {
+      if (/^(tiem noi tuy|tiem tuy song)\b/.test(label)) return ['intrathecal'];
+      if (/^khi dung\b/.test(label)) return ['inhaled'];
+      if (/^(tiem bap|im)\b/.test(label)) return ['im'];
+      if (/^(uong|oral|po)\b/.test(label)) return ['oral'];
+      if (/^(tiem truyen|tiem tinh mach|tiem tm|truyen|iv)\b/.test(label)) return ['iv'];
+      // Danh mục bệnh viện dùng nhãn chung “Tiêm” cho một số chế phẩm tĩnh mạch.
+      if (label === 'tiem') return ['iv'];
+      return [];
+    });
+  }
+
   function matchesRule(drug, rule) {
-    const active = norm(drug.active).replace(/ hydrochloride\b/g, '');
-    const names = rule.aliases || rule.names || [];
-    const nameMatch = names.some(name => active.includes(norm(name)));
-    return nameMatch && (!rule.routeTest || rule.routeTest(drug.route));
+    const active = norm(drug.active).replace(/\b(hydrochloride|hydroclorid|hydroclorua|natri|sodium|sulfat|sulfate|acetat|acetate)\b/g, '').replace(/ +/g, ' ').trim();
+    return rule.aliases.some(alias => active === alias) &&
+      routeTypes(drug.route).some(route => (rule.routes || iv).includes(route));
   }
 
   function classifyMonitoringDrug(drug) {
-    const monitoring = monitoringRules.find(rule => matchesRule(drug, rule));
-    if (monitoring) return { ...drug, consultationGroup: 'monitoring', consultationRule: monitoring };
-    return null;
+    const rule = monitoringRules.find(item => matchesRule(drug, item));
+    return rule ? { ...drug, consultationRule: rule } : null;
   }
 
   function openView(name) {
@@ -116,6 +175,8 @@
       .consultation-drug h3{margin:0;color:#075d98;font-size:18px}
       .consultation-drug p{margin:7px 0;color:#415a6b;line-height:1.5}
       .consultation-drug small{color:var(--muted);line-height:1.45}
+      .consultation-drug a{color:#075d98;text-underline-offset:2px}
+      .consultation-clinical{padding-top:8px;border-top:1px solid #e2ebf1}
       .consultation-badge{display:inline-flex;align-items:center;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800;white-space:nowrap}
       .consultation-badge.priority{background:#fff0cf;color:#875506}
       .consultation-badge.monitoring{background:#e8f5fc;color:#075d98}
@@ -123,13 +184,9 @@
       .consultation-badge.reference{background:#eef2f5;color:#566b78}
       .consultation-meta{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
       .consultation-meta span{border:1px solid #dce8ef;border-radius:999px;background:#f8fbfd;padding:5px 8px;color:#486477;font-size:11px;font-weight:700}
-      .consultation-requirement{margin-top:10px;border-radius:10px;padding:10px 11px;font-size:13px;line-height:1.45}
-      .consultation-drug.priority .consultation-requirement{background:#fff8e8;color:#6f4b0a}
-      .consultation-drug.monitoring .consultation-requirement{background:#edf7fd;color:#315d79}
       .consultation-products{display:grid;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid #e2ebf1}
       .consultation-products>b{color:#075d98;font-size:13px}
       .consultation-products span{display:block;border-radius:8px;background:#f3faf6;color:#275d42;padding:7px 9px;font-size:12px;line-height:1.4}
-      .consultation-reference-note{margin-top:10px;border-radius:8px;background:#f3f6f8;color:#566b78;padding:8px 10px;font-size:12px;line-height:1.45}
       .consultation-monitoring{margin-top:14px;border:1px solid var(--line);border-radius:13px;background:#fbfdff;padding:12px}
       .consultation-monitoring summary{cursor:pointer;color:#075d98;font-weight:800;line-height:1.45}
       .consultation-monitoring .consultation-list{margin-top:12px}
@@ -185,17 +242,18 @@
       <div class="page-title"><div>
         <span class="kicker">Quản lý sử dụng kháng sinh</span>
         <h1>Danh mục kháng sinh cần hội chẩn khi sử dụng</h1>
-        <p>Danh mục mở rộng theo Nhóm 1 ưu tiên quản lý của Bộ Y tế, bao gồm thuốc kháng khuẩn, kháng nấm và kháng virus; đồng thời đối chiếu với từng biệt dược nội trú của Bệnh viện VPMED Tân Hưng.</p>
+        <p>Tra cứu Nhóm 1 và Nhóm 2 theo Phụ lục 2 Quyết định 5631/QĐ-BYT. Danh mục đối chiếu theo hoạt chất, dạng dùng và đường dùng của từng biệt dược nội trú trên hệ thống.</p>
       </div></div>
       <section class="section-card consultation-status">
-        <strong>Trạng thái: Danh mục tham chiếu để xây dựng quy định nội bộ.</strong> Thuốc ghi “Chưa có trong danh mục nội trú” chỉ nhằm tra cứu và chuẩn bị khi bệnh viện bổ sung thuốc, không có nghĩa bệnh viện đang sẵn thuốc. Phạm vi bắt buộc hội chẩn/phê duyệt phải được xác định theo hạng bệnh viện và chỉ áp dụng chính thức sau khi Ban quản lý sử dụng kháng sinh, Hội đồng Thuốc và Điều trị và Giám đốc bệnh viện phê duyệt.
+        <strong>Phạm vi áp dụng.</strong> Thực hiện hội chẩn và phê duyệt theo danh mục, quy trình đã ban hành tại bệnh viện. Phạm vi hạng trên từng thuốc được trích từ Phụ lục 2. Kết quả đối chiếu biệt dược dựa trên danh mục của hệ thống. Kiểm tra tồn thực tế tại Khoa Dược.
+        <p><small>Ngày đối chiếu văn bản: 19/11/2026.</small></p>
       </section>
       <section class="section-card compact">
         <div class="consultation-summary">
-          <article><strong id="consultationNationalCount">0</strong><span>hoạt chất/nhóm thuốc trong danh mục Bộ Y tế</span></article>
+          <article><strong id="consultationNationalCount">0</strong><span>mục tra cứu Nhóm 1 tách theo thuốc và dạng dùng</span></article>
           <article><strong id="consultationPriorityCount">0</strong><span>biệt dược nội trú hiện đã khớp Nhóm 1</span></article>
-          <article><strong id="consultationOutsideCount">0</strong><span>hoạt chất hiện chưa có trong danh mục nội trú</span></article>
-          <article><strong id="consultationTotalCount">0</strong><span>kháng sinh nội trú đã được đối chiếu</span></article>
+          <article><strong id="consultationOutsideCount">0</strong><span>mục Nhóm 1 chưa khớp chế phẩm nội trú</span></article>
+          <article><strong id="consultationTotalCount">0</strong><span>mục trong danh mục nội trú đã đối chiếu</span></article>
         </div>
         <div class="consultation-filters">
           <label>Tìm thuốc hoặc biệt dược<input id="consultationQ" placeholder="Ví dụ: Ceftolozan, Meropenem, Vancomycin..."></label>
@@ -204,27 +262,33 @@
         </div>
         <div class="consultation-list" id="consultationList"></div>
         <details class="consultation-monitoring">
-          <summary>Nhóm 2 cần theo dõi, giám sát sử dụng trong 34 kháng sinh nội trú: <span id="consultationMonitoringCount">0</span> biệt dược</summary>
+          <summary>Nhóm 2 cần theo dõi, giám sát sử dụng · <span id="consultationMonitoringCount">0</span> biệt dược</summary>
+          <p>Giám sát tiêu thụ, tính hợp lý khi sử dụng và mức độ đề kháng theo chương trình quản lý kháng sinh của bệnh viện.</p>
           <div class="consultation-list" id="consultationMonitoringList"></div>
         </details>
       </section>
       <section class="section-card">
-        <div class="section-heading"><div><span class="kicker">Quy trình đề xuất</span><h2>Các bước trước và sau khi sử dụng</h2></div></div>
+        <div class="section-heading"><div><h2>Quy trình tham chiếu cho Nhóm 1</h2></div></div>
         <div class="consultation-workflow">
-          <article><b>1. Hoàn thành thông tin</b>Ghi chẩn đoán, chỉ định, phác đồ trước đó, chức năng thận, vi sinh và lý do chọn kháng sinh.</article>
-          <article><b>2. Hội chẩn/phê duyệt</b>Thực hiện trước khi dùng. Cấp cứu hoặc ngoài giờ: hoàn thiện phê duyệt trong vòng 24–48 giờ.</article>
-          <article><b>3. Đánh giá lại</b>Rà soát đáp ứng lâm sàng và kết quả vi sinh sau 48–72 giờ; xuống thang hoặc ngừng khi phù hợp.</article>
-          <article><b>4. Duyệt tiếp nếu cần</b>Mỗi lần duyệt không quá 14 ngày; đánh giá lại trước khi tiếp tục điều trị.</article>
+          <article><b>Ghi lý do sử dụng</b>Ghi chẩn đoán, mức độ nặng, phác đồ đã dùng, dị ứng, chức năng thận, kết quả vi sinh và lý do chọn thuốc. Lấy bệnh phẩm trước khi dùng nếu điều kiện cho phép.</article>
+          <article><b>Hội chẩn và phê duyệt</b>Duyệt trước sử dụng theo quy trình tại bệnh viện. Với cấp cứu hoặc ngoài giờ hành chính, hoàn tất trong 24–48 giờ theo Quyết định 5631.</article>
+          <article><b>Đánh giá lại điều trị</b>Rà soát ở mốc 48–72 giờ hoặc sớm hơn theo diễn biến. Căn cứ đáp ứng và kết quả vi sinh để điều chỉnh, thu hẹp phổ hoặc ngừng khi phù hợp.</article>
+          <article><b>Duyệt tiếp khi cần</b>Mỗi lần duyệt tối đa 14 ngày. Đánh giá lại đáp ứng và ghi nhận quyết định nếu cần tiếp tục.</article>
         </div>
-        <div class="alert" style="margin-top:14px"><b>Người duyệt:</b> do Ban quản lý sử dụng kháng sinh phân công bằng văn bản; ưu tiên dược sĩ làm công tác dược lâm sàng, bác sĩ hồi sức tích cực hoặc bác sĩ có kinh nghiệm điều trị nhiễm trùng và sử dụng kháng sinh hợp lý.</div>
+        <div class="alert" style="margin-top:14px"><b>Người duyệt</b> do Ban quản lý sử dụng kháng sinh phân công. Quy trình và phiếu đề nghị tham khảo Phụ lục 3–4 Quyết định 5631. Ghi nhận mọi điều chỉnh liều vào bệnh án.</div>
+        <p><small>Chú thích về carbapenem ở dòng 11 Phụ lục 2 dẫn chiếu Thông tư 43/2013/TT-BYT. <a href="${SOURCE_43_STATUS}" target="_blank" rel="noopener">Thông tư đã hết hiệu lực từ 18/10/2024</a>. Đối chiếu quy trình đang áp dụng tại bệnh viện khi xử lý ngoại lệ.</small></p>
       </section>
       <section class="section-card">
-        <div class="section-heading"><div><span class="kicker">Nguồn đối chiếu</span><h2>Căn cứ xây dựng danh mục</h2></div></div>
+        <div class="section-heading"><div><h2>Văn bản quản lý và phác đồ điều trị</h2></div></div>
         <div class="consultation-source-grid">
-          <article class="consultation-source"><h3><a target="_blank" rel="noopener" href="${SOURCE_5631}" aria-label="Đọc trực tiếp toàn văn Quyết định 5631/QĐ-BYT">Quyết định 5631/QĐ-BYT</a></h3><p>Hướng dẫn thực hiện quản lý sử dụng kháng sinh trong bệnh viện; Phụ lục 2 quy định Nhóm 1 ưu tiên quản lý và Nhóm 2 cần theo dõi, giám sát.</p></article>
-          <article class="consultation-source"><h3><a target="_blank" rel="noopener" href="${SOURCE_2115}" aria-label="Đọc trực tiếp toàn văn Quyết định 2115/QĐ-BYT và Sổ tay">Quyết định 2115/QĐ-BYT năm 2023</a></h3><p>Toàn văn gồm Quyết định và Sổ tay hướng dẫn triển khai chương trình quản lý sử dụng kháng sinh dành cho bệnh viện tuyến huyện.</p></article>
-          <article class="consultation-source"><h3><a target="_blank" rel="noopener" href="${SOURCE_708}" aria-label="Đọc trực tiếp toàn văn Quyết định 708/QĐ-BYT">Quyết định 708/QĐ-BYT</a></h3><p>Hướng dẫn sử dụng kháng sinh của Bộ Y tế để đối chiếu nguyên tắc lựa chọn và sử dụng; đây là tài liệu bổ trợ, không dùng thay cho danh mục hội chẩn tại Quyết định 5631/QĐ-BYT.</p></article>
-          <article class="consultation-source"><h3><a target="_blank" rel="noopener" href="${SOURCE_DAV}" aria-label="Mở hệ thống tra cứu của Cục Quản lý Dược">Cục Quản lý Dược – Bộ Y tế</a></h3><p>Tra cứu số đăng ký và tờ hướng dẫn sử dụng của đúng chế phẩm trước khi bổ sung thuốc mới vào danh mục bệnh viện.</p></article>
+          <article class="consultation-source"><h3><a target="_blank" rel="noopener" href="${SOURCE_5631}#page=17">Quyết định 5631/QĐ-BYT (2020)</a></h3><p>Phụ lục 2 về Nhóm 1 và Nhóm 2. Phụ lục 3–4 về quy trình và phiếu đề nghị sử dụng.</p></article>
+          <article class="consultation-source"><h3><a target="_blank" rel="noopener" href="${SOURCE_2115}">Quyết định 2115/QĐ-BYT (2023)</a></h3><p>Sổ tay triển khai quản lý sử dụng kháng sinh cho bệnh viện tuyến huyện. Tham khảo cách lập danh mục tại cơ sở, rà soát điều trị và xuống thang.</p></article>
+          <article class="consultation-source"><h3><a target="_blank" rel="noopener" href="${SOURCE_21}">Thông tư 21/2013/TT-BYT</a></h3><p>Tổ chức, hoạt động của Hội đồng Thuốc và Điều trị. Điều 5–6 về xây dựng danh mục thuốc và hướng dẫn điều trị của bệnh viện.</p></article>
+          <article class="consultation-source"><h3><a target="_blank" rel="noopener" href="${SOURCE_2147}">Quyết định 2147/QĐ-BYT (2026)</a></h3><p>Hướng dẫn viêm phổi mắc phải cộng đồng ở người lớn, có hiệu lực từ 15/07/2026 và thay thế Quyết định 4815/QĐ-BYT năm 2020.</p></article>
+          <article class="consultation-source"><h3><a target="_blank" rel="noopener" href="${SOURCE_3429}#page=51">Quyết định 3429/QĐ-BYT (2021)</a></h3><p>Chẩn đoán và điều trị nhiễm nấm xâm lấn, gồm Candida và Aspergillus xâm lấn.</p></article>
+          <article class="consultation-source"><h3><a target="_blank" rel="noopener" href="${SOURCE_3651}">Quyết định 3651/QĐ-BYT (2024)</a></h3><p>Chẩn đoán và điều trị bệnh nấm Aspergillus phổi mạn tính.</p></article>
+          <article class="consultation-source"><h3><a target="_blank" rel="noopener" href="${SOURCE_1530}">Quyết định 1530/QĐ-BYT (2023)</a></h3><p>Chẩn đoán và điều trị loét bàn chân do đái tháo đường. Mục kháng sinh dùng để tra cứu theo mức độ nhiễm trùng.</p></article>
+          <article class="consultation-source"><h3><a target="_blank" rel="noopener" href="${SOURCE_DAV}">Cục Quản lý Dược</a></h3><p>Tra số đăng ký và tờ hướng dẫn sử dụng của từng chế phẩm. Thuốc mới cần đối chiếu hồ sơ lưu hành tại Việt Nam và danh mục được duyệt tại cơ sở.</p></article>
         </div>
       </section>
     `;
@@ -236,7 +300,7 @@
   }
 
   function render() {
-    const inpatientDrugs = window.VPMED_DRUGS || [];
+    const inpatientDrugs = Array.isArray(window.VPMED_DRUGS) ? window.VPMED_DRUGS : [];
     const catalog = priorityCatalog.map(item => ({ ...item, products: inpatientDrugs.filter(drug => matchesRule(drug, item)) }));
     const priorityProducts = catalog.flatMap(item => item.products);
     const outsideCount = catalog.filter(item => !item.products.length).length;
@@ -277,26 +341,35 @@
         const isAvailable = item.products.length > 0;
         const badge = isAvailable ? `Có ${item.products.length} biệt dược nội trú` : 'Chưa có trong danh mục nội trú';
         const products = isAvailable
-          ? `<div class="consultation-products"><b>Biệt dược hiện có tại bệnh viện</b>${item.products.map(drug => `<span>${esc(drug.brand)} — ${esc(drug.active)} · ${esc(drug.strength)} · ${esc(drug.route)}</span>`).join('')}</div>`
-          : '<div class="consultation-reference-note"><b>Trạng thái:</b> Chưa có trong 34 kháng sinh nội trú hiện tại; hiển thị để tra cứu và chuẩn bị khi bệnh viện bổ sung thuốc.</div>';
+          ? `<div class="consultation-products"><b>Biệt dược khớp trong danh mục nội trú</b>${item.products.map(drug => `<span>${esc(drug.brand)} — ${esc(drug.active)} · ${esc(drug.strength)} · ${esc(drug.route)}</span>`).join('')}</div>`
+          : '';
+        const reference = clinicalReferences[item.id];
+        const clinical = reference
+          ? `<p class="consultation-clinical">${esc(reference.text)} <a href="${esc(reference.url)}" target="_blank" rel="noopener">${esc(reference.label)}</a></p>`
+          : '';
         return `
           <article class="consultation-drug priority">
             <div class="consultation-drug-head"><div><h3>${esc(item.name)}</h3></div><span class="consultation-badge ${isAvailable ? 'available' : 'reference'}">${esc(badge)}</span></div>
             <div class="consultation-meta"><span>${esc(categoryLabels[item.category])}</span><span>${esc(item.route)}</span></div>
-            <p><b>Phạm vi theo Phụ lục 2:</b> ${esc(item.scope)}.</p>
+            <p><b>Phạm vi theo Phụ lục 2</b> · ${esc(item.scope)}.</p>
+            <small><a href="${SOURCE_5631}#page=${item.row > 10 ? 18 : 17}" target="_blank" rel="noopener">Nhóm 1, dòng ${item.row}</a></small>
             ${products}
-            <div class="consultation-requirement"><b>Quản lý Nhóm 1:</b> Hội chẩn/phê duyệt theo quy định nội bộ trước khi sử dụng; trường hợp cấp cứu/ngoài giờ hoàn thiện trong 24–48 giờ.</div>
+            ${clinical}
           </article>`;
       }).join('') || '<div class="consultation-empty">Không tìm thấy thuốc phù hợp trong danh mục ưu tiên quản lý của Bộ Y tế.</div>';
-    };
 
-    monitoringList.innerHTML = monitoring.map(drug => `
-      <article class="consultation-drug monitoring">
-        <div class="consultation-drug-head"><div><h3>${esc(drug.brand)}</h3></div><span class="consultation-badge monitoring">Theo dõi, giám sát</span></div>
-        <p><b>Hoạt chất:</b> ${esc(drug.active)}</p>
-        <div class="consultation-meta"><span>${esc(drug.strength)}</span><span>${esc(drug.route)}</span><span>${esc(drug.consultationRule.label)}</span></div>
-        <div class="consultation-requirement"><b>Yêu cầu:</b> Theo dõi tiêu thụ, tính hợp lý, độc tính và đề kháng; không mặc định đồng nghĩa bắt buộc hội chẩn.</div>
-      </article>`).join('');
+      const filteredMonitoring = monitoring.filter(drug =>
+        availability !== 'reference' && (category === 'all' || category === 'antibacterial') &&
+        norm([drug.brand, drug.active, drug.consultationRule.label].join(' ')).includes(query));
+      monitoringList.innerHTML = filteredMonitoring.map(drug => `
+        <article class="consultation-drug monitoring">
+          <div class="consultation-drug-head"><div><h3>${esc(drug.brand)}</h3></div><span class="consultation-badge monitoring">Theo dõi, giám sát</span></div>
+          <p><b>Hoạt chất</b> · ${esc(drug.active)}</p>
+          <div class="consultation-meta"><span>${esc(drug.strength)}</span><span>${esc(drug.route)}</span><span>${esc(drug.consultationRule.label)}</span></div>
+          <small><a href="${SOURCE_5631}#page=${drug.consultationRule.row === 1 ? 18 : 19}" target="_blank" rel="noopener">Nhóm 2, dòng ${drug.consultationRule.row}</a></small>
+        </article>`).join('') || '<div class="consultation-empty">Không có biệt dược Nhóm 2 phù hợp với bộ lọc.</div>';
+      if (query && filteredMonitoring.length) monitoringList.closest('details').open = true;
+    };
 
     input.addEventListener('input', draw);
     availabilitySelect.addEventListener('change', draw);
