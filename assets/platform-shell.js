@@ -59,8 +59,8 @@
   });
 
   const PHARMACY_LIBRARY = Object.freeze({
-    styles: ['assets/pharmacy-library.css?v=20261120-pdf-tab','assets/pharmacy-home.css?v=20261120-mobile-home'],
-    scripts: ['assets/pharmacy-library.js?v=20261120-pdf-tab','assets/pharmacy-home.js?v=20261120-mobile-home']
+    styles: ['assets/pharmacy-library.css?v=20261120-pdf-recovery','assets/pharmacy-home.css?v=20261120-mobile-home'],
+    scripts: ['assets/pharmacy-library.js?v=20261120-pdf-recovery','assets/pharmacy-home.js?v=20261120-mobile-home']
   });
   const FEATURE_BUNDLES = Object.freeze({
     home: PHARMACY_LIBRARY,

@@ -11,9 +11,13 @@ const workerEvents = new Map();
 let offline = false;
 let skippedWaiting = 0;
 let precachedRequests = [];
+let hasOldPdfScript = false;
 const shellCache = {
   async match(request) {
     const url = new URL(typeof request === 'string' ? request : request.url, 'https://example.test/');
+    if (hasOldPdfScript && url.searchParams.get('v') === '20261118-public-guides') {
+      return new Response('WINDOW_OPEN_PDF');
+    }
     if (url.pathname === '/' || url.pathname.endsWith('/index.html')) {
       return new Response('OLD_BUILD', {status: 200});
     }
@@ -74,6 +78,11 @@ vm.runInContext(fs.readFileSync(path.join(root, 'sw.js'), 'utf8'), sandbox);
   assert.ok(precachedRequests.every(request => request.cache === 'reload'));
   const recoveryBuild = vm.runInContext('APP_VERSION === NAVIGATION_CACHE_RECOVERY_BUILD', sandbox);
   assert.strictEqual(skippedWaiting, recoveryBuild ? 1 : 0, 'Chỉ bản sửa cache tự thay worker đang chạy');
+  hasOldPdfScript = true;
+  skippedWaiting = 0;
+  workerEvents.get('install')({waitUntil(promise) { installation = promise; }});
+  await installation;
+  assert.strictEqual(skippedWaiting, 1, 'Tự thay worker khi cache còn mã xem PDF cũ');
 
   const normal = await sandbox.networkFirstNavigation(
     new Request('https://example.test/index.html')

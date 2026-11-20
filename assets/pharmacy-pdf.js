@@ -17,8 +17,13 @@
     }
     const pdf = await client.storage.from('pharmacy-pdfs').createSignedUrl(record.data.storage_path,3600);
     if (pdf.error || !pdf.data?.signedUrl) throw pdf.error || new Error('Missing PDF URL');
+    const directLink = document.getElementById('library-pdf-direct');
+    directLink.href = pdf.data.signedUrl;
+    status.hidden = true;
+    directLink.hidden = false;
     location.replace(pdf.data.signedUrl);
   } catch (error) {
+    status.hidden = false;
     status.textContent = 'Chưa mở được PDF. Vui lòng kiểm tra kết nối rồi tải lại tab này.';
   }
 })();

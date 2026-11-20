@@ -27,7 +27,7 @@
     ['Thuốc xịt mũi BENITA.pdf', 'Benita - VD-23879-15.pdf']
   ]);
   let auth = null, records = [], loading = false, loadError = '', loadSequence = 0;
-  let uploadBusy = false, uploadKind = 'bulletin', fileSequence = 0, selectedFile = null, editingRecord = null;
+  let uploadBusy = false, uploadKind = 'bulletin', fileSequence = 0, previewUrl = '', editingRecord = null;
   const panels = new Map();
   const uploadDialog = document.getElementById('library-upload-dialog');
   const uploadForm = document.getElementById('library-upload-form');
@@ -51,6 +51,34 @@
     element.addEventListener('click', action);
     return element;
   };
+  function pdfLink(label, className) {
+    const link = node('a',className,label);
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    return link;
+  }
+  const documentHref = (record) => 'xem-pdf.html#'+encodeURIComponent(record.id);
+  const previewLink = pdfLink(previewButton.textContent,previewButton.className);
+  previewLink.id = previewButton.id;
+  previewButton.replaceWith(previewLink);
+  function updatePreviewLink() {
+    const href = previewUrl || (editingRecord ? documentHref(editingRecord) : '');
+    if (uploadBusy || !href) {
+      previewLink.removeAttribute('href');
+      previewLink.setAttribute('aria-disabled','true');
+    } else {
+      previewLink.href = href;
+      previewLink.removeAttribute('aria-disabled');
+    }
+  }
+  function releasePreviewUrl() {
+    if (!previewUrl) return;
+    const openedUrl = previewUrl;
+    previewUrl = '';
+    // Give the newly opened tab time to load the file before releasing it.
+    window.setTimeout(() => URL.revokeObjectURL(openedUrl),30000);
+  }
+  updatePreviewLink();
   function formatDate(value) {
     const date = new Date(value);
     return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString('vi-VN', {timeZone:'Asia/Ho_Chi_Minh'});
@@ -186,10 +214,8 @@
         $('ban-tin').scrollIntoView();
       });
     }
-    const link = node('a',className,label);
-    link.href = 'xem-pdf.html#'+encodeURIComponent(record.id);
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
+    const link = pdfLink(label,className);
+    link.href = documentHref(record);
     return link;
   }
   function renderItem(record) {
@@ -322,7 +348,9 @@
   }
   function openUpload(kind,record = null) {
     if (!isAdmin() || !KINDS[kind]) return;
-    uploadKind = kind; editingRecord = record; selectedFile = null; fileSequence++; uploadForm.reset(); formStatus.textContent = ''; previewButton.disabled = !record;
+    releasePreviewUrl();
+    uploadKind = kind; editingRecord = record; fileSequence++; uploadForm.reset(); formStatus.textContent = '';
+    updatePreviewLink();
     $('library-upload-title').textContent = record ? 'Chỉnh sửa · '+KINDS[kind].title : kind === 'bulletin' ? 'Tải PDF bản tin' : 'Thêm PDF · '+KINDS[kind].title;
     $('library-upload-category').replaceChildren(...[...new Set([...KINDS[kind].categories,...(record?[record.category]:[])])].map(value => new Option(value,value)));
     fileInput.required = !record;
@@ -343,19 +371,22 @@
   }
   fileInput.addEventListener('change',async () => {
     const sequence = ++fileSequence, file = fileInput.files[0];
-    selectedFile = null; previewButton.disabled = !editingRecord; formStatus.textContent = '';
+    releasePreviewUrl();
+    updatePreviewLink();
+    formStatus.textContent = '';
     if (!file) return;
     try {
       await validatePdf(file);
       if (sequence !== fileSequence) return;
-      selectedFile = file; previewButton.disabled = false;
+      previewUrl = URL.createObjectURL(file.slice(0,file.size,'application/pdf'));
+      updatePreviewLink();
       if (!$('library-upload-name').value.trim()) $('library-upload-name').value = file.name.replace(/\.pdf$/i,'').slice(0,240);
     } catch(error) {if (sequence === fileSequence) {fileInput.value=''; formStatus.textContent=error.message;}}
   });
   function setUploadBusy(value) {
     uploadBusy = value;
     uploadDialog.querySelectorAll('input,select,textarea,button').forEach(element => {element.disabled=value;});
-    previewButton.disabled = value || (!selectedFile && !editingRecord);
+    updatePreviewLink();
     $('library-upload-submit').textContent = value ? 'Đang lưu…' : editingRecord ? 'Lưu thay đổi' : 'Đăng tài liệu';
   }
   uploadForm.addEventListener('submit',async (event) => {
@@ -405,7 +436,11 @@
     } finally {setUploadBusy(false);}
   });
   uploadDialog.addEventListener('cancel',(event) => {if(uploadBusy) event.preventDefault();});
-  uploadDialog.addEventListener('close',() => {selectedFile=null; editingRecord=null; fileSequence++; uploadForm.reset();});
+  uploadDialog.addEventListener('close',() => {
+    releasePreviewUrl();
+    editingRecord=null; fileSequence++; uploadForm.reset();
+    updatePreviewLink();
+  });
   async function removeRecord(record,trigger) {
     if (!isAdmin() || !window.confirm(`Xóa tài liệu “${record.title}”?`)) return;
     trigger.disabled = true;
@@ -419,50 +454,6 @@
       await refresh();
       window.VPMED_PLATFORM?.toast(cleanupError ? 'Đã gỡ tài liệu. Tệp lưu trữ cần được quản trị viên kiểm tra lại.' : 'Đã xóa tài liệu.',{tone:cleanupError?'warning':'info'});
     } catch(error) {window.VPMED_PLATFORM?.toast(errorMessage(error),{tone:'error'}); trigger.disabled=false;}
-  }
-  function reportPdfError(message, kind) {
-    if (uploadDialog.open) {
-      formStatus.textContent = message;
-    } else {
-      if (window.VPMED_PLATFORM) window.VPMED_PLATFORM.toast(message, {tone:'error'});
-      else if (panels.has(kind)) panels.get(kind).count.textContent = message;
-    }
-  }
-  async function openPdf(source) {
-    // Open during the click so the signed URL request does not trigger a popup block.
-    const tab = window.open('about:blank','_blank');
-    if (!tab) {
-      reportPdfError('Trình duyệt đã chặn tab mới. Cho phép mở tab rồi bấm lại.',source.kind);
-      return;
-    }
-    tab.opener = null;
-    let localUrl;
-    try {
-      if (source instanceof File) {
-        const pdf = source.slice(0,source.size,'application/pdf');
-        localUrl = URL.createObjectURL(pdf);
-        tab.location.replace(localUrl);
-
-        // Keep the preview URL usable until its browser tab is closed.
-        const previewUrl = localUrl;
-        const watcher = window.setInterval(() => {
-          if (!tab.closed) return;
-          window.clearInterval(watcher);
-          URL.revokeObjectURL(previewUrl);
-        }, 10000);
-        return;
-      }
-
-      const result = await readClient().storage.from(BUCKET).createSignedUrl(source.storage_path,3600);
-      if (tab.closed) return;
-      if (result.error || !result.data?.signedUrl) throw result.error || new Error('Missing PDF URL');
-      tab.location.replace(result.data.signedUrl);
-    } catch (error) {
-      if (localUrl) URL.revokeObjectURL(localUrl);
-      if (tab.closed) return;
-      tab.close();
-      reportPdfError('Chưa mở được PDF. Vui lòng thử lại.',source.kind);
-    }
   }
   function initPanels() {
     document.querySelectorAll('[data-documents-kind]').forEach(root => {
@@ -491,7 +482,6 @@
   document.querySelectorAll('[data-library-close]').forEach(element => element.addEventListener('click',()=> {
     const dialog=element.closest('dialog'); if (!uploadBusy) dialog.close();
   }));
-  previewButton.addEventListener('click',()=>{if(selectedFile)openPdf(selectedFile);else if(editingRecord)openPdf(editingRecord);});
   function applyAuth(detail) {auth=detail;updateAdminControls();refresh();}
   window.addEventListener('vpmed-auth-ready',event=>applyAuth(event.detail));
   window.addEventListener('vpmed-content-permissions-changed',event=>{

@@ -32,9 +32,9 @@ const APP_SHELL = [
   './assets/vpmed-access.js?v=20261118-guest-logout',
   './assets/vpmed-access.js?v=20261120-pdf-tab',
   './assets/platform-shell.js?v=20261120-mobile-home',
-  './assets/pharmacy-library.css?v=20261120-pdf-tab',
-  './assets/pharmacy-library.js?v=20261120-pdf-tab',
-  './assets/pharmacy-pdf.js?v=20261120-pdf-tab',
+  './assets/pharmacy-library.css?v=20261120-pdf-recovery',
+  './assets/pharmacy-library.js?v=20261120-pdf-recovery',
+  './assets/pharmacy-pdf.js?v=20261120-pdf-recovery',
   './assets/pharmacy-home.js?v=20261120-mobile-home',
   './assets/pharmacy-home.css?v=20261120-mobile-home',
   './assets/pharmacy-admin-guard.js?v=20261117-permissions-v1',
@@ -47,6 +47,10 @@ const APP_SHELL = [
   './assets/app-version.json',
   './assets/vpmed-tool-entry.js?v=20261118-tool-access',
   './cap-cuu-phan-ve.html?v=20261118-tool-access'
+];
+const OLD_PDF_SHELL_SCRIPTS = [
+  './assets/pharmacy-library.js?v=20261118-public-guides',
+  './assets/pharmacy-library.js?v=20261120-pdf-tab'
 ];
 
 const CLINICAL_PATH_PATTERN = /(?:^|\/)(?:data|sources)\/|\/assets\/(?:.*(?:data|database|profile|medicine|alert|icd10|disease|contra|renal|infusion|clinical|dosing|interaction|antibiotic|pharmacovigilance|pregnancy|hepatotoxicity|injectable|stock|source).*)\.(?:js|json|csv)$/i;
@@ -72,18 +76,27 @@ const OFFLINE_PAGE = `<!doctype html>
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(APP_SHELL_CACHE);
+    const previousPdfScripts = await Promise.all(OLD_PDF_SHELL_SCRIPTS.map((path) =>
+      cache.match(new URL(path, self.registration.scope).href)
+    ));
     const requests = APP_SHELL.map((path) =>
       new Request(new URL(path, self.registration.scope), {cache: 'reload'})
     );
     await cache.addAll(requests);
 
-    // Thay worker từng giữ HTML cũ trên thiết bị. Tab đang mở giữ nguyên đến lần điều hướng tiếp theo.
-    if (APP_VERSION === NAVIGATION_CACHE_RECOVERY_BUILD) await self.skipWaiting();
+    // Activate silently after replacing a cached PDF viewer that could open a blocked popup.
+    if (APP_VERSION === NAVIGATION_CACHE_RECOVERY_BUILD || previousPdfScripts.some(Boolean)) {
+      await self.skipWaiting();
+    }
   })());
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
+    const shell = await caches.open(APP_SHELL_CACHE);
+    await Promise.all(OLD_PDF_SHELL_SCRIPTS.map((path) =>
+      shell.delete(new URL(path, self.registration.scope).href)
+    ));
     const names = await caches.keys();
     await Promise.all(names.map((name) => {
       const isOldShell = name.startsWith('vpmed-shell-') && name !== APP_SHELL_CACHE;
