@@ -59,8 +59,8 @@
   });
 
   const PHARMACY_LIBRARY = Object.freeze({
-    styles: ['assets/pharmacy-library.css?v=20261118-imported-interactions','assets/pharmacy-home.css?v=20261118-public-layout'],
-    scripts: ['assets/pharmacy-library.js?v=20261118-public-guides','assets/pharmacy-home.js?v=20261117-home-v1']
+    styles: ['assets/pharmacy-library.css?v=20261120-mobile-home','assets/pharmacy-home.css?v=20261120-mobile-home'],
+    scripts: ['assets/pharmacy-library.js?v=20261118-public-guides','assets/pharmacy-home.js?v=20261120-mobile-home']
   });
   const FEATURE_BUNDLES = Object.freeze({
     home: PHARMACY_LIBRARY,

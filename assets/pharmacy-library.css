@@ -130,3 +130,18 @@
 @media(min-width:1061px) { .topbar-inner { flex-wrap:wrap; column-gap:16px; row-gap:4px; padding-top:10px; padding-bottom:10px; } .topbar .main-nav { flex-wrap:wrap; } }
 @media(max-width:900px) { .library-bulletin-layout { grid-template-columns:1fr; } .library-sidebar { border-left:0; padding-left:0; border-top:1px solid var(--line); padding-top:20px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; } .library-sidebar-block + .library-sidebar-block { border:0; margin:0; padding:0; } }
 @media(max-width:640px) { .library-hub { grid-template-columns:1fr; } .library-hub-card { padding:16px; gap:12px; } .library-hub-card strong { font-size:17px; } .library-heading h2 { font-size:21px; } .library-heading { gap:12px; } .library-toolbar { grid-template-columns:1fr; } .library-item { flex-wrap:wrap; gap:12px; } .library-item-copy { flex-basis:calc(100% - 55px); } .library-item-actions { padding-left:55px; } .library-sidebar { grid-template-columns:1fr; } .library-sidebar-block + .library-sidebar-block { border-top:1px solid var(--line); padding-top:16px; } .library-dialog { padding:18px; } .library-pagination { gap:7px; } .library-pagination .btn { padding:9px; } }
+
+@media (max-width:720px) {
+  .pharmacy-library input,.pharmacy-library select { min-width:0; min-height:44px; font-size:16px; }
+  .library-heading .btn,.library-results-meta .btn,.library-item-actions .btn,.library-pagination .btn { min-height:44px; font-size:14px; }
+  .library-hub-card small,.library-item-copy p { font-size:15px; line-height:1.55; }
+  .library-results-meta { flex-wrap:wrap; font-size:13px; }
+  .library-item { display:grid; grid-template-columns:32px minmax(0,1fr); gap:8px 10px; padding:15px 0; }
+  .library-file-icon { width:32px; height:39px; }
+  .library-item-title { font-size:1rem; line-height:1.45; min-height:44px; }
+  .library-item-meta { font-size:13px; }
+  .library-item-actions { grid-column:2; padding-left:0; }
+  .library-sidebar button { min-height:36px; font-size:14px; }
+  .library-pagination { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); text-align:center; gap:6px; }
+  .library-pagination .btn { padding-inline:6px; }
+}

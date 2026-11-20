@@ -13,6 +13,7 @@ body { background:#f5f8fa; }
 .pharmacy-home-active .app-shell { max-width:none; padding:0 0 38px; }
 #view-home { --home-width:1240px; color:#173d50; }
 #view-home :is(#gioi-thieu,#chuc-nang,#to-chuc,#cong-cu-lam-sang,#danh-muc-tai-lieu,#lien-he) { scroll-margin-top:110px; }
+#view-home #ban-tin { scroll-margin-top:130px; }
 .home-section { max-width:var(--home-width); margin:0 auto; padding:64px 28px; }
 .home-section + .home-section { border-top:1px solid #dde8eb; }
 .home-eyebrow { color:#087d7b; font-size:11px; text-transform:uppercase; letter-spacing:1.8px; font-weight:800; display:block; margin-bottom:13px; }
@@ -66,6 +67,7 @@ body { background:#f5f8fa; }
 #view-home .home-tools-section .feature-card b { color:#245568; font-size:15px; line-height:1.5; }
 #view-home .home-tools-section .feature-card small { font-size:12px; line-height:1.65; color:#738692; }
 #view-home .home-tools-section .feature-card em { display:none; }
+.home-tools-toggle { display:none; }
 #view-home #danh-muc-tai-lieu,#view-home #ban-tin { max-width:1184px; margin:0 auto 28px; border-radius:13px; padding:29px; box-shadow:none; border:1px solid #d8e5e9; }
 #view-home .library-heading h2 { font-size:27px; color:#234e60; }
 #view-home .library-hub-card { border-radius:10px; box-shadow:none; }
@@ -96,3 +98,51 @@ body { background:#f5f8fa; }
 @media(max-width:1100px) { .home-masthead-inner { gap:30px; } .home-organization-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } #view-home .home-tools-section .feature-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } .topbar .main-nav { flex:1 1 100%; justify-content:center; order:3; } .topbar .home-user-account { margin-left:auto; } }
 @media(max-width:820px) { .home-masthead-inner { grid-template-columns:1fr; padding:45px 22px; gap:32px; } .home-masthead h1 { font-size:36px; max-width:700px; } .home-quick-panel { max-width:none; } .home-quick-grid { display:grid; grid-template-columns:1fr 1fr; gap:0 22px; } .home-quick-grid .home-quick-hours { grid-column:1/-1; } .home-functions-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .home-section { padding:45px 22px; } #view-home #danh-muc-tai-lieu,#view-home #ban-tin { margin-left:22px; margin-right:22px; padding:24px; } .home-contact-grid { grid-template-columns:1fr 1fr; gap:28px; } .home-contact-grid > :first-child { grid-column:1/-1; } }
 @media(max-width:640px) { .topbar-inner { padding:10px 16px; gap:10px; } .topbar .brand { min-width:0; } .topbar .brand-logo { width:56px; height:43px; } .topbar .brand strong { font-size:20px; } .topbar .brand span { font-size:8px; letter-spacing:.4px; max-width:180px; line-height:1.5; } .topbar .main-nav { order:4; display:none; } .topbar .main-nav.open { display:flex; flex-direction:column; align-items:stretch; width:100%; } .topbar .main-nav button { width:100%; text-align:left; justify-content:flex-start; padding:12px; } .topbar .home-user-account { margin-left:0; } .home-masthead-inner { padding:34px 18px; } .home-masthead h1 { font-size:32px; letter-spacing:-1px; } .home-lede { font-size:14px; line-height:1.8; margin-top:18px; } .home-eyebrow { font-size:10px; } .home-hero-actions { margin-top:22px; } .home-hero-actions .btn { font-size:12px; padding:12px 14px; } .home-quick-panel { padding:20px; } .home-quick-grid { display:block; } .home-hours b { font-size:18px; } .home-section { padding:36px 18px; } .home-section-title { font-size:26px; } .home-section-lead { font-size:14px; } .home-functions-grid { grid-template-columns:1fr; } .home-function { padding:20px 0; } .home-organization-grid { grid-template-columns:1fr; } .home-organization-card { padding:20px; } #view-home .home-tools-section .feature-grid { grid-template-columns:1fr; } #view-home .home-tools-section .feature-card { min-height:0; } #view-home #danh-muc-tai-lieu,#view-home #ban-tin { margin-left:16px; margin-right:16px; padding:21px 17px; } #view-home .library-heading h2 { font-size:23px; } .home-responsibility-strip { padding:15px 18px; display:block; } .home-responsibility-strip button { margin-top:5px; } .home-contact-grid { grid-template-columns:1fr; gap:26px; } .home-contact-grid > :first-child { grid-column:auto; } }
+@media (max-width:720px) {
+  .pharmacy-home-active .topbar,
+  #view-home {
+    font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  }
+  #view-home > section { scroll-margin-top:84px; }
+  #view-home #ban-tin { scroll-margin-top:84px; }
+  .topbar .main-nav :is(a,button) { font-size:15px; min-height:44px; }
+  .pharmacy-home-active .home-guest-login { font-size:14px; min-height:44px; }
+  .home-masthead-inner { padding:24px 16px; gap:18px; }
+  .home-masthead h1 { font-size:clamp(25px,6.5vw,30px); line-height:1.25; letter-spacing:-.55px; }
+  .home-lede { margin-top:10px; }
+  .home-lede,
+  .home-section-lead,
+  .home-function p,
+  .home-organization-card p { font-size:1rem; line-height:1.6; color:#425e6d; }
+  .home-hero-actions { margin-top:16px; gap:8px; }
+  .home-hero-actions .btn { font-size:14px; min-height:44px; padding:10px 12px; }
+  .home-section { padding:28px 16px; }
+  .home-section-title { font-size:25px; }
+  .home-section-heading { margin-bottom:10px; }
+  .home-section-lead { margin:10px 0 16px; }
+  .home-function-number { display:none; }
+  .home-function h3 { margin-top:0; }
+  #view-home > .home-quick-panel { margin:0 16px 24px; padding:16px; }
+  .home-quick-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 12px; margin-top:12px; }
+  .home-quick-grid dt { font-size:12px; text-transform:none; letter-spacing:0; }
+  .home-quick-grid > div { padding:9px 0; }
+  .home-hours small { font-size:13px; }
+  #view-home .home-responsibility-note { box-sizing:border-box; margin:12px 16px 0; width:auto !important; font-size:13px; }
+  #view-home .home-tools-section { padding-bottom:24px; }
+  #view-home .home-tools-section .home-eyebrow { display:none; }
+  #view-home .home-tools-section .feature-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:8px !important; margin-top:12px !important; }
+  #view-home .home-tools-section .feature-card {
+    display:flex !important;
+    min-height:64px !important;
+    padding:10px !important;
+    flex-direction:row;
+    align-items:center;
+    gap:8px;
+  }
+  #view-home .home-tools-section .feature-card::after { content:none; }
+  #view-home .home-tools-section .feature-card .feature-icon { flex:none; width:27px; height:27px; border-radius:7px; font-size:17px !important; box-shadow:none; }
+  #view-home .home-tools-section .feature-card b { font-size:15px !important; line-height:1.35; overflow-wrap:anywhere; }
+  #view-home .home-tools-section .feature-card small { display:none; }
+  #view-home .home-tools-collapsible:not(.home-tools-expanded) .feature-card:not([data-mobile-priority]) { display:none !important; }
+  .home-tools-toggle:not([hidden]) { display:block; width:100%; min-height:44px; margin-top:10px; font-size:15px; }
+}

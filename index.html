@@ -183,14 +183,14 @@
       <span class="home-eyebrow">Hỗ trợ thực hành</span>
       <div class="home-section-heading"><h2 id="home-tools-title" class="home-section-title" data-home-content="toolsTitle">Công cụ lâm sàng</h2><button type="button" class="home-editor-button" data-home-edit="headings" hidden>✎ Chỉnh sửa</button></div>
       <p class="home-section-lead" data-home-content="toolsLead">Tra cứu thuốc, tính liều và hỗ trợ an toàn trong sử dụng thuốc.</p>
-      <div class="feature-grid">
+      <div class="feature-grid" id="home-tool-grid">
         <!-- Module cấp cứu được mở trong luồng điều hướng chung của hệ thống -->
-        <button type="button" class="feature-card emergency-feature" data-open="cap-cuu-phan-ve" aria-label="Mở module Cấp cứu phản vệ">
+        <button type="button" class="feature-card emergency-feature" data-open="cap-cuu-phan-ve" data-mobile-priority aria-label="Mở module Cấp cứu phản vệ">
           <span class="feature-icon" aria-hidden="true">🚨</span><b>Cấp cứu phản vệ</b><small>Phân độ, tính liều Adrenalin, hỗ trợ xử trí và ghi nhận diễn biến cấp cứu.</small><em>Mới</em>
         </button>
-        <button class="feature-card" data-open="inpatient-order"><span class="feature-icon">🏥</span><b>Phân tích y lệnh nội trú</b><small>Tính liều, cách dùng, tốc độ truyền, tương tác thuốc và cảnh báo suy thận từ ảnh y lệnh.</small><em>Tính năng mới</em></button>
-        <button class="feature-card prescription-feature" data-open="prescription-check"><span class="feature-icon">📋</span><b>Rà soát đơn thuốc BHYT</b><small>Kiểm tra tương tác toàn đơn và phân biệt thiếu mã bệnh với mã bệnh chưa thật sự phù hợp.</small><em>Tính năng mới</em></button>
-        <button type="button" class="feature-card consultation-feature" data-open="antibiotic-consultation"><span class="feature-icon">👥</span><b>Kháng sinh cần hội chẩn khi dùng</b><small>Tra cứu đầy đủ danh mục ưu tiên quản lý của Bộ Y tế và đối chiếu thuốc hiện có tại bệnh viện.</small><em>Đang hoạt động</em></button>
+        <button class="feature-card" data-open="inpatient-order" data-mobile-priority><span class="feature-icon">🏥</span><b>Phân tích y lệnh nội trú</b><small>Tính liều, cách dùng, tốc độ truyền, tương tác thuốc và cảnh báo suy thận từ ảnh y lệnh.</small><em>Tính năng mới</em></button>
+        <button class="feature-card prescription-feature" data-open="prescription-check" data-mobile-priority><span class="feature-icon">📋</span><b>Rà soát đơn thuốc BHYT</b><small>Kiểm tra tương tác toàn đơn và phân biệt thiếu mã bệnh với mã bệnh chưa thật sự phù hợp.</small><em>Tính năng mới</em></button>
+        <button type="button" class="feature-card consultation-feature" data-open="antibiotic-consultation" data-mobile-priority><span class="feature-icon">👥</span><b>Kháng sinh cần hội chẩn khi dùng</b><small>Tra cứu đầy đủ danh mục ưu tiên quản lý của Bộ Y tế và đối chiếu thuốc hiện có tại bệnh viện.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="dose"><span class="feature-icon">🧮</span><b>Tính liều kháng sinh & CrCl/eGFR</b><small>Tính chức năng thận, gợi ý chỉnh liều và lưu lịch sử.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="pediatric-dose"><span class="feature-icon">🍼</span><b>Tính liều kháng sinh Nhi</b><small>Tính liều theo tuổi/PMA, cân nặng và lưu lịch sử tra cứu.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="antibiotics"><span class="feature-icon">💊</span><b>Danh mục kháng sinh nội trú</b><small>Tra cứu liều, pha truyền, ADR và TDM của kháng sinh trong kho.</small><em>Đang hoạt động</em></button>
@@ -203,6 +203,7 @@
         <button class="feature-card" data-open="petct-dose"><span class="feature-icon">☢️</span><b>Tính liều PET/CT – Y học hạt nhân</b><small>Tính liều, bù phân rã và thể tích rút cho ca PET/CT.</small><em>Đang hoạt động</em></button>
         <button class="feature-card" data-open="sources" data-intro-exclude="true"><span class="feature-icon">📚</span><b>Nguồn dữ liệu hệ thống</b><small>Xem tài liệu nguồn và nguyên tắc ưu tiên dữ liệu.</small><em>Đang hoạt động</em></button>
       </div>
+      <button type="button" class="btn home-secondary home-tools-toggle" aria-expanded="false" aria-controls="home-tool-grid" hidden>Xem tất cả công cụ</button>
     </section>
 
     <section class="section-card pharmacy-library" id="danh-muc-tai-lieu" aria-label="Thư viện tài liệu">
@@ -215,7 +216,7 @@
         <a class="library-hub-card library-hub-card--guide" href="#huong-dan-su-dung" data-open="huong-dan-su-dung"><span aria-hidden="true">📖</span><span><strong>Hướng dẫn sử dụng</strong><small>Quy trình và hướng dẫn thao tác.</small><em data-library-count="guide">Xem tài liệu</em></span><span class="library-hub-arrow" aria-hidden="true">→</span></a>
       </div>
     </section>
-    <section class="section-card pharmacy-library" id="ban-tin" aria-labelledby="library-bulletin-title" style="scroll-margin-top:130px">
+    <section class="section-card pharmacy-library" id="ban-tin" aria-labelledby="library-bulletin-title">
       <div class="library-heading"><h2 id="library-bulletin-title" data-home-content="bulletinTitle">Bản tin Dược</h2><button type="button" class="btn btn-primary" data-library-upload="bulletin" hidden>+ Tải PDF bản tin</button></div>
       <div class="library-bulletin-layout">
         <div class="pharmacy-library" data-documents-kind="bulletin">
@@ -1037,7 +1038,7 @@ Bảng này dùng cho đơn vị quen tính liều theo mCi/kg. Có thể đối
 </footer>
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3" integrity="sha384-l8ah+VgaWtk1mvOe9VC+OirC6qHFF4yH7l7mKRidV9MSti3E9F463bMp6ZVN4kuC" crossorigin="anonymous"></script>
 <script defer src="assets/vpmed-access.js?v=20261118-guest-logout"></script>
-<script defer src="assets/platform-shell.js?v=20261118-public-guides"></script>
+<script defer src="assets/platform-shell.js?v=20261120-mobile-home"></script>
 <script defer src="assets/disclaimer-gate.js?v=20260822-disclaimer-gate-v1"></script>
 <script defer src="assets/update-notifier.js?v=20261118-major-only"></script>
 </body>

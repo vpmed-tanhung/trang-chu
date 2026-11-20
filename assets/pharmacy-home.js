@@ -1,6 +1,37 @@
 /* Biên tập nội dung trang chủ qua quyền được xác nhận trên Supabase. */
 (() => {
   'use strict';
+
+  const home = document.getElementById('view-home');
+  const masthead = home.querySelector('.home-masthead-inner');
+  const quickInfo = home.querySelector('.home-quick-panel');
+  const functions = document.getElementById('chuc-nang');
+  const contact = document.getElementById('lien-he');
+  const prioritySections = ['cong-cu-lam-sang', 'danh-muc-tai-lieu', 'ban-tin'].map(id => document.getElementById(id));
+  const phoneLayout = window.matchMedia('(max-width: 720px)');
+
+  function arrangeHome() {
+    const focused = document.activeElement;
+    const anchor = phoneLayout.matches ? functions : contact;
+    prioritySections.forEach(section => home.insertBefore(section, anchor));
+    if (phoneLayout.matches) home.insertBefore(quickInfo, functions);
+    else masthead.append(quickInfo);
+    if (focused && document.activeElement !== focused) focused.focus({preventScroll: true});
+  }
+
+  if (phoneLayout.matches) arrangeHome();
+  phoneLayout.addEventListener('change', arrangeHome);
+
+  const toolsSection = prioritySections[0];
+  const toolsToggle = toolsSection.querySelector('.home-tools-toggle');
+  toolsSection.classList.add('home-tools-collapsible');
+  toolsToggle.hidden = false;
+  toolsToggle.addEventListener('click', () => {
+    const expanded = toolsSection.classList.toggle('home-tools-expanded');
+    toolsToggle.setAttribute('aria-expanded', String(expanded));
+    toolsToggle.textContent = expanded ? 'Thu gọn công cụ' : 'Xem tất cả công cụ';
+  });
+
   const groups = {
     intro: [['heroTitle','Tiêu đề giới thiệu',240],['heroLead','Nội dung giới thiệu',1800]],
     quick: [['summerHours','Giờ làm việc mùa hè',80],['winterHours','Giờ làm việc mùa đông',80],['workingDays','Ngày làm việc',100],['location','Vị trí khoa',240],['headName','Trưởng khoa',150],['phone','Điện thoại trực thường trú',40]],
