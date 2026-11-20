@@ -4,7 +4,7 @@
   "updatedAt": "2026-11-18T21:04:55+07:00",
   "note": "Khôi phục bố cục trang Khoa Dược và 18 bản tin công khai. Thông tin thuốc nội bộ và công cụ lâm sàng yêu cầu đăng nhập.",
   "buildId": "v5.8.15-2026.11.18.87",
-  "clinicalDataVersion": "sha256-17ee0b027479aa9848a1a261",
+  "clinicalDataVersion": "sha256-68f2f03322be2ec4fe7b5310",
   "previousVersion": "2026.11.18.86",
   "previousDisplayVersion": "5.8.14"
 }

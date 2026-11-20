@@ -86,7 +86,7 @@
         </section>
         <div class="notice">
           <b>Phạm vi:</b> Thư viện hỗ trợ tra cứu và rà soát an toàn thuốc, không phải biểu mẫu báo cáo ADR.
-          <span class="sync-note" id="syncNote">Dữ liệu biên tập được giữ nguyên; bản tin mới được kiểm tra tự động và gắn nhãn riêng.</span>
+          <span class="sync-note" id="syncNote">Kiểm tra nguồn gần nhất: Đang tải…</span>
           <span class="usage-note"><b>Lưu ý:</b> Thông tin chỉ hỗ trợ tra cứu; không thay thế tờ hướng dẫn sử dụng được phê duyệt, chẩn đoán, xử trí cấp cứu hoặc quyết định chuyên môn của bác sĩ.</span>
         </div>
         <section class="toolbar" aria-label="Công cụ tìm kiếm">
@@ -313,20 +313,19 @@
         const autoAlerts = unwrapAlerts(autoPayload).map(item=>typeof autoEditor==='function'?autoEditor(item):item);
         this.alerts = mergeAlerts(staticAlerts, autoAlerts);
         if (!this.alerts.length) throw new Error('Không có dữ liệu cảnh báo');
-        this.lastSyncDate = formatIsoDateTime(autoPayload?.generated_at) || this.latestDateText();
+        this.lastSyncDate = formatIsoDateTime(autoPayload?.generated_at) || this.lastSyncDate;
         this.populateFilters();
         this.renderCategories();
         this.updateStats();
         this.render();
-        const autoCount = this.alerts.filter((item) => item.auto).length;
-        this.$('#syncNote').textContent = autoPayload
-          ? `${staticAlerts.length} cảnh báo biên tập · ${autoCount} bản tin tự động · Kiểm tra nguồn gần nhất: ${this.lastSyncDate}.`
-          : `${staticAlerts.length} cảnh báo biên tập · Chưa tải được tệp bản tin tự động.`;
         this.updateFeatureCard();
-      } catch (error) {
+      } catch {
         if (controller.signal.aborted) return;
-        if (!this.alerts.length) this.$('#cards').innerHTML = '<div class="empty"><b>Không tải được dữ liệu cảnh báo.</b></div>';
-        this.$('#syncNote').textContent = `Lỗi tải dữ liệu: ${error.message}`;
+        if (!this.alerts.length) {
+          this.$('#cards').innerHTML = '<div class="empty"><b>Không tải được dữ liệu cảnh báo.</b></div>';
+          this.$('#latestDate').textContent = 'Kiểm tra nguồn: Chưa có dữ liệu';
+          this.$('#syncNote').textContent = 'Kiểm tra nguồn gần nhất: Chưa có dữ liệu';
+        }
       } finally {
         if (this.abortController === controller) this.abortController = null;
       }
@@ -448,8 +447,10 @@
 
     updateStats() {
       const latestAlertDate = this.latestDateText();
+      const lastCheck = this.lastSyncDate || 'Chưa có dữ liệu';
       this.$('#heroCount').textContent = `${this.alerts.length} cảnh báo`;
-      this.$('#latestDate').textContent = `Kiểm tra nguồn: ${this.lastSyncDate || latestAlertDate}`;
+      this.$('#latestDate').textContent = `Kiểm tra nguồn: ${lastCheck}`;
+      this.$('#syncNote').textContent = `Kiểm tra nguồn gần nhất: ${lastCheck}`;
       this.$('#totalStat').textContent = this.alerts.length;
       this.$('#redStat').textContent = this.alerts.filter((item) => item.level === 'red').length;
       this.$('#interactionStat').textContent = this.alerts.filter((item) => item.interaction).length;
