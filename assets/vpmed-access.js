@@ -7,6 +7,7 @@
   var OFFLINE_ACCESS_MAX_AGE=12*60*60*1000;
   var account=document.getElementById('homeUserAccount');
   var logout=document.getElementById('homeUserLogout');
+  var pdfView=document.getElementById('library-pdf-status');
   var client=null,accessCheckTimer=null,authRedirectPending=false;
   function authUrl(){var next=(location.pathname.split('/').pop()||'index.html')+location.search+location.hash;return 'tai-khoan.html?next='+encodeURIComponent(next);}
   function redirect(){location.replace(authUrl());}
@@ -77,7 +78,11 @@
     window.dispatchEvent(new CustomEvent('vpmed-auth-offline',{detail:window.VPMED_AUTH_OFFLINE}));
     return true;
   }
-  if(!account){redirect();return;}
+  if(!account){
+    if(!pdfView)redirect();
+    else if(window.supabase)window.VPMED_PUBLIC_LIBRARY_CLIENT=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    return;
+  }
   logout?.addEventListener('click',signOutToGuest);
   window.addEventListener('hashchange',function(){
     if(document.documentElement.classList.contains('vpmed-auth-checking'))requireSignInOnPrivateEntry();

@@ -22,7 +22,7 @@
 .library-item { display:flex; align-items:flex-start; gap:14px; padding:20px 0; border-bottom:1px solid var(--line); min-width:0; }
 .library-file-icon { width:43px; height:50px; border-radius:8px; background:#fff1ee; color:#ac4031; display:grid; place-items:center; font-size:11px; font-weight:900; flex-shrink:0; border:1px solid #f0d6d0; }
 .library-item-copy { flex:1; min-width:0; }
-.library-item-title { display:block; padding:0; border:0; background:transparent; color:var(--navy); font-size:17px; font-weight:750; text-align:left; line-height:1.5; overflow-wrap:anywhere; }
+.library-item-title { display:block; padding:0; border:0; background:transparent; color:var(--navy); font-size:17px; font-weight:750; text-align:left; text-decoration:none; line-height:1.5; overflow-wrap:anywhere; }
 .library-item-title:hover { color:var(--blue); text-decoration:underline; text-underline-offset:3px; }
 .library-item-meta { display:flex; gap:9px; flex-wrap:wrap; margin-top:7px; color:var(--muted); font-size:12px; align-items:center; }
 .library-category { background:#edf5fc; color:#235c83; border-radius:5px; padding:3px 7px; }
@@ -39,8 +39,8 @@
 .library-sidebar-block + .library-sidebar-block { border-top:1px solid var(--line); margin-top:22px; padding-top:18px; }
 .library-sidebar h3 { color:var(--navy); margin:0 0 12px; font-size:15px; }
 .library-sidebar ul { list-style:none; padding:0; margin:0; display:grid; gap:12px; }
-.library-sidebar button { border:0; background:transparent; padding:0; color:#375e79; text-align:left; font-size:13px; line-height:1.5; overflow-wrap:anywhere; }
-.library-sidebar button:hover { text-decoration:underline; color:var(--blue); }
+.library-sidebar :is(button,a) { border:0; background:transparent; padding:0; color:#375e79; text-align:left; text-decoration:none; font-size:13px; line-height:1.5; overflow-wrap:anywhere; }
+.library-sidebar :is(button,a):hover { text-decoration:underline; color:var(--blue); }
 .library-sidebar .library-filter-link { display:flex; justify-content:space-between; width:100%; gap:8px; }
 .library-sidebar small { color:var(--muted); font-size:12px; }
 .library-interaction-heading {

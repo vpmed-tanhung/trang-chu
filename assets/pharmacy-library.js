@@ -177,12 +177,20 @@
     }
     catalog.grid.replaceChildren(...chosen.map(({pair,position}) => interactionCard(pair,position)));
   }
-  function openBulletin(record) {
-    if (record.id !== INTERACTION_BULLETIN_ID) return openPdf(record);
-    const panel = panels.get('bulletin');
-    selectCategory(panel,INTERACTION_CATEGORY);
-    panel.query.focus({preventScroll:true});
-    $('ban-tin').scrollIntoView();
+  function documentLink(record, label, className) {
+    if (record.id === INTERACTION_BULLETIN_ID) {
+      return button(label,className,() => {
+        const panel = panels.get('bulletin');
+        selectCategory(panel,INTERACTION_CATEGORY);
+        panel.query.focus({preventScroll:true});
+        $('ban-tin').scrollIntoView();
+      });
+    }
+    const link = node('a',className,label);
+    link.href = 'xem-pdf.html#'+encodeURIComponent(record.id);
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    return link;
   }
   function renderItem(record) {
     const guideFile = record.kind === 'drug' ? GUIDE_BY_SIGNED_FILE.get(record.file_name) : '';
@@ -190,7 +198,7 @@
     const guide = matchingGuides.length === 1 ? matchingGuides[0] : null;
     const article = node('article','library-item');
     const copy = node('div','library-item-copy');
-    copy.append(button(record.title,'library-item-title',() => openBulletin(record)));
+    copy.append(documentLink(record,record.title,'library-item-title'));
     const meta = node('div','library-item-meta');
     if (guide) {
       meta.append(node('time','','Ngày ký ban hành: '+formatDate(documentDate(record))));
@@ -204,8 +212,8 @@
     if (record.summary) copy.append(node('p','',record.summary));
     const actions = node('div','library-item-actions');
     const openLabel = record.id === INTERACTION_BULLETIN_ID ? 'Tra cứu' : guide ? 'Bản có chữ ký' : 'Xem PDF';
-    actions.append(button(openLabel,'btn btn-soft',() => openBulletin(record)));
-    if (guide) actions.append(button('Hướng dẫn sử dụng','btn btn-soft',() => openPdf(guide)));
+    actions.append(documentLink(record,openLabel,'btn btn-soft'));
+    if (guide) actions.append(documentLink(guide,'Hướng dẫn sử dụng','btn btn-soft'));
     if (isAdmin()) {
       actions.append(button('Chỉnh sửa','btn btn-soft',() => openUpload(record.kind,record)));
       actions.append(button('Xóa','btn btn-danger-soft',(event) => removeRecord(record,event.currentTarget)));
@@ -282,7 +290,7 @@
       item.append(link); categories.append(item);
     }
     for (const record of entries.slice(0,5)) {
-      const item = node('li'); item.append(button(record.title,'',() => openBulletin(record))); recent.append(item);
+      const item = node('li'); item.append(documentLink(record,record.title,'')); recent.append(item);
     }
     const months = new Map();
     for (const record of entries) {const key = monthKey(documentDate(record)); months.set(key,(months.get(key)||0)+1);}

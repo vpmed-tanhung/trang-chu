@@ -76,10 +76,11 @@ d32618adab4f043b505f6cc08b45e22894497287a3d8ac4c7ac3b2b35fd8c118  ./assets/pharm
 2746330d7c6383146c961f852b769ad34ca971b0fd4d28fa01e6b0982906f63f  ./assets/pharmacy-admin-guard.js
 e3595842f0bf99c48f0210e21e9d8e3244b62e8fae8cb63dc4aa7589f8c7830b  ./assets/pharmacy-home.css
 8c42e186cbff5a44920cd0f332e7a13286411826e36c0be9903fd49450333d62  ./assets/pharmacy-home.js
-c5f56127b6028c8cd2c6f8b6f3486783c88ce8e6115b5654afd14c0e0a8fe0e2  ./assets/pharmacy-library.css
-90439f4ed4d31c73685c07770ca6aee0f899c341563d081df8ea51be1d0564ff  ./assets/pharmacy-library.js
+df54f27516e1b3b72af5f903c161d76e18db83d2c294f618ad25a3c219de1fe6  ./assets/pharmacy-library.css
+85de92da31beda3ee61a1a90d0e34caca1444c41f16a1d330130fa6285cff901  ./assets/pharmacy-library.js
+c3527adb37b212e63baf83b133b6d30ea1adc554a828157f8023a57db4ecfa68  ./assets/pharmacy-pdf.js
 6f81db466e677d57b51d1578ef5541db837969968e45afe2d412a3a5d8027c63  ./assets/platform-shell.css
-d22dac9e0622c3652bcfdfd5adcbbd34013c9ab46e00639a1f8289acb82b1545  ./assets/platform-shell.js
+4e6c71976f2d6eae7897da27dec04526d5b8b57977a7dd59aa47e849307dbafe  ./assets/platform-shell.js
 b5d2db7f2c38117d93dcaf3b46503f15e8cb64040b56e0befb0f19b811b8c1f2  ./assets/pregnancy_lactation.css
 cff80c0b6cdcbc9e826ffb92502b0e16ba52d4f6089793c69699529ada91f4ae  ./assets/pregnancy_lactation.js
 cf441ed133ed12b4f44737cc6b6856f36a61d97222b91f24f99f2ac28ec61596  ./assets/prescription-check.css
@@ -104,7 +105,7 @@ b42c9700294699aae9ecb4aca50319f1a8f098311dacfc05c092cbfe6666b0e1  ./assets/unifi
 bd6ea1592d3cc5a283273236cb55e75e1198b13009c4606b1184f72ea8505d31  ./assets/update-notifier.js
 d5d7d74e4a4b8cd219125b8f8f4638b785fa813062fb2165f629c2532de2a77e  ./assets/vancomycin_renal_v2.js
 536a035d47bd1a00d1406dd4e2bc5d5426674f65cb8db7a6c53c5efd729c012b  ./assets/vpmed-access.css
-4c6778f44a72d286b59fd14f018d493b3826827ddf4f1a163c5753cf46ecad63  ./assets/vpmed-access.js
+c4fc682b2433a994e4849ae45bed023c63ec930cb13f65b4d0cb8787e82d968a  ./assets/vpmed-access.js
 166090a45065fbe74ad711e348fad12871f816b917839b375bb8d5e1c8c493dc  ./assets/vpmed-auth-page.js
 2fd5ce83efc7255e1b177451c1ac561a67c89ca8b57d9ac964e06bebeebcfccf  ./assets/vpmed-auth.css
 0ed0123f397c41374c6108184913aefc61916d2be451fd71a8b287d5a756d8c2  ./assets/vpmed-renal-audit.js
@@ -229,7 +230,7 @@ b6775473e6c5799a241d839d69595947baaa826c0cd7584d7b7c23c7a2fa8cf5  ./supabase/the
 58d343bf499573957a704b6678b1699ab44c28c61d403fa045f8fea812810c7a  ./supabase/thu_vien_tai_lieu_duoc.sql
 3c102cafc778527b83798f339204dd0465d2f5b87462a748b0cccd4029a3660a  ./supabase/toi_uu_rls.sql
 195051ed7cad01a94222267ff7ef17a8509c6aadfc156ca2da898d137873864a  ./supabase/trang_chu_va_quyen_bien_tap_khoa_duoc.sql
-656f11fe3797f71f31f5efd4d005c0f1ed5efba56751c3f4f97505dbd2c61dea  ./sw.js
+3d4733bd8e9a93956125d6e97f774e2a401c6e2ff2562e10b873fbd54cfab636  ./sw.js
 c77d5eb513633ef1f1acdac4498a5fc985a07bbd04787f7b8ec6f6e9054106f4  ./tai-khoan.html
 e75fe1483da5221b1b74b7bece8ff6026ce50797a49050e6803d278068ca1ed2  ./tests/test_anaphylaxis_integration.js
 9c46c0e309dde424f802b5fc67ebbbc4669fa21380e1a68ee634d789c5ff05ef  ./tests/test_antibiotic_consultation.js
@@ -283,3 +284,4 @@ b59595ce54557a8297af04df2382aa7ee01e513bfc0f3c4ea97e2cf0c978473c  ./vpmed-histor
 dc726bab45fb3e70434fdbebb44aaad37437b94a57d17d395ad15fe6d4bf10aa  ./vpmed-interaction-compact.js
 161c0a1e4486c95c6cd161cf5686907e7d67c67502acc357fc783a9bae5909d3  ./vpmed-interaction-multidrug.js
 a71aaa2033c4ddb4e1b9ee0d3d73c6faffb31fe094ccdf9d53007ff51c4f6f1e  ./vpmed-remove-quick-two-drug.js
+e444e4be8941c15b094b37eda4b5a91ef2f73dbb714fdf367864042e9b99dea0  ./xem-pdf.html
