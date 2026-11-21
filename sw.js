@@ -32,8 +32,8 @@ const APP_SHELL = [
   './assets/vpmed-access.js?v=20261118-guest-logout',
   './assets/vpmed-access.js?v=20261120-pdf-tab',
   './assets/platform-shell.js?v=20261120-mobile-home',
-  './assets/pharmacy-library.css?v=20261120-pdf-recovery',
-  './assets/pharmacy-library.js?v=20261120-pdf-recovery',
+  './assets/pharmacy-library.css?v=20261121-pdf-direct',
+  './assets/pharmacy-library.js?v=20261121-pdf-direct',
   './assets/pharmacy-pdf.js?v=20261120-pdf-recovery',
   './assets/pharmacy-home.js?v=20261120-mobile-home',
   './assets/pharmacy-home.css?v=20261120-mobile-home',
@@ -50,7 +50,8 @@ const APP_SHELL = [
 ];
 const OLD_PDF_SHELL_SCRIPTS = [
   './assets/pharmacy-library.js?v=20261118-public-guides',
-  './assets/pharmacy-library.js?v=20261120-pdf-tab'
+  './assets/pharmacy-library.js?v=20261120-pdf-tab',
+  './assets/pharmacy-library.js?v=20261120-pdf-recovery'
 ];
 
 const CLINICAL_PATH_PATTERN = /(?:^|\/)(?:data|sources)\/|\/assets\/(?:.*(?:data|database|profile|medicine|alert|icd10|disease|contra|renal|infusion|clinical|dosing|interaction|antibiotic|pharmacovigilance|pregnancy|hepatotoxicity|injectable|stock|source).*)\.(?:js|json|csv)$/i;

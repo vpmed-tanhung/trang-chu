@@ -5,6 +5,8 @@
   const BUCKET = 'pharmacy-pdfs';
   const MAX_BYTES = 20 * 1024 * 1024;
   const PAGE_SIZE = 6;
+  const PDF_URL_TTL_SECONDS = 3600;
+  const PDF_URL_RENEWAL_MS = 5 * 60 * 1000;
   const INTERACTION_CATEGORY = 'Tương tác thuốc';
   const INTERACTION_BULLETIN_ID = 'a787af00-1f05-5b9d-bbc9-484df524b84c';
   const PUBLIC_CATEGORIES = {bulletin:['Bản tin Dược'], guide:['Hướng dẫn sử dụng']};
@@ -29,6 +31,9 @@
   let auth = null, records = [], loading = false, loadError = '', loadSequence = 0;
   let uploadBusy = false, uploadKind = 'bulletin', fileSequence = 0, previewUrl = '', editingRecord = null;
   const panels = new Map();
+  const signedPdfs = new Map();
+  const signingPaths = new Set();
+  let pdfLinkTimer, pdfLinkGeneration = 0;
   const uploadDialog = document.getElementById('library-upload-dialog');
   const uploadForm = document.getElementById('library-upload-form');
   const fileInput = document.getElementById('library-pdf-file');
@@ -55,20 +60,87 @@
     const link = node('a',className,label);
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
+    link.addEventListener('click', (event) => {
+      const path = link.dataset.libraryPdfPath;
+      if (!path || signedPdfs.get(path)?.expiresAt > Date.now()) return;
+      event.preventDefault();
+      applyPdfHref(link, '');
+      schedulePdfLinks();
+      window.VPMED_PLATFORM?.toast('Đang chuẩn bị liên kết PDF. Vui lòng bấm lại sau giây lát.',{tone:'info'});
+    });
     return link;
   }
-  const documentHref = (record) => 'xem-pdf.html#'+encodeURIComponent(record.id);
+  function applyPdfHref(link, href) {
+    if (href) {
+      link.href = href;
+      link.removeAttribute('aria-disabled');
+    } else {
+      link.removeAttribute('href');
+      link.setAttribute('aria-disabled','true');
+    }
+  }
+  function attachPdfPath(link, path) {
+    link.dataset.libraryPdfPath = path;
+    const cached = signedPdfs.get(path);
+    applyPdfHref(link, cached?.expiresAt > Date.now() ? cached.url : '');
+    schedulePdfLinks();
+  }
+  function schedulePdfLinks() {
+    if (pdfLinkTimer !== undefined) return;
+    pdfLinkTimer = window.setTimeout(() => {
+      pdfLinkTimer = undefined;
+      preparePdfLinks();
+    }, 0);
+  }
+  async function preparePdfLinks() {
+    const client = readClient();
+    if (!client) return;
+    const requestedPaths = new Set();
+    const now = Date.now();
+    for (const link of document.querySelectorAll('a[data-library-pdf-path]')) {
+      const path = link.dataset.libraryPdfPath;
+      const cached = signedPdfs.get(path);
+      applyPdfHref(link, cached?.expiresAt > now ? cached.url : '');
+      if (signingPaths.has(path) || cached?.expiresAt > now + PDF_URL_RENEWAL_MS) continue;
+      requestedPaths.add(path);
+    }
+    const paths = [...requestedPaths];
+    if (!paths.length) return;
+    paths.forEach(path => signingPaths.add(path));
+    const generation = pdfLinkGeneration;
+    try {
+      const {data,error} = await client.storage.from(BUCKET).createSignedUrls(paths,PDF_URL_TTL_SECONDS);
+      if (error || generation !== pdfLinkGeneration) return;
+      for (const result of data || []) {
+        if (requestedPaths.has(result.path) && result.signedUrl && !result.error) {
+          signedPdfs.set(result.path, {url:result.signedUrl,expiresAt:now + PDF_URL_TTL_SECONDS * 1000});
+        }
+      }
+      for (const link of document.querySelectorAll('a[data-library-pdf-path]')) {
+        const signed = signedPdfs.get(link.dataset.libraryPdfPath);
+        if (signed?.expiresAt > Date.now()) applyPdfHref(link,signed.url);
+      }
+    } catch (error) {
+      // The library's refresh control also retries preparing PDF links.
+    } finally {
+      if (generation === pdfLinkGeneration) paths.forEach(path => signingPaths.delete(path));
+    }
+  }
+  function clearSignedPdfs() {
+    pdfLinkGeneration++;
+    signedPdfs.clear();
+    signingPaths.clear();
+    document.querySelectorAll('a[data-library-pdf-path]').forEach(link => applyPdfHref(link,''));
+  }
   const previewLink = pdfLink(previewButton.textContent,previewButton.className);
   previewLink.id = previewButton.id;
   previewButton.replaceWith(previewLink);
   function updatePreviewLink() {
-    const href = previewUrl || (editingRecord ? documentHref(editingRecord) : '');
-    if (uploadBusy || !href) {
-      previewLink.removeAttribute('href');
-      previewLink.setAttribute('aria-disabled','true');
+    delete previewLink.dataset.libraryPdfPath;
+    if (!uploadBusy && !previewUrl && editingRecord?.storage_path) {
+      attachPdfPath(previewLink,editingRecord.storage_path);
     } else {
-      previewLink.href = href;
-      previewLink.removeAttribute('aria-disabled');
+      applyPdfHref(previewLink,uploadBusy ? '' : previewUrl);
     }
   }
   function releasePreviewUrl() {
@@ -215,7 +287,8 @@
       });
     }
     const link = pdfLink(label,className);
-    link.href = documentHref(record);
+    if (record.storage_path) attachPdfPath(link,record.storage_path);
+    else applyPdfHref(link,'');
     return link;
   }
   function renderItem(record) {
@@ -482,14 +555,16 @@
   document.querySelectorAll('[data-library-close]').forEach(element => element.addEventListener('click',()=> {
     const dialog=element.closest('dialog'); if (!uploadBusy) dialog.close();
   }));
-  function applyAuth(detail) {auth=detail;updateAdminControls();refresh();}
+  function applyAuth(detail) {clearSignedPdfs();auth=detail;updateAdminControls();refresh();}
   window.addEventListener('vpmed-auth-ready',event=>applyAuth(event.detail));
   window.addEventListener('vpmed-content-permissions-changed',event=>{
-    auth=event.detail;renderAll();if(!isAdmin() && uploadDialog.open && !uploadBusy)uploadDialog.close();
+    clearSignedPdfs();auth=event.detail;renderAll();if(!isAdmin() && uploadDialog.open && !uploadBusy)uploadDialog.close();
   });
   window.addEventListener('vpmed-auth-offline',()=>{
-    auth=null; records=[]; loadSequence++; loading=false; loadError='Cần kết nối mạng để xem kho tài liệu.';renderAll();
+    clearSignedPdfs();auth=null; records=[]; loadSequence++; loading=false; loadError='Cần kết nối mạng để xem kho tài liệu.';renderAll();
   });
   window.addEventListener('online',refresh);
+  document.addEventListener('visibilitychange',() => {if (!document.hidden) schedulePdfLinks();});
+  window.setInterval(() => {if (!document.hidden) schedulePdfLinks();},60000);
   if(window.VPMED_AUTH) applyAuth(window.VPMED_AUTH); else refresh();
 })();
