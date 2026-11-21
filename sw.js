@@ -23,7 +23,7 @@ const APP_SHELL = [
   './phieu-danh-gia.html',
   './tai-khoan.html',
   './manifest.json',
-  './assets/style.css?v=20261120-site-policy',
+  './assets/style.css?v=20261121-navbar-fit',
   './assets/disclaimer-gate.css?v=20260822-disclaimer-gate-v1',
   './assets/vpmed-access.css?v=20261118-public-layout',
   './assets/responsive-polish.css?v=20260712-balanced',

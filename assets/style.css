@@ -188,6 +188,17 @@
 .home-user-status.rejected{background:#fff0f0;border-color:#efcaca;color:#b64242}
 .home-user-menu button{width:100%;margin-top:12px;padding:9px 12px;border:1px solid #efcaca;border-radius:9px;background:#fff5f5;color:#a62e2e;font-size:12px;font-weight:850}
 .home-user-menu button:hover{background:#ffeaea}
+@media (min-width: 1101px) {
+  .topbar .brand {
+    min-width: 240px;
+  }
+
+  .topbar .main-nav {
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
 @media(max-width:1100px){
   .topbar-inner{min-height:76px}
   .main-nav{position:absolute;top:76px;right:16px;left:auto;background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px;box-shadow:var(--shadow);display:none;flex-direction:column;min-width:250px;gap:6px}
